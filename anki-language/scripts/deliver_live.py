@@ -159,7 +159,6 @@ def note_fields(plan: dict[str, Any], card: dict[str, Any]) -> dict[str, str]:
 def build_note(plan: dict[str, Any], card: dict[str, Any], plan_dir: Path) -> tuple[dict[str, Any], dict[str, Path]]:
     skill = card["skill"]
     model = make_model(skill)
-    subdeck = SKILL_META[skill][0]
     fields = note_fields(plan, card)
     note: dict[str, Any] = {
         "deckName": full_deck_name(str(plan["deck_name"]), skill),
@@ -200,6 +199,96 @@ def field_value(note_info: dict[str, Any], field: str) -> str:
     if isinstance(raw, dict):
         return str(raw.get("value", ""))
     return str(raw)
+
+
+def expected_persisted_fields(note: dict[str, Any]) -> dict[str, str]:
+    fields = dict(note["fields"])
+    for item in note.get("audio", []):
+        filename = str(item["filename"])
+        for field in item.get("fields", []):
+            fields[str(field)] = fields.get(str(field), "") + f"[sound:{filename}]"
+    for item in note.get("picture", []):
+        filename = str(item["filename"])
+        for field in item.get("fields", []):
+            fields[str(field)] = fields.get(str(field), "") + f'<img src="{filename}">'
+    return fields
+
+
+def quote_anki_search(value: str) -> str:
+    escaped = value.replace("\\", "\\\\").replace('"', '\\"')
+    return f'"{escaped}"'
+
+
+def note_content_mismatches(
+    note_info: dict[str, Any],
+    expected_note: dict[str, Any],
+    *,
+    allow_legacy_model: bool,
+) -> list[str]:
+    mismatches: list[str] = []
+    actual_model = str(note_info.get("modelName") or "")
+    expected_model = str(expected_note["modelName"])
+    if allow_legacy_model:
+        if actual_model and not actual_model.startswith("Anki Language v"):
+            mismatches.append(f"modelName={actual_model!r}")
+    elif actual_model != expected_model:
+        mismatches.append(f"modelName={actual_model!r} expected={expected_model!r}")
+
+    for field, expected in expected_persisted_fields(expected_note).items():
+        actual = field_value(note_info, field)
+        if actual != expected:
+            mismatches.append(f"{field}: actual={actual!r} expected={expected!r}")
+    return mismatches
+
+
+def find_existing_card(
+    client: AnkiConnectClient,
+    plan: dict[str, Any],
+    card: dict[str, Any],
+    expected_note: dict[str, Any],
+) -> tuple[int, str] | None:
+    scoped_tag = workflow_tag(
+        str(plan["deck_name"]),
+        str(plan["target_language"]["code"]),
+        str(card["id"]),
+    )
+    existing = client.invoke("findNotes", {"query": f"tag:{scoped_tag}"}) or []
+    identity_kind = "scoped"
+
+    if not existing:
+        legacy_tag = legacy_workflow_tag(str(card["id"]))
+        deck = full_deck_name(str(plan["deck_name"]), str(card["skill"]))
+        query = f"tag:{legacy_tag} deck:{quote_anki_search(deck)}"
+        existing = client.invoke("findNotes", {"query": query}) or []
+        identity_kind = "legacy"
+
+    if not existing:
+        return None
+    if len(existing) != 1:
+        raise AnkiConnectError(
+            f"Card {card['id']!r} matched {len(existing)} existing notes via "
+            f"{identity_kind} workflow identity; refusing ambiguous live delivery."
+        )
+
+    note_id = int(existing[0])
+    infos = client.invoke("notesInfo", {"notes": [note_id]}) or []
+    if len(infos) != 1:
+        raise AnkiConnectError(
+            f"Existing note {note_id} for card {card['id']!r} could not be inspected reliably."
+        )
+
+    mismatches = note_content_mismatches(
+        infos[0],
+        expected_note,
+        allow_legacy_model=identity_kind == "legacy",
+    )
+    if mismatches:
+        raise AnkiConnectError(
+            f"Existing workflow note drift for card {card['id']!r}: "
+            + "; ".join(mismatches[:6])
+            + ". The workflow will not silently overwrite or skip changed content."
+        )
+    return note_id, identity_kind
 
 
 def verify_uploaded_media(client: AnkiConnectClient, path: Path) -> dict[str, Any]:
