@@ -44,6 +44,26 @@ The governing principle is:
 
 Do not maximize the number of cards extracted from a source. Maximize **memory efficiency per review minute**.
 
+### Two-stage chunk selection and skill routing
+
+**Stage A — select knowledge before cards.** Read each complete source sentence/turn, mine the shortest *natural and reusable* chunks, and remove overlapping candidates that teach the same knowledge. Discard low-value, already-mastered, ambiguous, unnatural, or expensive-to-review items. A chunk is a candidate, not a compulsory card. Keep the original full sentence as a card only if the whole utterance is independently worth retrieving quickly.
+
+**Stage B — assign skills only to surviving chunks.** Start with *one primary retrieval task per selected learning target* when a card is justified:
+
+| Actual learner gap | Primary skill | Add a second skill only for an independent gap |
+| --- | --- | --- |
+| Written comprehension | Reading | An additional listening, production, spelling, or sound problem |
+| Understanding real spoken language | Listening (focused clip) | Recognition/output also independently weak |
+| Active phrase or construction recall | Production | Hearing or written form also needs retrieval |
+| Sound, stress, rhythm or phonemic contrast | Pronunciation & Sounds | A different skill addresses another evidenced bottleneck |
+| Correct written inflection, accents or spelling | Writing (one short gap) | Spoken production/listening is separately difficult |
+
+For each additional card from the same chunk, name the **different cue, retrieval action, and observable benefit**. A new subdeck label alone does not justify a sibling. Never create all five types merely because they exist. Different chunks from one source may receive *different* skill cards, but no fixed per-sentence quota exists.
+
+**Example (not a fixed output):** Given *« Je voulais sortir, mais j'ai fini par rester chez moi. »*, suppose *« finir par + infinitif »* is the only new useful target. A short Production card about *« J'ai fini par rester. »* may suffice. Do not add Reading if written comprehension is already reliable. Listening from a clipped *fini par* recording is justified only if recognizing it by ear is separately difficult. Do not clone the whole sentence across Reading, Listening, Production, Pronunciation and Writing.
+
+**Batch review:** compare selected chunks against one another and, where accessible, existing user cards. Remove overlapping phrases, same-skill questions and near-paraphrases that test the same retrieval. Automated validation can catch identical tasks **inside the plan**, but cannot determine semantic similarity, actual mastery, or duplicate cards already in Anki. Never silently mutate the user's collection.
+
 ## 2. One primary retrieval target per card
 
 Each card should answer one clear question:
@@ -648,12 +668,13 @@ Minor formatting decisions do not require interruption.
 
 ## 22. Decks classify skill; tags classify linguistic content
 
-Use the four skill subdecks:
+Use the five optional skill subdecks:
 
 - `01 Reading`
 - `02 Listening`
 - `03 Production`
 - `04 Pronunciation & Sounds`
+- `05 Writing`
 
 Use sparse tags for dimensions such as:
 
