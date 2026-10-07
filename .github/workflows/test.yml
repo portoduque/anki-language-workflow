@@ -39,7 +39,11 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r anki-language/requirements.txt pytest
+      - name: Install FFmpeg for audio-clip integration tests
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends ffmpeg
       - name: Validate portable skill
         run: python anki-language/scripts/validate_skill.py anki-language
       - name: Run tests
-        run: pytest -q
+        run: pytest -q -rs
