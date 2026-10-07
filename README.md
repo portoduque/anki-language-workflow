@@ -54,22 +54,22 @@ These are product rules, not suggestions. The complete normative specification l
 4. **No quotas:** never create Reading + Listening + Production + Pronunciation automatically.
 5. **One retrieval target:** each card tests one primary piece of knowledge or skill.
 6. **Self-orienting front:** every front identifies `<TargetLanguage> — <Skill>` so mixed reviews never show a contextless question.
-5. **No guessing the author's intention:** prompts must make the intended retrieval clear without revealing the answer.
-6. **No blind cloze:** a blank is used only when a semantic/function cue, lemma, or other constraint makes the intended answer sufficiently unambiguous.
-7. **No automatic reverse cards:** recognition and production are different skills and get separate cards only when both matter.
-8. **Translation is allowed:** the configured base language may be used when it is the clearest/fastest cue; translation is not banned on principle.
-9. **Reading is selective:** use natural written context for useful recognition; skip material already understood reliably.
-10. **Listening is audio-first:** do not reveal the transcript on the front; put transcript/base-language meaning on the back.
-11. **Production is constrained:** front uses a precise base-language meaning/situation/context; answer and normally audio stay on the back.
-12. **Pronunciation/Sounds is targeted:** use pronunciation, minimal pairs, sound discrimination, or spelling-sound cards only when sound is worth training; never reveal the written answer on a discrimination front.
-13. **Prefer useful chunks/collocations/patterns:** do not reduce a useful expression to isolated words when the combination is the knowledge that matters.
-14. **Sentence mining is selective:** do not turn every source sentence into a card; prefer natural, useful, comprehensible context with one main focus.
-15. **Images are functional, not decorative:** prioritize concrete/visual concepts; skip ambiguous images that do not improve retrieval.
-16. **Audio is functional, not mandatory:** prefer user-supplied original audio, then permitted native-speaker audio, then permitted high-quality TTS.
-17. **Avoid redundancy/interference:** skip near-duplicate cards and improve prompts that make similar answers confusable.
-18. **Fast reviews:** answers should be concise enough to verify recall quickly; extra explanation is secondary.
-19. **Prefer the user's material:** preserve useful source sentences/audio/context instead of replacing them with generic content without reason.
-20. **Ask instead of guessing:** if uncertainty changes meaning, target expression, transcription, register, acceptable answers, or media rights, ask the user before building.
+7. **No guessing the author's intention:** prompts must make the intended retrieval clear without revealing the answer.
+8. **No blind cloze:** a blank is used only when a semantic/function cue, lemma, or other constraint makes the intended answer sufficiently unambiguous.
+9. **No automatic reverse cards:** recognition and production are different skills and get separate cards only when both matter.
+10. **Translation is allowed:** the configured base language may be used when it is the clearest/fastest cue; translation is not banned on principle.
+11. **Reading is selective:** use natural written context for useful recognition; skip material already understood reliably.
+12. **Listening is audio-first:** do not reveal the transcript on the front; put transcript/base-language meaning on the back.
+13. **Production is constrained:** front uses a precise base-language meaning/situation/context; answer and normally audio stay on the back.
+14. **Pronunciation/Sounds is targeted:** use pronunciation, minimal pairs, sound discrimination, or spelling-sound cards only when sound is worth training; never reveal the written answer on a discrimination front.
+15. **Prefer useful chunks/collocations/patterns:** do not reduce a useful expression to isolated words when the combination is the knowledge that matters.
+16. **Sentence mining is selective:** do not turn every source sentence into a card; prefer natural, useful, comprehensible context with one main focus.
+17. **Images are functional, not decorative:** prioritize concrete/visual concepts; skip ambiguous images that do not improve retrieval.
+18. **Audio is functional, not mandatory:** prefer user-supplied original audio, then permitted native-speaker audio, then permitted high-quality TTS.
+19. **Avoid redundancy/interference:** skip near-duplicate cards and improve prompts that make similar answers confusable.
+20. **Fast reviews:** answers should be concise enough to verify recall quickly; extra explanation is secondary.
+21. **Prefer the user's material:** preserve useful source sentences/audio/context instead of replacing them with generic content without reason.
+22. **Ask instead of guessing:** if uncertainty changes meaning, target expression, transcription, register, acceptable answers, or media rights, ask the user before building.
 
 A source reused across multiple decks is valid only when each card covers a real additional skill gap. If the extra card mostly repeats the same retrieval, discard it.
 
