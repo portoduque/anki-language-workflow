@@ -272,6 +272,12 @@
         },
         "license": {
           "type": "string"
+        },
+        "license_url": {
+          "type": "string"
+        },
+        "attribution": {
+          "type": "string"
         }
       }
     },
