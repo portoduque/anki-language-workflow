@@ -158,6 +158,9 @@
               "voice": {
                 "type": "string",
                 "minLength": 1
+              },
+              "required": {
+                "type": "boolean"
               }
             }
           },
@@ -194,6 +197,9 @@
                   "minLength": 1
                 },
                 "uniqueItems": true
+              },
+              "required": {
+                "type": "boolean"
               }
             }
           },
@@ -206,6 +212,32 @@
               },
               "image": {
                 "$ref": "#/$defs/mediaValidation"
+              }
+            }
+          },
+          "media_issues": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "kind",
+                "error"
+              ],
+              "properties": {
+                "kind": {
+                  "enum": [
+                    "audio",
+                    "image"
+                  ]
+                },
+                "provider": {
+                  "type": "string"
+                },
+                "error": {
+                  "type": "string",
+                  "minLength": 1
+                }
               }
             }
           }
