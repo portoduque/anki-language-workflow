@@ -125,7 +125,7 @@ Examples:
 - `python scripts/find_ankiconnect_reference.py "api key cors permission"`
 - `python scripts/find_ankiconnect_reference.py "review history stats"`
 
-The router understands both natural-language goals and exact action names. It searches the complete local action catalog of the documented standard AnkiConnect API.
+The router understands both natural-language goals and exact action names. It searches a dated 2026 catalog of 118 documented actions (114 baseline + 4 newer/version-sensitive actions), enriched with descriptions, exact source signatures, parameters and risk metadata.
 
 ### Mandatory live-integration rules
 
@@ -138,7 +138,7 @@ The router understands both natural-language goals and exact action names. It se
 - Use API-key authentication and network restrictions when access extends beyond localhost.
 - Treat delete, scheduling, review-history, model-schema, sync, and profile-changing actions as higher risk.
 - Use human-visible GUI actions when user verification is valuable.
-- Use the AnkiConnect reference library selectively; do not load all 114 actions into context unless exhaustive API analysis is actually required.
+- Use the AnkiConnect reference library selectively; do not load the full action catalog into context unless exhaustive API analysis is actually required.
 
 ## AI portability
 
