@@ -419,3 +419,27 @@ def test_readme_documents_structured_fields_and_v3_models() -> None:
     assert "redchamber-optimize-anki-language.md" in readme
     assert "Reveal only non-target support" in readme
     assert "Keep distinct linguistic data structured" in readme
+
+
+def test_jeremiah_refinements_clarify_before_scheduling() -> None:
+    rules = (SKILL / "references" / "card-selection.md").read_text(encoding="utf-8").lower()
+    pedagogy = (SKILL / "references" / "pedagogy.md").read_text(encoding="utf-8").lower()
+    skill = (SKILL / "SKILL.md").read_text(encoding="utf-8").lower()
+    note = (SKILL / "references" / "research" / "jeremiah-seven-rules-anki.md").read_text(encoding="utf-8").lower()
+
+    assert "clarify the target before scheduling it" in rules
+    assert "first-time semantic discovery" in rules
+    assert "prior mastery is not required" in rules
+    assert "first-time semantic discovery" in pedagogy
+    assert "before promoting a candidate to a scheduled card" in skill
+    assert "universal audio-only fronts" in note
+    assert "automatic retirement after roughly six months" in note
+    assert "deleting the deck after ordinary breaks" in note
+
+
+def test_readme_documents_jeremiah_selective_refinements() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "jeremiah-seven-rules-anki.md" in readme
+    assert "Clarify before scheduling" in readme
+    assert "Pass/Fail add-on is not required" in readme
+    assert "After a long break" in readme
