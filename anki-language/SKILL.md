@@ -59,6 +59,7 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 - Adapt card selection to genuinely useful target-language-specific features (for example gender/class, irregular plural/inflection, case/agreement, classifiers, irregular verb forms, or script variants). Treat each feature as a candidate, create only independently worthwhile atomic retrievals, and never generate a full paradigm by default.
 - Use structured optional fields `reading`, `variant`, and `grammar` when those data are useful; never generate extra cards merely because an auxiliary field is populated.
 - Use `prompt` for a concise learner-facing instruction or situational/scene context when it helps define the retrieval task without leaking the answer; do not add duplicate fields merely to mirror an external template.
+- Use only documented card modes. Reading/Listening/Production use `standard`; Pronunciation & Sounds may additionally use `minimal-pair`, `sound-discrimination`, `spelling-sound`, or `audio-to-spelling`. Do not invent mode strings.
 - Keep generated templates inspectable and portable: essential card behavior must not depend on JavaScript or remote web assets.
 - Active handwriting/written recall may use a Production card when it is independently useful; do not create handwriting cards by default.
 - Full-sentence/chunk Production targets need a higher naturalness bar: prefer attested user/native material, and do not make an unverified AI-generated sentence the exact speaking target.
@@ -85,9 +86,10 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 8. If media may improve learning, read [references/media.md](references/media.md) before acquiring, generating, or attaching it.
 9. Write `card-plan.json` according to [references/output-contract.md](references/output-contract.md) and `schemas/card-plan.schema.json`. Its target/base languages must match the workspace configuration. Use `audio_request` / `image_request` only for cards where media adds real value.
 10. Select delivery: `apkg` by default; `live` only when the user wants direct AnkiConnect delivery; `both` when live insertion plus a portable APKG is useful.
-11. Run `python scripts/run_pipeline.py card-plan.json --delivery <apkg|live|both>`. This resolves media, validates it, then delivers it.
-12. Treat deterministic APKG validation as structural validation, not proof of cross-client rendering. After a meaningful template/model migration, ask for or perform a representative Anki spot-check (long text, empty optional fields, media, night mode, and the target writing system) before large-scale adoption.
-13. Deliver the resolved plan plus APKG/live report. Never claim media or rendering success when the relevant validation/spot-check did not occur.
+11. Run `python scripts/run_pipeline.py card-plan.json --delivery <apkg|live|both>`. This resolves media, validates it, then delivers it. Deterministic delivery adds workflow identity tags automatically; do not ask the model to invent them.
+12. In live mode, an existing workflow identity is idempotent only when the stored note still matches the expected content. Treat changed content/model/template/CSS as drift and stop rather than silently skipping or overwriting it.
+13. Treat deterministic APKG validation as structural validation, not proof of cross-client rendering. After a meaningful template/model migration, ask for or perform a representative Anki spot-check (long text, empty optional fields, media, night mode, and the target writing system) before large-scale adoption.
+14. Deliver the resolved plan plus APKG/live report. Never claim media or rendering success when the relevant validation/spot-check did not occur.
 
 ## Optional live maintenance / feedback audit
 
@@ -103,7 +105,7 @@ When the user explicitly asks to inspect, maintain, repair, or diagnose an exist
 6. Propose the smallest repair.
 7. Do **not** mutate existing notes/cards/scheduling until the user explicitly approves the relevant action.
 
-The audit command itself is read-only. It uses AnkiConnect review/card inspection actions and reports fields, interval/suspension metadata, review counts, rating counts, Again rate, and latest review ID. It deliberately does not define a universal leech threshold or make scheduling changes.
+The audit command itself is read-only. It uses AnkiConnect review/card inspection actions and reports fields, interval/suspension metadata, review counts, rating counts, Again rate, and latest review ID. New workflow-owned notes receive the `anki-language` system tag in both APKG and live delivery, so imported APKG cards can enter the same audit path. It deliberately does not define a universal leech threshold or make scheduling changes.
 
 ## Deck architecture
 
@@ -169,14 +171,17 @@ When delivery mode is `live` or `both`:
 
 1. verify AnkiConnect with `version` + `apiReflect`;
 2. inspect/create required decks/models;
-3. validate every local media file **before** `addNotes`;
-4. preflight notes with `canAddNotesWithErrorDetail`;
-5. create notes with local audio/image paths;
-6. re-read created notes with `notesInfo`;
-7. retrieve uploaded media with `retrieveMediaFile`;
-8. compare uploaded bytes against the prevalidated local SHA-256.
+3. for an existing workflow-owned model, verify fields **and** templates/CSS; never overwrite model drift automatically;
+4. derive the scoped workflow identity and inspect any existing matching note before deciding it is already delivered;
+5. skip an existing note only when its stored fields/media references still match the expected card; otherwise stop with a drift conflict;
+6. validate every local media file **before** `addNotes`;
+7. preflight new notes with `canAddNotesWithErrorDetail`;
+8. create notes with local audio/image paths;
+9. re-read created notes with `notesInfo`;
+10. retrieve uploaded media with `retrieveMediaFile`;
+11. compare uploaded bytes against the prevalidated local SHA-256.
 
-Success requires both the note-field reference and uploaded bytes to validate. If post-upload verification fails, report failure and the affected note IDs instead of claiming success.
+Success requires identity/content consistency plus the note-field reference and uploaded bytes to validate. If an existing note changed, or post-upload verification fails, report failure instead of silently overwriting, silently skipping, or claiming success.
 
 ### Delivery modes
 

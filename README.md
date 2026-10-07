@@ -536,13 +536,26 @@ The card plan supports three optional semantic fields for data that should not b
 
 They are rendered conditionally on the back and are delivered as separate Anki note fields through AnkiConnect. They are optional support metadata: **adding one does not generate another card**.
 
-The structured-field migration originally introduced **Anki Language v3**. The current generated templates use **Anki Language v4** so night-mode/RTL/mobile presentation improvements do not silently restyle existing v3 note types. Existing live cards remain untouched; stable workflow tags still prevent already-delivered card ids from being inserted again.
+The structured-field migration originally introduced **Anki Language v3**. The current generated templates use **Anki Language v4** so night-mode/RTL/mobile presentation improvements do not silently restyle existing v3 note types.
 
-The generated v4 templates intentionally keep essential behavior transparent: ordinary Anki field replacements + HTML/CSS, with **no JavaScript or remote web assets required for the core review experience**. A concise scene/situation can live in `prompt` when it helps define the task, so the workflow does not add duplicate fields merely to imitate an external template.
+Delivery identity is now shared across both output paths. New APKG and live notes receive the broad `anki-language` tag plus a deterministic scoped identity derived from **deck + target-language code + skill + stable card id**. This means cards imported from a generated APKG can participate in the same default read-only audit as live-delivered cards, while two unrelated decks can safely reuse a local card id.
+
+Live reruns are intentionally conflict-aware: an existing note is skipped only after its stored fields/media references match the expected card. Reusing the same stable identity for changed content is reported as drift rather than silently skipped or overwritten. Legacy card-id-only live tags are still recognized inside their expected deck and verified read-only.
+
+The generated v4 templates intentionally keep essential behavior transparent: ordinary Anki field replacements + HTML/CSS, with **no JavaScript or remote web assets required for the core review experience**. A concise scene/situation can live in `prompt` when it helps define the task, so the workflow does not add duplicate fields merely to imitate an external template. Existing v4 live models are also checked for field, template, and CSS drift before new notes are inserted; user/customized model changes are never silently overwritten.
 
 Anki itself supports one rich note generating multiple conditional card types, and Card Template Deck Override can route those generated cards into separate decks. This repository deliberately keeps the current **one note per selected planned card** architecture for now because it keeps per-card prompts/media and APKG/live delivery simpler while preserving selective card generation. See:
 - https://docs.ankiweb.net/manual/templates/generation
 - https://docs.ankiweb.net/manual/templates/intro
+
+### Deterministic card modes
+
+`mode` is validated instead of treated as an arbitrary string:
+
+- Reading, Listening, and Production: `standard`;
+- Pronunciation & Sounds: `standard`, `minimal-pair`, `sound-discrimination`, `spelling-sound`, or `audio-to-spelling`.
+
+Unknown modes and cross-skill combinations fail validation. Sound-dependent pronunciation modes require resolved audio before delivery, including `spelling-sound`.
 
 ## End-to-end workflow
 
@@ -555,11 +568,12 @@ Anki itself supports one rich note generating multiple conditional card types, a
 7. AI creates `card-plan.json`; missing worthwhile media is expressed with `audio_request` / `image_request`.
 8. Media Enricher preserves existing media or generates/fetches missing media.
 9. **Every actual audio/image is functionally decoded and hashed before it can continue.**
-10. The resolved plan is delivered as `apkg`, `live`, or `both`.
-11. APKG mode validates ZIP/media manifest/internal Anki database.
-12. Live mode preflights notes, inserts them through AnkiConnect, then retrieves uploaded media and verifies SHA-256 + note-field references.
-13. Deterministic validation is structural, not a substitute for final client rendering. After a meaningful template/model migration, spot-check representative cards in Anki (long text, empty optional fields, media, night mode, and the target script) before large-scale adoption.
-14. AI returns the resolved plan and delivery reports; failed validation is never reported as success.
+10. The resolved plan is delivered as `apkg`, `live`, or `both`; deterministic workflow identity tags are injected automatically.
+11. APKG mode validates ZIP/media manifest/internal Anki database, note/card counts, expected decks, and workflow identity tags.
+12. Live mode validates the current workflow-owned model fields/templates/CSS, verifies an existing matching note before treating the run as idempotent, preflights new notes, inserts them through AnkiConnect, then retrieves uploaded media and verifies SHA-256 + note-field references.
+13. A stable identity with changed stored content is a drift conflict, not a successful skip; the workflow never silently overwrites the existing note/model.
+14. Deterministic validation is structural, not a substitute for final client rendering. After a meaningful template/model migration, spot-check representative cards in Anki (long text, empty optional fields, media, night mode, and the target script) before large-scale adoption.
+15. AI returns the resolved plan and delivery reports; failed validation is never reported as success.
 
 ## Deterministic build
 
@@ -571,7 +585,7 @@ If media is already resolved and validated, direct APKG build remains available:
 
 `python scripts/build.py /path/to/card-plan.resolved.json --output /path/to/Language.apkg`
 
-The workflow checks JSON Schema, semantic rules, actual media decoding/hashes, media collisions, APKG ZIP/media manifest, embedded Anki SQLite database, note/card counts, and expected subdecks. Live delivery additionally validates the media after AnkiConnect upload.
+The workflow checks JSON Schema, skill/mode compatibility, actual media decoding/hashes, media collisions, APKG ZIP/media manifest, embedded Anki SQLite database, note/card counts, expected subdecks, and workflow identity tags. Live delivery additionally checks note-model template/CSS integrity, existing-note content consistency, and media after AnkiConnect upload.
 
 ## Repository architecture
 

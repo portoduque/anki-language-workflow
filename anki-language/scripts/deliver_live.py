@@ -10,15 +10,25 @@ from pathlib import Path
 from typing import Any
 
 from ankiconnect_client import AnkiConnectClient, AnkiConnectError
-from build_apkg import AUDIO_FRONT_MODES, CSS, FIELDS, SKILL_META, card_context, clean, make_model, normalize_tags
+from build_apkg import CSS, FIELDS, card_context, clean, make_model, normalize_tags
+from card_contract import (
+    AUDIO_FRONT_MODES,
+    SKILL_META,
+    full_deck_name,
+    legacy_workflow_tag,
+    normalize_mode,
+    workflow_system_tags,
+    workflow_tag,
+)
 from media_validate import MediaValidationError, sha256_file, validate_media_file
 from validate_plan import load_plan, validate_plan
 
 
 REQUIRED_ACTIONS = {
     "version", "apiReflect", "deckNames", "createDeck", "modelNames",
-    "modelFieldNames", "createModel", "findNotes", "canAddNotesWithErrorDetail",
-    "addNotes", "notesInfo", "retrieveMediaFile",
+    "modelFieldNames", "modelTemplates", "modelStyling", "createModel",
+    "findNotes", "canAddNotesWithErrorDetail", "addNotes", "notesInfo",
+    "retrieveMediaFile",
 }
 
 
@@ -27,11 +37,6 @@ def media_path(plan_dir: Path, raw: str | None) -> Path | None:
         return None
     path = Path(raw)
     return path.resolve() if path.is_absolute() else (plan_dir / path).resolve()
-
-
-def workflow_tag(card_id: str) -> str:
-    digest = hashlib.sha256(card_id.encode("utf-8")).hexdigest()[:20]
-    return f"anki_language_id_{digest}"
 
 
 def model_payload(skill: str) -> dict[str, Any]:
@@ -50,6 +55,34 @@ def model_payload(skill: str) -> dict[str, Any]:
     }
 
 
+def normalize_markup(value: Any) -> str:
+    return str(value or "").replace("\r\n", "\n").strip()
+
+
+def normalize_template_map(raw: Any) -> dict[str, dict[str, str]]:
+    if not isinstance(raw, dict):
+        return {}
+    result: dict[str, dict[str, str]] = {}
+    for name, template in raw.items():
+        if not isinstance(template, dict):
+            continue
+        result[str(name)] = {
+            "Front": normalize_markup(template.get("Front", template.get("qfmt", ""))),
+            "Back": normalize_markup(template.get("Back", template.get("afmt", ""))),
+        }
+    return result
+
+
+def expected_template_map(skill: str) -> dict[str, dict[str, str]]:
+    template = make_model(skill).templates[0]
+    return {
+        str(template["name"]): {
+            "Front": normalize_markup(template["qfmt"]),
+            "Back": normalize_markup(template["afmt"]),
+        }
+    }
+
+
 def ensure_models(client: AnkiConnectClient, skills: set[str]) -> None:
     existing = set(client.invoke("modelNames") or [])
     expected_fields = [field["name"] for field in FIELDS]
@@ -58,11 +91,34 @@ def ensure_models(client: AnkiConnectClient, skills: set[str]) -> None:
         if model.name not in existing:
             client.invoke("createModel", model_payload(skill))
             existing.add(model.name)
+
         actual_fields = client.invoke("modelFieldNames", {"modelName": model.name})
         if list(actual_fields or []) != expected_fields:
             raise AnkiConnectError(
                 f"Existing model '{model.name}' has incompatible fields. "
                 f"Expected {expected_fields}, got {actual_fields}."
+            )
+
+        actual_templates = normalize_template_map(
+            client.invoke("modelTemplates", {"modelName": model.name})
+        )
+        expected_templates = expected_template_map(skill)
+        if actual_templates != expected_templates:
+            raise AnkiConnectError(
+                f"Existing model '{model.name}' has template drift. "
+                "The workflow will not overwrite user/customized templates automatically."
+            )
+
+        styling = client.invoke("modelStyling", {"modelName": model.name})
+        actual_css = (
+            styling.get("css", styling.get("CSS", ""))
+            if isinstance(styling, dict)
+            else styling
+        )
+        if normalize_markup(actual_css) != normalize_markup(CSS):
+            raise AnkiConnectError(
+                f"Existing model '{model.name}' has CSS drift. "
+                "The workflow will not overwrite user/customized styling automatically."
             )
 
 
@@ -103,20 +159,27 @@ def note_fields(plan: dict[str, Any], card: dict[str, Any]) -> dict[str, str]:
 def build_note(plan: dict[str, Any], card: dict[str, Any], plan_dir: Path) -> tuple[dict[str, Any], dict[str, Path]]:
     skill = card["skill"]
     model = make_model(skill)
-    subdeck = SKILL_META[skill][0]
     fields = note_fields(plan, card)
     note: dict[str, Any] = {
-        "deckName": f"{plan['deck_name']}::{subdeck}",
+        "deckName": full_deck_name(str(plan["deck_name"]), skill),
         "modelName": model.name,
         "fields": fields,
         "options": {"allowDuplicate": True},
-        "tags": normalize_tags([*(card.get("tags") or []), "anki-language", workflow_tag(str(card["id"]))]),
+        "tags": normalize_tags([
+            *(card.get("tags") or []),
+            *workflow_system_tags(
+                str(plan["deck_name"]),
+                str(plan["target_language"]["code"]),
+                skill,
+                str(card["id"]),
+            ),
+        ]),
     }
 
     media: dict[str, Path] = {}
     audio = media_path(plan_dir, card.get("audio"))
     image = media_path(plan_dir, card.get("image"))
-    mode = str(card.get("mode", "standard")).strip().lower()
+    mode = normalize_mode(card)
     audio_on_front = skill == "listening" or (skill == "pronunciation" and mode in AUDIO_FRONT_MODES)
 
     if audio is not None:
@@ -137,6 +200,109 @@ def field_value(note_info: dict[str, Any], field: str) -> str:
     if isinstance(raw, dict):
         return str(raw.get("value", ""))
     return str(raw)
+
+
+def expected_persisted_fields(note: dict[str, Any]) -> dict[str, str]:
+    fields = dict(note["fields"])
+    for item in note.get("audio", []):
+        filename = str(item["filename"])
+        for field in item.get("fields", []):
+            fields[str(field)] = fields.get(str(field), "") + f"[sound:{filename}]"
+    for item in note.get("picture", []):
+        filename = str(item["filename"])
+        for field in item.get("fields", []):
+            fields[str(field)] = fields.get(str(field), "") + f'<img src="{filename}">'
+    return fields
+
+
+def quote_anki_search(value: str) -> str:
+    escaped = value.replace("\\", "\\\\").replace('"', '\\"')
+    return f'"{escaped}"'
+
+
+def note_content_mismatches(
+    note_info: dict[str, Any],
+    expected_note: dict[str, Any],
+    *,
+    allow_legacy_model: bool,
+) -> list[str]:
+    mismatches: list[str] = []
+    actual_model = str(note_info.get("modelName") or "")
+    expected_model = str(expected_note["modelName"])
+    if allow_legacy_model:
+        if actual_model and not actual_model.startswith("Anki Language v"):
+            mismatches.append(f"modelName={actual_model!r}")
+    elif actual_model != expected_model:
+        mismatches.append(f"modelName={actual_model!r} expected={expected_model!r}")
+
+    for field, expected in expected_persisted_fields(expected_note).items():
+        actual = field_value(note_info, field)
+        if actual != expected:
+            mismatches.append(f"{field}: actual={actual!r} expected={expected!r}")
+    return mismatches
+
+
+def find_existing_card(
+    client: AnkiConnectClient,
+    plan: dict[str, Any],
+    card: dict[str, Any],
+    expected_note: dict[str, Any],
+) -> tuple[int, str] | None:
+    scoped_tag = workflow_tag(
+        str(plan["deck_name"]),
+        str(plan["target_language"]["code"]),
+        str(card["skill"]),
+        str(card["id"]),
+    )
+    existing = client.invoke("findNotes", {"query": f"tag:{scoped_tag}"}) or []
+    identity_kind = "scoped"
+
+    if not existing:
+        legacy_tag = legacy_workflow_tag(str(card["id"]))
+        deck = full_deck_name(str(plan["deck_name"]), str(card["skill"]))
+        query = f"tag:{legacy_tag} deck:{quote_anki_search(deck)}"
+        existing = client.invoke("findNotes", {"query": query}) or []
+        identity_kind = "legacy"
+
+    if not existing:
+        return None
+    if len(existing) != 1:
+        raise AnkiConnectError(
+            f"Card {card['id']!r} matched {len(existing)} existing notes via "
+            f"{identity_kind} workflow identity; refusing ambiguous live delivery."
+        )
+
+    note_id = int(existing[0])
+    infos = client.invoke("notesInfo", {"notes": [note_id]}) or []
+    if len(infos) != 1:
+        raise AnkiConnectError(
+            f"Existing note {note_id} for card {card['id']!r} could not be inspected reliably."
+        )
+
+    mismatches = note_content_mismatches(
+        infos[0],
+        expected_note,
+        allow_legacy_model=identity_kind == "legacy",
+    )
+    if identity_kind == "scoped":
+        actual_tags = {str(tag) for tag in (infos[0].get("tags") or [])}
+        required_tags = set(workflow_system_tags(
+            str(plan["deck_name"]),
+            str(plan["target_language"]["code"]),
+            str(card["skill"]),
+            str(card["id"]),
+        ))
+        missing_tags = sorted(required_tags - actual_tags)
+        if missing_tags:
+            mismatches.append(f"missing system tags={missing_tags!r}")
+
+    if mismatches:
+        raise AnkiConnectError(
+            f"Existing workflow note drift for card {card['id']!r}: "
+            + "; ".join(mismatches[:6])
+            + ". The workflow will not silently overwrite or skip changed content."
+        )
+    return note_id, identity_kind
 
 
 def verify_uploaded_media(client: AnkiConnectClient, path: Path) -> dict[str, Any]:
@@ -176,14 +342,17 @@ def deliver_live(
     pending_cards: list[dict[str, Any]] = []
     pending_media: list[dict[str, Path]] = []
     skipped_existing: list[str] = []
+    legacy_existing_verified: list[str] = []
 
     for card in plan["cards"]:
-        tag = workflow_tag(str(card["id"]))
-        existing = client.invoke("findNotes", {"query": f"tag:{tag}"}) or []
-        if existing:
-            skipped_existing.append(str(card["id"]))
-            continue
         note, media = build_note(plan, card, plan_dir)
+        existing = find_existing_card(client, plan, card, note)
+        if existing is not None:
+            _, identity_kind = existing
+            skipped_existing.append(str(card["id"]))
+            if identity_kind == "legacy":
+                legacy_existing_verified.append(str(card["id"]))
+            continue
         pending_notes.append(note)
         pending_cards.append(card)
         pending_media.append(media)
@@ -194,6 +363,7 @@ def deliver_live(
             "mode": "live",
             "created": 0,
             "skipped_existing": skipped_existing,
+            "legacy_existing_verified": legacy_existing_verified,
             "capabilities": capabilities,
             "media_verified": [],
         }
@@ -233,6 +403,7 @@ def deliver_live(
         "created": len(note_ids),
         "note_ids": note_ids,
         "skipped_existing": skipped_existing,
+        "legacy_existing_verified": legacy_existing_verified,
         "capabilities": capabilities,
         "media_verified": sorted(media_verified.values(), key=lambda item: item["filename"]),
     }

@@ -15,6 +15,7 @@ from typing import Any
 
 from PIL import Image
 
+from card_contract import AUDIO_REQUIRED_PRONUNCIATION_MODES, normalize_mode
 from media_validate import MediaValidationError, validate_media_file
 
 USER_AGENT = "anki-language-workflow/1.0 (https://github.com/portoduque/anki-language-workflow)"
@@ -247,9 +248,9 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
         elif card.get("audio_request"):
             request = card["audio_request"]
             provider = request.get("provider", "auto")
-            mode = str(card.get("mode", "standard")).strip().lower()
+            mode = normalize_mode(card)
             audio_required = bool(request.get("required")) or card.get("skill") == "listening" or (
-                card.get("skill") == "pronunciation" and mode in {"minimal-pair", "sound-discrimination", "audio-to-spelling"}
+                card.get("skill") == "pronunciation" and mode in AUDIO_REQUIRED_PRONUNCIATION_MODES
             )
             try:
                 if provider not in {"auto", "piper"}:

@@ -35,7 +35,7 @@ Each card includes:
 
 Optional fields:
 
-- `mode`: subtype such as `standard`, `minimal-pair`, `sound-discrimination`, `spelling-sound`, or `audio-to-spelling`;
+- `mode`: deterministic retrieval subtype. Valid values are `standard`, `minimal-pair`, `sound-discrimination`, `spelling-sound`, and `audio-to-spelling`;
 - `base_text`;
 - `prompt`: learner-facing instruction or a concise situational/scene cue that defines the retrieval task without revealing the target;
 - `focus`;
@@ -57,6 +57,29 @@ Optional fields:
 
 These structured fields are **metadata/support**, not card-generation quotas. Populate them only when they help the selected retrieval target. An empty field creates no extra card by itself in this workflow.
 
+### Mode contract
+
+`mode` is not an open-ended label. The deterministic pipeline validates it against the selected skill:
+
+- Reading, Listening, and Production currently support only `standard`;
+- Pronunciation & Sounds supports `standard`, `minimal-pair`, `sound-discrimination`, `spelling-sound`, and `audio-to-spelling`;
+- Pronunciation subtypes that depend on sound require resolved audio before delivery. This includes `spelling-sound`, even though its audio is normally feedback rather than the front-side cue.
+
+Unknown modes and cross-skill mode combinations are rejected instead of silently falling back to standard behavior.
+
+### Workflow identity
+
+Delivery injects system tags deterministically; the AI/card plan does not need to author them:
+
+- `anki-language` marks workflow-owned notes so read-only audits can find them regardless of whether they arrived through APKG or live delivery;
+- a scoped identity tag is derived from deck name + target-language code + skill + stable card `id`.
+
+The scoped identity prevents an unrelated card with the same local `id` in another deck/language workspace from being mistaken for an already-delivered note.
+
+Live reruns are conflict-aware. An existing workflow note is skipped only after its expected fields/media references are verified. If the same stable identity now describes different content, delivery stops and reports drift instead of silently skipping or overwriting the note.
+
+Legacy live notes created with the older card-id-only identity tag remain detectable in their expected deck. They are verified read-only and are not silently migrated.
+
 The generated card templates must remain inspectable and portable: **essential card behavior may not depend on JavaScript or remote web assets**. Use ordinary Anki field replacements, HTML, CSS, and local packaged media for the core review experience.
 
 Do not invent source precision. A precise locator is kept only when the supplied/source material actually supports it.
@@ -75,7 +98,7 @@ Example:
 }
 ```
 
-`provider` currently supports `auto` and `piper`. A specific `voice` is optional. Set `required: true` when failure must block delivery; Listening and sound-discrimination audio is treated as required even when the flag is omitted.
+`provider` currently supports `auto` and `piper`. A specific `voice` is optional. Set `required: true` when failure must block delivery. Listening audio is always required, and sound-dependent Pronunciation modes (`minimal-pair`, `sound-discrimination`, `spelling-sound`, `audio-to-spelling`) also treat audio as required even when the flag is omitted.
 
 ## Automatic image request
 
@@ -96,7 +119,7 @@ Example:
 
 ## Resolved-plan rule
 
-A Listening/sound-discrimination card may contain an unresolved `audio_request` during planning, but **final build/live delivery requires an actual validated `audio` file**.
+A Listening card or sound-dependent Pronunciation card may contain an unresolved `audio_request` during planning, but **final build/live delivery requires an actual validated `audio` file**.
 
 Automatic requests are resolved with:
 
@@ -122,8 +145,8 @@ Stages:
 2. functionally validate every local audio/image;
 3. write resolved card plan with provenance + SHA-256;
 4. deliver as APKG and/or via AnkiConnect;
-5. APKG: validate package/database/media manifest;
-6. live: verify uploaded media bytes and note-field references.
+5. APKG: validate package/database/media manifest, expected decks/counts, and workflow identity tags;
+6. live: inspect the workflow-owned model fields/templates/CSS, verify any existing-note identity/content match, then verify uploaded media bytes and note-field references.
 
 ## Direct APKG build
 

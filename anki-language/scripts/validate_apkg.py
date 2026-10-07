@@ -8,12 +8,7 @@ import tempfile
 import zipfile
 from pathlib import Path
 
-SKILL_META = {
-    "reading": "01 Reading",
-    "listening": "02 Listening",
-    "production": "03 Production",
-    "pronunciation": "04 Pronunciation & Sounds",
-}
+from card_contract import SKILL_META, WORKFLOW_TAG, workflow_tag
 
 
 def inspect_collection(archive: zipfile.ZipFile, collection_name: str) -> tuple[list[str], dict]:
@@ -25,6 +20,13 @@ def inspect_collection(archive: zipfile.ZipFile, collection_name: str) -> tuple[
             connection = sqlite3.connect(extracted)
             note_count = int(connection.execute("SELECT COUNT(*) FROM notes").fetchone()[0])
             card_count = int(connection.execute("SELECT COUNT(*) FROM cards").fetchone()[0])
+            tag_rows = connection.execute("SELECT tags FROM notes").fetchall()
+            all_tags = sorted({
+                tag
+                for row in tag_rows
+                for tag in str(row[0] or "").split()
+                if tag
+            })
             row = connection.execute("SELECT decks FROM col LIMIT 1").fetchone()
             decks = json.loads(row[0] if row else "{}")
             deck_names = sorted(
@@ -38,7 +40,12 @@ def inspect_collection(archive: zipfile.ZipFile, collection_name: str) -> tuple[
         finally:
             if connection is not None:
                 connection.close()
-    return errors, {"note_count": note_count, "card_count": card_count, "deck_names": deck_names}
+    return errors, {
+        "note_count": note_count,
+        "card_count": card_count,
+        "deck_names": deck_names,
+        "all_tags": all_tags,
+    }
 
 
 def validate_apkg(
@@ -46,6 +53,7 @@ def validate_apkg(
     expected_media: set[str] | None = None,
     expected_card_count: int | None = None,
     expected_decks: set[str] | None = None,
+    expected_tags: set[str] | None = None,
 ) -> tuple[list[str], dict]:
     errors: list[str] = []
     summary: dict = {"path": str(path.resolve())}
@@ -108,6 +116,12 @@ def validate_apkg(
             if missing_decks:
                 errors.append(f"Expected decks missing from APKG: {missing_decks}")
 
+        if expected_tags is not None and collection_summary:
+            actual_tags = set(collection_summary.get("all_tags", []))
+            missing_tags = sorted(expected_tags - actual_tags)
+            if missing_tags:
+                errors.append(f"Expected workflow tags missing from APKG: {missing_tags}")
+
         summary.update({
             "collection_files": collection_files,
             "media_total": len(media_names),
@@ -118,21 +132,25 @@ def validate_apkg(
     return errors, summary
 
 
-def expectations_from_plan(plan_path: Path) -> tuple[set[str], int, set[str]]:
+def expectations_from_plan(plan_path: Path) -> tuple[set[str], int, set[str], set[str]]:
     data = json.loads(plan_path.read_text(encoding="utf-8"))
     expected_media: set[str] = set()
     expected_decks: set[str] = set()
+    expected_tags: set[str] = {WORKFLOW_TAG}
     deck_name = str(data.get("deck_name", "")).strip()
+    target_code = str((data.get("target_language") or {}).get("code", "")).strip()
     cards = data.get("cards", [])
     for card in cards:
         for key in ("audio", "image"):
             raw = card.get(key)
             if raw:
                 expected_media.add(Path(raw).name)
-        subdeck = SKILL_META.get(card.get("skill"))
-        if deck_name and subdeck:
-            expected_decks.add(f"{deck_name}::{subdeck}")
-    return expected_media, len(cards), expected_decks
+        skill_meta = SKILL_META.get(card.get("skill"))
+        if deck_name and skill_meta:
+            expected_decks.add(f"{deck_name}::{skill_meta[0]}")
+        if deck_name and target_code and card.get("id") is not None:
+            expected_tags.add(workflow_tag(deck_name, target_code, str(card["skill"]), str(card["id"])))
+    return expected_media, len(cards), expected_decks, expected_tags
 
 
 def main() -> int:
@@ -142,14 +160,15 @@ def main() -> int:
     args = parser.parse_args()
     try:
         if args.plan:
-            expected_media, expected_count, expected_decks = expectations_from_plan(args.plan)
+            expected_media, expected_count, expected_decks, expected_tags = expectations_from_plan(args.plan)
         else:
-            expected_media = expected_count = expected_decks = None
+            expected_media = expected_count = expected_decks = expected_tags = None
         errors, summary = validate_apkg(
             args.apkg,
             expected_media=expected_media,
             expected_card_count=expected_count,
             expected_decks=expected_decks,
+            expected_tags=expected_tags,
         )
     except (OSError, json.JSONDecodeError) as exc:
         print(f"ERROR: {exc}")

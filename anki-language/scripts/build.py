@@ -49,12 +49,13 @@ def main() -> int:
 
         output = args.output or default_output(plan, args.plan)
         report = build(args.plan, output)
-        expected_media, expected_count, expected_decks = expectations_from_plan(args.plan)
+        expected_media, expected_count, expected_decks, expected_tags = expectations_from_plan(args.plan)
         package_errors, package_summary = validate_apkg(
             output,
             expected_media=expected_media,
             expected_card_count=expected_count,
             expected_decks=expected_decks,
+            expected_tags=expected_tags,
         )
         if package_errors:
             print("APKG validation failed:")

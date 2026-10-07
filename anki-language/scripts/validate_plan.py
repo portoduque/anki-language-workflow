@@ -8,9 +8,9 @@ from typing import Any
 
 from jsonschema import Draft202012Validator
 
+from card_contract import AUDIO_REQUIRED_PRONUNCIATION_MODES, SUPPORTED_MODES_BY_SKILL, normalize_mode
 from media_validate import MediaValidationError, validate_media_file
 
-AUDIO_FRONT_MODES = {"minimal-pair", "sound-discrimination", "audio-to-spelling"}
 CONFIG_FILENAME = "anki-language.config.json"
 
 
@@ -100,7 +100,13 @@ def validate_plan(
             seen_ids.add(card_id)
 
         skill = card["skill"]
-        mode = str(card.get("mode", "standard")).strip().lower()
+        mode = normalize_mode(card)
+        allowed_modes = SUPPORTED_MODES_BY_SKILL[skill]
+        if mode not in allowed_modes:
+            errors.append(
+                f"{prefix}.mode '{mode}' is not supported for skill '{skill}'. "
+                f"Allowed: {sorted(allowed_modes)}"
+            )
         if skill == "production" and not str(card.get("prompt", "")).strip():
             errors.append(f"{prefix}.prompt is required for production cards.")
         if skill == "listening" and not str(card.get("audio", "")).strip():
@@ -108,7 +114,7 @@ def validate_plan(
                 errors.append(f"{prefix}.audio is required for listening cards after media enrichment.")
         if skill == "pronunciation" and not str(card.get("prompt", "")).strip():
             errors.append(f"{prefix}.prompt is required for pronunciation cards so the builder never invents a base-language instruction.")
-        if skill == "pronunciation" and mode in AUDIO_FRONT_MODES and not str(card.get("audio", "")).strip():
+        if skill == "pronunciation" and mode in AUDIO_REQUIRED_PRONUNCIATION_MODES and not str(card.get("audio", "")).strip():
             if check_media or not card.get("audio_request"):
                 errors.append(f"{prefix}.audio is required for pronunciation mode '{mode}' after media enrichment.")
 
