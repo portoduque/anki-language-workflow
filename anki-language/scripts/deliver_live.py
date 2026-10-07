@@ -284,6 +284,18 @@ def find_existing_card(
         expected_note,
         allow_legacy_model=identity_kind == "legacy",
     )
+    if identity_kind == "scoped":
+        actual_tags = {str(tag) for tag in (infos[0].get("tags") or [])}
+        required_tags = set(workflow_system_tags(
+            str(plan["deck_name"]),
+            str(plan["target_language"]["code"]),
+            str(card["skill"]),
+            str(card["id"]),
+        ))
+        missing_tags = sorted(required_tags - actual_tags)
+        if missing_tags:
+            mismatches.append(f"missing system tags={missing_tags!r}")
+
     if mismatches:
         raise AnkiConnectError(
             f"Existing workflow note drift for card {card['id']!r}: "
