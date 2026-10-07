@@ -1,31 +1,38 @@
 # 07 — Media Actions
 
-Media actions write/read/list/delete files in the active profile's `collection.media` directory.
+Media actions manipulate files in the active profile's `collection.media` folder.
 
-`storeMediaFile` supports base64 and current implementations also support path/URL inputs.
+## `storeMediaFile`
 
-Capture the returned filename and use exact basenames in card fields.
+The recent 2026 source signature is:
 
-## Supported actions
+`storeMediaFile(self, filename, data=None, path=None, url=None, skipHash=None, deleteExisting=True)`
 
-| Action | Status | Main documented params | Purpose |
+Supported source forms include:
+- base64 `data`;
+- local/absolute `path`;
+- remote `url`.
+
+If several are supplied, upstream documentation states the preference order is data → path → URL. For clarity, supply only one source.
+
+Capture the filename returned by AnkiConnect and reference that exact basename.
+
+Use underscore-prefixed filenames only for special/template/config media that should survive unused-media cleanup; ordinary card media should normally not be underscored.
+
+## Note-embedded media
+
+`addNote` / `addNotes` can also accept `audio`, `video`, and `picture` entries with filename, source, destination fields, and optional hash controls.
+
+Media rights/provenance rules from this project still apply.
+
+## Complete current catalog
+
+| Action | Exact source signature | Risk | Purpose |
 | --- | --- | --- | --- |
-| `storeMediaFile` | baseline | `filename`, `data` | Stores a file with the specified base64-encoded contents inside the media folder. Alternatively you can specify a |
-| `retrieveMediaFile` | baseline | `filename` | Retrieves the base64-encoded contents of the specified file, returning `false` if the file does not exist. |
-| `getMediaFilesNames` | baseline | `pattern` | Gets the names of media files matched the pattern. Returning all names by default. |
-| `getMediaDirPath` | baseline | — | Gets the full path to the `collection.media` folder of the currently opened profile. |
-| `deleteMediaFile` | baseline | `filename` | Deletes the specified file inside the media folder. |
+| `storeMediaFile` | `self, filename, data=None, path=None, url=None, skipHash=None, deleteExisting=True` | `write` | Stores a file with the specified base64-encoded contents inside the media folder. |
+| `retrieveMediaFile` | `self, filename` | `read` | Retrieves the base64-encoded contents of the specified file, returning `false` if the file does not exist. |
+| `getMediaFilesNames` | `self, pattern='*'` | `read` | Gets the names of media files matched the pattern. |
+| `getMediaDirPath` | `self` | `read` | Gets the full path to the `collection.media` folder of the currently opened profile. |
+| `deleteMediaFile` | `self, filename` | `destructive` | Deletes the specified file inside the media folder. |
 
-## Status policy
-
-- **baseline**: present in the baseline public standard documentation snapshot.
-- **extended / verify via `apiReflect`**: present in a newer upstream-tracking mirror but absent from the baseline mirror; verify the user's installed AnkiConnect before invoking.
-
-## Runtime verification
-
-Before using a version-sensitive or uncertain action, call `apiReflect` against the user's installed AnkiConnect.
-
-## Sources
-
-- https://github.com/ankiultimate/anki-connect
-- https://github.com/JSchoreels/anki-connect
+`deleteMediaFile` is destructive; confirm references before deleting.
