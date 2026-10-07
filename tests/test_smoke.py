@@ -276,3 +276,22 @@ def test_spelling_sound_requires_audio_after_enrichment(tmp_path: Path) -> None:
     result = run(str(SKILL / "scripts" / "validate_plan.py"), str(path))
     assert result.returncode == 1
     assert "audio is required for pronunciation mode 'spelling-sound'" in result.stdout
+
+
+def test_plan_rejects_whitespace_only_required_identifiers(tmp_path: Path) -> None:
+    plan = {
+        "version": "2.0",
+        "target_language": {"name": "French", "code": "fr"},
+        "base_language": {"name": "English", "code": "en"},
+        "deck_name": "   ",
+        "cards": [{
+            "id": "   ",
+            "skill": "reading",
+            "target_text": "   ",
+        }],
+    }
+    path = tmp_path / "whitespace.json"
+    path.write_text(json.dumps(plan), encoding="utf-8")
+    result = run(str(SKILL / "scripts" / "validate_plan.py"), str(path))
+    assert result.returncode == 1
+    assert "does not match" in result.stdout
