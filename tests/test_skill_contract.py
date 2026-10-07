@@ -340,3 +340,35 @@ def test_readme_documents_justin_sung_transfer_refinements() -> None:
     assert "Atomic can be relational" in readme
     assert "Avoid cue overfitting" in readme
     assert "Graduate redundant scaffolds carefully" in readme
+
+
+def test_corinna_vocabulary_refinements_are_explicit_and_selective() -> None:
+    rules = (SKILL / "references" / "card-selection.md").read_text(encoding="utf-8").lower()
+    pedagogy = (SKILL / "references" / "pedagogy.md").read_text(encoding="utf-8").lower()
+    skill = (SKILL / "SKILL.md").read_text(encoding="utf-8").lower()
+
+    assert "preserve comprehension flow before extraction" in rules
+    assert "meaning-first pass" in rules
+    assert "stable mnemonics for grammatical attributes" in rules
+    assert "do not hard-code one universal mapping" in rules
+    assert "meaning-first pass" in skill
+    assert "gender/noun class" in skill
+    assert "stable concrete mnemonic code" in pedagogy
+
+
+def test_corinna_vocabulary_research_note_records_adoptions_and_rejections() -> None:
+    note = (SKILL / "references" / "research" / "corinna-anki-wrong-vocabulary.md").read_text(encoding="utf-8").lower()
+    assert "complete spoken transcript was reviewed" in note
+    assert "meaning-first pass before intensive extraction" in note
+    assert "stable concrete mnemonic coding for grammatical gender/noun class" in note
+    assert "translation ban" in note
+    assert "automatic forward + reverse cards" in note
+    assert "google images for every vocabulary item" in note
+    assert "no schema, builder, deck architecture, media provider, installer, or ankiconnect implementation change" in note
+
+
+def test_readme_documents_corinna_vocabulary_refinements() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "corinna-anki-wrong-vocabulary.md" in readme
+    assert "Preserve comprehension flow" in readme
+    assert "Grammar-attribute mnemonics are secondary" in readme
