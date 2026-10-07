@@ -1,52 +1,51 @@
 # 06 — Model / Note-Type / Field / Template Actions
 
-AnkiConnect uses the term **model** for an Anki note type.
+AnkiConnect calls Anki note types **models**.
 
-These actions inspect or mutate fields, card templates, and CSS.
+These actions inspect and mutate fields, templates, and CSS.
 
-## Recommended policy
+Prefer a namespaced workflow-owned model rather than rewriting a user's model; field/template removals are destructive.
 
-- inspect `modelNames`, fields, templates, and styling before writing;
-- prefer a workflow-owned namespaced model instead of rewriting arbitrary user models;
-- treat field/template removal as destructive;
-- preserve user customizations unless the user explicitly wants them replaced.
+## Supported actions
 
-## Common workflows
+| Action | Status | Main documented params | Purpose |
+| --- | --- | --- | --- |
+| `modelNames` | baseline | — | Gets the complete list of model names for the current user. |
+| `modelNamesAndIds` | baseline | — | Gets the complete list of model names and their corresponding IDs for the current user. |
+| `findModelsById` | baseline | `modelIds` | Gets a list of models  for the provided model IDs from the current user. |
+| `findModelsByName` | baseline | `modelNames` | Gets a list of models for the provided model names from the current user. |
+| `modelFieldNames` | baseline | `modelName` | Gets the complete list of field names for the provided model name. |
+| `modelFieldDescriptions` | baseline | `modelName` | Gets the complete list of field descriptions (the text seen in the gui editor when a field is empty) for the provided model name. |
+| `modelFieldFonts` | baseline | `modelName` | Gets the complete list of fonts along with their font sizes. |
+| `modelFieldsOnTemplates` | baseline | `modelName` | Returns an object indicating the fields on the question and answer side of each card template for the given model |
+| `createModel` | baseline | `modelName`, `inOrderFields`, `css`, `isCloze`, `cardTemplates` | Creates a new model to be used in Anki. User must provide the `modelName`, `inOrderFields` and `cardTemplates` to be |
+| `modelTemplates` | baseline | `modelName` | Returns an object indicating the template content for each card connected to the provided model by name. |
+| `modelStyling` | baseline | `modelName` | Gets the CSS styling for the provided model by name. |
+| `updateModelTemplates` | baseline | `model` | Modify the templates of an existing model by name. Only specifies cards and specified sides will be modified. |
+| `updateModelStyling` | baseline | `model` | Modify the CSS styling of an existing model by name. |
+| `findAndReplaceInModels` | baseline | `model` | Find and replace string in existing model by model name. Customise to replace in front, back or css by setting to true/false. |
+| `modelTemplateRename` | baseline | `modelName`, `oldTemplateName`, `newTemplateName` | Renames a template in an existing model. |
+| `modelTemplateReposition` | baseline | `modelName`, `templateName`, `index` | Repositions a template in an existing model. |
+| `modelTemplateAdd` | baseline | `modelName`, `template` | Adds a template to an existing model by name. If you want to update an existing template, use `updateModelTemplates`. |
+| `modelTemplateRemove` | baseline | `modelName`, `templateName` | Removes a template from an existing model. |
+| `modelFieldRename` | baseline | `modelName`, `oldFieldName`, `newFieldName` | Rename the field name of a given model. |
+| `modelFieldReposition` | baseline | `modelName`, `fieldName`, `index` | Reposition the field within the field list of a given model. |
+| `modelFieldAdd` | baseline | `modelName`, `fieldName`, `index` | Creates a new field within a given model. |
+| `modelFieldRemove` | baseline | `modelName`, `fieldName` | Deletes a field within a given model. |
+| `modelFieldSetFont` | baseline | `modelName`, `fieldName`, `font` | Sets the font for a field within a given model. |
+| `modelFieldSetFontSize` | baseline | `modelName`, `fieldName`, `fontSize` | Sets the font size for a field within a given model. |
+| `modelFieldSetDescription` | baseline | `modelName`, `fieldName`, `description` | Sets the description (the text seen in the gui editor when a field is empty) for a field within a given model. |
 
-- `modelFieldNames` → discover valid fields.
-- `modelTemplates` / `modelStyling` → inspect current card design.
-- `createModel` → create a new note type with fields/templates/CSS.
-- `updateModelTemplates` / `updateModelStyling` → controlled updates.
-- field/template add/rename/reposition/remove → schema maintenance.
+## Status policy
 
-## Current catalog
+- **baseline**: present in the baseline public standard documentation snapshot.
+- **extended / verify via `apiReflect`**: present in a newer upstream-tracking mirror but absent from the baseline mirror; verify the user's installed AnkiConnect before invoking.
 
-| Action | Source signature | Risk |
-| --- | --- | --- |
-| `modelNames` | `self` | `read` |
-| `modelNamesAndIds` | `self` | `read` |
-| `findModelsById` | `self, modelIds` | `read` |
-| `findModelsByName` | `self, modelNames` | `read` |
-| `modelFieldNames` | `self, modelName` | `read` |
-| `modelFieldDescriptions` | `self, modelName` | `read` |
-| `modelFieldFonts` | `self, modelName` | `read` |
-| `modelFieldsOnTemplates` | `self, modelName` | `read` |
-| `createModel` | `self, modelName, inOrderFields, cardTemplates, css = None, isCloze = False` | `write` |
-| `modelTemplates` | `self, modelName` | `read` |
-| `modelStyling` | `self, modelName` | `read` |
-| `updateModelTemplates` | `self, model` | `write` |
-| `updateModelStyling` | `self, model` | `write` |
-| `findAndReplaceInModels` | `self, modelName, findText, replaceText, front=True, back=True, css=True` | `read` |
-| `modelTemplateRename` | `self, modelName, oldTemplateName, newTemplateName` | `read` |
-| `modelTemplateReposition` | `self, modelName, templateName, index` | `read` |
-| `modelTemplateAdd` | `self, modelName, template` | `read` |
-| `modelTemplateRemove` | `self, modelName, templateName` | `destructive` |
-| `modelFieldRename` | `self, modelName, oldFieldName, newFieldName` | `read` |
-| `modelFieldReposition` | `self, modelName, fieldName, index` | `read` |
-| `modelFieldAdd` | `self, modelName, fieldName, index=None` | `read` |
-| `modelFieldRemove` | `self, modelName, fieldName` | `destructive` |
-| `modelFieldSetFont` | `self, modelName, fieldName, font` | `read` |
-| `modelFieldSetFontSize` | `self, modelName, fieldName, fontSize` | `read` |
-| `modelFieldSetDescription` | `self, modelName, fieldName, description` | `read` |
+## Runtime verification
 
-Model changes can affect many existing cards at once; back up before broad schema mutations.
+Before using a version-sensitive or uncertain action, call `apiReflect` against the user's installed AnkiConnect.
+
+## Sources
+
+- https://github.com/ankiultimate/anki-connect
+- https://github.com/JSchoreels/anki-connect
