@@ -4,3 +4,4 @@ __pycache__/
 *.apkg
 *.apkg.report.json
 .venv/
+anki-language.config.json
