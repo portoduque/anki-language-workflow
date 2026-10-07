@@ -508,6 +508,31 @@ Before adopting items from it, inspect whether the source has useful fields such
 
 Do not blindly import the whole shared deck into the workflow. Select useful items, then progressively shift toward personally encountered/context-rich material as the learner gains enough language to mine it.
 
+### Let candidate sources evolve with learner evidence
+
+Do not treat one source strategy as optimal forever.
+
+Prefer source candidates according to the learner's actual evidence and goals:
+
+- when there is too little comprehensible personal material, vetted frequency/shared material may bootstrap candidates;
+- once useful natural input becomes comprehensible, personally encountered/context-rich items should usually outrank generic lists;
+- when listening is the evidenced bottleneck, audio-first source evidence may justify Listening cards;
+- when real speaking/writing/domain activity exposes a recurring useful gap, that gap may become a candidate for targeted verification and Production.
+
+Do not hard-code external roadmap phases or vocabulary-count milestones as mandatory switching thresholds.
+
+### Output/domain gaps are candidates, not literal translations
+
+If the learner repeatedly cannot express a useful idea during speaking/writing or within a target domain:
+
+1. capture the intended meaning/situation/domain as a candidate;
+2. verify a natural target-language expression for the intended variety/register from trustworthy/attested material when possible;
+3. clarify the useful sense/form;
+4. create a Production card only when the gap is useful enough to justify future review;
+5. preserve the verified context/source when practical.
+
+Do not turn a base-language thought directly into an unverified target-language Production answer.
+
 Do not replace the user's material with generic material merely because generic examples are easier to generate.
 
 It is acceptable to create a clearer example when the original material is unsuitable, but preserve the intended meaning and do not invent uncertain facts.
