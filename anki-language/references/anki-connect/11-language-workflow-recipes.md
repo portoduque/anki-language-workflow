@@ -35,6 +35,8 @@ Typical sequence:
    - `updateModelStyling`;
    - field/template mutation actions.
 
+For workflow-owned model names, field compatibility alone is insufficient: compare templates and CSS too. If they drift from the deterministic model, stop and surface the conflict rather than silently replacing the user's/customized model.
+
 Do not overwrite user-customized models casually. Prefer a namespaced workflow-specific note type.
 
 ## Recipe D — Add one note safely
@@ -44,6 +46,8 @@ Do not overwrite user-customized models casually. Prefer a namespaced workflow-s
 3. Call `canAddNotesWithErrorDetail` first when validation matters.
 4. Call `addNote`.
 5. Store returned note ID in logs/report when useful.
+
+For this repository, deterministic delivery adds both the broad `anki-language` tag and a scoped identity derived from deck + target-language code + stable card id. Before adding a live note, locate that identity and verify the stored note content. An identity match with different content is a conflict, not permission to skip or overwrite.
 
 `addNote` supports optional:
 - tags;
@@ -89,7 +93,7 @@ Alternatively, pass media objects directly inside `addNote`/supported update act
    - `updateNoteTags`;
    - tag-specific actions.
 
-Never identify generated notes only by vague text when a stable workflow tag/ID can be used.
+Never identify generated notes only by vague text when a stable workflow tag/ID can be used. The current scoped identity intentionally avoids treating the same local card id in another deck/language as the same note. Legacy card-id-only tags are recognized only inside the expected deck and should be verified before any future migration.
 
 ## Recipe H — Query current cards/reviews
 
@@ -105,7 +109,7 @@ For this repository's workflow-owned cards, the deterministic read-only helper i
 
 `python scripts/audit_live.py --query "tag:anki-language" --output anki-audit.json`
 
-It summarizes card fields plus review-rating history without applying a universal leech threshold and without calling mutation actions.
+It summarizes card fields plus review-rating history without applying a universal leech threshold and without calling mutation actions. Newly generated APKG notes receive the same broad `anki-language` ownership tag as live notes, so an imported package can enter this audit path as well.
 
 This can support analytics/progress inspection, but the project should not change scheduling simply because the API permits it. Treat review history as evidence for inspection; inspect the actual card/source before diagnosing a cause, and require explicit user approval before any existing-card or scheduling mutation.
 
