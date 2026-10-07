@@ -39,6 +39,7 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 - Prefer useful chunks/collocations/patterns when the combination is the knowledge that matters.
 - Sentence mining is selective; do not turn every sentence into a card.
 - An encountered unknown word/phrase is only a **candidate** until it passes the usefulness/context/review-cost test; preserve source context and batch selection after a passage/chapter/clip when practical.
+- For an absolute beginner with too little comprehensible personal material to mine, a vetted frequency/shared deck may be used as a **candidate source**; never bulk-adopt it blindly.
 - Card-creation/customization time also counts. Prefer simple cards and selective enrichment over decorative complexity that does not improve retrieval.
 - Grammar/morphology explanations on the back should be brief and only added when they explain why the target form is correct or prevent a predictable confusion.
 - Audio and images are optional and must add learning value.
@@ -175,6 +176,8 @@ For current/version-sensitive facts or gaps in the local summaries, consult `ref
 https://docs.ankiweb.net/llms.txt
 
 Current official Anki documentation outranks old blogs, old add-on instructions, and remembered behavior.
+
+For scheduling/FSRS advice, do not copy fixed numeric/display-order presets from research videos or another user's collection. Use current official semantics plus the learner's own workload/review history.
 
 ## AnkiConnect live-integration reference
 
