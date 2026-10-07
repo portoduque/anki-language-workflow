@@ -25,11 +25,13 @@
       "properties": {
         "name": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "pattern": "\\S"
         },
         "code": {
           "type": "string",
-          "minLength": 2
+          "minLength": 2,
+          "pattern": "\\S"
         }
       }
     },
@@ -43,17 +45,20 @@
       "properties": {
         "name": {
           "type": "string",
-          "minLength": 1
+          "minLength": 1,
+          "pattern": "\\S"
         },
         "code": {
           "type": "string",
-          "minLength": 2
+          "minLength": 2,
+          "pattern": "\\S"
         }
       }
     },
     "deck_name": {
       "type": "string",
-      "minLength": 1
+      "minLength": 1,
+      "pattern": "\\S"
     },
     "cards": {
       "type": "array",
@@ -68,7 +73,8 @@
         "properties": {
           "id": {
             "type": "string",
-            "minLength": 1
+            "minLength": 1,
+            "pattern": "\\S"
           },
           "skill": {
             "enum": [
@@ -90,7 +96,8 @@
           },
           "target_text": {
             "type": "string",
-            "minLength": 1
+            "minLength": 1,
+            "pattern": "\\S"
           },
           "base_text": {
             "type": "string"
@@ -125,7 +132,8 @@
             "type": "array",
             "items": {
               "type": "string",
-              "minLength": 1
+              "minLength": 1,
+              "pattern": "\\S"
             },
             "uniqueItems": true
           },
