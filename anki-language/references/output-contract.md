@@ -48,6 +48,7 @@ Optional fields:
 - `image_request`: request for licensed image search/download;
 - `audio_provenance` / `image_provenance`;
 - `media_validation`: deterministic validation record including SHA-256;
+- `media_issues`: non-fatal failures for optional media that was skipped;
 - `source`;
 - `tags`.
 
@@ -65,7 +66,7 @@ Example:
 }
 ```
 
-`provider` currently supports `auto` and `piper`. A specific `voice` is optional.
+`provider` currently supports `auto` and `piper`. A specific `voice` is optional. Set `required: true` when failure must block delivery; Listening and sound-discrimination audio is treated as required even when the flag is omitted.
 
 ## Automatic image request
 
@@ -82,7 +83,7 @@ Example:
 }
 ```
 
-`provider=auto` tries Openverse then Wikimedia Commons.
+`provider=auto` tries Openverse then Wikimedia Commons. Images are optional by default; set `required: true` only when the card itself depends on the image.
 
 ## Resolved-plan rule
 
