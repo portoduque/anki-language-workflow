@@ -1,28 +1,50 @@
 # AnkiConnect Coverage Map
 
-Snapshot basis: standard documented API version 6, curated 2026-10-06.
+Snapshot curated: 2026-10-06.
+
+The local catalog contains **118 documented actions** from the recent 2026 readable mirror, while preserving the distinction between the older/core **114-action baseline** and **4 newer/version-sensitive actions**. Runtime `version` + `apiReflect` remains authoritative for the user's installed add-on.
 
 ## API action coverage
 
 | Category | Actions | Local reference |
 | --- | ---: | --- |
-| Card | 19 (17 baseline + 2 newer) | 03-card-actions.md |
+| Card | 19 | 03-card-actions.md |
 | Deck | 12 | 04-deck-actions.md |
-| Graphical | 19 (17 baseline + 2 newer) | 08-gui-actions.md |
+| Graphical | 19 | 08-gui-actions.md |
 | Media | 5 | 07-media-actions.md |
 | Miscellaneous | 11 | 09-misc-actions.md |
 | Model | 25 | 06-model-actions.md |
 | Note | 20 | 05-note-actions.md |
 | Statistic | 7 | 10-statistic-actions.md |
-| **Baseline common snapshot** | **114** | ACTION_CATALOG.json |
-| **Newer/version-sensitive additions** | **4** | ACTION_CATALOG.json |
-| **Catalog total** | **118** | ACTION_CATALOG.json |
+| **Total** | **118** | ACTION_CATALOG.json |
 
-Every baseline action is represented, plus four newer actions seen in upstream-tracking mirrors: `gradeNow`, `repositionNewCards`, `guiAddNoteSetData`, and `guiPlayAudio`. These four are explicitly marked version-sensitive and must be verified with `apiReflect` on the user's installation.
+The four actions present in the recent 2026 mirror beyond the older 114-action baseline are:
+
+- `gradeNow`
+- `repositionNewCards`
+- `guiAddNoteSetData`
+- `guiPlayAudio`
+
+They are marked version-sensitive in the catalog and must be checked with `apiReflect` before use.
+
+## Per-action metadata coverage
+
+Every catalog entry contains:
+
+- action name;
+- category;
+- concise upstream-derived description;
+- exact source signature from the recent mirror;
+- normalized parameter names;
+- risk classification;
+- baseline/extended status;
+- source repository;
+- version-sensitivity marker;
+- source anchor.
 
 ## Configuration coverage
 
-- installation/add-on code;
+- install/add-on code;
 - health check;
 - standard config JSON;
 - implementation defaults;
@@ -33,7 +55,8 @@ Every baseline action is represented, plus four newer actions seen in upstream-t
 - logging;
 - timeout/poll/backlog defaults;
 - environment overrides;
-- Windows firewall/macOS background behavior;
+- Windows/macOS notes;
+- minimum Anki version observed in the recent mirror;
 - localhost vs remote-security policy.
 
 Machine-readable configuration is in `CONFIG_REFERENCE.json`.
@@ -45,13 +68,14 @@ Machine-readable configuration is in `CONFIG_REFERENCE.json`.
 - modern response shape;
 - legacy v4 behavior;
 - authentication;
-- requestPermission;
-- version;
-- apiReflect;
-- multi;
+- `requestPermission`;
+- `version`;
+- `apiReflect`;
+- `multi`;
 - CORS;
 - network exposure;
-- Anki search syntax delegation.
+- Anki search syntax delegation;
+- source/runtime version drift.
 
 ## Workflow coverage
 
@@ -79,9 +103,9 @@ Machine-readable configuration is in `CONFIG_REFERENCE.json`.
 
 ## Version policy
 
-This coverage is intentionally split into:
-- local searchable snapshot for speed;
-- runtime introspection (`version`, `apiReflect`) for installed capability truth;
-- upstream/source map for current behavior.
+This library intentionally combines:
+- a fast local snapshot;
+- runtime introspection (`version`, `apiReflect`);
+- an authority/source map.
 
-Do not treat 114, 118, or any other count as immutable across future AnkiConnect releases. Runtime `apiReflect` is the final capability check.
+Do not treat 118 as immutable across future AnkiConnect releases.
