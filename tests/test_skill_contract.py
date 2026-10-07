@@ -546,3 +546,26 @@ def test_readme_documents_anki_forum_selective_refinement() -> None:
     assert "anki-forum-language-card-structure.md" in readme
     assert "Grammar format follows retrieval intent" in readme
     assert "automatic reversed grammar/vocabulary cards" in readme
+
+
+def test_keiffenheim_reencounter_scarcity_is_selective() -> None:
+    rules = (SKILL / "references" / "card-selection.md").read_text(encoding="utf-8").lower()
+    pedagogy = (SKILL / "references" / "pedagogy.md").read_text(encoding="utf-8").lower()
+    skill = (SKILL / "SKILL.md").read_text(encoding="utf-8").lower()
+    note = (SKILL / "references" / "research" / "keiffenheim-flashcards-language-learning.md").read_text(encoding="utf-8").lower()
+
+    assert "account for expected natural re-encounter frequency" in rules
+    assert "rarity alone never justifies a card" in rules
+    assert "natural re-encounter frequency" in pedagogy
+    assert "expected natural re-encounter frequency" in skill
+    assert "publicly accessible portion was reviewed in full" in note
+    assert "not inferred, reconstructed, or treated as source evidence" in note
+    assert "fixed 2,000–3,000-word threshold" in note
+    assert "no schema, note model, deck architecture, media provider, scheduler, installer, or ankiconnect change" in note
+
+
+def test_readme_documents_keiffenheim_selective_refinement() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "keiffenheim-flashcards-language-learning.md" in readme
+    assert "Natural re-encounter scarcity matters" in readme
+    assert "inaccessible paywalled article headings" in readme
