@@ -42,7 +42,7 @@ def test_one_command_pipeline_builds_and_deep_validates(tmp_path: Path) -> None:
     assert "French::01 Reading" in summary["deck_names"]
     assert "French::03 Production" in summary["deck_names"]
     assert WORKFLOW_TAG in summary["all_tags"]
-    assert workflow_tag("French", "fr", "fr-reading-001") in summary["all_tags"]
+    assert workflow_tag("French", "fr", "reading", "fr-reading-001") in summary["all_tags"]
 
 
 def test_non_english_base_language_builds(tmp_path: Path) -> None:
