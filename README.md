@@ -133,7 +133,7 @@ Implementation and research rationale: `anki-language/references/writing.md`.
 
 Use **two stages**: select the smallest useful natural chunks, then route each to **one primary skill**, adding a sibling only for a separately evidenced listening, reading, production, writing or pronunciation gap. No compulsory five-skill expansion, card quotas, or mechanical splitting. See the routing matrix in `anki-language/references/card-selection.md`.
 
-The validator now detects identical same-skill retrieval tasks despite different IDs, tags, sources or notes, while permitting distinct cross-skill practice. It does not infer semantic duplicates or inspect existing Anki cards. Transcript matching enforces whole-word boundaries, standard TTS text must match the answer, invalid plans fail before expensive media generation, and generated-media filenames use per-request identity hashes to avoid collisions.
+The validator now detects identical same-skill retrieval tasks despite different IDs, tags, sources or notes, while permitting distinct cross-skill practice. It does not infer semantic duplicates or inspect existing Anki cards. Transcript matching enforces whole-word boundaries, standard TTS text must match the answer, mutually exclusive media sources are checked even during direct delivery, invalid plans fail before expensive media generation, and generated-media filenames use per-request identity hashes to avoid collisions. Successfully resolved media requests are removed from the output plan so it references exactly one definitive file.
 
 ## Long sentences → useful short chunks
 
