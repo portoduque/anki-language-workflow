@@ -321,6 +321,19 @@ When practical, preserve enough local context (sentence, timestamp, paragraph, s
 
 Immediate card creation is still fine when the item is clearly high-value and context is already sufficient.
 
+### Clarify the target before scheduling it
+
+A scheduled review should normally test retrieval of a target whose intended meaning, form, or usage has already been **clarified enough to encode**. Do not rely on repeated failed reviews to perform first-time semantic discovery.
+
+Before promoting a candidate to a card:
+
+- confirm the intended sense/form/context well enough that the answer is meaningful and gradeable;
+- resolve ambiguity that would change what the learner is supposed to retrieve;
+- allow first exposure or clarification immediately before card creation — prior mastery is not required;
+- keep an unresolved item as a candidate when its meaning, register, transcription, or intended usage is still uncertain.
+
+This does not ban beginner bootstrap material or require a separate pre-study ritual. It means the card should reinforce/retrieve a sufficiently understood target rather than asking the learner to discover what the card means during future reviews.
+
 ## 13. Images are selective
 
 Use an image when it encodes or disambiguates meaning better than text, especially for concrete nouns, objects, actions, or visually distinctive concepts.

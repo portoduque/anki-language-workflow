@@ -90,6 +90,7 @@ These are product rules, not suggestions. The complete normative specification l
 40. **Grammar-attribute mnemonics are secondary:** for difficult arbitrary features such as noun gender/class, a stable concrete code may help, but the real determiner+noun/form remains the retrieval target and no universal color/action mapping is hard-coded.
 41. **Reveal only non-target support:** information that is not being tested may be shown when it isolates the intended retrieval skill, but the actual target must remain hidden.
 42. **Keep distinct linguistic data structured:** use optional `reading`, `variant`, and `grammar` fields when useful instead of stuffing everything into `Notes`; populating a field never creates an extra card by itself.
+43. **Clarify before scheduling:** before a candidate becomes a scheduled card, understand its intended meaning/form/usage well enough that the review tests retrieval rather than first-time semantic discovery; prior mastery is not required.
 
 A source reused across multiple decks is valid only when each card covers a real additional skill gap. If the extra card mostly repeats the same retrieval, discard it.
 
@@ -109,6 +110,7 @@ Current curated notes include:
 - `anki-language/references/research/justin-sung-anki-pro.md` — analyzes Justin Sung's complete 20-minute Anki strategy video and selectively adapts relational retrieval, cue-overfitting prevention, contextual transfer, and evidence-based scaffold graduation without importing multi-answer mega cards.
 - `anki-language/references/research/corinna-anki-wrong-vocabulary.md` — analyzes Corinna Languages' complete vocabulary-focused Anki video and selectively adopts meaning-first source mining plus optional stable mnemonic coding for difficult grammatical gender/noun-class attributes.
 - `anki-language/references/research/redchamber-optimize-anki-language.md` — analyzes Dream of the Red Chamber's complete note/card architecture tutorial and selectively adopts structured reading/variant/grammar fields plus target-isolation guidance, while deliberately keeping the current one-note-per-planned-card pipeline.
+- `anki-language/references/research/jeremiah-seven-rules-anki.md` — analyzes Jeremiah’s seven-rule Anki method, adopts clarified-before-review encoding plus native Again/Good-only and break-recovery guidance, while rejecting universal audio-only/full-sentence rules, fixed-age retirement, and destructive deck resets.
 
 Across these research sources, recommendations are not promoted automatically. Examples deliberately **not** adopted include:
 
@@ -133,6 +135,10 @@ Across these research sources, recommendations are not promoted automatically. E
 ### Scheduling settings are not copied from research videos
 
 Correct-but-slow recall is **not** automatically a failure. Current Anki semantics use `Hard` for a correct answer recalled with substantial hesitation/effort and `Again` for an incorrect answer or failure to recall. Normal internal/on-screen timers do not influence scheduling; they measure/display time unless the separate Auto Advance feature is explicitly used.
+
+If four grading buttons create friction, current Anki documentation explicitly permits using only **Again** for incorrect answers and **Good** for correct answers; a Pass/Fail add-on is not required, and Hard/Easy do not inherently damage FSRS.
+
+After a long break, resume the useful deck instead of deleting/resetting it merely because reviews accumulated. Anki accounts for overdue delay when calculating subsequent scheduling.
 
 Do not retire useful decks on a fixed monthly schedule merely to avoid mature reviews. Control workload through selective card creation, lower new-card intake, pruning/repairing leeches, and workload-aware FSRS settings.
 

@@ -17,6 +17,15 @@ The learner grades recall with:
 
 With FSRS, **Hard is a passing grade**. If the answer was forgotten, use **Again**, not Hard. Consistently using Hard for forgotten cards teaches FSRS the wrong signal and can produce intervals that are too long.
 
+### Optional two-button grading
+
+Current official Anki documentation explicitly says that if four answer buttons are difficult to use, the learner may use only **Again** and **Good**:
+
+- Again = incorrect / could not recall;
+- Good = correct.
+
+This native two-button workflow does **not** require a Pass/Fail add-on. Hard and Easy remain valid ratings when their extra information is useful; they do not inherently “break” FSRS or the scheduler. The important rule is to grade truthfully, especially never using Hard for a forgotten answer.
+
 ### Response latency is not a fixed fail threshold
 
 Do not turn a correct answer into **Again** merely because it took more than an arbitrary 2 or 3 seconds.
@@ -129,6 +138,16 @@ Therefore, do not describe a 3-second on-screen timer as "limiting every card to
 Easy Days shifts future due dates by a small amount so selected weekdays can be lighter. It **redistributes** workload; it does not eliminate the underlying reviews.
 
 Do not interpret a low/minimum day as "zero Anki work" or as a replacement for sustainable new-card intake.
+
+## Returning after a break
+
+Missing days does not require resetting or deleting a useful deck. Current official Anki documentation states that when returning after a long break, the learner can resume where they left off; Anki factors the overdue delay into the next interval.
+
+When a backlog is large:
+- temporarily reduce or pause new-card intake;
+- work through reviews at a sustainable pace;
+- use current backlog ordering/limits deliberately when needed;
+- repair or suspend low-value/problem cards rather than deleting mature scheduling history indiscriminately.
 
 ## Deck continuity
 

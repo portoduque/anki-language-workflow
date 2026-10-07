@@ -47,6 +47,7 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 - For genuinely difficult arbitrary grammatical attributes such as gender/noun class, a stable concrete mnemonic code may be used as secondary scaffolding; keep the real target form/chunk primary and never hard-code one universal mapping.
 - For continuous natural material, prefer a meaning-first pass before intensive lookup/card extraction when comprehension is still possible; do not interrupt the source for every unknown.
 - An encountered unknown word/phrase is only a **candidate** until it passes the usefulness/context/review-cost test; preserve source context and batch selection after a passage/chapter/clip when practical.
+- Before promoting a candidate to a scheduled card, clarify its intended meaning/form/usage enough that review tests retrieval rather than first-time semantic discovery; prior mastery is not required.
 - For an absolute beginner with too little comprehensible personal material to mine, a vetted frequency/shared deck may be used as a **candidate source**; never bulk-adopt it blindly.
 - Card-creation/customization time also counts. Prefer simple cards and selective enrichment over decorative complexity that does not improve retrieval.
 - Grammar/morphology explanations on the back should be brief and only added when they explain why the target form is correct or prevent a predictable confusion.

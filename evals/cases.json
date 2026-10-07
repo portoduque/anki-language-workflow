@@ -472,5 +472,35 @@
       "Keeps the current one-note-per-selected-planned-card workflow behavior.",
       "Does not auto-generate reverse or sibling cards simply because Anki technically supports multiple templates."
     ]
+  },
+  {
+    "id": "clarify-before-scheduling-not-first-exposure",
+    "input": "During immersion, the learner finds a potentially useful word but its intended sense/register is still unclear. The card could be created immediately and 'figured out' through future failed reviews.",
+    "expected": [
+      "Keeps the item as a candidate until the intended meaning/form/usage is clarified enough to encode.",
+      "Does not rely on repeated Anki failures to perform first-time semantic discovery.",
+      "Does not require prior mastery; clarification may happen immediately before card creation.",
+      "May still use vetted beginner bootstrap material when its target meaning/form is sufficiently clear."
+    ]
+  },
+  {
+    "id": "native-two-button-grading-no-addon-required",
+    "input": "The learner wants a simple pass/fail review workflow because four answer buttons create decision friction.",
+    "expected": [
+      "Explains that current Anki can be used natively with only Again for incorrect answers and Good for correct answers.",
+      "Does not require a Pass/Fail add-on merely to obtain binary grading.",
+      "Does not claim Hard or Easy inherently break FSRS or the scheduler.",
+      "Keeps Again for forgotten/incorrect answers rather than using Hard as a failure grade."
+    ]
+  },
+  {
+    "id": "return-after-break-without-deck-reset",
+    "input": "The learner returns to a useful language deck after several weeks away and has a large review backlog.",
+    "expected": [
+      "Does not recommend deleting or resetting the useful deck solely because reviews accumulated.",
+      "Explains that Anki can resume after a long break and accounts for overdue delay in subsequent scheduling.",
+      "May reduce or pause new cards while the backlog is handled at a sustainable pace.",
+      "Prunes/suspends cards only for evidence-based low value, redundancy, or card-quality problems rather than a fixed age threshold."
+    ]
   }
 ]
