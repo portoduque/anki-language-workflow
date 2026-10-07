@@ -118,9 +118,7 @@ Across these research sources, recommendations are not promoted automatically. E
 
 Correct-but-slow recall is **not** automatically a failure. Current Anki semantics use `Hard` for a correct answer recalled with substantial hesitation/effort and `Again` for an incorrect answer or failure to recall. Normal internal/on-screen timers do not influence scheduling; they measure/display time unless the separate Auto Advance feature is explicitly used.
 
-Do not retire useful decks on a fixed monthly schedule merely to avoid mature reviews. Control workload through selective card creation, lower new-card intake, pruning/reparing leeches, and workload-aware FSRS settings.
-
-### Scheduling settings are not copied from research videos
+Do not retire useful decks on a fixed monthly schedule merely to avoid mature reviews. Control workload through selective card creation, lower new-card intake, pruning/repairing leeches, and workload-aware FSRS settings.
 
 When the workflow answers a scheduling/FSRS question, the current Anki manual and the learner's own review history/workload outrank research-source presets.
 
