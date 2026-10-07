@@ -45,7 +45,8 @@ Optional fields:
 - `reading`: optional target-script reading/romanization aid such as pinyin, kana, or another reading representation;
 - `variant`: optional alternate written/script/orthographic form such as simplified/traditional or another spelling variant;
 - `grammar`: optional concise grammatical attribute such as gender, noun class, part of speech, or form;
-- `audio`: resolved media path;
+- `audio`: resolved audio path containing the exact selected utterance (not an unrelated full-dialogue recording);
+- `audio_clip`: optional source-audio clipping request: `source` plus either **both** verified `start_seconds`/`end_seconds` or neither (optional local speech alignment); mutually exclusive with `audio` and `audio_request`;
 - `audio_transcript`: optional **verified actual wording** of a recording; mandatory whenever the same resolved audio file serves cards with different target texts, and validated for target-text inclusion;
 - `image`: resolved media path;
 - `audio_request`: request for automatic Piper TTS;
@@ -103,6 +104,25 @@ Presentation is deterministic, not model-authored:
 
 Do not invent source precision. A precise locator is kept only when the supplied/source material actually supports it.
 
+## Original source-audio clipping
+
+When a supplied audio file contains several utterances, select an excerpt with:
+
+```json
+{
+  "target_text": "Vous pouvez me suivre.",
+  "audio_clip": {
+    "source": "lesson.mp3",
+    "start_seconds": 12.4,
+    "end_seconds": 14.9
+  }
+}
+```
+
+Verified source timestamps take precedence. When the timing is unknown, `{"source":"lesson.mp3"}` invokes **optional** faster-whisper word transcription plus one unambiguous exact phrase match against `target_text`; it may fail and request correction. Only **FFmpeg** is needed for already-known boundaries. Install `requirements-alignment.txt` separately if automatic discovery is wanted. No default install or extra service required for cards without `audio_clip`.
+
+The enricher replaces `audio_clip` with the validated short `audio` file and records original path, clip boundaries, and alignment method under `audio_provenance`. It **fails closed** for ambiguous/missing text, repeated phrases, out-of-range boundaries, or missing dependencies. Acoustic correctness cannot be guaranteed by matching words on paper alone; review source-timestamp accuracy and representative output by listening.
+
 ## Automatic audio request
 
 Example:
@@ -138,7 +158,7 @@ Example:
 
 ## Resolved-plan rule
 
-A Listening card or sound-dependent Pronunciation card may contain an unresolved `audio_request` during planning, but **final build/live delivery requires an actual validated `audio` file**.
+A Listening card or sound-dependent Pronunciation card may contain an unresolved `audio_request` or `audio_clip` during planning, but **final build/live delivery requires an actual validated `audio` file**.
 
 Automatic requests are resolved with:
 
@@ -160,7 +180,7 @@ Both:
 
 Stages:
 
-1. resolve requested media;
+1. resolve requested media, including source-audio clip alignment/FFmpeg extraction when selected;
 2. functionally validate every local audio/image;
 3. write resolved card plan with provenance + SHA-256;
 4. deliver as APKG and/or via AnkiConnect;

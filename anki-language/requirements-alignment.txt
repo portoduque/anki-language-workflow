@@ -1,0 +1,3 @@
+# Optional source-recording transcription/word alignment (only when timestamps are unavailable).
+# Never installed by default: CPU model download can be sizable.
+faster-whisper>=1.1,<2

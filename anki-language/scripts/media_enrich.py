@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import html
 import json
 import os
@@ -15,6 +16,7 @@ from typing import Any
 
 from PIL import Image
 
+from audio_clip import clip_audio
 from card_contract import AUDIO_REQUIRED_PRONUNCIATION_MODES, normalize_mode
 from media_validate import MediaValidationError, validate_media_file
 
@@ -235,13 +237,61 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
     media_root = (media_dir or (plan_dir / "media")).resolve()
     voice_dir = media_root / ".piper-voices"
     media_root.mkdir(parents=True, exist_ok=True)
-    counts = {"audio_generated": 0, "images_downloaded": 0, "media_validated": 0, "media_skipped": 0}
+    counts = {"audio_generated": 0, "audio_clipped": 0, "audio_aligned": 0, "images_downloaded": 0, "media_validated": 0, "media_skipped": 0}
+    word_cache: dict[tuple[Path, str], list[tuple[str, float, float]]] = {}
 
     for card in plan.get("cards", []):
         card_validation = dict(card.get("media_validation") or {})
         media_issues = list(card.get("media_issues") or [])
 
-        if card.get("audio"):
+        selected_audio = [name for name in ("audio", "audio_clip", "audio_request") if card.get(name)]
+        if len(selected_audio) > 1:
+            raise ValueError(
+                f"Card {card['id']} has conflicting audio sources: {selected_audio}. "
+                "Choose audio, audio_clip, or audio_request."
+            )
+
+        if card.get("audio_clip"):
+            request = card["audio_clip"]
+            source = resolve_path(plan_dir, str(request["source"]))
+            identity = "\x1f".join([
+                str(card["id"]), str(source), str(card["target_text"]),
+                str(request.get("start_seconds", "")), str(request.get("end_seconds", "")),
+            ])
+            digest = hashlib.sha256(identity.encode("utf-8")).hexdigest()[:12]
+            output = media_root / f"{safe_id(str(card['id']))[:55]}-{digest}-clip.wav"
+            if output.resolve() == source.resolve():
+                raise ValueError(f"Clip destination would overwrite its source: {source}")
+            try:
+                result = clip_audio(
+                    source,
+                    output,
+                    target_text=str(card["target_text"]),
+                    language=str(plan["target_language"]["code"]),
+                    start_seconds=request.get("start_seconds"),
+                    end_seconds=request.get("end_seconds"),
+                    word_cache=word_cache,
+                )
+            except Exception as exc:
+                raise RuntimeError(
+                    f"Could not align/clip original audio for card {card['id']}: {exc}"
+                ) from exc
+            card["audio"] = relative_to_plan(output, plan_dir)
+            card["audio_provenance"] = {
+                "kind": "user-supplied",
+                "provider": "ffmpeg-clip",
+                "source_path": relative_to_plan(source, plan_dir),
+                "start_seconds": result["start_seconds"],
+                "end_seconds": result["end_seconds"],
+                "alignment": result["alignment"],
+            }
+            card.pop("audio_clip")
+            card_validation["audio"] = result["validation"]
+            counts["audio_clipped"] += 1
+            if result["alignment"] == "asr-exact":
+                counts["audio_aligned"] += 1
+            counts["media_validated"] += 1
+        elif card.get("audio"):
             path = resolve_path(plan_dir, str(card["audio"]))
             card_validation["audio"] = validate_media_file(path, "audio")
             counts["media_validated"] += 1

@@ -121,6 +121,37 @@
             "type": "string",
             "minLength": 1
           },
+          "audio_clip": {
+            "type": "object",
+            "description": "Trim the original recording to the target utterance before delivery. Use verified bounds when available; otherwise word-alignment is optional and may fail closed.",
+            "additionalProperties": false,
+            "required": [
+              "source"
+            ],
+            "properties": {
+              "source": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "start_seconds": {
+                "type": "number",
+                "minimum": 0
+              },
+              "end_seconds": {
+                "type": "number",
+                "exclusiveMinimum": 0
+              }
+            },
+            "dependentRequired": {
+              "start_seconds": [
+                "end_seconds"
+              ],
+              "end_seconds": [
+                "start_seconds"
+              ]
+            }
+          },
           "audio_transcript": {
             "type": "string",
             "minLength": 1,
@@ -341,6 +372,24 @@
         },
         "attribution": {
           "type": "string"
+        },
+        "source_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "start_seconds": {
+          "type": "number",
+          "minimum": 0
+        },
+        "end_seconds": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "alignment": {
+          "enum": [
+            "verified-timestamps",
+            "asr-exact"
+          ]
         }
       }
     },

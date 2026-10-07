@@ -278,6 +278,35 @@ The workflow can now resolve missing media automatically **after** card selectio
 
 The AI still decides whether media adds learning value. The automation does not generate an image/audio file for every card merely because it can.
 
+### Focused clips from long original audio
+
+When you supply a multi-sentence recording but a card targets only one spoken phrase, **do not embed the entire recording**. Use `audio_clip` so the media stage extracts the selected utterance first:
+
+```json
+{
+  "target_text": "Vous pouvez me suivre.",
+  "audio_clip": {
+    "source": "materials/dialogue.mp3",
+    "start_seconds": 12.4,
+    "end_seconds": 14.9
+  }
+}
+```
+
+If the source supplies verified timestamps (video subtitles, transcript cues, or checked source offsets), they are enough: **FFmpeg on PATH** creates the short 24 kHz WAV with a small safety margin, preserves the original, and validates the result. No speech-recognition package is needed.
+
+If you have no timestamps, use `"audio_clip": {"source": "materials/dialogue.mp3"}`. The workflow optionally uses **local faster-whisper** (small CPU model with word timestamps) to find the card's `target_text` **exactly once**. This requires FFmpeg plus:
+
+```bash
+python -m pip install -r anki-language/requirements-alignment.txt
+```
+
+Automatic transcription is **not installed by default** (it may download a model on first use). The code does not guess through repeated phrases, mismatched transcripts, or unknown bounds: it reports a clear error and asks for a verified interval, corrected transcript, focused source, or explicit matching TTS. No silent full-dialogue fallback.
+
+After enrichment, the normal `audio` field points to **the focused clip only**. `audio_provenance` records original source path, start/end and alignment method. The same validated clip is sent to APKG or AnkiConnect. It is still important to listen-check a sample: timestamps/ASR are not guarantees that the exact speech was correctly recognized. No new Anki models, decks, or JavaScript are required.
+
+**Audio source selection per card:** use one of `audio` (already focused), `audio_clip` (original recording to trim), or `audio_request` (Piper TTS).
+
 ### Automatic audio
 
 For a text-only card that should have audio, the plan can contain:
@@ -428,6 +457,7 @@ There is deliberately no universal “bad card” threshold. Review history tell
 - an AI coding/agent environment with filesystem and Python execution for fully automatic APKG/live generation;
 - network access when automatic Piper voice download or image search is requested;
 - Anki Desktop + AnkiConnect only for `live`/`both` delivery.
+- FFmpeg on PATH **only** for `audio_clip` trimming; optional `faster-whisper` install **only** to discover timestamps automatically (not required for pre-timed clips or ordinary decks).
 
 A chat-only AI can still follow the pedagogical rules and produce `card-plan.json`, but building the final `.apkg` requires a runtime capable of executing the included Python scripts.
 
