@@ -121,6 +121,67 @@ The AI should consult the Anki library when the task depends on Anki implementat
 
 It should **not** load the whole library during ordinary language/card pedagogy. Card-selection policy remains separate and authoritative in `references/card-selection.md`.
 
+## Complete AnkiConnect reference library
+
+For workflows that need to interact with a **running Anki Desktop collection**, the project includes a dedicated AnkiConnect knowledge base under:
+
+`anki-language/references/anki-connect/`
+
+It covers:
+
+- installation with add-on code `2055492159`;
+- configuration and defaults (`apiKey`, bind address/port, CORS origins, logging);
+- HTTP request/response protocol and API versioning;
+- permission negotiation, authentication and security;
+- **114 baseline/common documented actions plus 4 newer/version-sensitive actions, for 118 cataloged entries total**;
+- card/scheduling actions;
+- deck/config actions;
+- note/tag actions;
+- model/note-type/field/template/CSS actions;
+- media upload/retrieval/deletion;
+- Browser/Reviewer/GUI automation;
+- profiles, sync, batching, APKG import/export;
+- review statistics/history;
+- concrete JSON payload examples;
+- language-workflow integration recipes;
+- troubleshooting and destructive-operation cautions;
+- source authority and version-drift policy.
+
+### Fast AnkiConnect routing
+
+Use:
+
+`python anki-language/scripts/find_ankiconnect_reference.py "addNote audio duplicate"`
+
+or:
+
+`python anki-language/scripts/find_ankiconnect_reference.py "createModel templates css"`
+
+or an exact action:
+
+`python anki-language/scripts/find_ankiconnect_reference.py "storeMediaFile"`
+
+The router returns only the most relevant guides plus matching actions from `ACTION_CATALOG.json`. Natural-language lookup uses action descriptions, exact Python signatures, parameters, category and risk metadata, so the caller does not need to know an action name in advance. Newer actions that are not present in every mirror are marked version-sensitive and must be confirmed with `apiReflect` before use.
+
+### Runtime truth over stale documentation
+
+For a live installation, the AI should use AnkiConnect's own:
+
+- `version`
+- `apiReflect`
+
+to verify supported capabilities when an action is uncertain or version-sensitive.
+
+The original `FooSoft/anki-connect` GitHub repository was archived and points to the author's SourceHut project. The local source map preserves that authoritative lineage. Because SourceHut is not always machine-readable to agents, the curated 2026 action snapshot is cross-checked against a recent public mirror, while **the user's running AnkiConnect remains capability truth** through `version` + `apiReflect`.
+
+The recent snapshot includes four actions beyond the older 114-action baseline: `gradeNow`, `repositionNewCards`, `guiAddNoteSetData`, and `guiPlayAudio`. They are explicitly marked version-sensitive and are never assumed to exist without runtime verification.
+
+AnkiConnect remains **optional**. If the task is simply to create a portable deck, the default architecture is still:
+
+`card-plan.json → validated APKG`
+
+Live AnkiConnect operations are used only when they add real value.
+
 ## Requirements
 
 - Git;

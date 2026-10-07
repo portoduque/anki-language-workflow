@@ -6,6 +6,25 @@
   },
   "topics": [
     {
+      "id": "ankiconnect-deep",
+      "file": "references/anki-connect/INDEX.md",
+      "keywords": [
+        "ankiconnect",
+        "anki connect",
+        "2055492159",
+        "addNote",
+        "addNotes",
+        "storeMediaFile",
+        "apiReflect",
+        "requestPermission",
+        "webBindAddress",
+        "webBindPort",
+        "webCorsOriginList",
+        "live anki api",
+        "live collection automation"
+      ]
+    },
+    {
       "id": "core",
       "file": "references/anki/01-core-model-and-organization.md",
       "keywords": [

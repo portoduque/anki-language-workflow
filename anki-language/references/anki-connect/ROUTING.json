@@ -1,0 +1,242 @@
+{
+  "version": "1.0",
+  "fallback": {
+    "index": "references/anki-connect/INDEX.md",
+    "catalog": "references/anki-connect/ACTION_CATALOG.json",
+    "sources": "references/anki-connect/SOURCES.md",
+    "config": "references/anki-connect/CONFIG_REFERENCE.json",
+    "coverage": "references/anki-connect/COVERAGE.md"
+  },
+  "topics": [
+    {
+      "id": "install-config",
+      "file": "references/anki-connect/01-installation-configuration.md",
+      "keywords": [
+        "install",
+        "installation",
+        "addon",
+        "add-on",
+        "2055492159",
+        "config",
+        "configuration",
+        "apiKey",
+        "api key",
+        "webBindAddress",
+        "webBindPort",
+        "port 8765",
+        "cors origin",
+        "apiLogPath",
+        "firewall",
+        "app nap"
+      ]
+    },
+    {
+      "id": "protocol-security",
+      "file": "references/anki-connect/02-protocol-auth-security.md",
+      "keywords": [
+        "http",
+        "post",
+        "request",
+        "response",
+        "version",
+        "api version",
+        "authentication",
+        "key",
+        "cors",
+        "origin",
+        "permission",
+        "requestPermission",
+        "apiReflect",
+        "multi",
+        "localhost",
+        "127.0.0.1",
+        "security",
+        "network"
+      ]
+    },
+    {
+      "id": "cards",
+      "file": "references/anki-connect/03-card-actions.md",
+      "keywords": [
+        "card",
+        "cards",
+        "suspend",
+        "due",
+        "interval",
+        "ease",
+        "answer",
+        "forget",
+        "relearn",
+        "scheduling",
+        "findCards",
+        "cardsInfo",
+        "setDueDate",
+        "gradeNow",
+        "repositionNewCards"
+      ]
+    },
+    {
+      "id": "decks",
+      "file": "references/anki-connect/04-deck-actions.md",
+      "keywords": [
+        "deck",
+        "decks",
+        "create deck",
+        "change deck",
+        "delete deck",
+        "deck config",
+        "preset",
+        "deck stats"
+      ]
+    },
+    {
+      "id": "notes",
+      "file": "references/anki-connect/05-note-actions.md",
+      "keywords": [
+        "note",
+        "notes",
+        "addNote",
+        "addNotes",
+        "update note",
+        "tags",
+        "findNotes",
+        "notesInfo",
+        "duplicate",
+        "canAddNotes",
+        "deleteNotes"
+      ]
+    },
+    {
+      "id": "models",
+      "file": "references/anki-connect/06-model-actions.md",
+      "keywords": [
+        "model",
+        "note type",
+        "field",
+        "template",
+        "css",
+        "createModel",
+        "modelTemplates",
+        "styling",
+        "field font",
+        "rename field",
+        "card template"
+      ]
+    },
+    {
+      "id": "media",
+      "file": "references/anki-connect/07-media-actions.md",
+      "keywords": [
+        "media",
+        "audio",
+        "image",
+        "picture",
+        "video",
+        "storeMediaFile",
+        "retrieveMediaFile",
+        "collection.media",
+        "base64",
+        "filename",
+        "url",
+        "path"
+      ]
+    },
+    {
+      "id": "gui",
+      "file": "references/anki-connect/08-gui-actions.md",
+      "keywords": [
+        "gui",
+        "browser",
+        "reviewer",
+        "guiBrowse",
+        "guiAddCards",
+        "guiEditNote",
+        "guiCurrentCard",
+        "guiAnswerCard",
+        "import dialog",
+        "database check",
+        "guiAddNoteSetData",
+        "guiPlayAudio"
+      ]
+    },
+    {
+      "id": "misc",
+      "file": "references/anki-connect/09-misc-actions.md",
+      "keywords": [
+        "sync",
+        "profile",
+        "profiles",
+        "version",
+        "apiReflect",
+        "requestPermission",
+        "multi",
+        "exportPackage",
+        "importPackage",
+        "reloadCollection"
+      ]
+    },
+    {
+      "id": "stats",
+      "file": "references/anki-connect/10-statistic-actions.md",
+      "keywords": [
+        "stats",
+        "statistics",
+        "review history",
+        "revlog",
+        "reviewed today",
+        "cardReviews",
+        "getReviewsOfCards",
+        "getLatestReviewID",
+        "insertReviews"
+      ]
+    },
+    {
+      "id": "recipes",
+      "file": "references/anki-connect/11-language-workflow-recipes.md",
+      "keywords": [
+        "workflow",
+        "recipe",
+        "language workflow",
+        "live mode",
+        "safe add note",
+        "create model",
+        "batch",
+        "inspect existing",
+        "update generated",
+        "integration"
+      ]
+    },
+    {
+      "id": "troubleshooting",
+      "file": "references/anki-connect/12-troubleshooting-safety.md",
+      "keywords": [
+        "troubleshoot",
+        "error",
+        "connection refused",
+        "unsupported action",
+        "api key error",
+        "cors error",
+        "duplicate",
+        "missing media",
+        "destructive",
+        "safety",
+        "remote"
+      ]
+    },
+    {
+      "id": "examples",
+      "file": "references/anki-connect/13-request-examples.md",
+      "keywords": [
+        "example",
+        "payload",
+        "json",
+        "curl",
+        "request example",
+        "add note example",
+        "create model example",
+        "media example",
+        "multi example"
+      ]
+    }
+  ]
+}

@@ -44,6 +44,7 @@ The router returns the highest-scoring local reference files plus the official l
 | Statistics, filtered decks, leeches | [10-stats-filtered-decks-leeches.md](10-stats-filtered-decks-leeches.md) |
 | Useful add-ons and compatibility cautions | [11-useful-addons.md](11-useful-addons.md) |
 | AnkiConnect, add-on development, APIs, automation | [12-automation-development-apis.md](12-automation-development-apis.md) |
+| Deep AnkiConnect configuration/actions/examples | [../anki-connect/INDEX.md](../anki-connect/INDEX.md) |
 | AnkiMobile/AnkiDroid/platform compatibility | [13-platforms-mobile-compatibility.md](13-platforms-mobile-compatibility.md) |
 | Troubleshooting, security, performance, version-sensitive decisions | [14-troubleshooting-security-performance.md](14-troubleshooting-security-performance.md) |
 | Installation, upgrades, preferences, interface settings | [15-installation-preferences-configuration.md](15-installation-preferences-configuration.md) |
