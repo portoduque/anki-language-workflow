@@ -1,49 +1,66 @@
 ---
 name: anki-language
-description: Creates selective, import-ready Anki language decks from text, audio, images, PDFs, transcripts, notes, or mixed study material. Use when the user wants language-learning flashcards, an APKG package, sentence mining, listening/reading/production/pronunciation practice, or audio/images organized into Anki.
+description: Creates selective, import-ready Anki language decks from text, audio, images, PDFs, transcripts, notes, or mixed study material. Language- and AI-agnostic. Use for APKG generation, sentence mining, listening, reading, production, pronunciation, audio, images, and language-learning flashcards.
 ---
 
 # Anki Language
 
 Turn source material into the smallest useful set of language-learning cards, then build and validate an Anki package.
 
-## Defaults
+## Mandatory first-run language setup
 
-- Treat the language being learned as the **target language**.
-- Use **English as the support language** unless the user explicitly requests another support language.
-- Prefer the user's source material over generic replacements.
-- Ask only when an ambiguity materially changes the learning target, language, media, or card design. Resolve minor choices conservatively.
+Before analyzing study material, look for `anki-language.config.json` in the active workspace.
+
+If the configuration does not exist, **stop before card creation and ask the user for both:**
+
+1. **Target language** — the language being learned.
+2. **Base language** — the language used to explain, translate, cue, and guide the target language.
+
+Do not infer either language and do not use a default. This first-run question is mandatory even when the source material appears to make the target language obvious.
+
+After the user answers, persist the choice in the workspace with:
+
+`python scripts/configure.py --target-name <name> --target-code <code> --base-name <name> --base-code <code> --output ./anki-language.config.json`
+
+On later runs in the same workspace, reuse that configuration unless the user asks to change it.
+
+All learner-facing explanations, semantic cues, translations, and production instructions must use the configured **base language** unless the card intentionally tests the target language without a translation.
 
 ## Workflow
 
-1. Inspect all supplied material before selecting cards.
-2. Read [references/pedagogy.md](references/pedagogy.md) and [references/card-selection.md](references/card-selection.md).
-3. Segment the source into meaningful learning units.
-4. For each unit, create zero, one, or multiple cards only when each card trains a distinct useful skill.
-5. Classify each selected card as exactly one of: `reading`, `listening`, `production`, or `pronunciation`.
-6. Add sparse linguistic tags only when useful.
-7. If media may improve learning, read [references/media.md](references/media.md) before acquiring, generating, or attaching it.
-8. Write `card-plan.json` according to [references/output-contract.md](references/output-contract.md) and `schemas/card-plan.schema.json`.
-9. Run `python scripts/build.py card-plan.json --output <Language>.apkg`.
-10. Deliver the APKG, build report, and card plan. Report skipped or unresolved items concisely.
+1. Resolve the mandatory target/base-language configuration.
+2. Inspect all supplied material before selecting cards.
+3. Read [references/pedagogy.md](references/pedagogy.md) and [references/card-selection.md](references/card-selection.md).
+4. Segment the source into meaningful learning units.
+5. For each unit, create zero, one, or multiple cards only when each card trains a distinct useful skill.
+6. Classify each selected card as exactly one of: `reading`, `listening`, `production`, or `pronunciation`.
+7. Add sparse linguistic tags only when useful.
+8. If media may improve learning, read [references/media.md](references/media.md) before acquiring, generating, or attaching it.
+9. Write `card-plan.json` according to [references/output-contract.md](references/output-contract.md) and `schemas/card-plan.schema.json`. Its target/base languages must match the workspace configuration.
+10. Run `python scripts/build.py card-plan.json --output <Language>.apkg`.
+11. Deliver the APKG, build report, and card plan. Report skipped or unresolved items concisely.
 
 ## Deck architecture
 
-- `<Language>::01 Reading`
-- `<Language>::02 Listening`
-- `<Language>::03 Production`
-- `<Language>::04 Pronunciation & Sounds`
+- `<TargetLanguage>::01 Reading`
+- `<TargetLanguage>::02 Listening`
+- `<TargetLanguage>::03 Production`
+- `<TargetLanguage>::04 Pronunciation & Sounds`
 
 Use tags, not extra micro-decks, for vocabulary, grammar, chunks, levels, sources, and similar dimensions.
 
 ## Card behavior
 
-- **Reading:** written target-language context on the front; English meaning/explanation on the back.
-- **Listening:** audio on the front; transcript and English meaning on the back.
-- **Production:** a precise English/semantic/context prompt on the front; target-language answer and normally audio on the back.
+- **Reading:** written target-language context on the front; meaning/explanation in the configured base language on the back when useful.
+- **Listening:** audio on the front; target transcript and base-language meaning/explanation on the back.
+- **Production:** a precise base-language/semantic/context prompt on the front; target-language answer and normally audio on the back.
 - **Pronunciation & Sounds:** use pronunciation production, sound discrimination/minimal pair, or spelling-sound behavior according to the actual target.
 
 Never use a blind or ambiguous cloze. The learner must know what knowledge to retrieve without the prompt revealing the answer.
+
+## AI portability
+
+`SKILL.md`, `references/`, `schemas/`, and `scripts/` are the canonical implementation. Provider-specific adapters must remain thin. If an AI supports Agent Skills, install this bundle in its skill directory. If it does not, instruct the AI to read this `SKILL.md` and use the deterministic scripts directly.
 
 ## Quality gate
 
