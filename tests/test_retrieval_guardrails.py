@@ -89,6 +89,17 @@ def test_tts_cannot_read_a_different_sentence_than_the_card(tmp_path: Path) -> N
     assert problems([right], tmp_path) == []
 
 
+def test_conflicting_media_sources_are_rejected_before_delivery(tmp_path: Path) -> None:
+    audio = card("audio", target="Bonjour", audio="clip.wav", audio_request={
+        "mode": "tts", "text": "Bonjour",
+    })
+    assert any("choose only one audio source" in issue for issue in problems([audio], tmp_path))
+    image = card("image", image="pic.png", image_request={
+        "mode": "search", "query": "photo",
+    })
+    assert any("choose only one image source" in issue for issue in problems([image], tmp_path))
+
+
 def test_invalid_plan_fails_before_starting_media_enrichment(tmp_path: Path) -> None:
     source = tmp_path / "plan.json"
     source.write_text(json.dumps(plan([
@@ -125,4 +136,5 @@ def test_sanitized_card_ids_cannot_overwrite_one_anothers_generated_audio(
     resolved = json.loads(output.read_text(encoding="utf-8"))
     names = [item["audio"] for item in resolved["cards"]]
     assert len(set(names)) == 2
+    assert all("audio_request" not in item for item in resolved["cards"])
     assert all((tmp_path / name).is_file() for name in names)
