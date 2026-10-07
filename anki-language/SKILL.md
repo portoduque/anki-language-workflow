@@ -32,6 +32,7 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 
 - Create the **minimum useful number of cards**. The same sentence, word, expression, audio, image, or passage may produce multiple cards across different skill decks when each card trains a genuinely different and worthwhile retrieval operation.
 - Every card has **one primary retrieval target**.
+- Reveal non-target information when it cleanly isolates the intended skill, but never reveal the actual retrieval target.
 - Every front must be **self-orienting in a mixed review**: show the target language and trained skill without revealing the answer.
 - Never create a prompt that makes the learner guess what the author intended. **Blind/ambiguous cloze is forbidden.**
 - Do not create automatic reverse cards. Recognition and production get separate cards only when both are worth training.
@@ -49,6 +50,8 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 - For an absolute beginner with too little comprehensible personal material to mine, a vetted frequency/shared deck may be used as a **candidate source**; never bulk-adopt it blindly.
 - Card-creation/customization time also counts. Prefer simple cards and selective enrichment over decorative complexity that does not improve retrieval.
 - Grammar/morphology explanations on the back should be brief and only added when they explain why the target form is correct or prevent a predictable confusion.
+- Use structured optional fields `reading`, `variant`, and `grammar` when those data are useful; never generate extra cards merely because an auxiliary field is populated.
+- Active handwriting/written recall may use a Production card when it is independently useful; do not create handwriting cards by default.
 - Full-sentence/chunk Production targets need a higher naturalness bar: prefer attested user/native material, and do not make an unverified AI-generated sentence the exact speaking target.
 - Audio and images are optional and must add learning value.
 - For minimal-pair/sound-discrimination cards, prefer the same speaker/voice and comparable recording conditions when feasible so irrelevant audio cues do not solve the card.
