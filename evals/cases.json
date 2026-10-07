@@ -62,5 +62,46 @@
       "Does not add decorative images to unrelated abstract items.",
       "Records media provenance when known."
     ]
+  },
+  {
+    "id": "no-card-type-quota",
+    "input": "One useful target-language sentence is supplied. Only written recognition is actually difficult for the learner.",
+    "expected": [
+      "Creates only the useful Reading card.",
+      "Does not create Listening, Production, or Pronunciation siblings merely because those templates exist."
+    ]
+  },
+  {
+    "id": "ambiguous-cloze-must-be-rewritten",
+    "input": "A proposed Production card is: I ___ staying home. The intended target is the equivalent of 'ended up'.",
+    "expected": [
+      "Rejects the unconstrained blank as ambiguous.",
+      "Adds a semantic/function cue in the configured base language or uses a direct guided-production prompt.",
+      "Does not make the learner guess the author's intended answer."
+    ]
+  },
+  {
+    "id": "no-automatic-reverse",
+    "input": "A target-language expression is useful for comprehension but not yet important for active production.",
+    "expected": [
+      "Creates a recognition card only.",
+      "Does not create an automatic base-to-target reverse card."
+    ]
+  },
+  {
+    "id": "mixed-review-front-context",
+    "input": "Cards from several target languages and skills will be reviewed together.",
+    "expected": [
+      "Every card front identifies the configured target language and trained skill.",
+      "The context label does not reveal the answer."
+    ]
+  },
+  {
+    "id": "chunk-over-isolated-word",
+    "input": "The useful knowledge is a fixed target-language collocation whose individual words are already known.",
+    "expected": [
+      "Prioritizes the collocation/chunk as the retrieval target.",
+      "Does not create redundant isolated-word cards solely because the words appear in the phrase."
+    ]
   }
 ]
