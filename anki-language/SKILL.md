@@ -37,6 +37,8 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 - Do not create automatic reverse cards. Recognition and production get separate cards only when both are worth training.
 - Do not generate every card type for every item. For every extra sibling card, require enough incremental learning value to justify its future review cost; optimize memory efficiency, not volume.
 - Prefer useful chunks/collocations/patterns when the combination is the knowledge that matters.
+- A contrast/relationship may be one primary retrieval target when the distinction itself is the useful knowledge; do not turn this into a multi-answer mega card.
+- Avoid cue overfitting: the learner should retrieve the language, not merely recognize one fixed card wording. Use varied natural contexts only when each adds real transfer value.
 - Sentence mining is selective; do not turn every sentence into a card.
 - Prefer near-i+1 mined sentences: the surrounding context should already be understood, with one primary unknown/focus item. If several independent unknowns compete for attention, choose a cleaner sentence, split targets, or skip it.
 - For polysemous words/expressions, inspect multiple trustworthy contexts during analysis, but keep each review front concise; prefer one primary sense/usage per card when a multi-definition answer would overload retrieval.
@@ -52,6 +54,7 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 - When a card tests meaning or valid usage, accept semantically correct alternative examples; require exact wording only when wording/form/order is the actual target.
 - Listening uses audio-first; Production normally keeps answer audio on the back; sound-discrimination cards must not reveal written answers on the front.
 - Keep answers concise and reviews fast.
+- When maintaining an existing collection and reliable mastery evidence is available, prefer retiring redundant scaffolds that are fully subsumed by richer contextual cards; never infer mastery from age alone or delete user cards without permission.
 - When a material ambiguity changes the learning target, ask the user instead of guessing.
 
 ## Workflow

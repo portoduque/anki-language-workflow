@@ -25,10 +25,14 @@ Optimize long-term retrieval and usable language ability while keeping reviews f
 - Target-language definitions can be useful once they are easy enough to understand, but monolinguality is not a goal by itself.
 - Genuine user-provided personal associations can strengthen concrete-memory cues; never invent them.
 - Similar new items can interfere with one another; avoid creating large batches of near-synonyms or semantic siblings without need.
+- Atomicity does not require isolation: a single contrast/relationship can be the primary retrieval target when that distinction is the useful language knowledge.
+- Avoid cue overfitting: repeated retrieval should test the language knowledge rather than recognition of one fixed card wording. Varied natural contexts can improve transfer when they are independently useful.
+- When reliable mastery evidence exists, retire redundant scaffolds instead of stacking easier cards underneath a richer contextual card forever.
 - The Anki deck should make learned material retrievable. It does not replace reading, listening, speaking, or writing practice.
 - Treat encountered unknown items as candidates, not automatic cards; preserve context and select after the passage/clip when that is less disruptive.
 - Card-creation time is part of the cost function. Prefer simple cards and selective enrichment over elaborate customization that does not improve retrieval.
 - Grammar notes are useful only when a short explanation prevents confusion; avoid turning the back into a mini-lesson or dumping complete paradigms by default.
+- Repeated failure is a signal to diagnose the learning target. If the item is still valuable, improve context, contrast, collocation, or other meaningful connections before resorting to brute-force duplicate cards.
 
 ## Review-efficiency rule
 

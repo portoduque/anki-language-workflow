@@ -306,3 +306,37 @@ def test_readme_documents_hodos_refinements() -> None:
     assert "One primary sense per card" in readme
     assert "Mnemonics are selective scaffolding" in readme
     assert "Correct-but-slow recall is **not** automatically a failure" in readme
+
+
+def test_justin_sung_refinements_preserve_atomicity_and_transfer() -> None:
+    rules = (SKILL / "references" / "card-selection.md").read_text(encoding="utf-8").lower()
+    pedagogy = (SKILL / "references" / "pedagogy.md").read_text(encoding="utf-8").lower()
+    skill = (SKILL / "SKILL.md").read_text(encoding="utf-8").lower()
+
+    assert "atomic does not mean isolated" in rules
+    assert "avoid learning the card wording instead of the language" in rules
+    assert "graduate redundant scaffolds when mastery evidence exists" in rules
+    assert "single contrast/relationship can be the primary retrieval target" in pedagogy
+    assert "avoid cue overfitting" in pedagogy
+    assert "contrast/relationship may be one primary retrieval target" in skill
+    assert "never infer mastery from age alone" in skill
+
+
+def test_justin_sung_research_note_records_adaptation_and_rejections() -> None:
+    note = (SKILL / "references" / "research" / "justin-sung-anki-pro.md").read_text(encoding="utf-8").lower()
+    assert "complete spoken transcript was reviewed" in note
+    assert "atomic retrieval can still be relational" in note
+    assert "avoid memorizing the card rather than the language" in note
+    assert "graduate redundant scaffolds" in note
+    assert "mega flashcards" in note
+    assert "three correct / three incorrect" in note
+    assert "100–150 flashcards per week" in note
+    assert "no schema, builder, media provider, deck architecture, installer, or ankiconnect implementation change" in note
+
+
+def test_readme_documents_justin_sung_transfer_refinements() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "justin-sung-anki-pro.md" in readme
+    assert "Atomic can be relational" in readme
+    assert "Avoid cue overfitting" in readme
+    assert "Graduate redundant scaffolds carefully" in readme
