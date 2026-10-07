@@ -73,6 +73,8 @@ It:
 
 This is the preferred bootstrap for browser-origin clients.
 
+**Version-sensitive field-name caveat:** current inspected source returns `requireApikey`, while older README wording uses `requireApiKey`. Treat the actual response as authoritative rather than hardcoding the documentation spelling.
+
 ### version
 
 Returns the exposed API version.
