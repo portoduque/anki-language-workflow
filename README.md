@@ -161,7 +161,7 @@ or an exact action:
 
 `python anki-language/scripts/find_ankiconnect_reference.py "storeMediaFile"`
 
-The router returns only the most relevant guides plus matching actions from `ACTION_CATALOG.json`. Newer actions that are not present in every mirror are marked version-sensitive and must be confirmed with `apiReflect` before use.
+The router returns only the most relevant guides plus matching actions from `ACTION_CATALOG.json`. Natural-language lookup uses action descriptions, exact Python signatures, parameters, category and risk metadata, so the caller does not need to know an action name in advance. Newer actions that are not present in every mirror are marked version-sensitive and must be confirmed with `apiReflect` before use.
 
 ### Runtime truth over stale documentation
 
@@ -172,7 +172,9 @@ For a live installation, the AI should use AnkiConnect's own:
 
 to verify supported capabilities when an action is uncertain or version-sensitive.
 
-The original `FooSoft/anki-connect` GitHub repository was archived and points to the author's SourceHut project. The local source map records that lineage and uses a current public documentation mirror only as a readable extraction source.
+The original `FooSoft/anki-connect` GitHub repository was archived and points to the author's SourceHut project. The local source map preserves that authoritative lineage. Because SourceHut is not always machine-readable to agents, the curated 2026 action snapshot is cross-checked against a recent public mirror, while **the user's running AnkiConnect remains capability truth** through `version` + `apiReflect`.
+
+The recent snapshot includes four actions beyond the older 114-action baseline: `gradeNow`, `repositionNewCards`, `guiAddNoteSetData`, and `guiPlayAudio`. They are explicitly marked version-sensitive and are never assumed to exist without runtime verification.
 
 AnkiConnect remains **optional**. If the task is simply to create a portable deck, the default architecture is still:
 
