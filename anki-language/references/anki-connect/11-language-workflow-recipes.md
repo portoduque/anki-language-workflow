@@ -47,7 +47,7 @@ Do not overwrite user-customized models casually. Prefer a namespaced workflow-s
 4. Call `addNote`.
 5. Store returned note ID in logs/report when useful.
 
-For this repository, deterministic delivery adds both the broad `anki-language` tag and a scoped identity derived from deck + target-language code + stable card id. Before adding a live note, locate that identity and verify the stored note content. An identity match with different content is a conflict, not permission to skip or overwrite.
+For this repository, deterministic delivery adds both the broad `anki-language` tag and a scoped identity derived from deck + target-language code + skill + stable card id. Before adding a live note, locate that identity and verify the stored note content. An identity match with different content is a conflict, not permission to skip or overwrite.
 
 `addNote` supports optional:
 - tags;
