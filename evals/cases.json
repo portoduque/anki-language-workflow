@@ -657,5 +657,56 @@
       "Preserves the exact meaning, natural context, and source locator, and blocks ambiguous audio cuts for clarification.",
       "Does not create additional full-line Listening/Pronunciation cards unless they train an independently valuable skill."
     ]
+  },
+  {
+    "id": "writing-short-typed-gap-from-long-source",
+    "input": "The user supplies only long French dialogue lines, wants quick writing/orthography practice in Anki, and needs to spell the chunk 'à l'école' in 'Je vais à l'école.'.",
+    "expected": [
+      "Selects a short, meaningful sentence/chunk rather than a full long dialogue line.",
+      "Generates one Writing card only if correct written recall is independently useful.",
+      "Sets skill=writing, target_text='Je vais à l\\u0027école.', writing_answer='à l\\u0027école', and a concise base-language semantic/grammar prompt.",
+      "Front shows the short sentence with one missing chunk and the native type-answer input, not the answer text.",
+      "Back shows the completed sentence and typed-answer comparison."
+    ]
+  },
+  {
+    "id": "writing-ambiguous-gap-should-be-rejected",
+    "input": "A proposed French Writing card reads 'Je ___ à Paris' with no other cue. It could accept vais, travaille, vis, retourne and more.",
+    "expected": [
+      "Rejects the blind ambiguous gap.",
+      "Adds a short semantic/grammar cue that uniquely constrains the expected word/form or skips the Writing card.",
+      "Does not force the learner to guess which valid phrase the card author intended.",
+      "Avoids creating a card merely because a Writing deck exists."
+    ]
+  },
+  {
+    "id": "writing-vs-production-no-automatic-duplicate",
+    "input": "A chunk already has a Production card for spoken language. The assistant could also add a Writing card for every chunk, but the writing is trivial and has no confusing spelling or written grammar.",
+    "expected": [
+      "Does not automatically add a Writing sibling for every Production card.",
+      "Creates Writing only for a distinct spelling, agreement, accented form, orthography or grammatical writing gap.",
+      "Prioritizes speed of reviews and total card count.",
+      "Keeps production and Writing skills separate only when both deserve independent repeated review."
+    ]
+  },
+  {
+    "id": "writing-preserves-orthographic-accuracy",
+    "input": "The learner must remember where the accent and apostrophe go in the French phrase 'à l'école'. A proposed template uses accent-insensitive typing and asks to type the entire sentence.",
+    "expected": [
+      "Types only the short missing phrase instead of the whole sentence.",
+      "Uses native {{type:WritingAnswer}} with normal accent-sensitive comparison, not type:nc.",
+      "Uses the short visible context and concise cue to make the target answer unambiguous.",
+      "Treats the difference as feedback; Anki review rating remains controlled by the learner."
+    ]
+  },
+  {
+    "id": "writing-repeated-target-or-multiple-gaps",
+    "input": "The same answer word appears twice in one proposed Writing target sentence. Another proposed sentence would need two independent blanks for different grammar points.",
+    "expected": [
+      "Does not silently choose a repeated occurrence; asks for a clearer short sentence or uses a different target.",
+      "Keeps only one missing word or chunk per Writing card.",
+      "Does not generate automatic multi-cloze siblings or a multianswer typing card.",
+      "Rejects a full-sentence blank when only small spelling/grammar recall is useful."
+    ]
   }
 ]

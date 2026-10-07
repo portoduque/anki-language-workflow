@@ -10,7 +10,7 @@ from typing import Any
 
 from jsonschema import Draft202012Validator
 
-from card_contract import AUDIO_REQUIRED_PRONUNCIATION_MODES, SUPPORTED_MODES_BY_SKILL, normalize_mode
+from card_contract import AUDIO_REQUIRED_PRONUNCIATION_MODES, SUPPORTED_MODES_BY_SKILL, normalize_mode, writing_parts
 from media_validate import MediaValidationError, validate_media_file
 
 CONFIG_FILENAME = "anki-language.config.json"
@@ -118,6 +118,15 @@ def validate_plan(
             )
         if skill == "production" and not str(card.get("prompt", "")).strip():
             errors.append(f"{prefix}.prompt is required for production cards.")
+        if skill == "writing":
+            if not str(card.get("prompt", "")).strip():
+                errors.append(f"{prefix}.prompt is required for Writing to constrain the typed answer.")
+            try:
+                writing_parts(card)
+            except ValueError as exc:
+                errors.append(f"{prefix}.writing_answer: {exc}")
+        elif card.get("writing_answer") is not None:
+            errors.append(f"{prefix}.writing_answer is only supported for Writing cards.")
         clip = card.get("audio_clip")
         if clip and (card.get("audio") or card.get("audio_request")):
             errors.append(

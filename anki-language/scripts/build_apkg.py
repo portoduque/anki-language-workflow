@@ -11,7 +11,7 @@ from typing import Any
 
 import genanki
 
-from card_contract import AUDIO_FRONT_MODES, SKILL_META, normalize_mode, pronunciation_front_cue, workflow_system_tags
+from card_contract import AUDIO_FRONT_MODES, SKILL_META, normalize_mode, pronunciation_front_cue, workflow_system_tags, writing_parts
 from validate_plan import load_plan, validate_plan
 
 MODEL_VERSION = 5
@@ -38,6 +38,7 @@ FIELDS = [
 ]
 
 FRONT_CUE_FIELD = {"name": "FrontCue"}
+WRITING_FIELDS = [{"name": "WritingBefore"}, {"name": "WritingAfter"}, {"name": "WritingAnswer"}]
 
 
 def model_version(skill: str) -> int:
@@ -45,7 +46,11 @@ def model_version(skill: str) -> int:
 
 
 def fields_for_skill(skill: str) -> list[dict[str, str]]:
-    return [*FIELDS, FRONT_CUE_FIELD] if skill == "pronunciation" else list(FIELDS)
+    if skill == "pronunciation":
+        return [*FIELDS, FRONT_CUE_FIELD]
+    if skill == "writing":
+        return [*FIELDS, *WRITING_FIELDS]
+    return list(FIELDS)
 
 
 CSS = """
@@ -482,6 +487,74 @@ a.replay-button svg {
 }
 """
 
+# Existing four models retain their original CSS byte-for-byte. Writing alone
+# gets additional accent/input styling; this avoids false AnkiConnect CSS drift.
+WRITING_CSS = CSS + """
+.skill-writing {
+  --accent: #2463c8;
+  --accent-soft: #eaf2ff;
+  --accent-text: #174a9d;
+}
+.nightMode .skill-writing {
+  --accent: #79aaff;
+  --accent-soft: #1e365b;
+  --accent-text: #d5e5ff;
+}
+.writing-sentence {
+  color: var(--text);
+  font-size: clamp(25px, 4.6vw, 34px);
+  font-weight: 650;
+  line-height: 1.45;
+  letter-spacing: -.01em;
+}
+
+.writing-gap {
+  display: inline;
+  padding: 2px 10px;
+  border-bottom: 2px solid var(--accent);
+  border-radius: 7px;
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  font-weight: 750;
+}
+
+.writing-input {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface-soft);
+}
+
+.writing-input .section-label {
+  margin-bottom: 9px;
+}
+
+#typeans {
+  box-sizing: border-box;
+  display: block;
+  width: 100% !important;
+  max-width: 100%;
+  min-height: 48px;
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 20px !important;
+  line-height: 1.45;
+  text-align: start;
+  overflow-wrap: anywhere;
+}
+
+code#typeans {
+  height: auto;
+  white-space: pre-wrap;
+}
+
+"""
+
 
 def stable_id(seed: str) -> int:
     digest = hashlib.sha256(seed.encode("utf-8")).digest()
@@ -602,6 +675,34 @@ def make_model(skill: str) -> genanki.Model:
     </section>
     {{/Base}}
 """
+    elif skill == "writing":
+        front_body = """
+    <div class="front-stage">
+      <div class="stage-label">Write the missing part</div>
+      <div class="writing-sentence" dir="auto"><span dir="auto">{{WritingBefore}}</span><span class="writing-gap" aria-label="Missing words">…</span><span dir="auto">{{WritingAfter}}</span></div>
+      {{#Prompt}}<div class="cue" dir="auto">{{Prompt}}</div>{{/Prompt}}
+      <div class="writing-input">
+        <div class="section-label">Type the missing word or phrase</div>
+        {{type:WritingAnswer}}
+      </div>
+    </div>
+"""
+        answer_lead = """
+    <section class="answer-primary">
+      <div class="section-label">Completed sentence</div>
+      <div class="answer-value" dir="auto">{{Target}}</div>
+    </section>
+    <section class="support-panel">
+      <div class="section-label">Missing part</div>
+      <div class="support-value" dir="auto">{{WritingAnswer}}</div>
+    </section>
+    {{#Base}}
+    <section class="support-panel">
+      <div class="section-label">{{BaseLanguage}}</div>
+      <div class="support-value" dir="auto">{{Base}}</div>
+    </section>
+    {{/Base}}
+"""
     else:
         # Pronunciation fronts never render Target directly because some modes
         # use audio/contrast prompts where the written answer would leak the target.
@@ -710,7 +811,7 @@ def make_model(skill: str) -> genanki.Model:
         f"Anki Language v{model_version(skill)} — {skill_label}",
         fields=fields_for_skill(skill),
         templates=[{"name": "Card 1", "qfmt": front, "afmt": back}],
-        css=CSS,
+        css=WRITING_CSS if skill == "writing" else CSS,
     )
 
 
@@ -790,6 +891,8 @@ def build(plan_path: Path, output_path: Path) -> dict[str, Any]:
             image_ref(image),
             clean(card.get("source", "")),
             *([clean(pronunciation_front_cue(card))] if skill == "pronunciation" else []),
+            *([clean(part) for part in writing_parts(card)[::2]] +
+              [clean(writing_parts(card)[1])] if skill == "writing" else []),
         ]
 
         guid = genanki.guid_for(

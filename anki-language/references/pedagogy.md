@@ -12,6 +12,8 @@ Optimize long-term retrieval and usable language ability while keeping reviews f
 - Keep useful reading/romanization, orthographic variants, and grammatical attributes structured when they serve different functions instead of burying all metadata in one notes blob.
 - Context should disambiguate, not give away the answer.
 - Recognition and production are different skills; create both only when both matter.
+- Writing is selectively useful for **typed orthography/inflection of one missing chunk** in a short natural target-language sentence. It is distinct from speaking Production and does not imply full composition; add only when spelling/written form adds a meaningful retrieval operation.
+- Use **one meaningful gap**, a short disambiguating semantic/grammatical cue, and exact written feedback. Never force full-sentence typing, multiply near-duplicate Writing cards, or mistake a blind gap for retrieval practice. The learner grades their own typed answer.
 - Pronunciation practice needs an answerable front: written cue for read-aloud/spelling-to-sound and audio for sound identification. Do not produce six indistinguishable 'say this' fronts from six different lines.
 - For grammar, choose the card format from the intended retrieval operation: declarative rule recall, recognition/discrimination, or contextual application/production. Do not memorize a rule merely because it was presented in the source.
 - Listening is not the same as reading. Use audio-first cards when listening is the actual target.

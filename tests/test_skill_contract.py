@@ -706,3 +706,44 @@ def test_chunk_mining_behavioral_evals_cover_long_input_and_exceptions() -> None
         assert case["input"]
         assert len(case["expected"]) >= 3
     assert "audio_clip" in " ".join(indexed["short-listening-chunk-from-long-recording"]["expected"])
+
+
+def test_writing_is_a_selective_fifth_skill_and_stays_fast() -> None:
+    import json
+
+    skill = (SKILL / "SKILL.md").read_text(encoding="utf-8")
+    rules = (SKILL / "references" / "card-selection.md").read_text(encoding="utf-8")
+    pedagogy = (SKILL / "references" / "pedagogy.md").read_text(encoding="utf-8")
+    contract = (SKILL / "references" / "output-contract.md").read_text(encoding="utf-8")
+    ui = (SKILL / "references" / "card-ui.md").read_text(encoding="utf-8")
+    research = (SKILL / "references" / "writing.md").read_text(encoding="utf-8")
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    cases = json.loads((ROOT / "evals" / "cases.json").read_text(encoding="utf-8"))
+
+    assert "Writing is a fifth optional skill" in skill
+    assert "No automatic Writing sibling" in skill
+    assert "05 Writing" in skill
+    assert "references/writing.md" in skill
+    assert "Writing — fast typed gap practice" in rules
+    assert "one meaningful word/chunk missing" in rules
+    assert "skip Writing" in rules
+    assert "Writing is selectively useful" in pedagogy
+    assert "Writing contract" in contract
+    assert "writing_answer" in contract
+    assert "Anki Language v5 — Writing" in contract
+    assert "{{type:WritingAnswer}}" in contract
+    assert "### Writing" in ui
+    assert "Writing — blue" in ui
+    assert "Official Anki Manual" in research
+    assert "AnkiWeb" in research
+    assert "05 Writing" in readme
+    assert "native" in readme.lower() and "typing" in readme.lower()
+
+    scenario_ids = {x["id"] for x in cases}
+    assert {
+        "writing-short-typed-gap-from-long-source",
+        "writing-ambiguous-gap-should-be-rejected",
+        "writing-vs-production-no-automatic-duplicate",
+        "writing-preserves-orthographic-accuracy",
+        "writing-repeated-target-or-multiple-gaps",
+    }.issubset(scenario_ids)

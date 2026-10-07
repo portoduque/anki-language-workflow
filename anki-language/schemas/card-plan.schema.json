@@ -81,7 +81,8 @@
               "reading",
               "listening",
               "production",
-              "pronunciation"
+              "pronunciation",
+              "writing"
             ]
           },
           "mode": {
@@ -98,6 +99,12 @@
             "type": "string",
             "minLength": 1,
             "pattern": "\\S"
+          },
+          "writing_answer": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "description": "Writing only: exact unique word or short chunk to type, occurring once within target_text. Other sentence text remains visible."
           },
           "base_text": {
             "type": "string"

@@ -20,6 +20,7 @@ from card_contract import (
     pronunciation_front_cue,
     workflow_system_tags,
     workflow_tag,
+    writing_parts,
 )
 from media_validate import MediaValidationError, sha256_file, validate_media_file
 from validate_plan import load_plan, validate_plan
@@ -46,7 +47,7 @@ def model_payload(skill: str) -> dict[str, Any]:
     return {
         "modelName": model.name,
         "inOrderFields": [field["name"] for field in fields_for_skill(skill)],
-        "css": CSS,
+        "css": model.css,
         "isCloze": False,
         "cardTemplates": [{
             "Name": template["name"],
@@ -116,7 +117,7 @@ def ensure_models(client: AnkiConnectClient, skills: set[str]) -> None:
             if isinstance(styling, dict)
             else styling
         )
-        if normalize_markup(actual_css) != normalize_markup(CSS):
+        if normalize_markup(actual_css) != normalize_markup(model.css):
             raise AnkiConnectError(
                 f"Existing model '{model.name}' has CSS drift. "
                 "The workflow will not overwrite user/customized styling automatically."
@@ -157,6 +158,11 @@ def note_fields(plan: dict[str, Any], card: dict[str, Any]) -> dict[str, str]:
     }
     if skill == "pronunciation":
         fields["FrontCue"] = clean(pronunciation_front_cue(card))
+    if skill == "writing":
+        before, answer, after = writing_parts(card)
+        fields["WritingBefore"] = clean(before)
+        fields["WritingAfter"] = clean(after)
+        fields["WritingAnswer"] = clean(answer)
     return fields
 
 

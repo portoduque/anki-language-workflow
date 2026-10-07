@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import re
 from typing import Any
 
 SKILL_META = {
@@ -8,12 +9,14 @@ SKILL_META = {
     "listening": ("02 Listening", "Listening"),
     "production": ("03 Production", "Production"),
     "pronunciation": ("04 Pronunciation & Sounds", "Pronunciation & Sounds"),
+    "writing": ("05 Writing", "Writing"),
 }
 
 SUPPORTED_MODES_BY_SKILL = {
     "reading": frozenset({"standard"}),
     "listening": frozenset({"standard"}),
     "production": frozenset({"standard"}),
+    "writing": frozenset({"standard"}),
     "pronunciation": frozenset({
         "standard",
         "minimal-pair",
@@ -46,6 +49,44 @@ def pronunciation_front_cue(card: dict[str, Any]) -> str:
     if normalize_mode(card) in WRITTEN_FRONT_PRONUNCIATION_MODES:
         return str(card.get("target_text", "")).strip()
     return ""
+
+
+def _inside_written_word(left: str, right: str) -> bool:
+    """Prevent mid-word Latin/alphabetic gaps without breaking CJK text."""
+    if not (re.match(r"\w", left, re.UNICODE) and re.match(r"\w", right, re.UNICODE)):
+        return False
+    # Chinese/Japanese text normally has no spaces between independent words;
+    # chunk selection remains semantic for these scripts.
+    no_space_ranges = ((0x3040, 0x30FF), (0x3400, 0x9FFF), (0xAC00, 0xD7AF))
+    if any(start <= ord(char) <= end for char in (left, right) for start, end in no_space_ranges):
+        return False
+    return True
+
+
+def writing_parts(card: dict[str, Any]) -> tuple[str, str, str]:
+    """Split one unique complete word/chunk out of a short source sentence.
+
+    Keeps writing cards on the existing 1-note/1-card architecture. The AI
+    selects the meaningful chunk; code only validates its exact boundaries.
+    """
+    target = str(card.get("target_text", ""))
+    answer = str(card.get("writing_answer", ""))
+    if not answer or not answer.strip() or answer != answer.strip():
+        raise ValueError("writing_answer must be a nonempty single-line word/chunk without outer whitespace.")
+    if any(ch in answer for ch in ("\n", "\r", "<", ">")):
+        raise ValueError("writing_answer must be plain text on one line.")
+    if not target.strip() or any(ch in target for ch in ("\n", "\r")):
+        raise ValueError("Writing target_text must be a short, single-line sentence.")
+    if target.count(answer) != 1:
+        raise ValueError("writing_answer must occur exactly once in target_text.")
+    before, after = target.split(answer, 1)
+    if not (before.strip() or after.strip()):
+        raise ValueError("Writing must test a part of the sentence, not the whole sentence.")
+    if (before and _inside_written_word(before[-1], answer[0])) or (
+        after and _inside_written_word(answer[-1], after[0])
+    ):
+        raise ValueError("writing_answer must align to word boundaries, not cut through a word.")
+    return before, answer, after
 
 
 def full_deck_name(deck_name: str, skill: str) -> str:
