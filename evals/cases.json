@@ -502,5 +502,25 @@
       "May reduce or pause new cards while the backlog is handled at a sustainable pace.",
       "Prunes/suspends cards only for evidence-based low value, redundancy, or card-quality problems rather than a fixed age threshold."
     ]
+  },
+  {
+    "id": "language-specific-gender-and-irregular-plural-are-selective",
+    "input": "A useful Norwegian noun has a non-obvious grammatical gender and an irregular plural. The learner repeatedly needs both in active speech, while the base meaning is already easy.",
+    "expected": [
+      "May create separate atomic Production retrievals for the determiner+noun gender form and the irregular plural because each is independently useful.",
+      "Keeps one primary feature/form per card instead of asking for gender, singular, plural, translation, and explanation all at once.",
+      "May reveal already-known meaning/context when that isolates the grammatical form being tested.",
+      "Keeps the cards in the existing skill decks and uses grammar/word-form metadata or tags instead of creating a Norwegian-specific microdeck or note model."
+    ]
+  },
+  {
+    "id": "do-not-generate-full-paradigm-from-available-forms",
+    "input": "A source note contains an entire verb paradigm, but only the irregular past form is currently difficult and useful for the learner.",
+    "expected": [
+      "Targets the irregular past form if it independently deserves review.",
+      "Does not create cards for every tense/person merely because the paradigm is available.",
+      "Uses a constrained lemma/context/function cue so the learner knows which form to retrieve.",
+      "Skips predictable or already-automatic forms that do not justify future review cost."
+    ]
   }
 ]
