@@ -1,25 +1,21 @@
 # Claude Code adapter
 
-The canonical skill is `anki-language/`.
+The canonical implementation is `anki-language/`; Claude Code is only one execution surface.
 
-## Project install
+## One-command install after cloning
 
-`python anki-language/scripts/install_skill.py claude --scope project --project .`
+`python install.py claude`
 
-Installs to `.claude/skills/anki-language/`.
+This installs runtime dependencies and the skill for the current user at `~/.claude/skills/anki-language/`.
 
-## User install
+Project-only install:
 
-`python anki-language/scripts/install_skill.py claude --scope user`
-
-Installs to `~/.claude/skills/anki-language/`.
+`python install.py claude --scope project --project /path/to/workspace`
 
 ## Invocation
 
-Claude Code can discover skills automatically or invoke them directly as slash commands:
-
 `/anki-language <material>`
 
-Example: `/anki-language ./materials/french-lesson/`
+On the **first use in each workspace**, Claude must ask for target language and base language before analyzing the material. Those choices are saved in `anki-language.config.json`.
 
-No separate legacy `.claude/commands/` file is required. The reusable workflow belongs in the skill, while always-on project conventions belong in `CLAUDE.md` or scoped rules.
+No duplicate `.claude/commands/` implementation is needed; the canonical rules stay in the portable skill.
