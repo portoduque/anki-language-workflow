@@ -37,7 +37,7 @@ Optional fields:
 
 - `mode`: subtype such as `standard`, `minimal-pair`, `sound-discrimination`, `spelling-sound`, or `audio-to-spelling`;
 - `base_text`;
-- `prompt`;
+- `prompt`: learner-facing instruction or a concise situational/scene cue that defines the retrieval task without revealing the target;
 - `focus`;
 - `hint`;
 - `notes`;
@@ -56,6 +56,8 @@ Optional fields:
 - `tags`.
 
 These structured fields are **metadata/support**, not card-generation quotas. Populate them only when they help the selected retrieval target. An empty field creates no extra card by itself in this workflow.
+
+The generated card templates must remain inspectable and portable: **essential card behavior may not depend on JavaScript or remote web assets**. Use ordinary Anki field replacements, HTML, CSS, and local packaged media for the core review experience.
 
 Do not invent source precision. A precise locator is kept only when the supplied/source material actually supports it.
 
