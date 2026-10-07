@@ -51,6 +51,18 @@ def pronunciation_front_cue(card: dict[str, Any]) -> str:
     return ""
 
 
+def _inside_written_word(left: str, right: str) -> bool:
+    """Prevent mid-word Latin/alphabetic gaps without breaking CJK text."""
+    if not (re.match(r"\w", left, re.UNICODE) and re.match(r"\w", right, re.UNICODE)):
+        return False
+    # Chinese/Japanese text normally has no spaces between independent words;
+    # chunk selection remains semantic for these scripts.
+    no_space_ranges = ((0x3040, 0x30FF), (0x3400, 0x9FFF), (0xAC00, 0xD7AF))
+    if any(start <= ord(char) <= end for char in (left, right) for start, end in no_space_ranges):
+        return False
+    return True
+
+
 def writing_parts(card: dict[str, Any]) -> tuple[str, str, str]:
     """Split one unique complete word/chunk out of a short source sentence.
 
@@ -70,7 +82,9 @@ def writing_parts(card: dict[str, Any]) -> tuple[str, str, str]:
     before, after = target.split(answer, 1)
     if not (before.strip() or after.strip()):
         raise ValueError("Writing must test a part of the sentence, not the whole sentence.")
-    if (before and re.match(r"\w", before[-1], re.UNICODE)) or (after and re.match(r"\w", after[0], re.UNICODE)):
+    if (before and _inside_written_word(before[-1], answer[0])) or (
+        after and _inside_written_word(answer[-1], after[0])
+    ):
         raise ValueError("writing_answer must align to word boundaries, not cut through a word.")
     return before, answer, after
 
