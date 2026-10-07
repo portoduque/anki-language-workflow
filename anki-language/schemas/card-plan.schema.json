@@ -129,6 +129,85 @@
           },
           "image_provenance": {
             "$ref": "#/$defs/mediaProvenance"
+          },
+          "audio_request": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "mode",
+              "text"
+            ],
+            "properties": {
+              "mode": {
+                "enum": [
+                  "auto",
+                  "tts"
+                ]
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              },
+              "provider": {
+                "enum": [
+                  "auto",
+                  "piper"
+                ],
+                "default": "auto"
+              },
+              "voice": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          },
+          "image_request": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "mode",
+              "query"
+            ],
+            "properties": {
+              "mode": {
+                "enum": [
+                  "auto",
+                  "search"
+                ]
+              },
+              "query": {
+                "type": "string",
+                "minLength": 1
+              },
+              "provider": {
+                "enum": [
+                  "auto",
+                  "openverse",
+                  "wikimedia"
+                ],
+                "default": "auto"
+              },
+              "licenses": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "uniqueItems": true
+              }
+            }
+          },
+          "media_validation": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "audio": {
+                "$ref": "#/$defs/mediaValidation"
+              },
+              "image": {
+                "$ref": "#/$defs/mediaValidation"
+              }
+            }
           }
         }
       }
@@ -149,6 +228,20 @@
             "type": "string",
             "minLength": 1
           }
+        }
+      }
+    },
+    "delivery": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "enum": [
+            "apkg",
+            "live",
+            "both"
+          ],
+          "default": "apkg"
         }
       }
     }
@@ -179,6 +272,46 @@
         },
         "license": {
           "type": "string"
+        }
+      }
+    },
+    "mediaValidation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "validator"
+      ],
+      "properties": {
+        "status": {
+          "const": "valid"
+        },
+        "validator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "format": {
+          "type": "string"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "duration_seconds": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
         }
       }
     }
