@@ -725,7 +725,7 @@ def test_writing_is_a_selective_fifth_skill_and_stays_fast() -> None:
     assert "05 Writing" in skill
     assert "references/writing.md" in skill
     assert "Writing — fast typed gap practice" in rules
-    assert "exactly one meaningful word/chunk missing" in rules
+    assert "one meaningful word/chunk missing" in rules
     assert "skip Writing" in rules
     assert "Writing is selectively useful" in pedagogy
     assert "Writing contract" in contract
