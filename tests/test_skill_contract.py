@@ -372,3 +372,50 @@ def test_readme_documents_corinna_vocabulary_refinements() -> None:
     assert "corinna-anki-wrong-vocabulary.md" in readme
     assert "Preserve comprehension flow" in readme
     assert "Grammar-attribute mnemonics are secondary" in readme
+
+
+def test_redchamber_refinements_are_explicit_and_selective() -> None:
+    rules = (SKILL / "references" / "card-selection.md").read_text(encoding="utf-8").lower()
+    pedagogy = (SKILL / "references" / "pedagogy.md").read_text(encoding="utf-8").lower()
+    skill = (SKILL / "SKILL.md").read_text(encoding="utf-8").lower()
+
+    assert "reveal non-target dimensions when that isolates the skill" in rules
+    assert "store distinct linguistic data in distinct fields when useful" in rules
+    assert "`reading`" in rules
+    assert "`variant`" in rules
+    assert "`grammar`" in rules
+    assert "handwriting/written recall" in rules
+    assert "reveal non-target information" in skill
+    assert "structured optional fields" in skill
+    assert "information that is not being tested may be revealed" in pedagogy
+
+
+def test_redchamber_research_note_records_architecture_tradeoff() -> None:
+    note = (SKILL / "references" / "research" / "redchamber-optimize-anki-language.md").read_text(encoding="utf-8").lower()
+    assert "complete spoken transcript was reviewed" in note
+    assert "distinct linguistic data deserves distinct structured fields" in note
+    assert "reveal non-target information to isolate one skill" in note
+    assert "active handwriting can be treated as production" in note
+    assert "why this repository is not switching to multi-card notes yet" in note
+    assert "automatic generation of six skill cards" in note
+    assert "anki language v3" in note
+
+
+def test_anki_reference_documents_current_note_card_tradeoff() -> None:
+    ref = (SKILL / "references" / "anki" / "02-notes-fields-card-types.md").read_text(encoding="utf-8")
+    assert "Anki can use conditional replacement" in ref
+    assert "Deck Override" in ref
+    assert "one Anki note per selected planned card" in ref
+    assert "`Reading`" in ref and "`Variant`" in ref and "`Grammar`" in ref
+
+
+def test_readme_documents_structured_fields_and_v3_models() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "## Structured language fields" in readme
+    assert '"reading": "xuéxí"' in readme
+    assert '"variant": "学习"' in readme
+    assert '"grammar": "verb"' in readme
+    assert "Anki Language v3" in readme
+    assert "redchamber-optimize-anki-language.md" in readme
+    assert "Reveal only non-target support" in readme
+    assert "Keep distinct linguistic data structured" in readme
