@@ -30,6 +30,15 @@ The AI decides whether media is pedagogically useful. The script does not add me
 - Reading may use audio selectively.
 - Images are usually valuable for concrete/visual concepts, not abstract connectors or grammar.
 
+## Audio/text alignment
+
+A technically decodable MP3 is not proof that the recording says the target text. Before delivery, the card author should listen to the clip or inspect a reliable original transcript and verify that the answer being tested matches the recording.
+
+- Prefer one focused recording for the target utterance instead of reusing a longer dialogue clip indiscriminately.
+- When **one audio file is reused across cards with different target text**, every use must carry the optional plan field `audio_transcript` containing the **verified actual words of the recording**. The validator checks that the target wording occurs in that transcript and that declarations across the shared audio agree. When the evidence is missing or contradictory, delivery stops so the media can be corrected or removed.
+- This transcript comparison is a **consistency check only**. It does not transcribe or listen to audio, validate its speaker/accent, or prove the user-entered transcript is accurate. The author still must verify the original recording.
+- An audio clip that illustrates an alternative phrasing rather than the specific target should not be presented as the exact target's pronunciation. Prefer omitting that optional audio or using a genuinely matching clip.
+
 ## Audio priority
 
 1. User-supplied original audio.
