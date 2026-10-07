@@ -543,5 +543,25 @@
       "Proposes the smallest justified repair.",
       "Requires explicit user approval before rewriting, suspending, deleting, rescheduling, or reprioritizing existing cards."
     ]
+  },
+  {
+    "id": "candidate-source-progression-without-fixed-stage-threshold",
+    "input": "The learner started from a vetted frequency deck but can now comfortably understand useful native content. The generic deck still has hundreds of unseen items, while personally encountered sentences are available.",
+    "expected": [
+      "Does not keep prioritizing the generic frequency source merely because unseen cards remain.",
+      "Prefers personally encountered/context-rich candidates when they are useful and comprehensible enough.",
+      "Treats the source transition as evidence-driven rather than requiring a fixed Refold phase or vocabulary-count milestone.",
+      "May still use shared/frequency material selectively when it fills a real gap."
+    ]
+  },
+  {
+    "id": "output-gap-mining-requires-naturalness-verification",
+    "input": "During repeated speaking practice, the learner keeps failing to express one useful idea. They provide the base-language thought but no verified target-language wording.",
+    "expected": [
+      "Treats the real output failure as a candidate source because it reflects an actual useful gap.",
+      "Does not convert the base-language thought directly into an unverified literal Production answer.",
+      "Finds or verifies a natural target-language expression for the intended meaning, variety, and register before scheduling Production.",
+      "Creates a card only if the gap is useful enough to justify future review cost and preserves attested context/source when possible."
+    ]
   }
 ]
