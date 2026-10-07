@@ -75,6 +75,39 @@ Use tags, not extra micro-decks, for vocabulary, grammar, chunks, levels, source
 
 Never use a blind or ambiguous cloze. The learner must know what knowledge to retrieve without the prompt revealing the answer.
 
+## Anki technical reference routing
+
+Use the bundled Anki reference library **when a decision depends on Anki behavior**, not for ordinary language analysis.
+
+Consult it when you need to decide or verify:
+
+- note/field/card-type structure;
+- templates, HTML/CSS, TTS, typed answers, cloze, or Image Occlusion;
+- audio/image/media packaging;
+- decks/tags/search/browser behavior;
+- FSRS/scheduling/settings;
+- CSV/TSV/APKG/COLPKG import/export;
+- sync/backups/profiles/files;
+- statistics/leeches/filtered decks;
+- add-ons/extensions;
+- AnkiConnect, APIs, or automation;
+- mobile/platform compatibility;
+- troubleshooting, current-version behavior, or security.
+
+When scripts are available, route the question first:
+
+`python scripts/find_anki_reference.py "<technical need>"`
+
+Then read only the returned files under `references/anki/`.
+
+Do **not** preload the full Anki library for every card-generation run. Pure pedagogical card selection should use `references/card-selection.md` and `references/pedagogy.md`.
+
+For current/version-sensitive facts or gaps in the local summaries, consult `references/anki/SOURCES.md` and prefer the official live documentation index:
+
+https://docs.ankiweb.net/llms.txt
+
+Current official Anki documentation outranks old blogs, old add-on instructions, and remembered behavior.
+
 ## AI portability
 
 `SKILL.md`, `references/`, `schemas/`, and `scripts/` are the canonical implementation. Provider-specific adapters must remain thin. If an AI supports Agent Skills, install this bundle in its skill directory. If it does not, instruct the AI to read this `SKILL.md` and use the deterministic scripts directly.
