@@ -133,7 +133,7 @@ It covers:
 - configuration and defaults (`apiKey`, bind address/port, CORS origins, logging);
 - HTTP request/response protocol and API versioning;
 - permission negotiation, authentication and security;
-- **all 114 actions currently extracted from the standard documented API**;
+- **114 baseline/common documented actions plus 4 newer/version-sensitive actions, for 118 cataloged entries total**;
 - card/scheduling actions;
 - deck/config actions;
 - note/tag actions;
@@ -161,7 +161,7 @@ or an exact action:
 
 `python anki-language/scripts/find_ankiconnect_reference.py "storeMediaFile"`
 
-The router returns only the most relevant guides plus matching actions from `ACTION_CATALOG.json`.
+The router returns only the most relevant guides plus matching actions from `ACTION_CATALOG.json`. Newer actions that are not present in every mirror are marked version-sensitive and must be confirmed with `apiReflect` before use.
 
 ### Runtime truth over stale documentation
 
