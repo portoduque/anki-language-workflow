@@ -35,7 +35,25 @@ Typical capabilities include:
 
 AnkiConnect exposes a local HTTP API. Keep it localhost-only unless there is a deliberate secured networking requirement.
 
-### 4. Native add-on
+### 4. MCP integration
+
+Useful when an AI assistant should interact with a live Anki collection through Model Context Protocol.
+
+A current community project, Anki MCP Server, can bridge MCP clients to Anki and commonly relies on AnkiConnect for live collection operations. An add-on variant also exists.
+
+Use MCP only when live collection access is actually needed. APKG generation remains simpler, safer, and more portable for offline deck creation.
+
+Security rules:
+- prefer local/STDIO/localhost modes when possible;
+- treat remote tunnels/public endpoints as sensitive collection access;
+- use read-only modes when the AI only needs inspection;
+- verify current project docs because MCP transport/auth behavior is version-sensitive.
+
+Sources:
+- https://github.com/ankimcp/anki-mcp-server
+- https://github.com/ankimcp/anki-mcp-server-addon
+
+### 5. Native add-on
 
 Best when functionality must run inside Anki UI/reviewer/browser or use native hooks.
 
