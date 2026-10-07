@@ -70,7 +70,9 @@
         "scheduling",
         "findCards",
         "cardsInfo",
-        "setDueDate"
+        "setDueDate",
+        "gradeNow",
+        "repositionNewCards"
       ]
     },
     {
@@ -152,7 +154,9 @@
         "guiCurrentCard",
         "guiAnswerCard",
         "import dialog",
-        "database check"
+        "database check",
+        "guiAddNoteSetData",
+        "guiPlayAudio"
       ]
     },
     {
