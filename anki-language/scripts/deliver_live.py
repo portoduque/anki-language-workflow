@@ -55,6 +55,34 @@ def model_payload(skill: str) -> dict[str, Any]:
     }
 
 
+def normalize_markup(value: Any) -> str:
+    return str(value or "").replace("\r\n", "\n").strip()
+
+
+def normalize_template_map(raw: Any) -> dict[str, dict[str, str]]:
+    if not isinstance(raw, dict):
+        return {}
+    result: dict[str, dict[str, str]] = {}
+    for name, template in raw.items():
+        if not isinstance(template, dict):
+            continue
+        result[str(name)] = {
+            "Front": normalize_markup(template.get("Front", template.get("qfmt", ""))),
+            "Back": normalize_markup(template.get("Back", template.get("afmt", ""))),
+        }
+    return result
+
+
+def expected_template_map(skill: str) -> dict[str, dict[str, str]]:
+    template = make_model(skill).templates[0]
+    return {
+        str(template["name"]): {
+            "Front": normalize_markup(template["qfmt"]),
+            "Back": normalize_markup(template["afmt"]),
+        }
+    }
+
+
 def ensure_models(client: AnkiConnectClient, skills: set[str]) -> None:
     existing = set(client.invoke("modelNames") or [])
     expected_fields = [field["name"] for field in FIELDS]
@@ -63,11 +91,34 @@ def ensure_models(client: AnkiConnectClient, skills: set[str]) -> None:
         if model.name not in existing:
             client.invoke("createModel", model_payload(skill))
             existing.add(model.name)
+
         actual_fields = client.invoke("modelFieldNames", {"modelName": model.name})
         if list(actual_fields or []) != expected_fields:
             raise AnkiConnectError(
                 f"Existing model '{model.name}' has incompatible fields. "
                 f"Expected {expected_fields}, got {actual_fields}."
+            )
+
+        actual_templates = normalize_template_map(
+            client.invoke("modelTemplates", {"modelName": model.name})
+        )
+        expected_templates = expected_template_map(skill)
+        if actual_templates != expected_templates:
+            raise AnkiConnectError(
+                f"Existing model '{model.name}' has template drift. "
+                "The workflow will not overwrite user/customized templates automatically."
+            )
+
+        styling = client.invoke("modelStyling", {"modelName": model.name})
+        actual_css = (
+            styling.get("css", styling.get("CSS", ""))
+            if isinstance(styling, dict)
+            else styling
+        )
+        if normalize_markup(actual_css) != normalize_markup(CSS):
+            raise AnkiConnectError(
+                f"Existing model '{model.name}' has CSS drift. "
+                "The workflow will not overwrite user/customized styling automatically."
             )
 
 
