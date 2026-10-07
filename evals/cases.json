@@ -574,5 +574,16 @@
       "Keeps one primary grammatical decision/form per card and avoids dumping the complete paradigm onto one card.",
       "May add a brief back-side explanation of the rule only when it helps verify or prevent confusion."
     ]
+  },
+  {
+    "id": "natural-reencounter-scarcity-affects-card-value",
+    "input": "The learner encounters a useful domain-specific target-language term that matters for their work but appears only rarely in normal input. Another unknown term is equally rare but obscure, low-value, and unrelated to the learner's goals.",
+    "expected": [
+      "Treats low natural re-encounter frequency as a positive SRS signal only when the item is genuinely useful.",
+      "May create a card for the useful domain-specific term because natural exposure is unlikely to reinforce it soon.",
+      "Skips the obscure low-value term even though it is also rare.",
+      "Does not use a fixed corpus-frequency cutoff or vocabulary-count threshold.",
+      "Still requires clarity/context and future review cost to justify the card."
+    ]
   }
 ]

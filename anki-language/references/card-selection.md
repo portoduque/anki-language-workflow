@@ -335,6 +335,21 @@ When practical, preserve enough local context (sentence, timestamp, paragraph, s
 
 Immediate card creation is still fine when the item is clearly high-value and context is already sufficient.
 
+### Account for expected natural re-encounter frequency
+
+A useful candidate can become **more** valuable to SRS when natural exposure is unlikely to reinforce it again soon.
+
+Consider expected natural re-encounter frequency together with usefulness, clarity/context, distinctness, and future review cost:
+
+- a useful low-frequency or domain-specific item may deserve deliberate review precisely because it may not recur naturally for a long time;
+- a very frequent/easy item that the learner already encounters constantly may not need a card if natural exposure is already reinforcing it sufficiently;
+- rarity alone never justifies a card — obscure low-value material should still be skipped;
+- do not use a fixed corpus-frequency cutoff or vocabulary-count threshold.
+
+The question is not “Is this rare?” but:
+
+> **Is this useful enough that natural exposure is unlikely to revisit it soon enough without deliberate review?**
+
 ### Clarify the target before scheduling it
 
 A scheduled review should normally test retrieval of a target whose intended meaning, form, or usage has already been **clarified enough to encode**. Do not rely on repeated failed reviews to perform first-time semantic discovery.
