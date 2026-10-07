@@ -140,3 +140,23 @@ def test_general_anki_router_can_escalate_to_ankiconnect() -> None:
     assert result.returncode == 0, result.stdout + result.stderr
     data = json.loads(result.stdout)
     assert any(item["file"].endswith("references/anki-connect/INDEX.md") for item in data["references"])
+
+
+def test_machine_readable_config_reference_has_safe_defaults() -> None:
+    config = json.loads((REF / "CONFIG_REFERENCE.json").read_text(encoding="utf-8"))
+    exposed = config["standard_config_file_keys"]
+    assert exposed["webBindAddress"]["default"] == "127.0.0.1"
+    assert exposed["webBindPort"]["default"] == 8765
+    assert exposed["apiKey"]["default"] is None
+    assert exposed["webCorsOriginList"]["default"] == ["http://localhost"]
+
+
+def test_coverage_map_accounts_for_all_actions() -> None:
+    coverage = (REF / "COVERAGE.md").read_text(encoding="utf-8")
+    assert "| **Total** | **114** | ACTION_CATALOG.json |" in coverage
+
+
+def test_router_returns_config_and_coverage_paths() -> None:
+    data = route("api key bind port cors")
+    assert data["config_reference"].endswith("CONFIG_REFERENCE.json")
+    assert data["coverage"].endswith("COVERAGE.md")
