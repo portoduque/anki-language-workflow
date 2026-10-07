@@ -1,9 +1,11 @@
 {
   "snapshot_date": "2026-10-06",
-  "upstream_repository": "https://github.com/ankiultimate/anki-connect",
-  "upstream_commit": "47da1c5039f42ad004acc57f528d6f873caffdc9",
+  "authoritative_upstream": "https://git.sr.ht/~foosoft/anki-connect",
+  "upstream_note": "The original GitHub repository was archived in 2025 and moved to SourceHut. SourceHut is not machine-readable in this environment, so this catalog uses a recent public mirror for the 2026 action surface and requires live verification with version/apiReflect before relying on an action.",
+  "reference_mirror": "https://github.com/JSchoreels/anki-connect",
+  "reference_mirror_commit": "9c88a41c0e919fe02153dda0f0afa9a0f9cb232a",
   "api_version": 6,
-  "action_count": 114,
+  "action_count": 118,
   "categories": [
     "Card",
     "Deck",
@@ -23,7 +25,7 @@
         "cards"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#geteasefactors"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#geteasefactors"
     },
     {
       "name": "setEaseFactors",
@@ -34,7 +36,7 @@
         "easeFactors"
       ],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#seteasefactors"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#seteasefactors"
     },
     {
       "name": "setSpecificValueOfCard",
@@ -47,7 +49,7 @@
         "warning_check"
       ],
       "risk": "destructive",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#setspecificvalueofcard"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#setspecificvalueofcard"
     },
     {
       "name": "suspend",
@@ -58,7 +60,7 @@
         "suspend"
       ],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#suspend"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#suspend"
     },
     {
       "name": "unsuspend",
@@ -68,7 +70,7 @@
         "cards"
       ],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#unsuspend"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#unsuspend"
     },
     {
       "name": "suspended",
@@ -78,7 +80,7 @@
         "card"
       ],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#suspended"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#suspended"
     },
     {
       "name": "areSuspended",
@@ -88,7 +90,7 @@
         "cards"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#aresuspended"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#aresuspended"
     },
     {
       "name": "areDue",
@@ -98,7 +100,7 @@
         "cards"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#aredue"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#aredue"
     },
     {
       "name": "getIntervals",
@@ -109,17 +111,19 @@
         "complete"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#getintervals"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getintervals"
     },
     {
       "name": "findCards",
       "category": "Card",
-      "signature": "self, query=None",
+      "signature": "self, query=None, fields=None, noteFields=None",
       "parameters": [
-        "query"
+        "query",
+        "fields",
+        "noteFields"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#findcards"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#findcards"
     },
     {
       "name": "cardsToNotes",
@@ -129,7 +133,7 @@
         "cards"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#cardstonotes"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#cardstonotes"
     },
     {
       "name": "cardsModTime",
@@ -139,17 +143,20 @@
         "cards"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#cardsmodtime"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#cardsmodtime"
     },
     {
       "name": "cardsInfo",
       "category": "Card",
-      "signature": "self, cards",
+      "signature": "self, cards, fields=None, noteFields=None, retrieved_info_mode='ALL'",
       "parameters": [
-        "cards"
+        "cards",
+        "fields",
+        "noteFields",
+        "retrieved_info_mode"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#cardsinfo"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#cardsinfo"
     },
     {
       "name": "forgetCards",
@@ -159,7 +166,7 @@
         "cards"
       ],
       "risk": "destructive",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#forgetcards"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#forgetcards"
     },
     {
       "name": "relearnCards",
@@ -169,7 +176,7 @@
         "cards"
       ],
       "risk": "destructive",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#relearncards"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#relearncards"
     },
     {
       "name": "answerCards",
@@ -179,7 +186,18 @@
         "answers"
       ],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#answercards"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#answercards"
+    },
+    {
+      "name": "gradeNow",
+      "category": "Card",
+      "signature": "self, cards, ease",
+      "parameters": [
+        "cards",
+        "ease"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#gradenow"
     },
     {
       "name": "setDueDate",
@@ -190,7 +208,20 @@
         "days"
       ],
       "risk": "destructive",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#setduedate"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#setduedate"
+    },
+    {
+      "name": "repositionNewCards",
+      "category": "Card",
+      "signature": "self, orderedCardIds, startPosition, step, shift",
+      "parameters": [
+        "orderedCardIds",
+        "startPosition",
+        "step",
+        "shift"
+      ],
+      "risk": "destructive",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#repositionnewcards"
     },
     {
       "name": "deckNames",
@@ -198,7 +229,7 @@
       "signature": "self",
       "parameters": [],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#decknames"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#decknames"
     },
     {
       "name": "deckNamesAndIds",
@@ -206,7 +237,7 @@
       "signature": "self",
       "parameters": [],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#decknamesandids"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#decknamesandids"
     },
     {
       "name": "getDecks",
@@ -216,7 +247,7 @@
         "cards"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#getdecks"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getdecks"
     },
     {
       "name": "createDeck",
@@ -226,7 +257,7 @@
         "deck"
       ],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#createdeck"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#createdeck"
     },
     {
       "name": "changeDeck",
@@ -237,7 +268,7 @@
         "deck"
       ],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#changedeck"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#changedeck"
     },
     {
       "name": "deleteDecks",
@@ -248,7 +279,7 @@
         "cardsToo"
       ],
       "risk": "destructive",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#deletedecks"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#deletedecks"
     },
     {
       "name": "getDeckConfig",
@@ -258,7 +289,7 @@
         "deck"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#getdeckconfig"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getdeckconfig"
     },
     {
       "name": "saveDeckConfig",
@@ -268,7 +299,7 @@
         "config"
       ],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#savedeckconfig"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#savedeckconfig"
     },
     {
       "name": "setDeckConfigId",
@@ -279,7 +310,7 @@
         "configId"
       ],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#setdeckconfigid"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#setdeckconfigid"
     },
     {
       "name": "cloneDeckConfigId",
@@ -290,7 +321,7 @@
         "cloneFrom"
       ],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#clonedeckconfigid"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#clonedeckconfigid"
     },
     {
       "name": "removeDeckConfigId",
@@ -300,7 +331,7 @@
         "configId"
       ],
       "risk": "destructive",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#removedeckconfigid"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#removedeckconfigid"
     },
     {
       "name": "getDeckStats",
@@ -310,7 +341,7 @@
         "decks"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#getdeckstats"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getdeckstats"
     },
     {
       "name": "guiBrowse",
@@ -321,7 +352,7 @@
         "reorderCards"
       ],
       "risk": "gui-state",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#guibrowse"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guibrowse"
     },
     {
       "name": "guiSelectCard",
@@ -331,7 +362,7 @@
         "card"
       ],
       "risk": "gui-state",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#guiselectcard"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guiselectcard"
     },
     {
       "name": "guiSelectedNotes",
@@ -339,7 +370,7 @@
       "signature": "self",
       "parameters": [],
       "risk": "gui-state",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#guiselectednotes"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guiselectednotes"
     },
     {
       "name": "guiAddCards",
@@ -349,7 +380,7 @@
         "note"
       ],
       "risk": "gui-state",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#guiaddcards"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guiaddcards"
     },
     {
       "name": "guiEditNote",
@@ -359,7 +390,18 @@
         "note"
       ],
       "risk": "gui-state",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#guieditnote"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guieditnote"
+    },
+    {
+      "name": "guiAddNoteSetData",
+      "category": "Graphical",
+      "signature": "self, note, append=False",
+      "parameters": [
+        "note",
+        "append"
+      ],
+      "risk": "gui-state",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guiaddnotesetdata"
     },
     {
       "name": "guiCurrentCard",
@@ -367,7 +409,7 @@
       "signature": "self",
       "parameters": [],
       "risk": "gui-state",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#guicurrentcard"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guicurrentcard"
     },
     {
       "name": "guiStartCardTimer",
@@ -375,7 +417,7 @@
       "signature": "self",
       "parameters": [],
       "risk": "gui-state",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#guistartcardtimer"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guistartcardtimer"
     },
     {
       "name": "guiShowQuestion",
@@ -383,7 +425,7 @@
       "signature": "self",
       "parameters": [],
       "risk": "gui-state",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#guishowquestion"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guishowquestion"
     },
     {
       "name": "guiShowAnswer",
@@ -391,7 +433,7 @@
       "signature": "self",
       "parameters": [],
       "risk": "gui-state",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#guishowanswer"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guishowanswer"
     },
     {
       "name": "guiAnswerCard",
@@ -401,7 +443,7 @@
         "ease"
       ],
       "risk": "gui-state",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#guianswercard"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guianswercard"
     },
     {
       "name": "guiUndo",
@@ -409,7 +451,7 @@
       "signature": "self",
       "parameters": [],
       "risk": "gui-state",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#guiundo"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guiundo"
     },
     {
       "name": "guiDeckOverview",
@@ -419,7 +461,7 @@
         "name"
       ],
       "risk": "gui-state",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#guideckoverview"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guideckoverview"
     },
     {
       "name": "guiDeckBrowser",
@@ -427,7 +469,7 @@
       "signature": "self",
       "parameters": [],
       "risk": "gui-state",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#guideckbrowser"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guideckbrowser"
     },
     {
       "name": "guiDeckReview",
@@ -437,7 +479,7 @@
         "name"
       ],
       "risk": "gui-state",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#guideckreview"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guideckreview"
     },
     {
       "name": "guiImportFile",
@@ -447,7 +489,7 @@
         "path"
       ],
       "risk": "gui-state",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#guiimportfile"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guiimportfile"
     },
     {
       "name": "guiExitAnki",
@@ -455,7 +497,7 @@
       "signature": "self",
       "parameters": [],
       "risk": "gui-state",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#guiexitanki"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guiexitanki"
     },
     {
       "name": "guiCheckDatabase",
@@ -463,7 +505,15 @@
       "signature": "self",
       "parameters": [],
       "risk": "gui-state",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#guicheckdatabase"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guicheckdatabase"
+    },
+    {
+      "name": "guiPlayAudio",
+      "category": "Graphical",
+      "signature": "self",
+      "parameters": [],
+      "risk": "gui-state",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guiplayaudio"
     },
     {
       "name": "storeMediaFile",
@@ -478,7 +528,7 @@
         "deleteExisting"
       ],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#storemediafile"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#storemediafile"
     },
     {
       "name": "retrieveMediaFile",
@@ -488,7 +538,7 @@
         "filename"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#retrievemediafile"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#retrievemediafile"
     },
     {
       "name": "getMediaFilesNames",
@@ -498,7 +548,7 @@
         "pattern"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#getmediafilesnames"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getmediafilesnames"
     },
     {
       "name": "getMediaDirPath",
@@ -506,7 +556,7 @@
       "signature": "self",
       "parameters": [],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#getmediadirpath"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getmediadirpath"
     },
     {
       "name": "deleteMediaFile",
@@ -516,7 +566,7 @@
         "filename"
       ],
       "risk": "destructive",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#deletemediafile"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#deletemediafile"
     },
     {
       "name": "requestPermission",
@@ -527,7 +577,7 @@
         "allowed"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#requestpermission"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#requestpermission"
     },
     {
       "name": "version",
@@ -535,7 +585,7 @@
       "signature": "self",
       "parameters": [],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#version"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#version"
     },
     {
       "name": "apiReflect",
@@ -546,7 +596,7 @@
         "actions"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#apireflect"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#apireflect"
     },
     {
       "name": "sync",
@@ -554,7 +604,7 @@
       "signature": "self",
       "parameters": [],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#sync"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#sync"
     },
     {
       "name": "getProfiles",
@@ -562,7 +612,7 @@
       "signature": "self",
       "parameters": [],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#getprofiles"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getprofiles"
     },
     {
       "name": "getActiveProfile",
@@ -570,7 +620,7 @@
       "signature": "self",
       "parameters": [],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#getactiveprofile"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getactiveprofile"
     },
     {
       "name": "loadProfile",
@@ -580,7 +630,7 @@
         "name"
       ],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#loadprofile"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#loadprofile"
     },
     {
       "name": "multi",
@@ -590,7 +640,7 @@
         "actions"
       ],
       "risk": "mixed",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#multi"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#multi"
     },
     {
       "name": "exportPackage",
@@ -602,7 +652,7 @@
         "includeSched"
       ],
       "risk": "read-export",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#exportpackage"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#exportpackage"
     },
     {
       "name": "importPackage",
@@ -612,7 +662,7 @@
         "path"
       ],
       "risk": "destructive",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#importpackage"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#importpackage"
     },
     {
       "name": "reloadCollection",
@@ -620,7 +670,7 @@
       "signature": "self",
       "parameters": [],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#reloadcollection"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#reloadcollection"
     },
     {
       "name": "modelNames",
@@ -628,7 +678,7 @@
       "signature": "self",
       "parameters": [],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#modelnames"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelnames"
     },
     {
       "name": "modelNamesAndIds",
@@ -636,7 +686,7 @@
       "signature": "self",
       "parameters": [],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#modelnamesandids"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelnamesandids"
     },
     {
       "name": "findModelsById",
@@ -646,7 +696,7 @@
         "modelIds"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#findmodelsbyid"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#findmodelsbyid"
     },
     {
       "name": "findModelsByName",
@@ -656,7 +706,7 @@
         "modelNames"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#findmodelsbyname"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#findmodelsbyname"
     },
     {
       "name": "modelFieldNames",
@@ -666,7 +716,7 @@
         "modelName"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#modelfieldnames"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldnames"
     },
     {
       "name": "modelFieldDescriptions",
@@ -676,7 +726,7 @@
         "modelName"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#modelfielddescriptions"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfielddescriptions"
     },
     {
       "name": "modelFieldFonts",
@@ -686,7 +736,7 @@
         "modelName"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#modelfieldfonts"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldfonts"
     },
     {
       "name": "modelFieldsOnTemplates",
@@ -696,7 +746,7 @@
         "modelName"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#modelfieldsontemplates"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldsontemplates"
     },
     {
       "name": "createModel",
@@ -710,7 +760,7 @@
         "isCloze"
       ],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#createmodel"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#createmodel"
     },
     {
       "name": "modelTemplates",
@@ -720,7 +770,7 @@
         "modelName"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#modeltemplates"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modeltemplates"
     },
     {
       "name": "modelStyling",
@@ -730,7 +780,7 @@
         "modelName"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#modelstyling"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelstyling"
     },
     {
       "name": "updateModelTemplates",
@@ -740,7 +790,7 @@
         "model"
       ],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#updatemodeltemplates"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#updatemodeltemplates"
     },
     {
       "name": "updateModelStyling",
@@ -750,7 +800,7 @@
         "model"
       ],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#updatemodelstyling"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#updatemodelstyling"
     },
     {
       "name": "findAndReplaceInModels",
@@ -765,7 +815,7 @@
         "css"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#findandreplaceinmodels"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#findandreplaceinmodels"
     },
     {
       "name": "modelTemplateRename",
@@ -777,7 +827,7 @@
         "newTemplateName"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#modeltemplaterename"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modeltemplaterename"
     },
     {
       "name": "modelTemplateReposition",
@@ -789,7 +839,7 @@
         "index"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#modeltemplatereposition"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modeltemplatereposition"
     },
     {
       "name": "modelTemplateAdd",
@@ -800,7 +850,7 @@
         "template"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#modeltemplateadd"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modeltemplateadd"
     },
     {
       "name": "modelTemplateRemove",
@@ -811,7 +861,7 @@
         "templateName"
       ],
       "risk": "destructive",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#modeltemplateremove"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modeltemplateremove"
     },
     {
       "name": "modelFieldRename",
@@ -823,7 +873,7 @@
         "newFieldName"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#modelfieldrename"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldrename"
     },
     {
       "name": "modelFieldReposition",
@@ -835,7 +885,7 @@
         "index"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#modelfieldreposition"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldreposition"
     },
     {
       "name": "modelFieldAdd",
@@ -847,7 +897,7 @@
         "index"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#modelfieldadd"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldadd"
     },
     {
       "name": "modelFieldRemove",
@@ -858,7 +908,7 @@
         "fieldName"
       ],
       "risk": "destructive",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#modelfieldremove"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldremove"
     },
     {
       "name": "modelFieldSetFont",
@@ -870,7 +920,7 @@
         "font"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#modelfieldsetfont"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldsetfont"
     },
     {
       "name": "modelFieldSetFontSize",
@@ -882,7 +932,7 @@
         "fontSize"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#modelfieldsetfontsize"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldsetfontsize"
     },
     {
       "name": "modelFieldSetDescription",
@@ -894,7 +944,7 @@
         "description"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#modelfieldsetdescription"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldsetdescription"
     },
     {
       "name": "addNote",
@@ -904,7 +954,7 @@
         "note"
       ],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#addnote"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#addnote"
     },
     {
       "name": "addNotes",
@@ -914,7 +964,7 @@
         "notes"
       ],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#addnotes"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#addnotes"
     },
     {
       "name": "canAddNotes",
@@ -924,7 +974,7 @@
         "notes"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#canaddnotes"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#canaddnotes"
     },
     {
       "name": "canAddNotesWithErrorDetail",
@@ -934,7 +984,7 @@
         "notes"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#canaddnoteswitherrordetail"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#canaddnoteswitherrordetail"
     },
     {
       "name": "updateNoteFields",
@@ -944,7 +994,7 @@
         "note"
       ],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#updatenotefields"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#updatenotefields"
     },
     {
       "name": "updateNote",
@@ -954,7 +1004,7 @@
         "note"
       ],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#updatenote"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#updatenote"
     },
     {
       "name": "updateNoteModel",
@@ -964,7 +1014,7 @@
         "note"
       ],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#updatenotemodel"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#updatenotemodel"
     },
     {
       "name": "updateNoteTags",
@@ -975,7 +1025,7 @@
         "tags"
       ],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#updatenotetags"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#updatenotetags"
     },
     {
       "name": "getNoteTags",
@@ -985,7 +1035,7 @@
         "note"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#getnotetags"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getnotetags"
     },
     {
       "name": "addTags",
@@ -997,7 +1047,7 @@
         "add"
       ],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#addtags"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#addtags"
     },
     {
       "name": "removeTags",
@@ -1008,7 +1058,7 @@
         "tags"
       ],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#removetags"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#removetags"
     },
     {
       "name": "getTags",
@@ -1016,7 +1066,7 @@
       "signature": "self",
       "parameters": [],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#gettags"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#gettags"
     },
     {
       "name": "clearUnusedTags",
@@ -1024,7 +1074,7 @@
       "signature": "self",
       "parameters": [],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#clearunusedtags"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#clearunusedtags"
     },
     {
       "name": "replaceTags",
@@ -1036,7 +1086,7 @@
         "replace_with_tag"
       ],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#replacetags"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#replacetags"
     },
     {
       "name": "replaceTagsInAllNotes",
@@ -1047,7 +1097,7 @@
         "replace_with_tag"
       ],
       "risk": "write",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#replacetagsinallnotes"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#replacetagsinallnotes"
     },
     {
       "name": "findNotes",
@@ -1057,7 +1107,7 @@
         "query"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#findnotes"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#findnotes"
     },
     {
       "name": "notesInfo",
@@ -1068,7 +1118,7 @@
         "query"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#notesinfo"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#notesinfo"
     },
     {
       "name": "notesModTime",
@@ -1078,7 +1128,7 @@
         "notes"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#notesmodtime"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#notesmodtime"
     },
     {
       "name": "deleteNotes",
@@ -1088,7 +1138,7 @@
         "notes"
       ],
       "risk": "destructive",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#deletenotes"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#deletenotes"
     },
     {
       "name": "removeEmptyNotes",
@@ -1096,7 +1146,7 @@
       "signature": "self",
       "parameters": [],
       "risk": "destructive",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#removeemptynotes"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#removeemptynotes"
     },
     {
       "name": "getNumCardsReviewedToday",
@@ -1104,7 +1154,7 @@
       "signature": "self",
       "parameters": [],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#getnumcardsreviewedtoday"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getnumcardsreviewedtoday"
     },
     {
       "name": "getNumCardsReviewedByDay",
@@ -1112,7 +1162,7 @@
       "signature": "self",
       "parameters": [],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#getnumcardsreviewedbyday"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getnumcardsreviewedbyday"
     },
     {
       "name": "getCollectionStatsHTML",
@@ -1122,7 +1172,7 @@
         "wholeCollection"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#getcollectionstatshtml"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getcollectionstatshtml"
     },
     {
       "name": "cardReviews",
@@ -1133,7 +1183,7 @@
         "startID"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#cardreviews"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#cardreviews"
     },
     {
       "name": "getReviewsOfCards",
@@ -1143,7 +1193,7 @@
         "cards"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#getreviewsofcards"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getreviewsofcards"
     },
     {
       "name": "getLatestReviewID",
@@ -1153,7 +1203,7 @@
         "deck"
       ],
       "risk": "read",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#getlatestreviewid"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getlatestreviewid"
     },
     {
       "name": "insertReviews",
@@ -1163,7 +1213,7 @@
         "reviews"
       ],
       "risk": "destructive",
-      "source_anchor": "https://github.com/ankiultimate/anki-connect/blob/47da1c5039f42ad004acc57f528d6f873caffdc9/README.md#insertreviews"
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#insertreviews"
     }
   ]
 }
