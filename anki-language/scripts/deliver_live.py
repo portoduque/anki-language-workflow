@@ -170,6 +170,7 @@ def build_note(plan: dict[str, Any], card: dict[str, Any], plan_dir: Path) -> tu
             *workflow_system_tags(
                 str(plan["deck_name"]),
                 str(plan["target_language"]["code"]),
+                skill,
                 str(card["id"]),
             ),
         ]),
@@ -250,6 +251,7 @@ def find_existing_card(
     scoped_tag = workflow_tag(
         str(plan["deck_name"]),
         str(plan["target_language"]["code"]),
+        str(card["skill"]),
         str(card["id"]),
     )
     existing = client.invoke("findNotes", {"query": f"tag:{scoped_tag}"}) or []
