@@ -403,5 +403,36 @@
       "Keeps one primary retrieval decision and avoids turning the back into a long lesson.",
       "Removes/suspends the card only if it is low-value or remains unsuitable after repair."
     ]
+  },
+  {
+    "id": "meaning-first-pass-before-vocabulary-extraction",
+    "input": "The learner is reading a comprehensible short story with several unknown words but can still follow the plot.",
+    "expected": [
+      "Prefers a meaning-first pass instead of interrupting the story to look up every unknown word.",
+      "Preserves/marks useful context and evaluates unknown items after the passage or on a later pass.",
+      "Uses lookup selectively based on usefulness and whether the unknown actually blocks comprehension.",
+      "Does not require a second pass when the source is already isolated/short or another workflow is clearly more efficient."
+    ]
+  },
+  {
+    "id": "grammatical-gender-mnemonic-is-secondary",
+    "input": "A learner repeatedly confuses the grammatical gender of a useful noun. The real target phrase contains the correct determiner, and a stable visual/action mnemonic could help.",
+    "expected": [
+      "Keeps the real linguistic form such as determiner + noun as the primary knowledge to retrieve.",
+      "May add a stable concrete mnemonic code as secondary scaffolding.",
+      "Uses the same mapping consistently within the language/deck.",
+      "Does not create an extra card solely for the mnemonic.",
+      "Does not hard-code a universal mapping such as sparkling=feminine for every learner."
+    ]
+  },
+  {
+    "id": "do-not-force-image-or-reverse-for-every-word",
+    "input": "A useful abstract expression is clear with a concise base-language cue; the video method would otherwise add an image and automatic forward/reverse cards.",
+    "expected": [
+      "Does not search for an ambiguous/decorative image merely because the source method recommends images.",
+      "Does not create automatic reverse cards.",
+      "Uses the configured base language when it gives the clearest efficient cue.",
+      "Creates extra retrieval directions only when they independently justify future review cost."
+    ]
   }
 ]
