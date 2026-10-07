@@ -679,7 +679,7 @@ def test_long_source_chunk_mining_is_mandatory_and_fast_by_default() -> None:
     assert "do not mechanically cut by punctuation" in rules
     assert "do not create a third card merely to memorize the full source sentence" in rules
 
-    assert "long source is a source of candidates" in pedagogy
+    assert "long input is a source of candidates" in pedagogy
     assert "answer and verification speed take priority" in pedagogy
     assert "long source, short card" in output
     assert "audio_clip" in output
