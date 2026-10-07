@@ -589,3 +589,26 @@ def test_readme_documents_vidtoanki_portability_refinement() -> None:
     assert "vidtoanki-card-format-ecosystem.md" in readme
     assert "Anki Language v4" in readme
     assert "spot-check representative cards in Anki" in readme
+
+
+def test_vidtoanki_free_template_audit_avoids_schema_copying() -> None:
+    skill = (SKILL / "SKILL.md").read_text(encoding="utf-8").lower()
+    contract = (SKILL / "references" / "output-contract.md").read_text(encoding="utf-8").lower()
+    note = (SKILL / "references" / "research" / "vidtoanki-card-format-ecosystem.md").read_text(encoding="utf-8").lower()
+
+    assert "prompt" in contract
+    assert "situational/scene cue" in contract
+    assert "essential card behavior may not depend on javascript or remote web assets" in contract
+    assert "essential card behavior must not depend on javascript or remote web assets" in skill
+    assert "exact free-template pack audit" in note
+    assert "seven semantic fields" in note
+    assert "why this repository is not copying the seven-field schema" in note
+    assert "renaming the current `context` field or adding another schema field" in note
+    assert "generated templates must not depend on javascript or remote web assets" in note
+
+
+def test_readme_documents_free_template_transparency_decision() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "exact free-template pack files" in readme
+    assert "no JavaScript or remote web assets required" in readme
+    assert "scene/situation can live in `prompt`" in readme

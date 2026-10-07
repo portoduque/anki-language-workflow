@@ -58,6 +58,8 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 - Grammar/morphology explanations on the back should be brief and only added when they explain why the target form is correct or prevent a predictable confusion.
 - Adapt card selection to genuinely useful target-language-specific features (for example gender/class, irregular plural/inflection, case/agreement, classifiers, irregular verb forms, or script variants). Treat each feature as a candidate, create only independently worthwhile atomic retrievals, and never generate a full paradigm by default.
 - Use structured optional fields `reading`, `variant`, and `grammar` when those data are useful; never generate extra cards merely because an auxiliary field is populated.
+- Use `prompt` for a concise learner-facing instruction or situational/scene context when it helps define the retrieval task without leaking the answer; do not add duplicate fields merely to mirror an external template.
+- Keep generated templates inspectable and portable: essential card behavior must not depend on JavaScript or remote web assets.
 - Active handwriting/written recall may use a Production card when it is independently useful; do not create handwriting cards by default.
 - Full-sentence/chunk Production targets need a higher naturalness bar: prefer attested user/native material, and do not make an unverified AI-generated sentence the exact speaking target.
 - Audio and images are optional and must add learning value.
