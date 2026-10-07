@@ -1,0 +1,153 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/portoduque/anki-language-workflow/anki-language/schemas/card-plan.schema.json",
+  "title": "Anki Language Card Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "target_language",
+    "support_language",
+    "deck_name",
+    "cards"
+  ],
+  "properties": {
+    "version": {
+      "const": "1.0"
+    },
+    "target_language": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "code"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "code": {
+          "type": "string",
+          "minLength": 2
+        }
+      }
+    },
+    "support_language": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "code"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "code": {
+          "type": "string",
+          "minLength": 2
+        }
+      }
+    },
+    "support_language_override": {
+      "type": "boolean",
+      "default": false
+    },
+    "deck_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cards": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "skill",
+          "target_text"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "skill": {
+            "enum": [
+              "reading",
+              "listening",
+              "production",
+              "pronunciation"
+            ]
+          },
+          "mode": {
+            "type": "string",
+            "default": "standard"
+          },
+          "target_text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "support_text": {
+            "type": "string"
+          },
+          "prompt": {
+            "type": "string"
+          },
+          "focus": {
+            "type": "string"
+          },
+          "hint": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "ipa": {
+            "type": "string"
+          },
+          "audio": {
+            "type": "string",
+            "minLength": 1
+          },
+          "image": {
+            "type": "string",
+            "minLength": 1
+          },
+          "source": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            },
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "skipped": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "reason"
+        ],
+        "properties": {
+          "source": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}
