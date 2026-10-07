@@ -32,7 +32,7 @@ Expected modern response shape:
 
 ## Current compatibility notes
 
-The public implementation inspected by this project currently declares Anki **23.10+** in code. The AnkiWeb directory currently lists AnkiConnect as updated in November 2025.
+The recent 2026 public mirror inspected by this project declares minimum Anki **23.10.0** in code. The AnkiWeb listing/add-on package can change independently, so verify the installed version when troubleshooting.
 
 Compatibility is version-sensitive. Before diagnosing an integration problem, verify:
 - Anki version;
@@ -150,5 +150,7 @@ Use APKG generation when the user only needs a portable deck package.
 ## Sources
 
 - https://ankiweb.net/shared/info/2055492159
-- https://github.com/ankiultimate/anki-connect
+- https://git.sr.ht/~foosoft/anki-connect (authoritative upstream)
+- https://github.com/JSchoreels/anki-connect (recent 2026 readable mirror used for current action surface)
+- https://github.com/ankiultimate/anki-connect (older readable mirror used for core implementation cross-checks)
 - https://github.com/FooSoft/anki-connect (archived historical repository)
