@@ -19,6 +19,7 @@ from PIL import Image
 from audio_clip import clip_audio
 from card_contract import AUDIO_REQUIRED_PRONUNCIATION_MODES, normalize_mode
 from media_validate import MediaValidationError, validate_media_file
+from validate_plan import validate_plan
 
 USER_AGENT = "anki-language-workflow/1.0 (https://github.com/portoduque/anki-language-workflow)"
 DEFAULT_IMAGE_LICENSES = ["cc0", "pdm"]
@@ -233,6 +234,11 @@ def relative_to_plan(path: Path, plan_dir: Path) -> str:
 
 def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = None) -> dict[str, Any]:
     plan = json.loads(plan_path.read_text(encoding="utf-8"))
+    # Fail before any download, TTS generation, or clipping on malformed or
+    # duplicate review tasks. The final delivery still validates actual media.
+    errors = validate_plan(plan, plan_path, check_media=False)
+    if errors:
+        raise ValueError("Invalid card plan before enrichment:\n- " + "\n- ".join(errors))
     plan_dir = plan_path.resolve().parent
     media_root = (media_dir or (plan_dir / "media")).resolve()
     voice_dir = media_root / ".piper-voices"
@@ -305,7 +311,11 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
             try:
                 if provider not in {"auto", "piper"}:
                     raise RuntimeError(f"Unsupported audio provider: {provider}")
-                output = media_root / f"{safe_id(str(card['id']))}-audio.wav"
+                identity = json.dumps(
+                    {"id": card["id"], "request": request}, sort_keys=True, ensure_ascii=False
+                )
+                digest = hashlib.sha256(identity.encode("utf-8")).hexdigest()[:12]
+                output = media_root / f"{safe_id(str(card['id']))[:55]}-{digest}-audio.wav"
                 selected, metadata = synthesize_piper(
                     str(request["text"]),
                     str(plan["target_language"]["code"]),
@@ -344,7 +354,11 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
             licenses = [str(x).casefold() for x in (request.get("licenses") or DEFAULT_IMAGE_LICENSES)]
             provider = str(request.get("provider", "auto"))
             try:
-                output = media_root / f"{safe_id(str(card['id']))}-image.webp"
+                identity = json.dumps(
+                    {"id": card["id"], "request": request}, sort_keys=True, ensure_ascii=False
+                )
+                digest = hashlib.sha256(identity.encode("utf-8")).hexdigest()[:12]
+                output = media_root / f"{safe_id(str(card['id']))[:55]}-{digest}-image.webp"
                 result = fetch_image(
                     str(request["query"]),
                     provider,
