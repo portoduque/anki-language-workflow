@@ -587,7 +587,7 @@ def test_vidtoanki_refinement_is_technical_and_selective() -> None:
 def test_readme_documents_vidtoanki_portability_refinement() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "vidtoanki-card-format-ecosystem.md" in readme
-    assert "Anki Language v4" in readme
+    assert "Anki Language v5" in readme
     assert "spot-check representative cards in Anki" in readme
 
 
@@ -646,7 +646,7 @@ def test_v5_card_ui_contract_is_documented() -> None:
     assert "Presentation contract" in contract
     assert "Anki Language v5" in contract
     assert "Presentation is deterministic, not model-authored" in contract
-    assert "Reading promotes the base-language meaning" in contract
+    assert "Reading promotes base-language meaning on the answer" in contract
     assert "Card UI — Anki Language v5" in ui
     assert "Reading — indigo" in ui
     assert "Listening — teal" in ui
