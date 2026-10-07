@@ -29,7 +29,7 @@ The deterministic builder splits `target_text` around `writing_answer` into fiel
 1. **Fast:** one short word or reusable chunk to type, not an entire multi-clause sentence; the visible sentence is itself short.
 2. **Answerable:** enough semantic/grammar context to identify the intended word/form; never a blind ambiguous blank.
 3. **Independent:** choose Writing when producing **correct spelling, accent, article, conjugation, or small written phrase** matters beyond existing Reading/Production. Do **not** automatically create Writing for every source chunk.
-4. **Natural:** do not cut inside a word or fixed expression just to create a gap. One answer appears **exactly once**; if it appears multiple times, select a clearer short sentence.
+4. **Natural:** do not cut inside a word or fixed expression just to create a gap. One answer appears **exactly once**; if it appears multiple times, select a clearer short sentence. Writing also supports meaningful chunks from scripts without spaces (e.g., Japanese/Chinese); their semantic boundaries remain an AI selection decision, not a Latin whitespace assumption.
 5. **Single-line:** one typed answer only. No multi-gap cloze sets, handwriting canvas, typing of complete paragraphs, or arbitrary word-count caps.
 6. **Feedback, not automatic scoring:** Anki shows the typed comparison; the learner grades the review. Normal spelling/diacritic differences matter for Writing, so do **not** disable accent checking by default.
 7. **Portability:** type-answer input is available during compatible Anki Desktop/mobile reviews. The AnkiWeb reviewer and preview do not show the typing input; in those environments this is not an interactive Writing test. Spot-check on intended devices.
