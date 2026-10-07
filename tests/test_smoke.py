@@ -11,6 +11,7 @@ EXAMPLE = SKILL / "examples" / "card-plan.example.json"
 
 sys.path.insert(0, str(SKILL / "scripts"))
 from build_apkg import CSS, FIELDS, MODEL_VERSION, card_context, make_model  # noqa: E402
+from card_contract import WORKFLOW_TAG, workflow_tag  # noqa: E402
 
 
 def run(*args: str) -> subprocess.CompletedProcess[str]:
@@ -40,6 +41,8 @@ def test_one_command_pipeline_builds_and_deep_validates(tmp_path: Path) -> None:
     assert summary["note_count"] == 3
     assert "French::01 Reading" in summary["deck_names"]
     assert "French::03 Production" in summary["deck_names"]
+    assert WORKFLOW_TAG in summary["all_tags"]
+    assert workflow_tag("French", "fr", "fr-reading-001") in summary["all_tags"]
 
 
 def test_non_english_base_language_builds(tmp_path: Path) -> None:
@@ -212,3 +215,64 @@ def test_source_metadata_stays_off_the_front() -> None:
         model = make_model(skill)
         assert "{{Source}}" not in model.templates[0]["qfmt"]
         assert "{{Source}}" in model.templates[0]["afmt"]
+
+
+def test_plan_rejects_unknown_or_cross_skill_modes(tmp_path: Path) -> None:
+    base_plan = {
+        "version": "2.0",
+        "target_language": {"name": "French", "code": "fr"},
+        "base_language": {"name": "English", "code": "en"},
+        "deck_name": "French",
+    }
+
+    typo = {
+        **base_plan,
+        "cards": [{
+            "id": "bad-mode-1",
+            "skill": "pronunciation",
+            "mode": "sound-discriminaton",
+            "prompt": "Which sound?",
+            "target_text": "u",
+        }],
+    }
+    typo_path = tmp_path / "typo.json"
+    typo_path.write_text(json.dumps(typo), encoding="utf-8")
+    result = run(str(SKILL / "scripts" / "validate_plan.py"), str(typo_path))
+    assert result.returncode == 1
+    assert "sound-discriminaton" in result.stdout
+
+    wrong_skill = {
+        **base_plan,
+        "cards": [{
+            "id": "bad-mode-2",
+            "skill": "reading",
+            "mode": "minimal-pair",
+            "target_text": "dessert",
+        }],
+    }
+    wrong_skill_path = tmp_path / "wrong-skill.json"
+    wrong_skill_path.write_text(json.dumps(wrong_skill), encoding="utf-8")
+    result = run(str(SKILL / "scripts" / "validate_plan.py"), str(wrong_skill_path))
+    assert result.returncode == 1
+    assert "not supported for skill 'reading'" in result.stdout
+
+
+def test_spelling_sound_requires_audio_after_enrichment(tmp_path: Path) -> None:
+    plan = {
+        "version": "2.0",
+        "target_language": {"name": "French", "code": "fr"},
+        "base_language": {"name": "English", "code": "en"},
+        "deck_name": "French",
+        "cards": [{
+            "id": "spell-sound-1",
+            "skill": "pronunciation",
+            "mode": "spelling-sound",
+            "prompt": "Pronounce: eaux",
+            "target_text": "eaux",
+        }],
+    }
+    path = tmp_path / "spell-sound.json"
+    path.write_text(json.dumps(plan), encoding="utf-8")
+    result = run(str(SKILL / "scripts" / "validate_plan.py"), str(path))
+    assert result.returncode == 1
+    assert "audio is required for pronunciation mode 'spelling-sound'" in result.stdout
