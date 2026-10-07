@@ -30,12 +30,12 @@ All learner-facing explanations, semantic cues, translations, and production ins
 
 Before selecting cards, read [references/card-selection.md](references/card-selection.md). These invariants are mandatory:
 
-- Create the **minimum useful number of cards**. A source unit may produce 0, 1, or multiple cards; multiple cards are allowed only for genuinely different skills.
+- Create the **minimum useful number of cards**. The same sentence, word, expression, audio, image, or passage may produce multiple cards across different skill decks when each card trains a genuinely different and worthwhile retrieval operation.
 - Every card has **one primary retrieval target**.
 - Every front must be **self-orienting in a mixed review**: show the target language and trained skill without revealing the answer.
 - Never create a prompt that makes the learner guess what the author intended. **Blind/ambiguous cloze is forbidden.**
 - Do not create automatic reverse cards. Recognition and production get separate cards only when both are worth training.
-- Do not generate every card type for every item.
+- Do not generate every card type for every item. For every extra sibling card, require enough incremental learning value to justify its future review cost; optimize memory efficiency, not volume.
 - Prefer useful chunks/collocations/patterns when the combination is the knowledge that matters.
 - Sentence mining is selective; do not turn every sentence into a card.
 - Audio and images are optional and must add learning value.

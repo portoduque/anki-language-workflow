@@ -16,6 +16,34 @@ There is no quota and no requirement to fill every deck type.
 
 Never create Reading + Listening + Production + Pronunciation versions automatically.
 
+### Selective multi-card reuse of the same source
+
+The **same source unit** — a sentence, word, expression, audio clip, image, or short passage — may legitimately generate cards in multiple skill decks.
+
+Examples:
+
+- one audio sentence may justify a **Listening** card because the learner needs to understand it by ear;
+- the same sentence may also justify a **Production** card because a useful chunk should become actively retrievable;
+- the same word may additionally justify a **Pronunciation & Sounds** card when its sound is genuinely difficult;
+- the same written sentence may justify a **Reading** card when written recognition is independently useful.
+
+This is not duplication when the cards require **different retrieval operations**.
+
+However, each extra card creates future review cost. Before creating a sibling card from the same source, ask:
+
+1. Does this card train a skill not already covered by the existing card(s)?
+2. Is that skill useful enough to deserve repeated future reviews?
+3. Does this card materially improve retention, comprehension, production, listening, or pronunciation?
+4. Would removing this card leave a meaningful learning gap?
+
+Create the additional card only when the answer is **yes** to the relevant questions.
+
+The governing principle is:
+
+> **Learning benefit must exceed future review cost.**
+
+Do not maximize the number of cards extracted from a source. Maximize **memory efficiency per review minute**.
+
 ## 2. One primary retrieval target per card
 
 Each card should answer one clear question:
