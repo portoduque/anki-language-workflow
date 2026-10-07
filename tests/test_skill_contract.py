@@ -612,3 +612,24 @@ def test_readme_documents_free_template_transparency_decision() -> None:
     assert "exact free-template pack files" in readme
     assert "no JavaScript or remote web assets required" in readme
     assert "scene/situation can live in `prompt`" in readme
+
+
+def test_delivery_identity_and_mode_contracts_are_documented() -> None:
+    skill = (SKILL / "SKILL.md").read_text(encoding="utf-8").lower()
+    contract = (SKILL / "references" / "output-contract.md").read_text(encoding="utf-8").lower()
+    recipes = (SKILL / "references" / "anki-connect" / "11-language-workflow-recipes.md").read_text(encoding="utf-8").lower()
+    readme = (ROOT / "README.md").read_text(encoding="utf-8").lower()
+
+    assert "do not invent mode strings" in skill
+    assert "existing workflow identity is idempotent only when" in skill
+    assert "fields **and** templates/css" in skill
+    assert "mode contract" in contract
+    assert "unknown modes and cross-skill mode combinations are rejected" in contract
+    assert "workflow identity" in contract
+    assert "deck name + target-language code + stable card" in contract
+    assert "legacy live notes" in contract
+    assert "template drift" in recipes
+    assert "identity match with different content is a conflict" in recipes
+    assert "deterministic card modes" in readme
+    assert "conflict-aware" in readme
+    assert "workflow identity tags" in readme
