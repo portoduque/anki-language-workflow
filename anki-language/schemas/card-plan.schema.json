@@ -121,6 +121,12 @@
             "type": "string",
             "minLength": 1
           },
+          "audio_transcript": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "description": "Optional verified transcript of the actual recording, required if one audio file is reused across cards with different target texts."
+          },
           "image": {
             "type": "string",
             "minLength": 1
