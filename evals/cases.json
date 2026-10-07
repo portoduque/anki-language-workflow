@@ -169,5 +169,41 @@
       "After creation, verifies the note field references the uploaded filename.",
       "Retrieves media from Anki and compares it against the local SHA-256 before reporting success."
     ]
+  },
+  {
+    "id": "minimal-pair-matched-voice-preferred",
+    "input": "A learner confuses two target-language sounds. Two candidate audio sets exist: one uses the same speaker/recording conditions for both words; the other uses visibly different speakers and volume levels.",
+    "expected": [
+      "Prefers the matched-speaker/matched-condition pair when quality is otherwise acceptable.",
+      "Uses the audio contrast to test the target sound rather than incidental speaker/microphone cues.",
+      "Does not block a useful minimal-pair card if only different-speaker recordings are available."
+    ]
+  },
+  {
+    "id": "spelling-sound-fade-out",
+    "input": "The learner has already demonstrated reliable automatic grapheme-to-sound mapping on representative examples; a new easy word follows the same pattern.",
+    "expected": [
+      "Does not create another spelling/spelling-sound card merely because that card type exists.",
+      "Creates one only if the new item has genuinely difficult or exceptional orthography/sound mapping.",
+      "Does not use a fixed universal 100–300 word cutoff."
+    ]
+  },
+  {
+    "id": "semantic-usage-alternative-accepted",
+    "input": "A comprehension/usage card asks the learner to demonstrate a valid context for a target word. The stored example differs from the learner's natural but correct example.",
+    "expected": [
+      "Treats the learner's natural semantically correct usage as success.",
+      "Does not require verbatim reproduction of the stored example when exact wording is not the target.",
+      "Still requires a clear prompt and rejects usages that do not demonstrate the intended meaning/form."
+    ]
+  },
+  {
+    "id": "target-language-definition-selective",
+    "input": "An intermediate learner can easily understand a concise target-language definition of a new word; a longer monolingual definition would introduce several unknown terms.",
+    "expected": [
+      "May use the concise target-language definition.",
+      "Rejects the harder definition that creates extra learning targets.",
+      "May still use the configured base language when it is clearer/faster; does not enforce monolinguality."
+    ]
   }
 ]
