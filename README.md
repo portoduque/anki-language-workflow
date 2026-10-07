@@ -22,7 +22,7 @@ Examples of valid configurations:
 
 ## What the workflow creates
 
-The AI first decides whether each source item deserves a card at all. A source item may create zero, one, or several cards, but multiple cards are allowed only when they train genuinely different skills.
+The AI first decides whether each source item deserves a card at all. A source item may create zero, one, or several cards, but multiple cards are allowed only when they train genuinely different skills. Writing is a selective fifth skill, not an automatic duplicate of Production/Reading.
 
 Deck hierarchy:
 
@@ -30,6 +30,7 @@ Deck hierarchy:
 - `<TargetLanguage>::02 Listening`
 - `<TargetLanguage>::03 Production`
 - `<TargetLanguage>::04 Pronunciation & Sounds`
+- `<TargetLanguage>::05 Writing`
 
 Vocabulary, grammar, chunks, collocations, word forms, minimal pairs, source names, and similar dimensions are stored as tags instead of extra micro-decks.
 
@@ -51,7 +52,7 @@ These are product rules, not suggestions. The complete normative specification l
 1. **Minimum useful set:** each source unit may generate 0, 1, or several cards.
 2. **Selective multi-card reuse:** the same sentence, word, expression, audio, image, or passage may appear in multiple skill decks when each card trains a genuinely different and worthwhile retrieval operation.
 3. **Marginal-benefit rule:** every extra sibling card must add enough learning value to justify its future review cost. Optimize **memory efficiency per review minute**, not card volume.
-4. **No quotas:** never create Reading + Listening + Production + Pronunciation automatically.
+4. **No quotas:** never create Reading + Listening + Production + Pronunciation + Writing automatically.
 5. **One retrieval target:** each card tests one primary piece of knowledge or skill.
 6. **Self-orienting front:** every front identifies `<TargetLanguage> — <Skill>` so mixed reviews never show a contextless question.
 7. **No guessing the author's intention:** prompts must make the intended retrieval clear without revealing the answer.
@@ -62,7 +63,8 @@ These are product rules, not suggestions. The complete normative specification l
 12. **Listening is audio-first:** do not reveal the transcript on the front; put transcript/base-language meaning on the back.
 13. **Production is constrained:** front uses a precise base-language meaning/situation/context; answer and normally audio stay on the back.
 14. **Pronunciation/Sounds is targeted:** use pronunciation, minimal pairs, sound discrimination, or spelling-sound cards only when sound is worth training; never reveal the written answer on a discrimination front.
-15. **Prefer useful chunks/collocations/patterns:** do not reduce a useful expression to isolated words when the combination is the knowledge that matters.
+15. **Writing is separate and selective:** type one missing word or short useful expression in a short natural sentence with a clear cue; do not type full sentences or create automatic Writing siblings.
+16. **Prefer useful chunks/collocations/patterns:** do not reduce a useful expression to isolated words when the combination is the knowledge that matters.
     **Chunk-first from long input:** even if the material consists entirely of long sentences, find shorter, meaningful and reusable chunks first. A long source may generate several separate, quick cards only for distinct useful targets; no mandatory full-sentence card or card-per-fragment quota.
 16. **Sentence mining is selective:** do not turn every source sentence into a card; prefer natural, useful, comprehensible context with one main focus.
 17. **Images are functional, not decorative:** prioritize concrete/visual concepts; skip ambiguous images that do not improve retrieval.
@@ -102,6 +104,30 @@ These are product rules, not suggestions. The complete normative specification l
 A source reused across multiple decks is valid only when each card covers a real additional skill gap. If the extra card mostly repeats the same retrieval, discard it.
 
 Final acceptance test for every card: **useful, distinct, clear, atomic, fast**. If one fails, revise or discard the card. **Review speed is a core requirement:** the learner should understand the Front, retrieve one meaningful unit, and verify the Back quickly. Creation itself should remain simple; avoid long prompts, multi-clause recall and unnecessary formatting.
+
+## New Writing skill — quick typed gaps
+
+The fifth subdeck, `<TargetLanguage>::05 Writing`, practices **typed spelling/grammar/chunk retrieval**. It uses Anki's **native** type-in-answer feature, with our existing v5 visual system and a dedicated blue accent.
+
+For example, the AI can create **one** Writing card with:
+
+```json
+{
+  "id": "write-01",
+  "skill": "writing",
+  "target_text": "Je vais à l'école.",
+  "writing_answer": "à l'école",
+  "prompt": "Complete com a expressão para 'à escola'."
+}
+```
+
+On the Front, the user sees `Je vais […] .` (the actual sentence punctuation is preserved), a short instruction, and Anki's built-in input to **type only `à l'école`**. On reveal, Anki compares the typed form with the exact answer, and the Back shows the complete sentence. No JavaScript, add-on, manual cloze syntax, or extra review cards. The typed answer appears exactly once within `target_text` and is split deterministically into visible `WritingBefore`/`WritingAfter` fields.
+
+The `prompt` must make the gap unambiguous. Writing is useful for orthography, accents, article+preposition forms, verb inflections and short chunks. The workflow **does not** generate Writing for every source line or known Production card. It creates a Writing card only when correct **written form** deserves its own quick review. Optional audio belongs on the Back. Long source material should still yield **short** Writing sentences/chunks.
+
+**Compatibility:** Official Anki supports one typed single-line comparison per card and the learner still selects their own rating. **AnkiWeb and template preview do not display the typing input**, and mobile client appearance may vary. Review Writing cards in supported Anki Desktop/mobile clients. Use normal accent-sensitive comparison, not `type:nc`, when spelling matters.
+
+Implementation and research rationale: `anki-language/references/writing.md`.
 
 ## Long sentences → useful short chunks
 
@@ -620,6 +646,7 @@ The UI is shared across every skill and keeps the same information architecture 
 - **Listening** — teal; audio is the dominant front interaction and transcript becomes the main answer;
 - **Production** — amber; learner-facing prompt is dominant and the produced target is the main answer;
 - **Pronunciation & Sounds** — rose; prompt/audio is dominant while the written target remains hidden on fronts where it would leak the answer.
+- **Writing** — blue; one short sentence with a contextual gap, one native typing field, and full-sentence feedback on the back.
 
 The v5 layout adds a compact skill/language header, rounded review surface, stronger typographic hierarchy, soft cue/hint panels, cleaner answer/support separation, centered media treatment, responsive mobile spacing, night-mode variants, and RTL/mixed-script support. Color never replaces textual skill labels.
 
