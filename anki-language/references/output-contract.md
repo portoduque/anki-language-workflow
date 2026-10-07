@@ -71,6 +71,9 @@ An original sentence/turn may be long, but `target_text` should **normally conta
 - **Source:** preserve the original material's valid locator in `source` (and only minimal helpful explanation on the back). Do not insert the full original sentence into every Front as mandatory context.
 - A complete sentence is allowed when the **entire utterance** is what the learner must retrieve and the card still passes the quick-answer/quick-verification test.
 - No automatic slicing by punctuation/word count, fixed chunk quota, new deck type, note model, or extra schema field is required. The selection step is semantic and remains the responsibility of the AI operating the skill.
+- Select distinct learning **chunks first**; assign one primary skill to each, then add other skill cards only for independently useful retrieval operations. Scan the final batch for near-paraphrases.
+- Exact duplicate retrieval tasks **within one plan** are rejected even if IDs, tags, source or notes differ; this is not a semantic similarity or existing-Anki-collection audit.
+- For standard modes and Pronunciation `spelling-sound`, `audio_request.text` must match the card's spoken `target_text` (ignoring case/punctuation/spacing), to prevent unrelated TTS.
 
 For each candidate, mentally simulate one review: can the learner tell what to retrieve immediately, recover one target, and check the answer quickly? Otherwise simplify, split useful targets, or skip.
 
