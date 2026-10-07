@@ -29,6 +29,19 @@ Sources:
 - https://ankiweb.net/shared/info/2055492159
 - https://github.com/ankiultimate/anki-connect
 
+### Anki MCP Server
+
+- Purpose: expose Anki operations to AI assistants through Model Context Protocol.
+- Useful when: an AI agent needs live access to a running Anki collection rather than only generating an APKG.
+- Current implementations include an external MCP server built on AnkiConnect and an Anki add-on implementation.
+- Treat as optional/live-integration infrastructure, not a dependency of this repository's APKG workflow.
+- Verify current authentication/network configuration before remote exposure.
+
+Sources:
+- https://github.com/ankimcp/anki-mcp-server
+- https://github.com/ankimcp/anki-mcp-server-addon
+- https://ankimcp.ai/docs/reference/addon/
+
 ### HyperTTS
 
 - Purpose: generate/add TTS audio to notes/cards.
