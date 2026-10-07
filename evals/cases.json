@@ -280,5 +280,44 @@
       "Does not claim that those cross-skill cards are Anki siblings.",
       "Explains that native sibling burying only affects multiple cards generated from the same note."
     ]
+  },
+  {
+    "id": "near-i-plus-one-mining",
+    "input": "A candidate sentence contains the useful target expression plus three other unfamiliar words. Another natural sentence contains the same target and all surrounding words are already understood.",
+    "expected": [
+      "Prefers the cleaner near-i+1 sentence.",
+      "Keeps one primary unknown/focus item.",
+      "Does not force the denser sentence merely because it came from the original source.",
+      "If no clean sentence exists, may split targets, seek another context, or skip."
+    ]
+  },
+  {
+    "id": "polysemy-analysis-without-front-bloat",
+    "input": "A target word has a literal sense, a common figurative sense, and several example sentences available.",
+    "expected": [
+      "Inspects multiple trustworthy contexts before deciding which senses matter.",
+      "Does not paste six or more example sentences onto the review front.",
+      "Uses one clear primary context per card.",
+      "Creates separate sense cards only when the senses are distinct and independently useful; otherwise keeps extra examples concise and secondary."
+    ]
+  },
+  {
+    "id": "production-authenticity-gate",
+    "input": "An AI-generated sentence is grammatical but its naturalness/register is uncertain. A native-source sentence expresses the same useful chunk naturally.",
+    "expected": [
+      "Prefers the attested/native sentence for an exact Production target.",
+      "Does not train the uncertain AI sentence verbatim without sufficient validation.",
+      "May use a direct semantic production prompt when no trustworthy full sentence is available.",
+      "Keeps generated passive-support examples subject to correctness/naturalness checks as well."
+    ]
+  },
+  {
+    "id": "shadowing-not-forced-on-every-production-card",
+    "input": "A Production card has answer audio, but pronunciation/prosody is not a meaningful difficulty for this item.",
+    "expected": [
+      "Does not create an extra Pronunciation card solely because shadowing is possible.",
+      "Does not make repeated shadowing mandatory for every review.",
+      "May suggest brief post-answer shadowing only when pronunciation/prosody has real learning value."
+    ]
   }
 ]
