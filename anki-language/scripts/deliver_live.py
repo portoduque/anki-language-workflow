@@ -328,14 +328,17 @@ def deliver_live(
     pending_cards: list[dict[str, Any]] = []
     pending_media: list[dict[str, Path]] = []
     skipped_existing: list[str] = []
+    legacy_existing_verified: list[str] = []
 
     for card in plan["cards"]:
-        tag = workflow_tag(str(card["id"]))
-        existing = client.invoke("findNotes", {"query": f"tag:{tag}"}) or []
-        if existing:
-            skipped_existing.append(str(card["id"]))
-            continue
         note, media = build_note(plan, card, plan_dir)
+        existing = find_existing_card(client, plan, card, note)
+        if existing is not None:
+            _, identity_kind = existing
+            skipped_existing.append(str(card["id"]))
+            if identity_kind == "legacy":
+                legacy_existing_verified.append(str(card["id"]))
+            continue
         pending_notes.append(note)
         pending_cards.append(card)
         pending_media.append(media)
@@ -346,6 +349,7 @@ def deliver_live(
             "mode": "live",
             "created": 0,
             "skipped_existing": skipped_existing,
+            "legacy_existing_verified": legacy_existing_verified,
             "capabilities": capabilities,
             "media_verified": [],
         }
@@ -385,6 +389,7 @@ def deliver_live(
         "created": len(note_ids),
         "note_ids": note_ids,
         "skipped_existing": skipped_existing,
+        "legacy_existing_verified": legacy_existing_verified,
         "capabilities": capabilities,
         "media_verified": sorted(media_verified.values(), key=lambda item: item["filename"]),
     }
