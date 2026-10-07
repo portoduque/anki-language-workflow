@@ -6,18 +6,18 @@ The canonical skill is `anki-language/`.
 
 `python anki-language/scripts/install_skill.py codex --scope project --project .`
 
-This copies the skill to:
-
-`.agents/skills/anki-language/`
+Installs to `.agents/skills/anki-language/`, the repo-local skill layout used by Codex.
 
 ## User install
 
 `python anki-language/scripts/install_skill.py codex --scope user`
 
-This installs under `$CODEX_HOME/skills/anki-language` (defaulting to `~/.codex/skills/anki-language`).
+Installs to `~/.agents/skills/anki-language/`.
 
 ## Invocation
 
-Explicitly name the `anki-language` skill in Codex. Clients that expose skill mentions can use `$anki-language`.
+Use `$anki-language` for explicit invocation. Codex may also select the skill automatically when the request matches its description.
 
-Give the material path(s) and target language when known. If target language is obvious from the material, the skill may infer it.
+The bundled `agents/openai.yaml` supplies OpenAI-facing display metadata and a default prompt while the portable logic stays in `SKILL.md`.
+
+Keep repository-wide coding conventions in `AGENTS.md`; keep this repeatable language-learning procedure in the skill.
