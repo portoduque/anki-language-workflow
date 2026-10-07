@@ -79,3 +79,10 @@ def test_skill_allows_selective_multi_card_reuse_without_volume_inflation() -> N
     assert "incremental learning value" in text
     assert "future review cost" in text
     assert "optimize memory efficiency, not volume" in text
+
+
+def test_readme_documents_anki_reference_library() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "## Complete Anki technical reference library" in readme
+    assert "find_anki_reference.py" in readme
+    assert "https://docs.ankiweb.net/llms.txt" in readme
