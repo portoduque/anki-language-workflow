@@ -96,8 +96,8 @@ def test_writing_parts_preserve_unicode_accents_quotes_and_word_boundaries() -> 
     ("Elle mange et mange encore.", "mange", "exactly once"),
     ("Nous sommes ici.", "omm", "word boundaries"),
     ("Je vais à l'école.", " école", "outer whitespace"),
-    ("Je vais à l'école.", "", "nonempty"),
-    ("Je vais à l'école.", "à\nl'école", "single-line"),
+    ("Je vais à l'école.", "", "non-empty"),
+    ("Je vais à l'école.", "à\nl'école", "plain text"),
     ("Je vais à l'école.", "<b>école</b>", "plain text"),
 ])
 def test_writing_rejects_bad_or_unanswerable_gaps(
