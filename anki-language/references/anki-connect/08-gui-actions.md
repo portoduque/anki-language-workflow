@@ -1,45 +1,44 @@
-# 08 — GUI / Browser / Reviewer Actions
+# 08 — GUI, Browser, and Reviewer Actions
 
-GUI actions automate visible Anki windows such as Browser, Add Cards, deck overview, and reviewer.
+GUI actions drive visible Anki windows and reviewer state. They are useful when human review/confirmation is desirable.
 
-Use them when human review/interaction is part of the workflow. Prefer non-GUI actions for deterministic bulk/headless operations.
+Prefer non-GUI actions for headless deterministic automation.
 
-Reviewer actions depend on current GUI state.
+## Important behavior
 
-## Supported actions
+- `guiBrowse` opens/searches Browser and returns matching card IDs.
+- `guiSelectCard` selects a card in an open Browser.
+- `guiSelectedNotes` reads selected note IDs.
+- `guiAddCards` opens Add Cards prefilled with note data.
+- `guiAddNoteSetData` is a newer action in the 2026 mirror; runtime-verify before use.
+- reviewer actions show question/answer, answer the current card, and manage timer/state.
+- `guiPlayAudio` is a newer action in the 2026 mirror; runtime-verify before use.
+- `guiImportFile` opens Anki's import UI for human review.
+- `guiCheckDatabase` returns immediately; a true return does not mean the database check found no issues.
+- `guiExitAnki` is asynchronous.
 
-| Action | Status | Main documented params | Purpose |
+## Complete current catalog
+
+| Action | Exact source signature | Risk | Purpose |
 | --- | --- | --- | --- |
-| `guiBrowse` | baseline | `query`, `reorderCards` | Invokes the *Card Browser* dialog and searches for a given query. Returns an array of identifiers of the cards that |
-| `guiSelectCard` | baseline | `card` | Finds the open instance of the *Card Browser* dialog and selects a card given a card identifier. |
-| `guiSelectedNotes` | baseline | — | Finds the open instance of the *Card Browser* dialog and returns an array of identifiers of the notes that are |
-| `guiAddCards` | baseline | `note` | Invokes the *Add Cards* dialog, presets the note using the given deck and model, with the provided field values and tags. |
-| `guiEditNote` | baseline | `note` | Opens the *Edit* dialog with a note corresponding to given note ID. |
-| `guiCurrentCard` | baseline | — | Returns information about the current card or `null` if not in review mode. |
-| `guiStartCardTimer` | baseline | — | Starts or resets the `timerStarted` value for the current card. This is useful for deferring the start time to when |
-| `guiShowQuestion` | baseline | — | Shows question text for the current card; returns `true` if in review mode or `false` otherwise. |
-| `guiShowAnswer` | baseline | — | Shows answer text for the current card; returns `true` if in review mode or `false` otherwise. |
-| `guiAnswerCard` | baseline | `ease` | Answers the current card; returns `true` if succeeded or `false` otherwise. Note that the answer for the current |
-| `guiUndo` | baseline | — | Undo the last action / card; returns `true` if succeeded or `false` otherwise. |
-| `guiDeckOverview` | baseline | `name` | Opens the *Deck Overview* dialog for the deck with the given name; returns `true` if succeeded or `false` otherwise. |
-| `guiDeckBrowser` | baseline | — | Opens the *Deck Browser* dialog. |
-| `guiDeckReview` | baseline | `name` | Starts review for the deck with the given name; returns `true` if succeeded or `false` otherwise. |
-| `guiImportFile` | baseline | `path` | Invokes the *Import... (Ctrl+Shift+I)* dialog with an optional file path. Brings up the dialog for user to review the import. Supports all file types that Anki supports. Brings open file dialog if no path is provided. Forward slashes must be used in the path on Windows. Only supported for Anki 2.1.52+. |
-| `guiExitAnki` | baseline | — | Schedules a request to gracefully close Anki. This operation is asynchronous, so it will return immediately and |
-| `guiCheckDatabase` | baseline | — | Requests a database check, but returns immediately without waiting for the check to complete. Therefore, the action will always return `true` even if errors are detected during the database check. |
-| `guiAddNoteSetData` | extended / verify via `apiReflect` | `note` | Sets fields, tags, deck, and note type (model) in the *Add Note* dialog. Optionally appends to fields/tags instead of replacing them. |
-| `guiPlayAudio` | extended / verify via `apiReflect` | — | Plays any Audio for the current side of the current card; returns `true` if succeeded or `false` otherwise. |
+| `guiBrowse` | `self, query=None, reorderCards=None` | `gui-state` | Invokes the *Card Browser* dialog and searches for a given query. |
+| `guiSelectCard` | `self, card` | `gui-state` | Finds the open instance of the *Card Browser* dialog and selects a card given a card identifier. |
+| `guiSelectedNotes` | `self` | `gui-state` | Finds the open instance of the *Card Browser* dialog and returns an array of identifiers of the notes that are selected. |
+| `guiAddCards` | `self, note=None` | `gui-state` | Invokes the *Add Cards* dialog, presets the note using the given deck and model, with the provided field values and tags. |
+| `guiEditNote` | `self, note` | `gui-state` | Opens the *Edit* dialog with a note corresponding to given note ID. |
+| `guiCurrentCard` | `self` | `gui-state` | Returns information about the current card or `null` if not in review mode. |
+| `guiStartCardTimer` | `self` | `gui-state` | Starts or resets the `timerStarted` value for the current card. |
+| `guiShowQuestion` | `self` | `gui-state` | Shows question text for the current card; returns `true` if in review mode or `false` otherwise. |
+| `guiShowAnswer` | `self` | `gui-state` | Shows answer text for the current card; returns `true` if in review mode or `false` otherwise. |
+| `guiAnswerCard` | `self, ease` | `gui-state` | Answers the current card; returns `true` if succeeded or `false` otherwise. |
+| `guiUndo` | `self` | `gui-state` | Undo the last action / card; returns `true` if succeeded or `false` otherwise. |
+| `guiDeckOverview` | `self, name` | `gui-state` | Opens the *Deck Overview* dialog for the deck with the given name; returns `true` if succeeded or `false` otherwise. |
+| `guiDeckBrowser` | `self` | `gui-state` | Opens the *Deck Browser* dialog. |
+| `guiDeckReview` | `self, name` | `gui-state` | Starts review for the deck with the given name; returns `true` if succeeded or `false` otherwise. |
+| `guiImportFile` | `self, path=None` | `gui-state` | Invokes the *Import... |
+| `guiExitAnki` | `self` | `gui-state` | Schedules a request to gracefully close Anki. |
+| `guiCheckDatabase` | `self` | `gui-state` | Requests a database check, but returns immediately without waiting for the check to complete. |
+| `guiAddNoteSetData` | `self, note, append=False` | `gui-state` | Sets fields, tags, deck, and note type (model) in the *Add Note* dialog. |
+| `guiPlayAudio` | `self` | `gui-state` | Plays any Audio for the current side of the current card; returns `true` if succeeded or `false` otherwise. |
 
-## Status policy
-
-- **baseline**: present in the baseline public standard documentation snapshot.
-- **extended / verify via `apiReflect`**: present in a newer upstream-tracking mirror but absent from the baseline mirror; verify the user's installed AnkiConnect before invoking.
-
-## Runtime verification
-
-Before using a version-sensitive or uncertain action, call `apiReflect` against the user's installed AnkiConnect.
-
-## Sources
-
-- https://github.com/ankiultimate/anki-connect
-- https://github.com/JSchoreels/anki-connect
+GUI actions depend on current application state; failures can mean the relevant Browser/Reviewer window is not active.
