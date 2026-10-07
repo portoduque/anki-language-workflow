@@ -78,6 +78,23 @@ def test_verified_audio_transcript_uses_word_boundaries_not_partial_substrings(t
     assert problems([good], tmp_path) == []
 
 
+def test_contractions_are_not_false_matches_in_audio(tmp_path: Path) -> None:
+    from audio_clip import locate_exact_phrase
+
+    item = card("contraction", target="I can stay", audio="clip.wav",
+                audio_transcript="I can't stay")
+    assert any("does not contain the target wording" in issue
+               for issue in problems([item], tmp_path))
+
+    for words in [
+        [("I", 0, 0.2), ("can't", 0.2, 0.7), ("stay", 0.7, 1.0)],
+        [("I", 0, 0.2), ("can", 0.2, 0.5), ("'t", 0.5, 0.7), ("stay", 0.7, 1.0)],
+    ]:
+        with pytest.raises(ValueError, match="not found exactly"):
+            locate_exact_phrase("I can stay", words)
+        assert locate_exact_phrase("I can't stay", words) == (0, 1.0)
+
+
 def test_tts_cannot_read_a_different_sentence_than_the_card(tmp_path: Path) -> None:
     wrong = card("wrong", skill="listening", target="Bonjour", audio_request={
         "mode": "tts", "provider": "piper", "text": "Bonsoir",
