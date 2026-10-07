@@ -10,7 +10,7 @@ SKILL = ROOT / "anki-language"
 EXAMPLE = SKILL / "examples" / "card-plan.example.json"
 
 sys.path.insert(0, str(SKILL / "scripts"))
-from build_apkg import make_model  # noqa: E402
+from build_apkg import card_context, make_model  # noqa: E402
 
 
 def run(*args: str) -> subprocess.CompletedProcess[str]:
@@ -139,3 +139,8 @@ def test_workspace_config_rejects_mismatched_plan_languages(tmp_path: Path) -> N
     result = run(str(SKILL / "scripts" / "validate_plan.py"), str(plan_path))
     assert result.returncode == 1
     assert "does not match workspace configuration" in result.stdout
+
+
+def test_front_context_identifies_target_language_and_skill() -> None:
+    assert card_context("French", "listening") == "French — Listening"
+    assert card_context("Japanese", "production") == "Japanese — Production"
