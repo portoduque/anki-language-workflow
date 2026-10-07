@@ -325,6 +325,7 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
                 )
                 validation = validate_media_file(output, "audio")
                 card["audio"] = relative_to_plan(output, plan_dir)
+                card.pop("audio_request", None)  # resolved plan has one audio source
                 license_meta = metadata.get("license") if isinstance(metadata, dict) else None
                 if isinstance(license_meta, dict):
                     license_text = str(license_meta.get("name") or license_meta.get("url") or "")
@@ -366,6 +367,7 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
                     output,
                 )
                 card["image"] = relative_to_plan(output, plan_dir)
+                card.pop("image_request", None)  # resolved plan has one image source
                 card["image_provenance"] = {
                     "kind": "licensed",
                     "provider": str(result["provider"]),
