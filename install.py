@@ -24,6 +24,7 @@ def main() -> int:
     parser.add_argument("--dest", type=Path, help="Required for generic installation.")
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--skip-deps", action="store_true", help="Do not install Python runtime dependencies.")
+    parser.add_argument("--skip-media-deps", action="store_true", help="Skip optional automatic-media dependencies such as Piper TTS.")
     args = parser.parse_args()
 
     if args.agent == "generic" and args.dest is None:
@@ -32,6 +33,8 @@ def main() -> int:
     try:
         if not args.skip_deps:
             run([sys.executable, "-m", "pip", "install", "-r", str(SKILL / "requirements.txt")])
+            if not args.skip_media_deps:
+                run([sys.executable, "-m", "pip", "install", "-r", str(SKILL / "requirements-media.txt")])
 
         cmd = [
             sys.executable,
@@ -52,7 +55,8 @@ def main() -> int:
         return exc.returncode or 1
 
     print()
-    print("Installation complete. On first use in each workspace, the AI must ask for target language and base language.")
+    print("Installation complete. Automatic media generation is ready unless --skip-media-deps was used.")
+    print("On first use in each workspace, the AI must ask for target language and base language.")
     return 0
 
 
