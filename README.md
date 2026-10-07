@@ -565,6 +565,10 @@ The design remains intentionally dependency-free: no JavaScript, remote fonts, i
 
 Existing v3/v4 cards are not migrated automatically. The version bump prevents a visual redesign from silently changing cards the learner may already use or have customized.
 
+### Functional coverage
+
+The v5 UI has deterministic functional tests for all four skills. The suite verifies front/back answer-leak boundaries, answer hierarchy, conditional optional sections, mobile/night-mode/RTL guarantees, dependency-free HTML/CSS, a real four-skill APKG build with audio/image media, deep APKG validation, and live AnkiConnect model compatibility for all four v5 note types.
+
 ### Deterministic card modes
 
 `mode` is validated instead of treated as an arbitrary string:
