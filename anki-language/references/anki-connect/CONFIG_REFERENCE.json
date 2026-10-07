@@ -60,5 +60,11 @@
   "environment_variables": {
     "ANKICONNECT_BIND_ADDRESS": "Overrides default bind address in the inspected implementation.",
     "ANKICONNECT_CORS_ORIGIN": "Legacy/single CORS-origin environment override in the inspected implementation."
-  }
+  },
+  "snapshot_date": "2026-10-06",
+  "authoritative_upstream": "https://git.sr.ht/~foosoft/anki-connect",
+  "reference_mirror": "https://github.com/JSchoreels/anki-connect",
+  "reference_mirror_commit": "9c88a41c0e919fe02153dda0f0afa9a0f9cb232a",
+  "minimum_anki_version_observed_in_reference_mirror": "23.10.0",
+  "runtime_truth": "Use version/apiReflect and the installed add-on behavior for capability truth; config defaults can change across releases."
 }
