@@ -68,8 +68,14 @@ def test_non_english_base_language_builds(tmp_path: Path) -> None:
 
 
 def test_listening_media_is_packaged(tmp_path: Path) -> None:
-    audio = tmp_path / "phrase.mp3"
-    audio.write_bytes(b"test-audio-payload")
+    import wave
+
+    audio = tmp_path / "phrase.wav"
+    with wave.open(str(audio), "wb") as wav:
+        wav.setnchannels(1)
+        wav.setsampwidth(2)
+        wav.setframerate(16000)
+        wav.writeframes(b"\x00\x00" * 1600)
     plan = {
         "version": "2.0",
         "target_language": {"name": "French", "code": "fr"},
@@ -81,7 +87,7 @@ def test_listening_media_is_packaged(tmp_path: Path) -> None:
                 "skill": "listening",
                 "target_text": "Je suis ici.",
                 "base_text": "Estoy aquí.",
-                "audio": "phrase.mp3",
+                "audio": "phrase.wav",
                 "audio_provenance": {"kind": "user-supplied"},
                 "tags": ["listening"],
             }
