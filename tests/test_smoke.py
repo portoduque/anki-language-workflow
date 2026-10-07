@@ -110,3 +110,32 @@ def test_card_template_has_dynamic_language_labels() -> None:
     assert "{{TargetLanguage}}" in back
     assert "{{BaseLanguage}}" in back
     assert ">English<" not in back
+
+def test_workspace_config_rejects_mismatched_plan_languages(tmp_path: Path) -> None:
+    config = {
+        "version": "1.0",
+        "target_language": {"name": "Japanese", "code": "ja"},
+        "base_language": {"name": "Portuguese", "code": "pt-BR"},
+    }
+    (tmp_path / "anki-language.config.json").write_text(
+        json.dumps(config, ensure_ascii=False), encoding="utf-8"
+    )
+    plan = {
+        "version": "2.0",
+        "target_language": {"name": "French", "code": "fr"},
+        "base_language": {"name": "English", "code": "en"},
+        "deck_name": "French",
+        "cards": [
+            {
+                "id": "read-1",
+                "skill": "reading",
+                "target_text": "bonjour",
+                "base_text": "hello",
+            }
+        ],
+    }
+    plan_path = tmp_path / "plan.json"
+    plan_path.write_text(json.dumps(plan), encoding="utf-8")
+    result = run(str(SKILL / "scripts" / "validate_plan.py"), str(plan_path))
+    assert result.returncode == 1
+    assert "does not match workspace configuration" in result.stdout
