@@ -6,6 +6,19 @@ This directory is the technical reference layer for the `anki-language` skill.
 
 Do **not** load every file on every run.
 
+Fastest route when scripts can be executed:
+
+`python scripts/find_anki_reference.py "<technical need>"`
+
+Examples:
+
+- `python scripts/find_anki_reference.py "FSRS desired retention"`
+- `python scripts/find_anki_reference.py "APKG audio media import"`
+- `python scripts/find_anki_reference.py "AnkiConnect automation API"`
+- `python scripts/find_anki_reference.py "cloze typed answer template"`
+
+The router returns the highest-scoring local reference files plus the official live documentation index.
+
 1. Read this index when an Anki-specific technical decision is required.
 2. Open only the topic file(s) that match the decision.
 3. Prefer the local summaries for stable concepts.
