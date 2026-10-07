@@ -1,1219 +1,1430 @@
 {
-  "snapshot_date": "2026-10-06",
-  "authoritative_upstream": "https://git.sr.ht/~foosoft/anki-connect",
-  "upstream_note": "The original GitHub repository was archived in 2025 and moved to SourceHut. SourceHut is not machine-readable in this environment, so this catalog uses a recent public mirror for the 2026 action surface and requires live verification with version/apiReflect before relying on an action.",
-  "reference_mirror": "https://github.com/JSchoreels/anki-connect",
-  "reference_mirror_commit": "9c88a41c0e919fe02153dda0f0afa9a0f9cb232a",
+  "generated_from": {
+    "baseline": "https://github.com/ankiultimate/anki-connect/blob/master/README.md",
+    "supplemental_current_mirror": "https://github.com/JSchoreels/anki-connect/blob/main/README.md"
+  },
+  "authority_policy": "Runtime version/apiReflect and original upstream outrank mirrors. Extended actions must be verified on the user's installed AnkiConnect before use.",
   "api_version": 6,
+  "baseline_action_count": 114,
+  "extended_action_count": 4,
   "action_count": 118,
-  "categories": [
-    "Card",
-    "Deck",
-    "Graphical",
-    "Media",
-    "Miscellaneous",
-    "Model",
-    "Note",
-    "Statistic"
+  "extended_actions": [
+    "gradeNow",
+    "repositionNewCards",
+    "guiAddNoteSetData",
+    "guiPlayAudio"
   ],
   "actions": [
     {
       "name": "getEaseFactors",
       "category": "Card",
-      "signature": "self, cards",
-      "parameters": [
+      "description": "Returns an array with the ease factor for each of the given cards (in the same order).",
+      "params": [
         "cards"
       ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#geteasefactors"
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
     },
     {
       "name": "setEaseFactors",
       "category": "Card",
-      "signature": "self, cards, easeFactors",
-      "parameters": [
+      "description": "Sets ease factor of cards by card ID; returns `true` if successful (all cards existed) or `false` otherwise.",
+      "params": [
         "cards",
         "easeFactors"
       ],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#seteasefactors"
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
     },
     {
       "name": "setSpecificValueOfCard",
       "category": "Card",
-      "signature": "self, card, keys, newValues, warning_check=False",
-      "parameters": [
+      "description": "Sets specific value of a single card. Given the risk of wreaking havor in the database when changing some of the values of a card, some of the keys require the argument \"warning_check\" set to True.",
+      "params": [
         "card",
         "keys",
-        "newValues",
-        "warning_check"
+        "newValues"
       ],
-      "risk": "destructive",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#setspecificvalueofcard"
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
     },
     {
       "name": "suspend",
       "category": "Card",
-      "signature": "self, cards, suspend=True",
-      "parameters": [
-        "cards",
-        "suspend"
+      "description": "Suspend cards by card ID; returns `true` if successful (at least one card wasn't already suspended) or `false`",
+      "params": [
+        "cards"
       ],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#suspend"
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
     },
     {
       "name": "unsuspend",
       "category": "Card",
-      "signature": "self, cards",
-      "parameters": [
+      "description": "Unsuspend cards by card ID; returns `true` if successful (at least one card was previously suspended) or `false`",
+      "params": [
         "cards"
       ],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#unsuspend"
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
     },
     {
       "name": "suspended",
       "category": "Card",
-      "signature": "self, card",
-      "parameters": [
+      "description": "Check if card is suspended by its ID. Returns `true` if suspended, `false` otherwise.",
+      "params": [
         "card"
       ],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#suspended"
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
     },
     {
       "name": "areSuspended",
       "category": "Card",
-      "signature": "self, cards",
-      "parameters": [
+      "description": "Returns an array indicating whether each of the given cards is suspended (in the same order). If card doesn't",
+      "params": [
         "cards"
       ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#aresuspended"
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
     },
     {
       "name": "areDue",
       "category": "Card",
-      "signature": "self, cards",
-      "parameters": [
+      "description": "Returns an array indicating whether each of the given cards is due (in the same order). *Note*: cards in the",
+      "params": [
         "cards"
       ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#aredue"
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
     },
     {
       "name": "getIntervals",
       "category": "Card",
-      "signature": "self, cards, complete=False",
-      "parameters": [
-        "cards",
-        "complete"
+      "description": "Returns an array of the most recent intervals for each given card ID, or a 2-dimensional array of all the intervals",
+      "params": [
+        "cards"
       ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getintervals"
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
     },
     {
       "name": "findCards",
       "category": "Card",
-      "signature": "self, query=None, fields=None, noteFields=None",
-      "parameters": [
-        "query",
-        "fields",
-        "noteFields"
+      "description": "Returns an array of card IDs for a given query. Functionally identical to `guiBrowse` but doesn't use the GUI for",
+      "params": [
+        "query"
       ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#findcards"
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
     },
     {
       "name": "cardsToNotes",
       "category": "Card",
-      "signature": "self, cards",
-      "parameters": [
+      "description": "Returns an unordered array of note IDs for the given card IDs. For cards with the same note, the ID is only given",
+      "params": [
         "cards"
       ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#cardstonotes"
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
     },
     {
       "name": "cardsModTime",
       "category": "Card",
-      "signature": "self, cards",
-      "parameters": [
+      "description": "Returns a list of objects containings for each card ID the modification time.",
+      "params": [
         "cards"
       ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#cardsmodtime"
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
     },
     {
       "name": "cardsInfo",
       "category": "Card",
-      "signature": "self, cards, fields=None, noteFields=None, retrieved_info_mode='ALL'",
-      "parameters": [
-        "cards",
-        "fields",
-        "noteFields",
-        "retrieved_info_mode"
+      "description": "Returns a list of objects containing for each card ID the card fields, front and back sides including CSS, note",
+      "params": [
+        "cards"
       ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#cardsinfo"
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
     },
     {
       "name": "forgetCards",
       "category": "Card",
-      "signature": "self, cards",
-      "parameters": [
+      "description": "Forget cards, making the cards new again.",
+      "params": [
         "cards"
       ],
-      "risk": "destructive",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#forgetcards"
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
     },
     {
       "name": "relearnCards",
       "category": "Card",
-      "signature": "self, cards",
-      "parameters": [
+      "description": "Make cards be \"relearning\".",
+      "params": [
         "cards"
       ],
-      "risk": "destructive",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#relearncards"
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
     },
     {
       "name": "answerCards",
       "category": "Card",
-      "signature": "self, answers",
-      "parameters": [
+      "description": "Answer cards. Ease is between 1 (Again) and 4 (Easy). Will start the timer immediately before answering. Returns `true` if card exists, `false` otherwise.",
+      "params": [
         "answers"
       ],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#answercards"
-    },
-    {
-      "name": "gradeNow",
-      "category": "Card",
-      "signature": "self, cards, ease",
-      "parameters": [
-        "cards",
-        "ease"
-      ],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#gradenow"
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
     },
     {
       "name": "setDueDate",
       "category": "Card",
-      "signature": "self, cards, days",
-      "parameters": [
+      "description": "Set Due Date. Turns cards into review cards if they are new, and makes them due on a certain date.",
+      "params": [
         "cards",
         "days"
       ],
-      "risk": "destructive",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#setduedate"
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "deckNames",
+      "category": "Deck",
+      "description": "Gets the complete list of deck names for the current user.",
+      "params": [],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "deckNamesAndIds",
+      "category": "Deck",
+      "description": "Gets the complete list of deck names and their respective IDs for the current user.",
+      "params": [],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "getDecks",
+      "category": "Deck",
+      "description": "Accepts an array of card IDs and returns an object with each deck name as a key, and its value an array of the given",
+      "params": [
+        "cards"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "createDeck",
+      "category": "Deck",
+      "description": "Create a new empty deck. Will not overwrite a deck that exists with the same name.",
+      "params": [
+        "deck"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "changeDeck",
+      "category": "Deck",
+      "description": "Moves cards with the given IDs to a different deck, creating the deck if it doesn't exist yet.",
+      "params": [
+        "cards",
+        "deck"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "deleteDecks",
+      "category": "Deck",
+      "description": "Deletes decks with the given names.",
+      "params": [
+        "decks",
+        "cardsToo"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "getDeckConfig",
+      "category": "Deck",
+      "description": "Gets the configuration group object for the given deck.",
+      "params": [
+        "deck"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "saveDeckConfig",
+      "category": "Deck",
+      "description": "Saves the given configuration group, returning `true` on success or `false` if the ID of the configuration group is",
+      "params": [
+        "config"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "setDeckConfigId",
+      "category": "Deck",
+      "description": "Changes the configuration group for the given decks to the one with the given ID. Returns `true` on success or",
+      "params": [
+        "decks",
+        "configId"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "cloneDeckConfigId",
+      "category": "Deck",
+      "description": "Creates a new configuration group with the given name, cloning from the group with the given ID, or from the default",
+      "params": [
+        "name",
+        "cloneFrom"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "removeDeckConfigId",
+      "category": "Deck",
+      "description": "Removes the configuration group with the given ID, returning `true` if successful, or `false` if attempting to",
+      "params": [
+        "configId"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "getDeckStats",
+      "category": "Deck",
+      "description": "Gets statistics such as total cards and cards due for the given decks.",
+      "params": [
+        "decks"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "guiBrowse",
+      "category": "Graphical",
+      "description": "Invokes the *Card Browser* dialog and searches for a given query. Returns an array of identifiers of the cards that",
+      "params": [
+        "query",
+        "reorderCards"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "guiSelectCard",
+      "category": "Graphical",
+      "description": "Finds the open instance of the *Card Browser* dialog and selects a card given a card identifier.",
+      "params": [
+        "card"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "guiSelectedNotes",
+      "category": "Graphical",
+      "description": "Finds the open instance of the *Card Browser* dialog and returns an array of identifiers of the notes that are",
+      "params": [],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "guiAddCards",
+      "category": "Graphical",
+      "description": "Invokes the *Add Cards* dialog, presets the note using the given deck and model, with the provided field values and tags.",
+      "params": [
+        "note"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "guiEditNote",
+      "category": "Graphical",
+      "description": "Opens the *Edit* dialog with a note corresponding to given note ID.",
+      "params": [
+        "note"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "guiCurrentCard",
+      "category": "Graphical",
+      "description": "Returns information about the current card or `null` if not in review mode.",
+      "params": [],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "guiStartCardTimer",
+      "category": "Graphical",
+      "description": "Starts or resets the `timerStarted` value for the current card. This is useful for deferring the start time to when",
+      "params": [],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "guiShowQuestion",
+      "category": "Graphical",
+      "description": "Shows question text for the current card; returns `true` if in review mode or `false` otherwise.",
+      "params": [],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "guiShowAnswer",
+      "category": "Graphical",
+      "description": "Shows answer text for the current card; returns `true` if in review mode or `false` otherwise.",
+      "params": [],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "guiAnswerCard",
+      "category": "Graphical",
+      "description": "Answers the current card; returns `true` if succeeded or `false` otherwise. Note that the answer for the current",
+      "params": [
+        "ease"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "guiUndo",
+      "category": "Graphical",
+      "description": "Undo the last action / card; returns `true` if succeeded or `false` otherwise.",
+      "params": [],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "guiDeckOverview",
+      "category": "Graphical",
+      "description": "Opens the *Deck Overview* dialog for the deck with the given name; returns `true` if succeeded or `false` otherwise.",
+      "params": [
+        "name"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "guiDeckBrowser",
+      "category": "Graphical",
+      "description": "Opens the *Deck Browser* dialog.",
+      "params": [],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "guiDeckReview",
+      "category": "Graphical",
+      "description": "Starts review for the deck with the given name; returns `true` if succeeded or `false` otherwise.",
+      "params": [
+        "name"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "guiImportFile",
+      "category": "Graphical",
+      "description": "Invokes the *Import... (Ctrl+Shift+I)* dialog with an optional file path. Brings up the dialog for user to review the import. Supports all file types that Anki supports. Brings open file dialog if no path is provided. Forward slashes must be used in the path on Windows. Only supported for Anki 2.1.52+.",
+      "params": [
+        "path"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "guiExitAnki",
+      "category": "Graphical",
+      "description": "Schedules a request to gracefully close Anki. This operation is asynchronous, so it will return immediately and",
+      "params": [],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "guiCheckDatabase",
+      "category": "Graphical",
+      "description": "Requests a database check, but returns immediately without waiting for the check to complete. Therefore, the action will always return `true` even if errors are detected during the database check.",
+      "params": [],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "storeMediaFile",
+      "category": "Media",
+      "description": "Stores a file with the specified base64-encoded contents inside the media folder. Alternatively you can specify a",
+      "params": [
+        "filename",
+        "data"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "retrieveMediaFile",
+      "category": "Media",
+      "description": "Retrieves the base64-encoded contents of the specified file, returning `false` if the file does not exist.",
+      "params": [
+        "filename"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "getMediaFilesNames",
+      "category": "Media",
+      "description": "Gets the names of media files matched the pattern. Returning all names by default.",
+      "params": [
+        "pattern"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "getMediaDirPath",
+      "category": "Media",
+      "description": "Gets the full path to the `collection.media` folder of the currently opened profile.",
+      "params": [],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "deleteMediaFile",
+      "category": "Media",
+      "description": "Deletes the specified file inside the media folder.",
+      "params": [
+        "filename"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "requestPermission",
+      "category": "Miscellaneous",
+      "description": "Requests permission to use the API exposed by this plugin. This method does not require the API key, and is the",
+      "params": [],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "version",
+      "category": "Miscellaneous",
+      "description": "Gets the version of the API exposed by this plugin. Currently versions `1` through `6` are defined.",
+      "params": [],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "apiReflect",
+      "category": "Miscellaneous",
+      "description": "Gets information about the AnkiConnect APIs available. The request supports the following params:",
+      "params": [
+        "scopes",
+        "actions"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "sync",
+      "category": "Miscellaneous",
+      "description": "Synchronizes the local Anki collections with AnkiWeb.",
+      "params": [],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "getProfiles",
+      "category": "Miscellaneous",
+      "description": "Retrieve the list of profiles.",
+      "params": [],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "getActiveProfile",
+      "category": "Miscellaneous",
+      "description": "Retrieve the active profile.",
+      "params": [],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "loadProfile",
+      "category": "Miscellaneous",
+      "description": "Selects the profile specified in request.",
+      "params": [
+        "name"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "multi",
+      "category": "Miscellaneous",
+      "description": "Performs multiple actions in one request, returning an array with the response of each action (in the given order).",
+      "params": [
+        "actions"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "exportPackage",
+      "category": "Miscellaneous",
+      "description": "Exports a given deck in `.apkg` format. Returns `true` if successful or `false` otherwise. The optional property",
+      "params": [
+        "deck",
+        "path",
+        "includeSched"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "importPackage",
+      "category": "Miscellaneous",
+      "description": "Imports a file in `.apkg` format into the collection. Returns `true` if successful or `false` otherwise.",
+      "params": [
+        "path"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "reloadCollection",
+      "category": "Miscellaneous",
+      "description": "Tells anki to reload all data from the database.",
+      "params": [],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "modelNames",
+      "category": "Model",
+      "description": "Gets the complete list of model names for the current user.",
+      "params": [],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "modelNamesAndIds",
+      "category": "Model",
+      "description": "Gets the complete list of model names and their corresponding IDs for the current user.",
+      "params": [],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "findModelsById",
+      "category": "Model",
+      "description": "Gets a list of models  for the provided model IDs from the current user.",
+      "params": [
+        "modelIds"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "findModelsByName",
+      "category": "Model",
+      "description": "Gets a list of models for the provided model names from the current user.",
+      "params": [
+        "modelNames"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "modelFieldNames",
+      "category": "Model",
+      "description": "Gets the complete list of field names for the provided model name.",
+      "params": [
+        "modelName"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "modelFieldDescriptions",
+      "category": "Model",
+      "description": "Gets the complete list of field descriptions (the text seen in the gui editor when a field is empty) for the provided model name.",
+      "params": [
+        "modelName"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "modelFieldFonts",
+      "category": "Model",
+      "description": "Gets the complete list of fonts along with their font sizes.",
+      "params": [
+        "modelName"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "modelFieldsOnTemplates",
+      "category": "Model",
+      "description": "Returns an object indicating the fields on the question and answer side of each card template for the given model",
+      "params": [
+        "modelName"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "createModel",
+      "category": "Model",
+      "description": "Creates a new model to be used in Anki. User must provide the `modelName`, `inOrderFields` and `cardTemplates` to be",
+      "params": [
+        "modelName",
+        "inOrderFields",
+        "css",
+        "isCloze",
+        "cardTemplates"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "modelTemplates",
+      "category": "Model",
+      "description": "Returns an object indicating the template content for each card connected to the provided model by name.",
+      "params": [
+        "modelName"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "modelStyling",
+      "category": "Model",
+      "description": "Gets the CSS styling for the provided model by name.",
+      "params": [
+        "modelName"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "updateModelTemplates",
+      "category": "Model",
+      "description": "Modify the templates of an existing model by name. Only specifies cards and specified sides will be modified.",
+      "params": [
+        "model"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "updateModelStyling",
+      "category": "Model",
+      "description": "Modify the CSS styling of an existing model by name.",
+      "params": [
+        "model"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "findAndReplaceInModels",
+      "category": "Model",
+      "description": "Find and replace string in existing model by model name. Customise to replace in front, back or css by setting to true/false.",
+      "params": [
+        "model"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "modelTemplateRename",
+      "category": "Model",
+      "description": "Renames a template in an existing model.",
+      "params": [
+        "modelName",
+        "oldTemplateName",
+        "newTemplateName"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "modelTemplateReposition",
+      "category": "Model",
+      "description": "Repositions a template in an existing model.",
+      "params": [
+        "modelName",
+        "templateName",
+        "index"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "modelTemplateAdd",
+      "category": "Model",
+      "description": "Adds a template to an existing model by name. If you want to update an existing template, use `updateModelTemplates`.",
+      "params": [
+        "modelName",
+        "template"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "modelTemplateRemove",
+      "category": "Model",
+      "description": "Removes a template from an existing model.",
+      "params": [
+        "modelName",
+        "templateName"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "modelFieldRename",
+      "category": "Model",
+      "description": "Rename the field name of a given model.",
+      "params": [
+        "modelName",
+        "oldFieldName",
+        "newFieldName"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "modelFieldReposition",
+      "category": "Model",
+      "description": "Reposition the field within the field list of a given model.",
+      "params": [
+        "modelName",
+        "fieldName",
+        "index"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "modelFieldAdd",
+      "category": "Model",
+      "description": "Creates a new field within a given model.",
+      "params": [
+        "modelName",
+        "fieldName",
+        "index"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "modelFieldRemove",
+      "category": "Model",
+      "description": "Deletes a field within a given model.",
+      "params": [
+        "modelName",
+        "fieldName"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "modelFieldSetFont",
+      "category": "Model",
+      "description": "Sets the font for a field within a given model.",
+      "params": [
+        "modelName",
+        "fieldName",
+        "font"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "modelFieldSetFontSize",
+      "category": "Model",
+      "description": "Sets the font size for a field within a given model.",
+      "params": [
+        "modelName",
+        "fieldName",
+        "fontSize"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "modelFieldSetDescription",
+      "category": "Model",
+      "description": "Sets the description (the text seen in the gui editor when a field is empty) for a field within a given model.",
+      "params": [
+        "modelName",
+        "fieldName",
+        "description"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "addNote",
+      "category": "Note",
+      "description": "Creates a note using the given deck and model, with the provided field values and tags. Returns the identifier of",
+      "params": [
+        "note"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "addNotes",
+      "category": "Note",
+      "description": "Creates multiple notes using the given deck and model, with the provided field values and tags. Returns an array of",
+      "params": [
+        "notes"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "canAddNotes",
+      "category": "Note",
+      "description": "Accepts an array of objects which define parameters for candidate notes (see `addNote`) and returns an array of",
+      "params": [
+        "notes"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "canAddNotesWithErrorDetail",
+      "category": "Note",
+      "description": "Accepts an array of objects which define parameters for candidate notes (see `addNote`) and returns an array of",
+      "params": [
+        "notes"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "updateNoteFields",
+      "category": "Note",
+      "description": "Modify the fields of an existing note. You can also include audio, video, or picture files which will be added to the note with an",
+      "params": [
+        "note"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "updateNote",
+      "category": "Note",
+      "description": "Modify the fields and/or tags of an existing note.",
+      "params": [
+        "note"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "updateNoteModel",
+      "category": "Note",
+      "description": "Update the model, fields, and tags of an existing note.",
+      "params": [
+        "note"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "updateNoteTags",
+      "category": "Note",
+      "description": "Set a note's tags by note ID. Old tags will be removed.",
+      "params": [
+        "note",
+        "tags"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "getNoteTags",
+      "category": "Note",
+      "description": "Get a note's tags by note ID.",
+      "params": [
+        "note"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "addTags",
+      "category": "Note",
+      "description": "Adds tags to notes by note ID.",
+      "params": [
+        "notes",
+        "tags"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "removeTags",
+      "category": "Note",
+      "description": "Remove tags from notes by note ID.",
+      "params": [
+        "notes",
+        "tags"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "getTags",
+      "category": "Note",
+      "description": "Gets the complete list of tags for the current user.",
+      "params": [],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "clearUnusedTags",
+      "category": "Note",
+      "description": "Clears all the unused tags in the notes for the current user.",
+      "params": [],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "replaceTags",
+      "category": "Note",
+      "description": "Replace tags in notes by note ID.",
+      "params": [
+        "notes",
+        "tag_to_replace",
+        "replace_with_tag"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "replaceTagsInAllNotes",
+      "category": "Note",
+      "description": "Replace tags in all the notes for the current user.",
+      "params": [
+        "tag_to_replace",
+        "replace_with_tag"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "findNotes",
+      "category": "Note",
+      "description": "Returns an array of note IDs for a given query. Query syntax is [documented here](https://docs.ankiweb.net/searching.html).",
+      "params": [
+        "query"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "notesInfo",
+      "category": "Note",
+      "description": "Returns a list of objects containing for each note ID the note fields, tags, note type, modification time,the cards belonging to",
+      "params": [
+        "notes"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "notesModTime",
+      "category": "Note",
+      "description": "Returns a list of objects containings for each note ID the modification time.",
+      "params": [
+        "notes"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "deleteNotes",
+      "category": "Note",
+      "description": "Deletes notes with the given ids. If a note has several cards associated with it, all associated cards will be deleted.",
+      "params": [
+        "notes"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "removeEmptyNotes",
+      "category": "Note",
+      "description": "Removes all the empty notes for the current user.",
+      "params": [],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "getNumCardsReviewedToday",
+      "category": "Statistic",
+      "description": "Gets the count of cards that have been reviewed in the current day (with day start time as configured by user in anki)",
+      "params": [],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "getNumCardsReviewedByDay",
+      "category": "Statistic",
+      "description": "Gets the number of cards reviewed as a list of pairs of `(dateString, number)`",
+      "params": [],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "getCollectionStatsHTML",
+      "category": "Statistic",
+      "description": "Gets the collection statistics report",
+      "params": [
+        "wholeCollection"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "cardReviews",
+      "category": "Statistic",
+      "description": "Requests all card reviews for a specified deck after a certain time.",
+      "params": [
+        "deck",
+        "startID"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "getReviewsOfCards",
+      "category": "Statistic",
+      "description": "Requests all card reviews for each card ID.",
+      "params": [
+        "cards"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "getLatestReviewID",
+      "category": "Statistic",
+      "description": "Returns the unix time of the latest review for the given deck. 0 if no review has ever been made for the deck.",
+      "params": [
+        "deck"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "insertReviews",
+      "category": "Statistic",
+      "description": "Inserts the given reviews into the database. Required format: list of 9-tuples `(reviewTime, cardID, usn, buttonPressed, newInterval, previousInterval, newFactor, reviewDuration, reviewType)`",
+      "params": [
+        "reviews"
+      ],
+      "documented_version": 6,
+      "status": "baseline",
+      "source_repo": "ankiultimate/anki-connect",
+      "version_sensitive": false
+    },
+    {
+      "name": "gradeNow",
+      "category": "Card",
+      "description": "Grades cards immediately using the same rating scale as review answers. `ease` must be between 1 (Again) and 4 (Easy). Returns `true` when the operation succeeds.",
+      "params": [
+        "cards",
+        "ease"
+      ],
+      "documented_version": 6,
+      "status": "extended",
+      "source_repo": "JSchoreels/anki-connect",
+      "version_sensitive": true
     },
     {
       "name": "repositionNewCards",
       "category": "Card",
-      "signature": "self, orderedCardIds, startPosition, step, shift",
-      "parameters": [
+      "description": "Repositions eligible new cards using Anki native reposition logic while preserving caller order.",
+      "params": [
         "orderedCardIds",
         "startPosition",
         "step",
         "shift"
       ],
-      "risk": "destructive",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#repositionnewcards"
-    },
-    {
-      "name": "deckNames",
-      "category": "Deck",
-      "signature": "self",
-      "parameters": [],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#decknames"
-    },
-    {
-      "name": "deckNamesAndIds",
-      "category": "Deck",
-      "signature": "self",
-      "parameters": [],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#decknamesandids"
-    },
-    {
-      "name": "getDecks",
-      "category": "Deck",
-      "signature": "self, cards",
-      "parameters": [
-        "cards"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getdecks"
-    },
-    {
-      "name": "createDeck",
-      "category": "Deck",
-      "signature": "self, deck",
-      "parameters": [
-        "deck"
-      ],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#createdeck"
-    },
-    {
-      "name": "changeDeck",
-      "category": "Deck",
-      "signature": "self, cards, deck",
-      "parameters": [
-        "cards",
-        "deck"
-      ],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#changedeck"
-    },
-    {
-      "name": "deleteDecks",
-      "category": "Deck",
-      "signature": "self, decks, cardsToo=False",
-      "parameters": [
-        "decks",
-        "cardsToo"
-      ],
-      "risk": "destructive",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#deletedecks"
-    },
-    {
-      "name": "getDeckConfig",
-      "category": "Deck",
-      "signature": "self, deck",
-      "parameters": [
-        "deck"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getdeckconfig"
-    },
-    {
-      "name": "saveDeckConfig",
-      "category": "Deck",
-      "signature": "self, config",
-      "parameters": [
-        "config"
-      ],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#savedeckconfig"
-    },
-    {
-      "name": "setDeckConfigId",
-      "category": "Deck",
-      "signature": "self, decks, configId",
-      "parameters": [
-        "decks",
-        "configId"
-      ],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#setdeckconfigid"
-    },
-    {
-      "name": "cloneDeckConfigId",
-      "category": "Deck",
-      "signature": "self, name, cloneFrom='1'",
-      "parameters": [
-        "name",
-        "cloneFrom"
-      ],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#clonedeckconfigid"
-    },
-    {
-      "name": "removeDeckConfigId",
-      "category": "Deck",
-      "signature": "self, configId",
-      "parameters": [
-        "configId"
-      ],
-      "risk": "destructive",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#removedeckconfigid"
-    },
-    {
-      "name": "getDeckStats",
-      "category": "Deck",
-      "signature": "self, decks",
-      "parameters": [
-        "decks"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getdeckstats"
-    },
-    {
-      "name": "guiBrowse",
-      "category": "Graphical",
-      "signature": "self, query=None, reorderCards=None",
-      "parameters": [
-        "query",
-        "reorderCards"
-      ],
-      "risk": "gui-state",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guibrowse"
-    },
-    {
-      "name": "guiSelectCard",
-      "category": "Graphical",
-      "signature": "self, card",
-      "parameters": [
-        "card"
-      ],
-      "risk": "gui-state",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guiselectcard"
-    },
-    {
-      "name": "guiSelectedNotes",
-      "category": "Graphical",
-      "signature": "self",
-      "parameters": [],
-      "risk": "gui-state",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guiselectednotes"
-    },
-    {
-      "name": "guiAddCards",
-      "category": "Graphical",
-      "signature": "self, note=None",
-      "parameters": [
-        "note"
-      ],
-      "risk": "gui-state",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guiaddcards"
-    },
-    {
-      "name": "guiEditNote",
-      "category": "Graphical",
-      "signature": "self, note",
-      "parameters": [
-        "note"
-      ],
-      "risk": "gui-state",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guieditnote"
+      "documented_version": 6,
+      "status": "extended",
+      "source_repo": "JSchoreels/anki-connect",
+      "version_sensitive": true
     },
     {
       "name": "guiAddNoteSetData",
       "category": "Graphical",
-      "signature": "self, note, append=False",
-      "parameters": [
-        "note",
-        "append"
+      "description": "Sets fields, tags, deck, and note type (model) in the *Add Note* dialog. Optionally appends to fields/tags instead of replacing them.",
+      "params": [
+        "note"
       ],
-      "risk": "gui-state",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guiaddnotesetdata"
-    },
-    {
-      "name": "guiCurrentCard",
-      "category": "Graphical",
-      "signature": "self",
-      "parameters": [],
-      "risk": "gui-state",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guicurrentcard"
-    },
-    {
-      "name": "guiStartCardTimer",
-      "category": "Graphical",
-      "signature": "self",
-      "parameters": [],
-      "risk": "gui-state",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guistartcardtimer"
-    },
-    {
-      "name": "guiShowQuestion",
-      "category": "Graphical",
-      "signature": "self",
-      "parameters": [],
-      "risk": "gui-state",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guishowquestion"
-    },
-    {
-      "name": "guiShowAnswer",
-      "category": "Graphical",
-      "signature": "self",
-      "parameters": [],
-      "risk": "gui-state",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guishowanswer"
-    },
-    {
-      "name": "guiAnswerCard",
-      "category": "Graphical",
-      "signature": "self, ease",
-      "parameters": [
-        "ease"
-      ],
-      "risk": "gui-state",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guianswercard"
-    },
-    {
-      "name": "guiUndo",
-      "category": "Graphical",
-      "signature": "self",
-      "parameters": [],
-      "risk": "gui-state",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guiundo"
-    },
-    {
-      "name": "guiDeckOverview",
-      "category": "Graphical",
-      "signature": "self, name",
-      "parameters": [
-        "name"
-      ],
-      "risk": "gui-state",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guideckoverview"
-    },
-    {
-      "name": "guiDeckBrowser",
-      "category": "Graphical",
-      "signature": "self",
-      "parameters": [],
-      "risk": "gui-state",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guideckbrowser"
-    },
-    {
-      "name": "guiDeckReview",
-      "category": "Graphical",
-      "signature": "self, name",
-      "parameters": [
-        "name"
-      ],
-      "risk": "gui-state",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guideckreview"
-    },
-    {
-      "name": "guiImportFile",
-      "category": "Graphical",
-      "signature": "self, path=None",
-      "parameters": [
-        "path"
-      ],
-      "risk": "gui-state",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guiimportfile"
-    },
-    {
-      "name": "guiExitAnki",
-      "category": "Graphical",
-      "signature": "self",
-      "parameters": [],
-      "risk": "gui-state",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guiexitanki"
-    },
-    {
-      "name": "guiCheckDatabase",
-      "category": "Graphical",
-      "signature": "self",
-      "parameters": [],
-      "risk": "gui-state",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guicheckdatabase"
+      "documented_version": 6,
+      "status": "extended",
+      "source_repo": "JSchoreels/anki-connect",
+      "version_sensitive": true
     },
     {
       "name": "guiPlayAudio",
       "category": "Graphical",
-      "signature": "self",
-      "parameters": [],
-      "risk": "gui-state",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guiplayaudio"
-    },
-    {
-      "name": "storeMediaFile",
-      "category": "Media",
-      "signature": "self, filename, data=None, path=None, url=None, skipHash=None, deleteExisting=True",
-      "parameters": [
-        "filename",
-        "data",
-        "path",
-        "url",
-        "skipHash",
-        "deleteExisting"
-      ],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#storemediafile"
-    },
-    {
-      "name": "retrieveMediaFile",
-      "category": "Media",
-      "signature": "self, filename",
-      "parameters": [
-        "filename"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#retrievemediafile"
-    },
-    {
-      "name": "getMediaFilesNames",
-      "category": "Media",
-      "signature": "self, pattern='*'",
-      "parameters": [
-        "pattern"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getmediafilesnames"
-    },
-    {
-      "name": "getMediaDirPath",
-      "category": "Media",
-      "signature": "self",
-      "parameters": [],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getmediadirpath"
-    },
-    {
-      "name": "deleteMediaFile",
-      "category": "Media",
-      "signature": "self, filename",
-      "parameters": [
-        "filename"
-      ],
-      "risk": "destructive",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#deletemediafile"
-    },
-    {
-      "name": "requestPermission",
-      "category": "Miscellaneous",
-      "signature": "self, origin, allowed",
-      "parameters": [
-        "origin",
-        "allowed"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#requestpermission"
-    },
-    {
-      "name": "version",
-      "category": "Miscellaneous",
-      "signature": "self",
-      "parameters": [],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#version"
-    },
-    {
-      "name": "apiReflect",
-      "category": "Miscellaneous",
-      "signature": "self, scopes=None, actions=None",
-      "parameters": [
-        "scopes",
-        "actions"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#apireflect"
-    },
-    {
-      "name": "sync",
-      "category": "Miscellaneous",
-      "signature": "self",
-      "parameters": [],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#sync"
-    },
-    {
-      "name": "getProfiles",
-      "category": "Miscellaneous",
-      "signature": "self",
-      "parameters": [],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getprofiles"
-    },
-    {
-      "name": "getActiveProfile",
-      "category": "Miscellaneous",
-      "signature": "self",
-      "parameters": [],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getactiveprofile"
-    },
-    {
-      "name": "loadProfile",
-      "category": "Miscellaneous",
-      "signature": "self, name",
-      "parameters": [
-        "name"
-      ],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#loadprofile"
-    },
-    {
-      "name": "multi",
-      "category": "Miscellaneous",
-      "signature": "self, actions",
-      "parameters": [
-        "actions"
-      ],
-      "risk": "mixed",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#multi"
-    },
-    {
-      "name": "exportPackage",
-      "category": "Miscellaneous",
-      "signature": "self, deck, path, includeSched=False",
-      "parameters": [
-        "deck",
-        "path",
-        "includeSched"
-      ],
-      "risk": "read-export",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#exportpackage"
-    },
-    {
-      "name": "importPackage",
-      "category": "Miscellaneous",
-      "signature": "self, path",
-      "parameters": [
-        "path"
-      ],
-      "risk": "destructive",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#importpackage"
-    },
-    {
-      "name": "reloadCollection",
-      "category": "Miscellaneous",
-      "signature": "self",
-      "parameters": [],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#reloadcollection"
-    },
-    {
-      "name": "modelNames",
-      "category": "Model",
-      "signature": "self",
-      "parameters": [],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelnames"
-    },
-    {
-      "name": "modelNamesAndIds",
-      "category": "Model",
-      "signature": "self",
-      "parameters": [],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelnamesandids"
-    },
-    {
-      "name": "findModelsById",
-      "category": "Model",
-      "signature": "self, modelIds",
-      "parameters": [
-        "modelIds"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#findmodelsbyid"
-    },
-    {
-      "name": "findModelsByName",
-      "category": "Model",
-      "signature": "self, modelNames",
-      "parameters": [
-        "modelNames"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#findmodelsbyname"
-    },
-    {
-      "name": "modelFieldNames",
-      "category": "Model",
-      "signature": "self, modelName",
-      "parameters": [
-        "modelName"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldnames"
-    },
-    {
-      "name": "modelFieldDescriptions",
-      "category": "Model",
-      "signature": "self, modelName",
-      "parameters": [
-        "modelName"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfielddescriptions"
-    },
-    {
-      "name": "modelFieldFonts",
-      "category": "Model",
-      "signature": "self, modelName",
-      "parameters": [
-        "modelName"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldfonts"
-    },
-    {
-      "name": "modelFieldsOnTemplates",
-      "category": "Model",
-      "signature": "self, modelName",
-      "parameters": [
-        "modelName"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldsontemplates"
-    },
-    {
-      "name": "createModel",
-      "category": "Model",
-      "signature": "self, modelName, inOrderFields, cardTemplates, css = None, isCloze = False",
-      "parameters": [
-        "modelName",
-        "inOrderFields",
-        "cardTemplates",
-        "css",
-        "isCloze"
-      ],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#createmodel"
-    },
-    {
-      "name": "modelTemplates",
-      "category": "Model",
-      "signature": "self, modelName",
-      "parameters": [
-        "modelName"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modeltemplates"
-    },
-    {
-      "name": "modelStyling",
-      "category": "Model",
-      "signature": "self, modelName",
-      "parameters": [
-        "modelName"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelstyling"
-    },
-    {
-      "name": "updateModelTemplates",
-      "category": "Model",
-      "signature": "self, model",
-      "parameters": [
-        "model"
-      ],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#updatemodeltemplates"
-    },
-    {
-      "name": "updateModelStyling",
-      "category": "Model",
-      "signature": "self, model",
-      "parameters": [
-        "model"
-      ],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#updatemodelstyling"
-    },
-    {
-      "name": "findAndReplaceInModels",
-      "category": "Model",
-      "signature": "self, modelName, findText, replaceText, front=True, back=True, css=True",
-      "parameters": [
-        "modelName",
-        "findText",
-        "replaceText",
-        "front",
-        "back",
-        "css"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#findandreplaceinmodels"
-    },
-    {
-      "name": "modelTemplateRename",
-      "category": "Model",
-      "signature": "self, modelName, oldTemplateName, newTemplateName",
-      "parameters": [
-        "modelName",
-        "oldTemplateName",
-        "newTemplateName"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modeltemplaterename"
-    },
-    {
-      "name": "modelTemplateReposition",
-      "category": "Model",
-      "signature": "self, modelName, templateName, index",
-      "parameters": [
-        "modelName",
-        "templateName",
-        "index"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modeltemplatereposition"
-    },
-    {
-      "name": "modelTemplateAdd",
-      "category": "Model",
-      "signature": "self, modelName, template",
-      "parameters": [
-        "modelName",
-        "template"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modeltemplateadd"
-    },
-    {
-      "name": "modelTemplateRemove",
-      "category": "Model",
-      "signature": "self, modelName, templateName",
-      "parameters": [
-        "modelName",
-        "templateName"
-      ],
-      "risk": "destructive",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modeltemplateremove"
-    },
-    {
-      "name": "modelFieldRename",
-      "category": "Model",
-      "signature": "self, modelName, oldFieldName, newFieldName",
-      "parameters": [
-        "modelName",
-        "oldFieldName",
-        "newFieldName"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldrename"
-    },
-    {
-      "name": "modelFieldReposition",
-      "category": "Model",
-      "signature": "self, modelName, fieldName, index",
-      "parameters": [
-        "modelName",
-        "fieldName",
-        "index"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldreposition"
-    },
-    {
-      "name": "modelFieldAdd",
-      "category": "Model",
-      "signature": "self, modelName, fieldName, index=None",
-      "parameters": [
-        "modelName",
-        "fieldName",
-        "index"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldadd"
-    },
-    {
-      "name": "modelFieldRemove",
-      "category": "Model",
-      "signature": "self, modelName, fieldName",
-      "parameters": [
-        "modelName",
-        "fieldName"
-      ],
-      "risk": "destructive",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldremove"
-    },
-    {
-      "name": "modelFieldSetFont",
-      "category": "Model",
-      "signature": "self, modelName, fieldName, font",
-      "parameters": [
-        "modelName",
-        "fieldName",
-        "font"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldsetfont"
-    },
-    {
-      "name": "modelFieldSetFontSize",
-      "category": "Model",
-      "signature": "self, modelName, fieldName, fontSize",
-      "parameters": [
-        "modelName",
-        "fieldName",
-        "fontSize"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldsetfontsize"
-    },
-    {
-      "name": "modelFieldSetDescription",
-      "category": "Model",
-      "signature": "self, modelName, fieldName, description",
-      "parameters": [
-        "modelName",
-        "fieldName",
-        "description"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldsetdescription"
-    },
-    {
-      "name": "addNote",
-      "category": "Note",
-      "signature": "self, note",
-      "parameters": [
-        "note"
-      ],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#addnote"
-    },
-    {
-      "name": "addNotes",
-      "category": "Note",
-      "signature": "self, notes",
-      "parameters": [
-        "notes"
-      ],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#addnotes"
-    },
-    {
-      "name": "canAddNotes",
-      "category": "Note",
-      "signature": "self, notes",
-      "parameters": [
-        "notes"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#canaddnotes"
-    },
-    {
-      "name": "canAddNotesWithErrorDetail",
-      "category": "Note",
-      "signature": "self, notes",
-      "parameters": [
-        "notes"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#canaddnoteswitherrordetail"
-    },
-    {
-      "name": "updateNoteFields",
-      "category": "Note",
-      "signature": "self, note",
-      "parameters": [
-        "note"
-      ],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#updatenotefields"
-    },
-    {
-      "name": "updateNote",
-      "category": "Note",
-      "signature": "self, note",
-      "parameters": [
-        "note"
-      ],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#updatenote"
-    },
-    {
-      "name": "updateNoteModel",
-      "category": "Note",
-      "signature": "self, note",
-      "parameters": [
-        "note"
-      ],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#updatenotemodel"
-    },
-    {
-      "name": "updateNoteTags",
-      "category": "Note",
-      "signature": "self, note, tags",
-      "parameters": [
-        "note",
-        "tags"
-      ],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#updatenotetags"
-    },
-    {
-      "name": "getNoteTags",
-      "category": "Note",
-      "signature": "self, note",
-      "parameters": [
-        "note"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getnotetags"
-    },
-    {
-      "name": "addTags",
-      "category": "Note",
-      "signature": "self, notes, tags, add=True",
-      "parameters": [
-        "notes",
-        "tags",
-        "add"
-      ],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#addtags"
-    },
-    {
-      "name": "removeTags",
-      "category": "Note",
-      "signature": "self, notes, tags",
-      "parameters": [
-        "notes",
-        "tags"
-      ],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#removetags"
-    },
-    {
-      "name": "getTags",
-      "category": "Note",
-      "signature": "self",
-      "parameters": [],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#gettags"
-    },
-    {
-      "name": "clearUnusedTags",
-      "category": "Note",
-      "signature": "self",
-      "parameters": [],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#clearunusedtags"
-    },
-    {
-      "name": "replaceTags",
-      "category": "Note",
-      "signature": "self, notes, tag_to_replace, replace_with_tag",
-      "parameters": [
-        "notes",
-        "tag_to_replace",
-        "replace_with_tag"
-      ],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#replacetags"
-    },
-    {
-      "name": "replaceTagsInAllNotes",
-      "category": "Note",
-      "signature": "self, tag_to_replace, replace_with_tag",
-      "parameters": [
-        "tag_to_replace",
-        "replace_with_tag"
-      ],
-      "risk": "write",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#replacetagsinallnotes"
-    },
-    {
-      "name": "findNotes",
-      "category": "Note",
-      "signature": "self, query=None",
-      "parameters": [
-        "query"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#findnotes"
-    },
-    {
-      "name": "notesInfo",
-      "category": "Note",
-      "signature": "self, notes=None, query=None",
-      "parameters": [
-        "notes",
-        "query"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#notesinfo"
-    },
-    {
-      "name": "notesModTime",
-      "category": "Note",
-      "signature": "self, notes",
-      "parameters": [
-        "notes"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#notesmodtime"
-    },
-    {
-      "name": "deleteNotes",
-      "category": "Note",
-      "signature": "self, notes",
-      "parameters": [
-        "notes"
-      ],
-      "risk": "destructive",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#deletenotes"
-    },
-    {
-      "name": "removeEmptyNotes",
-      "category": "Note",
-      "signature": "self",
-      "parameters": [],
-      "risk": "destructive",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#removeemptynotes"
-    },
-    {
-      "name": "getNumCardsReviewedToday",
-      "category": "Statistic",
-      "signature": "self",
-      "parameters": [],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getnumcardsreviewedtoday"
-    },
-    {
-      "name": "getNumCardsReviewedByDay",
-      "category": "Statistic",
-      "signature": "self",
-      "parameters": [],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getnumcardsreviewedbyday"
-    },
-    {
-      "name": "getCollectionStatsHTML",
-      "category": "Statistic",
-      "signature": "self, wholeCollection=True",
-      "parameters": [
-        "wholeCollection"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getcollectionstatshtml"
-    },
-    {
-      "name": "cardReviews",
-      "category": "Statistic",
-      "signature": "self, deck, startID",
-      "parameters": [
-        "deck",
-        "startID"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#cardreviews"
-    },
-    {
-      "name": "getReviewsOfCards",
-      "category": "Statistic",
-      "signature": "self, cards",
-      "parameters": [
-        "cards"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getreviewsofcards"
-    },
-    {
-      "name": "getLatestReviewID",
-      "category": "Statistic",
-      "signature": "self, deck",
-      "parameters": [
-        "deck"
-      ],
-      "risk": "read",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getlatestreviewid"
-    },
-    {
-      "name": "insertReviews",
-      "category": "Statistic",
-      "signature": "self, reviews",
-      "parameters": [
-        "reviews"
-      ],
-      "risk": "destructive",
-      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#insertreviews"
+      "description": "Plays any Audio for the current side of the current card; returns `true` if succeeded or `false` otherwise.",
+      "params": [],
+      "documented_version": 6,
+      "status": "extended",
+      "source_repo": "JSchoreels/anki-connect",
+      "version_sensitive": true
     }
   ]
 }
