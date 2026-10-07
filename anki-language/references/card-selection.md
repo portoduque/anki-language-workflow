@@ -303,6 +303,14 @@ Prefer the user's phrase, sentence, audio, image, or context when it is suitable
 
 Personally encountered material usually has stronger context than a random list or generic shared deck. Shared decks, frequency lists, and word lists may be mined as **candidate sources**, but their entries must still pass the same usefulness/context/review-cost test before becoming cards.
 
+### Beginner bootstrap exception
+
+For an **absolute beginner** who has too little comprehensible personal material to mine effectively, a well-constructed frequency/shared deck can be a useful bootstrap **candidate source**.
+
+Before adopting items from it, inspect whether the source has useful fields such as target form, clear meaning/context, appropriate script/reading information, and trustworthy audio where relevant. Prefer a smaller/clearer representation over an overloaded note with many fields that do not serve the learner.
+
+Do not blindly import the whole shared deck into the workflow. Select useful items, then progressively shift toward personally encountered/context-rich material as the learner gains enough language to mine it.
+
 Do not replace the user's material with generic material merely because generic examples are easier to generate.
 
 It is acceptable to create a clearer example when the original material is unsuitable, but preserve the intended meaning and do not invent uncertain facts.
