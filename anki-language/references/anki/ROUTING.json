@@ -1,0 +1,251 @@
+{
+  "version": "1.0",
+  "fallback": {
+    "file": "references/anki/INDEX.md",
+    "live_index": "https://docs.ankiweb.net/llms.txt"
+  },
+  "topics": [
+    {
+      "id": "core",
+      "file": "references/anki/01-core-model-and-organization.md",
+      "keywords": [
+        "note",
+        "card",
+        "field",
+        "deck",
+        "collection",
+        "sibling",
+        "note type",
+        "card type",
+        "model",
+        "organization"
+      ]
+    },
+    {
+      "id": "note-types",
+      "file": "references/anki/02-notes-fields-card-types.md",
+      "keywords": [
+        "note type",
+        "field",
+        "card type",
+        "schema",
+        "duplicate",
+        "reserved field",
+        "custom note"
+      ]
+    },
+    {
+      "id": "templates",
+      "file": "references/anki/03-templates-html-css-tts.md",
+      "keywords": [
+        "template",
+        "html",
+        "css",
+        "field replacement",
+        "frontside",
+        "conditional",
+        "hint",
+        "tts",
+        "type answer",
+        "rtl",
+        "furigana",
+        "styling"
+      ]
+    },
+    {
+      "id": "special-cards",
+      "file": "references/anki/04-cloze-image-occlusion-typed-answer.md",
+      "keywords": [
+        "cloze",
+        "image occlusion",
+        "io",
+        "typed answer",
+        "type in answer",
+        "fill blank",
+        "occlusion"
+      ]
+    },
+    {
+      "id": "media",
+      "file": "references/anki/05-media-audio-images-tts.md",
+      "keywords": [
+        "media",
+        "audio",
+        "image",
+        "sound",
+        "tts",
+        "mp3",
+        "webp",
+        "pronunciation",
+        "collection.media",
+        "filename"
+      ]
+    },
+    {
+      "id": "organization-search",
+      "file": "references/anki/06-decks-tags-browser-search.md",
+      "keywords": [
+        "deck",
+        "subdeck",
+        "tag",
+        "flag",
+        "browser",
+        "search",
+        "filtered deck",
+        "cram",
+        "query"
+      ]
+    },
+    {
+      "id": "fsrs",
+      "file": "references/anki/07-scheduling-fsrs-study-options.md",
+      "keywords": [
+        "fsrs",
+        "scheduler",
+        "scheduling",
+        "desired retention",
+        "again",
+        "hard",
+        "good",
+        "easy",
+        "learning step",
+        "relearning",
+        "bury sibling",
+        "preset",
+        "interval",
+        "retention"
+      ]
+    },
+    {
+      "id": "import-export",
+      "file": "references/anki/08-import-export-packages.md",
+      "keywords": [
+        "import",
+        "export",
+        "apkg",
+        "colpkg",
+        "csv",
+        "tsv",
+        "text file",
+        "package",
+        "guid",
+        "separator",
+        "html import"
+      ]
+    },
+    {
+      "id": "sync-backup",
+      "file": "references/anki/09-sync-backup-profiles-files.md",
+      "keywords": [
+        "sync",
+        "ankiweb",
+        "backup",
+        "profile",
+        "collection file",
+        "full sync",
+        "restore",
+        "media sync",
+        "files"
+      ]
+    },
+    {
+      "id": "stats",
+      "file": "references/anki/10-stats-filtered-decks-leeches.md",
+      "keywords": [
+        "statistics",
+        "stats",
+        "leech",
+        "filtered deck",
+        "true retention",
+        "daily load",
+        "retrievability",
+        "stability",
+        "difficulty"
+      ]
+    },
+    {
+      "id": "addons",
+      "file": "references/anki/11-useful-addons.md",
+      "keywords": [
+        "addon",
+        "add-on",
+        "extension",
+        "ankiconnect",
+        "hypertts",
+        "fsrs helper",
+        "review heatmap",
+        "advanced browser",
+        "ankimorphs",
+        "forvo",
+        "media converter"
+      ]
+    },
+    {
+      "id": "automation",
+      "file": "references/anki/12-automation-development-apis.md",
+      "keywords": [
+        "automation",
+        "api",
+        "ankiconnect",
+        "developer",
+        "python api",
+        "rust api",
+        "hook",
+        "filter",
+        "plugin",
+        "addon development",
+        "http",
+        "sqlite"
+      ]
+    },
+    {
+      "id": "platforms",
+      "file": "references/anki/13-platforms-mobile-compatibility.md",
+      "keywords": [
+        "ankidroid",
+        "ankimobile",
+        "iphone",
+        "ipad",
+        "android",
+        "mobile",
+        "windows",
+        "macos",
+        "linux",
+        "platform",
+        "compatibility"
+      ]
+    },
+    {
+      "id": "troubleshooting",
+      "file": "references/anki/14-troubleshooting-security-performance.md",
+      "keywords": [
+        "troubleshoot",
+        "error",
+        "broken",
+        "missing media",
+        "security",
+        "performance",
+        "version",
+        "compatibility",
+        "release",
+        "known issue",
+        "corrupt",
+        "problem"
+      ]
+    },
+    {
+      "id": "sources",
+      "file": "references/anki/SOURCES.md",
+      "keywords": [
+        "source",
+        "documentation",
+        "manual",
+        "official docs",
+        "llms",
+        "reference",
+        "release notes",
+        "faq"
+      ]
+    }
+  ]
+}
