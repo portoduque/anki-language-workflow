@@ -598,7 +598,7 @@ def test_vidtoanki_free_template_audit_avoids_schema_copying() -> None:
 
     assert "prompt" in contract
     assert "situational/scene cue" in contract
-    assert "must not depend on javascript or remote web assets" in contract
+    assert "essential card behavior may not depend on javascript or remote web assets" in contract
     assert "essential card behavior must not depend on javascript or remote web assets" in skill
     assert "exact free-template pack audit" in note
     assert "seven semantic fields" in note
