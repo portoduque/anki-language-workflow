@@ -24,6 +24,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Validate a plan, build its APKG, then deeply validate the package.")
     parser.add_argument("plan", type=Path)
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--config", type=Path, help="Explicit workspace language configuration. Auto-discovered when omitted.")
     args = parser.parse_args()
 
     missing = check_dependencies()
@@ -39,7 +40,7 @@ def main() -> int:
 
     try:
         plan = load_plan(args.plan)
-        errors = validate_plan(plan, args.plan, check_media=True)
+        errors = validate_plan(plan, args.plan, check_media=True, config_path=args.config)
         if errors:
             print("Plan validation failed:")
             for error in errors:
