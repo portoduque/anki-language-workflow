@@ -118,13 +118,20 @@ def validate_plan(
             )
         if skill == "production" and not str(card.get("prompt", "")).strip():
             errors.append(f"{prefix}.prompt is required for production cards.")
+        clip = card.get("audio_clip")
+        if clip and (card.get("audio") or card.get("audio_request")):
+            errors.append(
+                f"{prefix}: choose only one audio source: audio, audio_clip, or audio_request."
+            )
+        if clip and check_media:
+            errors.append(f"{prefix}.audio_clip must be resolved before delivery.")
         if skill == "listening" and not str(card.get("audio", "")).strip():
-            if check_media or not card.get("audio_request"):
+            if check_media or not (card.get("audio_request") or clip):
                 errors.append(f"{prefix}.audio is required for listening cards after media enrichment.")
         if skill == "pronunciation" and not str(card.get("prompt", "")).strip():
             errors.append(f"{prefix}.prompt is required for pronunciation cards so the builder never invents a base-language instruction.")
         if skill == "pronunciation" and mode in AUDIO_REQUIRED_PRONUNCIATION_MODES and not str(card.get("audio", "")).strip():
-            if check_media or not card.get("audio_request"):
+            if check_media or not (card.get("audio_request") or clip):
                 errors.append(f"{prefix}.audio is required for pronunciation mode '{mode}' after media enrichment.")
 
         raw_audio = card.get("audio")
