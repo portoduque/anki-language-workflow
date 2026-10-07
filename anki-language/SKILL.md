@@ -38,6 +38,9 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 - Do not create automatic reverse cards. Recognition and production get separate cards only when both are worth training.
 - Do not generate every card type for every item. For every extra sibling card, require enough incremental learning value to justify its future review cost; optimize memory efficiency, not volume.
 - Prefer useful chunks/collocations/patterns when the combination is the knowledge that matters.
+- **Mandatory long-source chunk mining:** even when all supplied screenshots, transcripts, sentences, or recordings are long, first look inside each complete sentence/turn for the **shortest natural, meaningful and reusable chunks** worth learning. A long source sentence is **not** a mandate to make a long card. Generate separate short cards for distinct high-value chunks if justified, not one card for every clause and not a multi-clause mega-card.
+- **Review speed is a top priority:** every Front must be quick to understand and answer, and every Back quick to verify. Prefer one practical phrase/construction per card; keep only the context needed to make retrieval unambiguous. If a full-sentence target is genuinely essential and remains quick, it is allowed. Do not impose arbitrary word-count limits, mandatory chunk counts, or mechanical splits.
+- Preserve the original meaning and native phrasing when extracting chunks; reject incomplete/unidiomatic fragments, semantically empty fragments, and redundant near-duplicates. More chunks are **not** automatically better; each must independently earn its future review cost.
 - A contrast/relationship may be one primary retrieval target when the distinction itself is the useful knowledge; do not turn this into a multi-answer mega card.
 - Avoid cue overfitting: the learner should retrieve the language, not merely recognize one fixed card wording. Use varied natural contexts only when each adds real transfer value.
 - Sentence mining is selective; do not turn every sentence into a card.
@@ -86,17 +89,18 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 1. Resolve the mandatory target/base-language configuration.
 2. Inspect all supplied material before selecting cards.
 3. Read [references/pedagogy.md](references/pedagogy.md); the mandatory card rules were already loaded from [references/card-selection.md](references/card-selection.md).
-4. Segment the source into meaningful learning units and inspect whether any target-language-specific form/grammar dimension is independently worth retrieving.
-5. For each unit, create zero, one, or multiple cards only when each card trains a distinct useful skill or atomic language-specific feature.
-6. Classify each selected card as exactly one of: `reading`, `listening`, `production`, or `pronunciation`.
-7. Add sparse linguistic tags only when useful.
-8. If media may improve learning, read [references/media.md](references/media.md) before acquiring, generating, or attaching it.
-9. Write `card-plan.json` according to [references/output-contract.md](references/output-contract.md) and `schemas/card-plan.schema.json`. Its target/base languages must match the workspace configuration. Use `audio_clip` for selected spoken excerpts from longer original recordings; use `audio_request` / `image_request` only where generated media adds real value.
-10. Select delivery: `apkg` by default; `live` only when the user wants direct AnkiConnect delivery; `both` when live insertion plus a portable APKG is useful.
-11. Run `python scripts/run_pipeline.py card-plan.json --delivery <apkg|live|both>`. This resolves media, validates it, then delivers it. Deterministic delivery adds workflow identity tags automatically; do not ask the model to invent them.
-12. In live mode, an existing workflow identity is idempotent only when the stored note still matches the expected content. Treat changed content/model/template/CSS as drift and stop rather than silently skipping or overwriting it.
-13. Treat deterministic APKG validation as structural validation, not proof of cross-client rendering. After a meaningful template/model migration, ask for or perform a representative Anki spot-check (long text, empty optional fields, media, night mode, and the target writing system) before large-scale adoption.
-14. Deliver the resolved plan plus APKG/live report. Never claim media or rendering success when the relevant validation/spot-check did not occur.
+4. Read/understand the complete source, then **mine short, natural, meaningful chunk candidates even from exclusively long source sentences**; identify useful collocations, phrases, and grammatical frames instead of defaulting to full-sentence cards. Never split blindly by punctuation/word count.
+5. Rank chunk candidates by usefulness, clarity, distinctness, and expected review effort. Keep **zero, one, or several** independent targets from one long source only when each earns its review cost; reject filler and redundant fragments. Prefer fast, single-target cards; retain a complete sentence only when the whole utterance is the actual independently valuable target.
+6. For each selected chunk, create a short, answerable Front and a glance-checkable Back with only sufficient context. Keep a reliable source locator, and match any original audio to the selected short wording using `audio_clip`.
+7. Classify each selected card as exactly one of: `reading`, `listening`, `production`, or `pronunciation`.
+8. Add sparse linguistic tags only when useful.
+9. If media may improve learning, read [references/media.md](references/media.md) before acquiring, generating, or attaching it.
+10. Write `card-plan.json` according to [references/output-contract.md](references/output-contract.md) and `schemas/card-plan.schema.json`. Its target/base languages must match the workspace configuration. Use `audio_clip` for selected spoken excerpts from longer original recordings; use `audio_request` / `image_request` only where generated media adds real value.
+11. Select delivery: `apkg` by default; `live` only when the user wants direct AnkiConnect delivery; `both` when live insertion plus a portable APKG is useful.
+12. Run `python scripts/run_pipeline.py card-plan.json --delivery <apkg|live|both>`. This resolves media, validates it, then delivers it. Deterministic delivery adds workflow identity tags automatically; do not ask the model to invent them.
+13. In live mode, an existing workflow identity is idempotent only when the stored note still matches the expected content. Treat changed content/model/template/CSS as drift and stop rather than silently skipping or overwriting it.
+14. Treat deterministic APKG validation as structural validation, not proof of cross-client rendering. After a meaningful template/model migration, ask for or perform a representative Anki spot-check (long text, empty optional fields, media, night mode, and the target writing system) before large-scale adoption.
+15. Deliver the resolved plan plus APKG/live report. Never claim media or rendering success when the relevant validation/spot-check did not occur.
 
 ## Optional live maintenance / feedback audit
 
