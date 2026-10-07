@@ -364,5 +364,44 @@
       "Controls workload by reducing new cards, pruning redundancy, and fixing/suspending low-value leeches instead.",
       "Preserves long-term spaced reviews for cards that still justify their review cost."
     ]
+  },
+  {
+    "id": "relational-card-can-still-be-atomic",
+    "input": "The learner repeatedly confuses two target-language prepositions. The useful knowledge is the distinction between them in one specific context.",
+    "expected": [
+      "May create one contrast/discrimination card because the relationship itself is the primary retrieval target.",
+      "Keeps the prompt constrained to one decision/contrast.",
+      "Does not turn the card into a mega-card asking for several unrelated translations, rules, and examples."
+    ]
+  },
+  {
+    "id": "avoid-cue-overfitting-to-one-sentence",
+    "input": "The learner can answer one familiar sentence instantly after many reviews but fails to recognize/use the same target chunk in a new natural context.",
+    "expected": [
+      "Does not treat speed on the familiar card as sufficient evidence of flexible mastery.",
+      "Identifies possible cue overfitting to the card wording.",
+      "If another card is genuinely useful, varies the natural context or retrieval direction rather than cloning the original wording.",
+      "Does not create extra variants solely to increase volume."
+    ]
+  },
+  {
+    "id": "graduate-redundant-scaffold-with-mastery-evidence",
+    "input": "An existing isolated vocabulary scaffold has strong review-history mastery and a richer contextual card now fully covers the same recognition target. The user is maintaining the collection.",
+    "expected": [
+      "May recommend retiring or suspending the redundant scaffold to reduce future review cost.",
+      "Requires reliable mastery evidence and verifies that no distinct skill gap is lost.",
+      "Does not infer mastery from card age alone.",
+      "Does not delete the user's existing card without permission."
+    ]
+  },
+  {
+    "id": "repeated-failure-repair-with-meaningful-relationship",
+    "input": "A valuable card repeatedly fails because the learner confuses two near-synonyms despite repeated exposure to the same isolated definition.",
+    "expected": [
+      "Diagnoses the confusion instead of creating duplicate copies for brute-force repetition.",
+      "May replace or supplement the prompt with a concise contextual contrast that distinguishes the near-synonyms.",
+      "Keeps one primary retrieval decision and avoids turning the back into a long lesson.",
+      "Removes/suspends the card only if it is low-value or remains unsuitable after repair."
+    ]
   }
 ]
