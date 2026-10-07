@@ -520,3 +520,29 @@ def test_readme_documents_refold_selective_adaptation() -> None:
     assert "refold-learning-words-roadmap.md" in readme
     assert "Candidate sources evolve with learner evidence" in readme
     assert "external roadmap phase labels" in readme
+
+
+def test_anki_forum_grammar_retrieval_intent_is_selective() -> None:
+    rules = (SKILL / "references" / "card-selection.md").read_text(encoding="utf-8").lower()
+    pedagogy = (SKILL / "references" / "pedagogy.md").read_text(encoding="utf-8").lower()
+    skill = (SKILL / "SKILL.md").read_text(encoding="utf-8").lower()
+    note = (SKILL / "references" / "research" / "anki-forum-language-card-structure.md").read_text(encoding="utf-8").lower()
+
+    assert "choose grammar card format from retrieval intent" in rules
+    assert "rule recall" in rules
+    assert "recognition/discrimination" in rules
+    assert "application/production" in rules
+    assert "do not dump a full paradigm/table onto one card" in rules
+    assert "choose the card format from the intended retrieval operation" in pedagogy
+    assert "for grammar, choose the card format from the retrieval intent" in skill
+    assert "supplied `/4` link points to the automatic system-closure post" in note
+    assert "audio as structured data" in note
+    assert "separate language study by time/location/background music" in note
+    assert "no schema, note model, deck architecture, media provider, scheduler, installer, or ankiconnect change" in note
+
+
+def test_readme_documents_anki_forum_selective_refinement() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "anki-forum-language-card-structure.md" in readme
+    assert "Grammar format follows retrieval intent" in readme
+    assert "automatic reversed grammar/vocabulary cards" in readme
