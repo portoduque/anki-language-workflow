@@ -48,10 +48,12 @@ Core rules:
 
 These are product rules, not suggestions. The complete normative specification lives in `anki-language/references/card-selection.md`.
 
-1. **Minimum useful set:** each source unit may generate 0, 1, or several cards; several only when they train genuinely different skills.
-2. **No quotas:** never create Reading + Listening + Production + Pronunciation automatically.
-3. **One retrieval target:** each card tests one primary piece of knowledge or skill.
-4. **Self-orienting front:** every front identifies `<TargetLanguage> — <Skill>` so mixed reviews never show a contextless question.
+1. **Minimum useful set:** each source unit may generate 0, 1, or several cards.
+2. **Selective multi-card reuse:** the same sentence, word, expression, audio, image, or passage may appear in multiple skill decks when each card trains a genuinely different and worthwhile retrieval operation.
+3. **Marginal-benefit rule:** every extra sibling card must add enough learning value to justify its future review cost. Optimize **memory efficiency per review minute**, not card volume.
+4. **No quotas:** never create Reading + Listening + Production + Pronunciation automatically.
+5. **One retrieval target:** each card tests one primary piece of knowledge or skill.
+6. **Self-orienting front:** every front identifies `<TargetLanguage> — <Skill>` so mixed reviews never show a contextless question.
 5. **No guessing the author's intention:** prompts must make the intended retrieval clear without revealing the answer.
 6. **No blind cloze:** a blank is used only when a semantic/function cue, lemma, or other constraint makes the intended answer sufficiently unambiguous.
 7. **No automatic reverse cards:** recognition and production are different skills and get separate cards only when both matter.
@@ -68,6 +70,8 @@ These are product rules, not suggestions. The complete normative specification l
 18. **Fast reviews:** answers should be concise enough to verify recall quickly; extra explanation is secondary.
 19. **Prefer the user's material:** preserve useful source sentences/audio/context instead of replacing them with generic content without reason.
 20. **Ask instead of guessing:** if uncertainty changes meaning, target expression, transcription, register, acceptable answers, or media rights, ask the user before building.
+
+A source reused across multiple decks is valid only when each card covers a real additional skill gap. If the extra card mostly repeats the same retrieval, discard it.
 
 Final acceptance test for every card: **useful, distinct, clear, atomic, fast**. If one fails, revise or discard the card.
 
