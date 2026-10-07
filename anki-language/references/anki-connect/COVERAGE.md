@@ -6,17 +6,19 @@ Snapshot basis: standard documented API version 6, curated 2026-10-06.
 
 | Category | Actions | Local reference |
 | --- | ---: | --- |
-| Card | 17 | 03-card-actions.md |
+| Card | 19 (17 baseline + 2 newer) | 03-card-actions.md |
 | Deck | 12 | 04-deck-actions.md |
-| Graphical | 17 | 08-gui-actions.md |
+| Graphical | 19 (17 baseline + 2 newer) | 08-gui-actions.md |
 | Media | 5 | 07-media-actions.md |
 | Miscellaneous | 11 | 09-misc-actions.md |
 | Model | 25 | 06-model-actions.md |
 | Note | 20 | 05-note-actions.md |
 | Statistic | 7 | 10-statistic-actions.md |
-| **Total** | **114** | ACTION_CATALOG.json |
+| **Baseline common snapshot** | **114** | ACTION_CATALOG.json |
+| **Newer/version-sensitive additions** | **4** | ACTION_CATALOG.json |
+| **Catalog total** | **118** | ACTION_CATALOG.json |
 
-Every action extracted from the standard public README snapshot is represented in `ACTION_CATALOG.json` and one category guide.
+Every baseline action is represented, plus four newer actions seen in upstream-tracking mirrors: `gradeNow`, `repositionNewCards`, `guiAddNoteSetData`, and `guiPlayAudio`. These four are explicitly marked version-sensitive and must be verified with `apiReflect` on the user's installation.
 
 ## Configuration coverage
 
@@ -82,4 +84,4 @@ This coverage is intentionally split into:
 - runtime introspection (`version`, `apiReflect`) for installed capability truth;
 - upstream/source map for current behavior.
 
-Do not treat the number 114 as immutable across future AnkiConnect releases.
+Do not treat 114, 118, or any other count as immutable across future AnkiConnect releases. Runtime `apiReflect` is the final capability check.
