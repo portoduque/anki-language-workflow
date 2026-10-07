@@ -100,3 +100,35 @@ Fork-specific actions must never be assumed to exist in standard AnkiConnect.
 ## Licensing/copying policy
 
 The local library stores summaries and factual API metadata. It does not vendor the upstream README wholesale. Follow source links for full upstream examples/implementation.
+
+
+## Supplemental public mirrors used to detect newer actions
+
+### JSchoreels/anki-connect
+
+https://github.com/JSchoreels/anki-connect
+
+This repository identifies itself as a fork of the SourceHut AnkiConnect project and currently documents four actions not present in the baseline public mirror used above:
+
+- `gradeNow`
+- `repositionNewCards`
+- `guiAddNoteSetData`
+- `guiPlayAudio`
+
+These are included in the local catalog as **extended/version-sensitive** entries, not assumed standard on every installation.
+
+### devsdocs/anki-connect
+
+https://github.com/devsdocs/anki-connect
+
+This mirror currently documents at least the newer GUI actions `guiAddNoteSetData` and `guiPlayAudio`. It is used only as corroborating evidence for version drift.
+
+## Mirror disagreement policy
+
+When mirrors disagree about action availability:
+
+1. do not silently select the largest action list as universally supported;
+2. preserve a baseline/common catalog;
+3. mark additional actions as version-sensitive;
+4. verify the user's live instance with `apiReflect`;
+5. use the original SourceHut upstream when directly accessible.
