@@ -32,6 +32,7 @@ Optimize long-term retrieval and usable language ability while keeping reviews f
 - When reliable mastery evidence exists, retire redundant scaffolds instead of stacking easier cards underneath a richer contextual card forever.
 - The Anki deck should make learned material retrievable. It does not replace reading, listening, speaking, or writing practice.
 - Treat encountered unknown items as candidates, not automatic cards; preserve context and select after the passage/clip when that is less disruptive.
+- Clarify the intended meaning/form/usage enough before scheduling a card that review tests retrieval rather than first-time semantic discovery; prior mastery is not required.
 - For longer natural input, prefer a meaning-first pass before intensive lookup/card extraction when comprehension is still possible; use dictionary lookup selectively rather than interrupting for every unknown.
 - For difficult arbitrary grammatical attributes such as noun gender/class, a stable concrete mnemonic code may be used as secondary scaffolding, while the real determiner+noun/form remains the knowledge to retrieve.
 - Card-creation time is part of the cost function. Prefer simple cards and selective enrichment over elaborate customization that does not improve retrieval.
