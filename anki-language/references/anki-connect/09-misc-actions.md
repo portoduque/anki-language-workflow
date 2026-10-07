@@ -1,37 +1,44 @@
-# 09 — Miscellaneous, Profiles, Sync, Batch, and Packages
+# 09 — Miscellaneous: Capability Discovery, Profiles, Sync, Batching, APKG
 
-These actions handle API introspection, permissions, profiles, synchronization, batching, and APKG import/export.
+These actions cover API discovery, profiles, sync, batching, import/export, and collection reload.
 
-`version`, `requestPermission`, and `apiReflect` are important for robust clients.
+## Bootstrap actions
 
-Do not make sync/profile switching/package import an automatic side effect of ordinary card generation.
+- `version`: returns exposed API version.
+- `apiReflect`: runtime reflection for supported action names.
+- `requestPermission`: browser-origin permission bootstrap; may prompt the user and is exempt from normal API-key checking.
 
-## Supported actions
+## Profiles
 
-| Action | Status | Main documented params | Purpose |
+`getProfiles`, `getActiveProfile`, and `loadProfile` control which profile/collection is targeted.
+
+## `multi`
+
+Batches independent API calls into one HTTP request. Do not assume transaction semantics across arbitrary nested actions.
+
+## Sync
+
+`sync` requires configured AnkiWeb authentication. If Anki reports a full-sync-required state, do not guess which direction should win.
+
+## Package actions
+
+- `exportPackage(deck, path, includeSched=False)`
+- `importPackage(path)`
+
+Useful for bridging live Anki with the project's APKG workflow.
+
+## Complete current catalog
+
+| Action | Exact source signature | Risk | Purpose |
 | --- | --- | --- | --- |
-| `requestPermission` | baseline | — | Requests permission to use the API exposed by this plugin. This method does not require the API key, and is the |
-| `version` | baseline | — | Gets the version of the API exposed by this plugin. Currently versions `1` through `6` are defined. |
-| `apiReflect` | baseline | `scopes`, `actions` | Gets information about the AnkiConnect APIs available. The request supports the following params: |
-| `sync` | baseline | — | Synchronizes the local Anki collections with AnkiWeb. |
-| `getProfiles` | baseline | — | Retrieve the list of profiles. |
-| `getActiveProfile` | baseline | — | Retrieve the active profile. |
-| `loadProfile` | baseline | `name` | Selects the profile specified in request. |
-| `multi` | baseline | `actions` | Performs multiple actions in one request, returning an array with the response of each action (in the given order). |
-| `exportPackage` | baseline | `deck`, `path`, `includeSched` | Exports a given deck in `.apkg` format. Returns `true` if successful or `false` otherwise. The optional property |
-| `importPackage` | baseline | `path` | Imports a file in `.apkg` format into the collection. Returns `true` if successful or `false` otherwise. |
-| `reloadCollection` | baseline | — | Tells anki to reload all data from the database. |
-
-## Status policy
-
-- **baseline**: present in the baseline public standard documentation snapshot.
-- **extended / verify via `apiReflect`**: present in a newer upstream-tracking mirror but absent from the baseline mirror; verify the user's installed AnkiConnect before invoking.
-
-## Runtime verification
-
-Before using a version-sensitive or uncertain action, call `apiReflect` against the user's installed AnkiConnect.
-
-## Sources
-
-- https://github.com/ankiultimate/anki-connect
-- https://github.com/JSchoreels/anki-connect
+| `requestPermission` | `self, origin, allowed` | `read` | Requests permission to use the API exposed by this plugin. |
+| `version` | `self` | `read` | Gets the version of the API exposed by this plugin. |
+| `apiReflect` | `self, scopes=None, actions=None` | `read` | Gets information about the AnkiConnect APIs available. |
+| `sync` | `self` | `write` | Synchronizes the local Anki collections with AnkiWeb. |
+| `getProfiles` | `self` | `read` | Retrieve the list of profiles. |
+| `getActiveProfile` | `self` | `read` | Retrieve the active profile. |
+| `loadProfile` | `self, name` | `write` | Selects the profile specified in request. |
+| `multi` | `self, actions` | `mixed` | Performs multiple actions in one request, returning an array with the response of each action (in the given order). |
+| `exportPackage` | `self, deck, path, includeSched=False` | `read-export` | Exports a given deck in `.apkg` format. |
+| `importPackage` | `self, path` | `destructive` | Imports a file in `.apkg` format into the collection. |
+| `reloadCollection` | `self` | `write` | Tells anki to reload all data from the database. |
