@@ -76,9 +76,10 @@ def validate_language_config(plan: dict[str, Any], config_path: Path) -> list[st
 
 
 def normalized_utterance(value: str) -> str:
-    """Compare transcript/target wording without punctuation or whitespace noise."""
-    folded = unicodedata.normalize("NFKC", value).casefold()
-    return " ".join(re.findall(r"[^\W_]+", folded, flags=re.UNICODE))
+    """Compare target/transcript tokens, retaining meaningful contractions."""
+    folded = unicodedata.normalize("NFKC", value).casefold().replace("’", "'")
+    # "can" and "can't" must never be matched as the same spoken word.
+    return " ".join(re.findall(r"[^\\W_]+(?:'[^\\W_]+)*", folded, flags=re.UNICODE))
 
 
 def retrieval_signature(card: dict[str, Any]) -> tuple[str, ...]:
