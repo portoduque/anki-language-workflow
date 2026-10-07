@@ -86,6 +86,8 @@ These are product rules, not suggestions. The complete normative specification l
 36. **Atomic can be relational:** a contrast or relationship may be the one primary retrieval target when the distinction itself matters; do not turn this into a multi-answer mega card.
 37. **Avoid cue overfitting:** the learner should retrieve the language knowledge, not recognize one fixed flashcard fingerprint; vary natural contexts only when each adds real transfer value.
 38. **Graduate redundant scaffolds carefully:** when maintaining an existing collection and reliable mastery evidence exists, retire/suspend an easier card only if a richer contextual card fully covers the same target and no skill gap is lost; never infer mastery from age alone or delete user cards without permission.
+39. **Preserve comprehension flow:** with continuous natural input, prefer a meaning-first pass before intensive lookup/card extraction when comprehension remains possible; do not stop for every unfamiliar word by default.
+40. **Grammar-attribute mnemonics are secondary:** for difficult arbitrary features such as noun gender/class, a stable concrete code may help, but the real determiner+noun/form remains the retrieval target and no universal color/action mapping is hard-coded.
 
 A source reused across multiple decks is valid only when each card covers a real additional skill gap. If the extra card mostly repeats the same retrieval, discard it.
 
@@ -103,6 +105,7 @@ Current curated notes include:
 - `anki-language/references/research/evildea-anki-language-tutorial.md` — analyzes Evildea's complete language-learning Anki tutorial, confirms the Reading/Listening/Production architecture, and selectively adopts near-i+1 mining, polysemy-before-encoding, and stronger Production-naturalness rules.
 - `anki-language/references/research/hodos-37000-anki-tips.md` — analyzes Hodos' complete 37,000-card tips video, adopts one-sense-per-card and verified mnemonic scaffolding, and audits its grading/timer/deck-retirement advice against current Anki semantics.
 - `anki-language/references/research/justin-sung-anki-pro.md` — analyzes Justin Sung's complete 20-minute Anki strategy video and selectively adapts relational retrieval, cue-overfitting prevention, contextual transfer, and evidence-based scaffold graduation without importing multi-answer mega cards.
+- `anki-language/references/research/corinna-anki-wrong-vocabulary.md` — analyzes Corinna Languages' complete vocabulary-focused Anki video and selectively adopts meaning-first source mining plus optional stable mnemonic coding for difficult grammatical gender/noun-class attributes.
 
 Across these research sources, recommendations are not promoted automatically. Examples deliberately **not** adopted include:
 
@@ -120,6 +123,9 @@ Across these research sources, recommendations are not promoted automatically. E
 - merging several independent answers into a large “higher-order” card that becomes slow or ambiguous to grade;
 - fixed three-success/three-failure thresholds, fixed weekly flashcard quotas, or mandatory long-study-session routines;
 - assuming repeated success on one identical cue proves flexible language use in new contexts.
+- banning translation, forcing images on every vocabulary card, or automatically generating forward+reverse cards for every word;
+- hard-coding “sparkling/feminine”, “exploding/masculine”, or any other grammatical-gender mnemonic mapping for every learner;
+- making Google Images, Forvo add-ons, fixed daily review minutes, or “review five cards on bad days” part of the card-generation contract.
 
 ### Scheduling settings are not copied from research videos
 

@@ -285,6 +285,19 @@ One incidental item that is immediately inferable and does not compete with the 
 
 If multiple unknowns each demand attention, choose a cleaner sentence, split the learning targets, or skip the sentence.
 
+### Preserve comprehension flow before extraction
+
+For continuous natural material such as a story, article, episode, video, or podcast, prefer a **meaning-first pass** before intensive lookup/card extraction when overall comprehension is still possible.
+
+On that first pass:
+- focus on understanding the message;
+- do not stop for every unfamiliar item;
+- note/mark only what is needed to avoid losing the source context.
+
+On a later pass, or after the current passage/clip, inspect the unknowns and decide which ones deserve lookup and cards.
+
+This is a preference, not a ritual. Skip the extra pass when the source is already short/isolated, when an unknown blocks comprehension, or when another workflow is clearly more efficient.
+
 ### Capture candidates first; commit to cards second
 
 When useful material is encountered while reading, watching, listening, or studying, it is acceptable to collect words/phrases/sentences as **candidates** first and decide later which ones deserve cards.
@@ -339,6 +352,25 @@ Rules:
 - If the link is merely an invented sound-alike/keyword, label it as a mnemonic rather than pretending it is etymology.
 - Avoid a mnemonic that is more complicated, misleading, or memorable than the target in a way that creates interference.
 - AI may propose mnemonic candidates, but it must not fabricate linguistic ancestry or false-friend relationships.
+
+### Stable mnemonics for grammatical attributes
+
+When an arbitrary lexical attribute repeatedly causes errors — especially grammatical gender or noun class — a **consistent concrete mnemonic code** may be used as secondary scaffolding.
+
+Examples of possible codes include:
+- a stable action/transformation assigned to each gender/class;
+- a stable color or visual motif;
+- another simple, user-understandable mapping.
+
+Rules:
+- prefer learning the real target form/chunk first (for example, determiner + noun) rather than memorizing an abstract label alone;
+- keep the same mnemonic mapping consistent within the language/deck;
+- use it only when the grammatical attribute is genuinely difficult or arbitrary enough to justify the extra cue;
+- the mnemonic is secondary support, not the answer itself;
+- do not create extra cards solely to display the mnemonic;
+- avoid a visual/code that obscures the noun meaning or creates interference.
+
+Do not hard-code one universal mapping such as “sparkling = feminine.” The workflow may adopt a mapping only when it is explicitly chosen/understood for that learner or material.
 
 ## 16. Avoid redundancy and interference
 

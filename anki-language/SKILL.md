@@ -43,6 +43,8 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 - Prefer near-i+1 mined sentences: the surrounding context should already be understood, with one primary unknown/focus item. If several independent unknowns compete for attention, choose a cleaner sentence, split targets, or skip it.
 - For polysemous words/expressions, inspect multiple trustworthy contexts during analysis, but keep each review front concise; prefer one primary sense/usage per card when a multi-definition answer would overload retrieval.
 - Mnemonics are optional scaffolding for difficult items. Verified cognates/etymology may help; invented sound-alike mnemonics must be labeled as mnemonics, and AI must not fabricate linguistic ancestry.
+- For genuinely difficult arbitrary grammatical attributes such as gender/noun class, a stable concrete mnemonic code may be used as secondary scaffolding; keep the real target form/chunk primary and never hard-code one universal mapping.
+- For continuous natural material, prefer a meaning-first pass before intensive lookup/card extraction when comprehension is still possible; do not interrupt the source for every unknown.
 - An encountered unknown word/phrase is only a **candidate** until it passes the usefulness/context/review-cost test; preserve source context and batch selection after a passage/chapter/clip when practical.
 - For an absolute beginner with too little comprehensible personal material to mine, a vetted frequency/shared deck may be used as a **candidate source**; never bulk-adopt it blindly.
 - Card-creation/customization time also counts. Prefer simple cards and selective enrichment over decorative complexity that does not improve retrieval.
