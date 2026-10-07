@@ -316,7 +316,7 @@ def test_justin_sung_refinements_preserve_atomicity_and_transfer() -> None:
     assert "atomic does not mean isolated" in rules
     assert "avoid learning the card wording instead of the language" in rules
     assert "graduate redundant scaffolds when mastery evidence exists" in rules
-    assert "one relationship/contrast can be an atomic retrieval target" in pedagogy
+    assert "single contrast/relationship can be the primary retrieval target" in pedagogy
     assert "avoid cue overfitting" in pedagogy
     assert "contrast/relationship may be one primary retrieval target" in skill
     assert "never infer mastery from age alone" in skill
