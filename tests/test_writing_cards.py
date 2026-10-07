@@ -18,7 +18,7 @@ sys.path.insert(0, str(SCRIPTS))
 
 from build_apkg import CSS, FIELDS, build, fields_for_skill, make_model  # noqa: E402
 from card_contract import SKILL_META, writing_parts  # noqa: E402
-from deliver_live import build_note, ensure_models, note_fields  # noqa: E402
+from deliver_live import build_note, ensure_models, model_payload, note_fields  # noqa: E402
 from validate_plan import validate_plan  # noqa: E402
 
 
@@ -69,9 +69,12 @@ def test_writing_native_typing_template_is_single_gap_and_keeps_answer_hidden() 
     assert "{{Target}}" in back
     assert "{{WritingAnswer}}" in back
     assert "{{Source}}" in back
-    assert ".skill-writing" in CSS
-    assert ".nightMode .skill-writing" in CSS
-    assert "#typeans" in CSS
+    assert ".skill-writing" not in CSS  # existing models retain unchanged CSS
+    assert ".skill-writing" in model.css
+    assert ".nightMode .skill-writing" in model.css
+    assert "#typeans" in model.css
+    assert CSS == make_model("reading").css
+    assert CSS == make_model("pronunciation").css
     assert 'dir="auto"' in front
     assert "@media (max-width: 480px)" in CSS
     assert "<script" not in (front + back).lower()
@@ -205,10 +208,13 @@ class ModelClient:
 
 def test_writing_live_creation_and_drift_preflight() -> None:
     client = ModelClient()
-    ensure_models(client, {"writing"})
-    assert list(client.models) == ["Anki Language v5 — Writing"]
+    ensure_models(client, {"writing", "reading", "listening", "production", "pronunciation"})
+    assert len(client.models) == 5
+    assert model_payload("writing")["css"] == make_model("writing").css
+    assert model_payload("reading")["css"] == CSS
+    assert model_payload("pronunciation")["css"] == CSS
     assert client.models["Anki Language v5 — Writing"]["fields"] == [x["name"] for x in fields_for_skill("writing")]
-    ensure_models(client, {"writing"})
+    ensure_models(client, {"writing", "reading", "listening", "production", "pronunciation"})
     client.models["Anki Language v5 — Writing"]["css"] += " /* custom */"
     with pytest.raises(Exception, match="CSS drift"):
         ensure_models(client, {"writing"})
