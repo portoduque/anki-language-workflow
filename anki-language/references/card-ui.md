@@ -20,6 +20,7 @@ The workflow owns the visual presentation of every newly generated card. The goa
    - Listening: audio is the dominant front interaction; transcript becomes the main answer.
    - Production: learner-facing prompt is dominant; the target-language production is the main answer.
    - Pronunciation & Sounds: prompt/audio is dominant; written target stays hidden on the front when it could leak the answer.
+- Writing: short contextual sentence with one gap + native typed input; full sentence is shown on the answer.
 
 4. **Support stays visually subordinate**
    - Focus, IPA, Reading, Variant, Grammar, Notes, and Source never compete with the primary retrieval target.
@@ -57,6 +58,7 @@ The workflow owns the visual presentation of every newly generated card. The goa
 - Listening — teal
 - Production — amber
 - Pronunciation & Sounds — rose
+- Writing — blue
 
 The same semantic accent remains recognizable in night mode with adjusted contrast.
 
@@ -98,6 +100,22 @@ Front hierarchy:
 5. optional hint
 
 The target/answer field is never inserted directly on pronunciation fronts. Only the deterministic `FrontCue` is populated when the written form is the prompt, so sound-identification cards still hide the answer. A generic "say this" prompt without a visible target or front audio is not a usable retrieval task.
+
+### Writing
+
+Front hierarchy:
+1. Writing + target-language header
+2. “Write the missing part” label
+3. short natural sentence with exactly one visual gap; the rest stays visible
+4. optional concise semantic/grammar cue
+5. one native Anki `{{type:WritingAnswer}}` input — no custom JavaScript, cloze model, or auto-generated siblings
+
+Back hierarchy:
+1. `{{FrontSide}}` triggers Anki's typed-answer comparison
+2. entire completed sentence and exact missing chunk
+3. optional base-language meaning, grammar/notes and answer audio
+
+The v5 design is shared with the other skills; Writing receives its own blue accent and readable typing input. This does not mutate existing note models. Typing input is not available in AnkiWeb/preview; representative reviews should be checked in the intended client.
 
 ## Answer behavior
 
