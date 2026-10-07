@@ -1,25 +1,29 @@
 # Google Antigravity adapter
 
-The canonical skill is `anki-language/`.
+Antigravity distinguishes on-demand **skills** from user-invoked **workflows**. This project installs both when using the IDE adapter.
 
-## Project install
+## Project/workspace install
 
 `python anki-language/scripts/install_skill.py antigravity --scope project --project .`
 
-This copies the skill to:
+Installs:
+- skill: `.agents/skills/anki-language/`
+- slash workflow: `.agents/workflows/anki-language.md`
 
-`.agents/skills/anki-language/`
+Invoke with `/anki-language <material>`. The workflow is intentionally thin and delegates the real rules to the skill.
 
-## User/global install
+## IDE global install
 
 `python anki-language/scripts/install_skill.py antigravity --scope user`
 
-This installs under:
+Installs the skill to `~/.gemini/config/skills/anki-language/` and the workflow to `~/.gemini/config/global_workflows/anki-language.md`.
 
-`~/.gemini/config/skills/anki-language/`
+## Antigravity CLI
 
-## Invocation
+Project skills also use `.agents/skills/`. For a CLI-specific user install use:
 
-Use Antigravity's skill discovery (`/skills`) or explicitly tell the agent to use the `anki-language` skill with the supplied material.
+`python anki-language/scripts/install_skill.py antigravity-cli --scope user`
 
-The workflow itself is identical to the Codex/Claude versions because the canonical `SKILL.md` is shared.
+This targets `~/.gemini/antigravity-cli/skills/anki-language/`. Use `/skills` to verify discovery.
+
+The separation is deliberate: a skill is reusable knowledge loaded on demand; a workflow gives the IDE the explicit `/anki-language` entry point.

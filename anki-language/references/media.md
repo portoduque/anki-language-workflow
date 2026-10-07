@@ -36,6 +36,12 @@ Poor uses:
 - abstract connectors where the image is ambiguous;
 - images that add search/review complexity without improving retrieval.
 
+## Provenance
+
+When media is used, populate `audio_provenance` or `image_provenance` in the card plan when the information is known. Preserve whether the asset was user-supplied, sourced from a native recording provider, synthesized with TTS, generated, or otherwise licensed.
+
+Never infer a license that was not actually verified.
+
 ## Packaging
 
 Media files referenced by the plan must exist before APKG build.

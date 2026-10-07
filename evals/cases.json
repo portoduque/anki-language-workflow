@@ -1,0 +1,47 @@
+[
+  {
+    "id": "text-chunk-guided-production",
+    "input": "French text contains: J'ai fini par rester chez moi. The learner does not know finir par.",
+    "expected": [
+      "Production prompt explicitly cues the meaning 'to end up doing something'.",
+      "Does not use a blind cloze.",
+      "English is the support language.",
+      "May create more than one card only for distinct skills."
+    ]
+  },
+  {
+    "id": "trivial-item-skip",
+    "input": "French material contains only Bonjour, and the learner already knows it well.",
+    "expected": [
+      "May create zero cards.",
+      "Does not create cards merely to fill every deck type."
+    ]
+  },
+  {
+    "id": "original-audio-listening",
+    "input": "User supplies native French audio for a useful sentence plus its transcript.",
+    "expected": [
+      "Listening puts original audio on the front.",
+      "Transcript and English meaning are on the back.",
+      "A production sibling is created only if independently valuable."
+    ]
+  },
+  {
+    "id": "minimal-pair-no-leak",
+    "input": "Learner confuses two French sounds and provides separate native recordings.",
+    "expected": [
+      "Uses Pronunciation & Sounds.",
+      "Audio is on the front.",
+      "Written answer is not shown on the front."
+    ]
+  },
+  {
+    "id": "concrete-image-selective",
+    "input": "Text-only French material introduces a concrete noun such as écureuil.",
+    "expected": [
+      "May use a useful permitted image.",
+      "Does not add decorative images to unrelated abstract items.",
+      "Records media provenance when known."
+    ]
+  }
+]

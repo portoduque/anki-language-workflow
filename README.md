@@ -1,12 +1,14 @@
 # Anki Language Workflow
 
-Portable AI skill/workflow that turns language-learning material into selective, high-quality Anki decks and a validated `.apkg` package.
+Portable Agent Skill/workflow that turns language-learning material into selective, high-quality Anki decks and a deeply validated `.apkg` package.
 
-## Core idea
+It targets **Codex, Claude Code, and Google Antigravity** without maintaining three copies of the learning logic.
 
-The AI decides **what is worth learning and which skill should be trained**. Deterministic scripts handle plan validation and Anki package generation.
+## Design
 
-Default language model:
+The model decides **what is worth learning and which skill should be trained**. Deterministic scripts handle schema validation, media checks, APKG generation, and package verification.
+
+Defaults:
 
 - target language: the language being learned;
 - support language: **English**;
@@ -19,7 +21,19 @@ Decks are organized by trained skill:
 - `03 Production`
 - `04 Pronunciation & Sounds`
 
-Linguistic categories such as `vocabulary`, `chunk`, `collocation`, `grammar`, `word-form`, `word-order`, `minimal-pair`, and `sentence-mining` are tags, not extra micro-decks.
+Linguistic dimensions such as `vocabulary`, `chunk`, `collocation`, `grammar`, `word-form`, `word-order`, `minimal-pair`, and `sentence-mining` are tags, not extra micro-decks.
+
+## Cross-agent architecture
+
+All three products support filesystem-based Agent Skills centered on `SKILL.md`. This repository keeps one canonical skill and adds only the product-specific surface each agent needs:
+
+| Product | Project skill path | Explicit invocation | Product-specific layer |
+| --- | --- | --- | --- |
+| Codex | `.agents/skills/anki-language/` | `$anki-language` | `agents/openai.yaml` |
+| Claude Code | `.claude/skills/anki-language/` | `/anki-language` | none required |
+| Antigravity IDE | `.agents/skills/anki-language/` | `/anki-language` | thin `.agents/workflows/anki-language.md` |
+
+This deliberately avoids pretending the products have identical command systems.
 
 ## Card-selection rules
 
@@ -36,43 +50,63 @@ Linguistic categories such as `vocabulary`, `chunk`, `collocation`, `grammar`, `
 ## Repository layout
 
 - `anki-language/SKILL.md` — canonical portable skill.
-- `anki-language/references/` — pedagogy, card selection, media, and output rules.
-- `anki-language/schemas/card-plan.schema.json` — intermediate card-plan contract.
-- `anki-language/scripts/` — installer, plan validator, APKG builder, and APKG validator.
+- `anki-language/agents/openai.yaml` — optional OpenAI/Codex interface metadata.
+- `anki-language/references/` — detailed pedagogy, selection, media, and output rules.
+- `anki-language/schemas/card-plan.schema.json` — intermediate plan contract.
+- `anki-language/scripts/` — installer, validators, APKG builder, and one-command build pipeline.
+- `anki-language/assets/antigravity-workflow.md` — thin Antigravity slash-workflow template.
 - `anki-language/examples/` — example card plan.
-- `adapters/` — installation/invocation notes for Codex, Claude Code, and Antigravity.
-- `tests/` — smoke tests for deterministic build/validation.
+- `adapters/` — product-specific installation/invocation notes.
+- `tests/` — deterministic and cross-agent contract tests.
 
 ## Quick start
 
-1. Clone this repository.
-2. Install runtime dependencies: `python -m pip install -r anki-language/requirements.txt`.
-3. Install the skill for your agent using `python anki-language/scripts/install_skill.py <agent> --scope project --project <path>`.
-4. Give the agent your source material and invoke the `anki-language` skill.
-5. The workflow creates `card-plan.json`, builds the `.apkg`, validates it, and produces a build report.
+Install dependencies:
 
-Example installs:
+`python -m pip install -r anki-language/requirements.txt`
 
-- Codex: `python anki-language/scripts/install_skill.py codex --scope project --project .`
-- Claude Code: `python anki-language/scripts/install_skill.py claude --scope project --project .`
-- Antigravity: `python anki-language/scripts/install_skill.py antigravity --scope project --project .`
+Install the skill:
 
-## Invocation
+- Codex project: `python anki-language/scripts/install_skill.py codex --scope project --project .`
+- Claude Code project: `python anki-language/scripts/install_skill.py claude --scope project --project .`
+- Antigravity project: `python anki-language/scripts/install_skill.py antigravity --scope project --project .`
 
-- Claude Code: `/anki-language <material>`
-- Codex: explicitly invoke/name the `anki-language` skill in the client (for clients that expose skill mentions, use `$anki-language`).
-- Antigravity: select/discover `anki-language` from skills or explicitly ask the agent to use it.
+Then invoke:
+
+- Codex: `$anki-language`
+- Claude Code: `/anki-language`
+- Antigravity IDE: `/anki-language`
+
+## Deterministic build
+
+After the agent creates `card-plan.json`, run the pipeline from the installed skill directory:
+
+`python scripts/build.py /path/to/card-plan.json --output /path/to/French.apkg`
+
+The pipeline validates:
+
+1. JSON Schema and workflow-specific semantic rules.
+2. Required audio for Listening/sound-discrimination cards.
+3. Media existence and basename collisions.
+4. APKG ZIP structure and media manifest.
+5. The embedded Anki SQLite collection.
+6. Expected note/card counts.
+7. Expected subdeck names.
 
 ## Output
-
-Default successful output:
 
 - `<Language>.apkg`
 - `<Language>.apkg.report.json`
 - `card-plan.json`
 
-The APKG may include text, audio, images, note types, subdecks, and tags. Media is added only when it improves learning and its source/use is permitted.
+The APKG may include text, audio, images, note types, subdecks, and tags. Media is added only when it improves learning and its use is permitted.
 
-## Status
+## Validation
 
-Initial implementation. The project intentionally starts small: one portable skill, one intermediate schema, and a deterministic APKG builder.
+Validate the portable skill bundle:
+
+`python anki-language/scripts/validate_skill.py anki-language`
+
+Run all tests:
+
+`pytest -q`

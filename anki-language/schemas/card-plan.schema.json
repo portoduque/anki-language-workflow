@@ -126,6 +126,12 @@
               "minLength": 1
             },
             "uniqueItems": true
+          },
+          "audio_provenance": {
+            "$ref": "#/$defs/mediaProvenance"
+          },
+          "image_provenance": {
+            "$ref": "#/$defs/mediaProvenance"
           }
         }
       }
@@ -146,6 +152,36 @@
             "type": "string",
             "minLength": 1
           }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "mediaProvenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "user-supplied",
+            "native-source",
+            "tts",
+            "generated",
+            "licensed",
+            "unknown"
+          ]
+        },
+        "provider": {
+          "type": "string"
+        },
+        "source_url": {
+          "type": "string"
+        },
+        "license": {
+          "type": "string"
         }
       }
     }

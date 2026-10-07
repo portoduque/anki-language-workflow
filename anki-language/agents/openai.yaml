@@ -1,0 +1,6 @@
+interface:
+  display_name: "Anki Language"
+  short_description: "Build selective language-learning Anki decks"
+  default_prompt: "Use $anki-language to turn this study material into a selective, validated Anki APKG deck."
+policy:
+  allow_implicit_invocation: true
