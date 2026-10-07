@@ -54,6 +54,19 @@ Do not combine several unrelated questions, several independent blanks, or multi
 
 A note may contain rich metadata, examples, audio, images, explanations, and provenance, but each generated card must still have one primary retrieval target.
 
+### Reveal non-target dimensions when that isolates the skill
+
+Do not accidentally test two skills at once merely because both pieces of information exist.
+
+If a piece of information is **not** the retrieval target, it may be shown as support when doing so makes the intended task cleaner without giving away the answer.
+
+Examples:
+- a meaning/recognition task may show a reading/pronunciation aid when decoding is not being tested;
+- a script-decoding/pronunciation task may show the meaning/context while hiding the reading aid;
+- a Production task may show the semantic situation while hiding the target-language wording.
+
+The same field can therefore be support in one card and the answer in another. Keep the front minimal and never reveal the actual target.
+
 ### Atomic does not mean isolated
 
 A relationship or contrast can itself be **one primary retrieval target**.
@@ -403,7 +416,20 @@ Prefer to retire/suspend the redundant scaffold **only when**:
 
 Do not infer mastery from card age alone, and do not delete user cards without permission.
 
-## 17. Keep answers concise and reviews fast
+## 17. Store distinct linguistic data in distinct fields when useful
+
+When a language item has distinct auxiliary information, keep it structured instead of collapsing everything into one generic notes blob.
+
+Useful optional fields include:
+- `reading` — pinyin, kana, romanization, or another reading aid;
+- `variant` — alternate script/spelling/orthographic form;
+- `grammar` — concise grammatical attribute such as gender, noun class, part of speech, or form.
+
+Populate them only when they help the selected card. A populated field is **not** a reason to generate another card.
+
+For writing-heavy languages, handwriting/written recall may be represented as a Production card when active written output is independently worth training. Do not create handwriting cards by default.
+
+## 18. Keep answers concise and reviews fast
 
 The answer should expose the information needed to verify recall quickly.
 
@@ -413,7 +439,7 @@ For grammar, morphology, conjugation, or word-order cards, a brief back-side exp
 
 Do not turn the back of every card into a lesson, paragraph, or reference article.
 
-## 18. Use the user's material as the primary source
+## 19. Use the user's material as the primary source
 
 Prefer the user's phrase, sentence, audio, image, or context when it is suitable.
 
@@ -431,7 +457,7 @@ Do not replace the user's material with generic material merely because generic 
 
 It is acceptable to create a clearer example when the original material is unsuitable, but preserve the intended meaning and do not invent uncertain facts.
 
-## 19. Ask before guessing when ambiguity affects card quality
+## 20. Ask before guessing when ambiguity affects card quality
 
 Stop and ask the user when uncertainty materially affects:
 
@@ -445,7 +471,7 @@ Stop and ask the user when uncertainty materially affects:
 
 Minor formatting decisions do not require interruption.
 
-## 20. Decks classify skill; tags classify linguistic content
+## 21. Decks classify skill; tags classify linguistic content
 
 Use the four skill subdecks:
 
@@ -469,7 +495,7 @@ Use sparse tags for dimensions such as:
 
 Do not create many micro-decks for those categories.
 
-## 21. Creation effort must also earn its keep
+## 22. Creation effort must also earn its keep
 
 Review cost is not the only cost. Card creation/customization also consumes time.
 
@@ -477,7 +503,7 @@ Do not spend disproportionate effort on decorative formatting, searching for the
 
 Use automation/media enrichment when it adds value, but keep the workflow biased toward **fast capture, selective enrichment, and more time learning/reviewing than decorating cards**.
 
-## 22. Final decision test
+## 23. Final decision test
 
 Before accepting any card, verify all five:
 
