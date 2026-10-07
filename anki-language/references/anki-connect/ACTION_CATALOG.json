@@ -43,7 +43,7 @@
     {
       "name": "setSpecificValueOfCard",
       "category": "Card",
-      "description": "Sets specific value of a single card. Given the risk of wreaking havor in the database when changing some of the values of a card, some of the keys require the argument \"warning_check\" set to True.",
+      "description": "Sets specific value of a single card. Given the risk of wreaking havor in the database when changing some of the values of a card, some of the keys require the argument \"warning_check\" set to True. This can be used to set a card's flag, change it's ease factor, change the review order in a filtered deck and change the column \"data\" (not currently used by anki apparantly), and many other values. A list of values and explanation of their respective utility can be found at [AnkiDroid's wiki](https://github.com/ankidroid/Anki-Android/wiki/Database-Structure).",
       "params": [
         "card",
         "keys",
@@ -57,7 +57,7 @@
     {
       "name": "suspend",
       "category": "Card",
-      "description": "Suspend cards by card ID; returns `true` if successful (at least one card wasn't already suspended) or `false`",
+      "description": "Suspend cards by card ID; returns `true` if successful (at least one card wasn't already suspended) or `false` otherwise.",
       "params": [
         "cards"
       ],
@@ -69,7 +69,7 @@
     {
       "name": "unsuspend",
       "category": "Card",
-      "description": "Unsuspend cards by card ID; returns `true` if successful (at least one card was previously suspended) or `false`",
+      "description": "Unsuspend cards by card ID; returns `true` if successful (at least one card was previously suspended) or `false` otherwise.",
       "params": [
         "cards"
       ],
@@ -93,7 +93,7 @@
     {
       "name": "areSuspended",
       "category": "Card",
-      "description": "Returns an array indicating whether each of the given cards is suspended (in the same order). If card doesn't",
+      "description": "Returns an array indicating whether each of the given cards is suspended (in the same order). If card doesn't exist returns `null`.",
       "params": [
         "cards"
       ],
@@ -105,7 +105,7 @@
     {
       "name": "areDue",
       "category": "Card",
-      "description": "Returns an array indicating whether each of the given cards is due (in the same order). *Note*: cards in the",
+      "description": "Returns an array indicating whether each of the given cards is due (in the same order). *Note*: cards in the learning queue with a large interval (over 20 minutes) are treated as not due until the time of their interval has passed, to match the way Anki treats them when reviewing.",
       "params": [
         "cards"
       ],
@@ -117,7 +117,7 @@
     {
       "name": "getIntervals",
       "category": "Card",
-      "description": "Returns an array of the most recent intervals for each given card ID, or a 2-dimensional array of all the intervals",
+      "description": "Returns an array of the most recent intervals for each given card ID, or a 2-dimensional array of all the intervals for each given card ID when `complete` is `true`. Negative intervals are in seconds and positive intervals in days.",
       "params": [
         "cards"
       ],
@@ -129,7 +129,7 @@
     {
       "name": "findCards",
       "category": "Card",
-      "description": "Returns an array of card IDs for a given query. Functionally identical to `guiBrowse` but doesn't use the GUI for",
+      "description": "Returns an array of card IDs for a given query. Functionally identical to `guiBrowse` but doesn't use the GUI for better performance. * Optional: pass `fields` to include extra values with each card result. When `fields` is provided, the result is an array of objects that always include `cardId` and the requested fields. Currently supported field values are: `prop:r`, `prop:s`.",
       "params": [
         "query"
       ],
@@ -141,7 +141,7 @@
     {
       "name": "cardsToNotes",
       "category": "Card",
-      "description": "Returns an unordered array of note IDs for the given card IDs. For cards with the same note, the ID is only given",
+      "description": "Returns an unordered array of note IDs for the given card IDs. For cards with the same note, the ID is only given once in the array.",
       "params": [
         "cards"
       ],
@@ -153,7 +153,7 @@
     {
       "name": "cardsModTime",
       "category": "Card",
-      "description": "Returns a list of objects containings for each card ID the modification time.",
+      "description": "Returns a list of objects containings for each card ID the modification time. This function is about 15 times faster than executing `cardsInfo`.",
       "params": [
         "cards"
       ],
@@ -165,7 +165,7 @@
     {
       "name": "cardsInfo",
       "category": "Card",
-      "description": "Returns a list of objects containing for each card ID the card fields, front and back sides including CSS, note",
+      "description": "Returns a list of objects containing for each card ID the card fields, front and back sides including CSS, note type, the note that the card belongs to, and deck name, last modification timestamp as well as ease and interval. * Optional: pass `fields` to include extra values on each card object. Currently supported field values are: `prop:r`, `prop:s`, `prop:d`. * Optional: pass `noteFields` to only include selected note field names in the `fields` object. * Optional: pass `retrieved_info_mode`, one of:",
       "params": [
         "cards"
       ],
@@ -213,7 +213,7 @@
     {
       "name": "setDueDate",
       "category": "Card",
-      "description": "Set Due Date. Turns cards into review cards if they are new, and makes them due on a certain date.",
+      "description": "Set Due Date. Turns cards into review cards if they are new, and makes them due on a certain date. * 0 = today * 1! = tomorrow + change interval to 1 * 3-7 = random choice of 3-7 days",
       "params": [
         "cards",
         "days"
@@ -246,7 +246,7 @@
     {
       "name": "getDecks",
       "category": "Deck",
-      "description": "Accepts an array of card IDs and returns an object with each deck name as a key, and its value an array of the given",
+      "description": "Accepts an array of card IDs and returns an object with each deck name as a key, and its value an array of the given cards which belong to it.",
       "params": [
         "cards"
       ],
@@ -283,7 +283,7 @@
     {
       "name": "deleteDecks",
       "category": "Deck",
-      "description": "Deletes decks with the given names.",
+      "description": "Deletes decks with the given names. The argument `cardsToo` *must* be specified and set to `true`.",
       "params": [
         "decks",
         "cardsToo"
@@ -308,7 +308,7 @@
     {
       "name": "saveDeckConfig",
       "category": "Deck",
-      "description": "Saves the given configuration group, returning `true` on success or `false` if the ID of the configuration group is",
+      "description": "Saves the given configuration group, returning `true` on success or `false` if the ID of the configuration group is invalid (such as when it does not exist).",
       "params": [
         "config"
       ],
@@ -320,7 +320,7 @@
     {
       "name": "setDeckConfigId",
       "category": "Deck",
-      "description": "Changes the configuration group for the given decks to the one with the given ID. Returns `true` on success or",
+      "description": "Changes the configuration group for the given decks to the one with the given ID. Returns `true` on success or `false` if the given configuration group or any of the given decks do not exist.",
       "params": [
         "decks",
         "configId"
@@ -333,7 +333,7 @@
     {
       "name": "cloneDeckConfigId",
       "category": "Deck",
-      "description": "Creates a new configuration group with the given name, cloning from the group with the given ID, or from the default",
+      "description": "Creates a new configuration group with the given name, cloning from the group with the given ID, or from the default group if this is unspecified. Returns the ID of the new configuration group, or `false` if the specified group to clone from does not exist.",
       "params": [
         "name",
         "cloneFrom"
@@ -346,7 +346,7 @@
     {
       "name": "removeDeckConfigId",
       "category": "Deck",
-      "description": "Removes the configuration group with the given ID, returning `true` if successful, or `false` if attempting to",
+      "description": "Removes the configuration group with the given ID, returning `true` if successful, or `false` if attempting to remove either the default configuration group (ID = 1) or a configuration group that does not exist.",
       "params": [
         "configId"
       ],
@@ -370,7 +370,7 @@
     {
       "name": "guiBrowse",
       "category": "Graphical",
-      "description": "Invokes the *Card Browser* dialog and searches for a given query. Returns an array of identifiers of the cards that",
+      "description": "Invokes the *Card Browser* dialog and searches for a given query. Returns an array of identifiers of the cards that were found. Query syntax is [documented here](https://docs.ankiweb.net/searching.html).",
       "params": [
         "query",
         "reorderCards"
@@ -383,7 +383,7 @@
     {
       "name": "guiSelectCard",
       "category": "Graphical",
-      "description": "Finds the open instance of the *Card Browser* dialog and selects a card given a card identifier.",
+      "description": "Finds the open instance of the *Card Browser* dialog and selects a card given a card identifier. Returns `true` if the *Card Browser* is open, `false` otherwise.",
       "params": [
         "card"
       ],
@@ -395,7 +395,7 @@
     {
       "name": "guiSelectedNotes",
       "category": "Graphical",
-      "description": "Finds the open instance of the *Card Browser* dialog and returns an array of identifiers of the notes that are",
+      "description": "Finds the open instance of the *Card Browser* dialog and returns an array of identifiers of the notes that are selected. Returns an empty list if the browser is not open.",
       "params": [],
       "documented_version": 6,
       "status": "baseline",
@@ -405,7 +405,7 @@
     {
       "name": "guiAddCards",
       "category": "Graphical",
-      "description": "Invokes the *Add Cards* dialog, presets the note using the given deck and model, with the provided field values and tags.",
+      "description": "Invokes the *Add Cards* dialog, presets the note using the given deck and model, with the provided field values and tags. Invoking it multiple times closes the old window and _reopen the window_ with the new provided values.",
       "params": [
         "note"
       ],
@@ -417,7 +417,7 @@
     {
       "name": "guiEditNote",
       "category": "Graphical",
-      "description": "Opens the *Edit* dialog with a note corresponding to given note ID.",
+      "description": "Opens the *Edit* dialog with a note corresponding to given note ID. The dialog is similar to the *Edit Current* dialog, but:",
       "params": [
         "note"
       ],
@@ -439,7 +439,7 @@
     {
       "name": "guiStartCardTimer",
       "category": "Graphical",
-      "description": "Starts or resets the `timerStarted` value for the current card. This is useful for deferring the start time to when",
+      "description": "Starts or resets the `timerStarted` value for the current card. This is useful for deferring the start time to when it is displayed via the API, allowing the recorded time taken to answer the card to be more accurate when calling `guiAnswerCard`.",
       "params": [],
       "documented_version": 6,
       "status": "baseline",
@@ -469,7 +469,7 @@
     {
       "name": "guiAnswerCard",
       "category": "Graphical",
-      "description": "Answers the current card; returns `true` if succeeded or `false` otherwise. Note that the answer for the current",
+      "description": "Answers the current card; returns `true` if succeeded or `false` otherwise. Note that the answer for the current card must be displayed before before any answer can be accepted by Anki.",
       "params": [
         "ease"
       ],
@@ -537,7 +537,7 @@
     {
       "name": "guiExitAnki",
       "category": "Graphical",
-      "description": "Schedules a request to gracefully close Anki. This operation is asynchronous, so it will return immediately and",
+      "description": "Schedules a request to gracefully close Anki. This operation is asynchronous, so it will return immediately and won't wait until the Anki process actually terminates.",
       "params": [],
       "documented_version": 6,
       "status": "baseline",
@@ -557,7 +557,7 @@
     {
       "name": "storeMediaFile",
       "category": "Media",
-      "description": "Stores a file with the specified base64-encoded contents inside the media folder. Alternatively you can specify a",
+      "description": "Stores a file with the specified base64-encoded contents inside the media folder. Alternatively you can specify a absolute file path, or a url from where the file shell be downloaded. If more than one of `data`, `path` and `url` are provided, the `data` field will be used first, then `path`, and finally `url`. To prevent Anki from removing files not used by any cards (e.g. for configuration files), prefix the filename with an underscore. These files are still synchronized to AnkiWeb. Any existing file with the same name is deleted by default. Set `deleteExisting` to false to prevent that",
       "params": [
         "filename",
         "data"
@@ -616,7 +616,7 @@
     {
       "name": "requestPermission",
       "category": "Miscellaneous",
-      "description": "Requests permission to use the API exposed by this plugin. This method does not require the API key, and is the",
+      "description": "Requests permission to use the API exposed by this plugin. This method does not require the API key, and is the only one that accepts requests from any origin; the other methods only accept requests from trusted origins, which are listed under `webCorsOriginList` in the add-on config. `localhost` is trusted by default.",
       "params": [],
       "documented_version": 6,
       "status": "baseline",
@@ -703,7 +703,7 @@
     {
       "name": "exportPackage",
       "category": "Miscellaneous",
-      "description": "Exports a given deck in `.apkg` format. Returns `true` if successful or `false` otherwise. The optional property",
+      "description": "Exports a given deck in `.apkg` format. Returns `true` if successful or `false` otherwise. The optional property `includeSched` (default is `false`) can be specified to include the cards' scheduling data.",
       "params": [
         "deck",
         "path",
@@ -717,7 +717,7 @@
     {
       "name": "importPackage",
       "category": "Miscellaneous",
-      "description": "Imports a file in `.apkg` format into the collection. Returns `true` if successful or `false` otherwise.",
+      "description": "Imports a file in `.apkg` format into the collection. Returns `true` if successful or `false` otherwise. Note that the file path is relative to Anki's collection.media folder, not to the client.",
       "params": [
         "path"
       ],
@@ -759,7 +759,7 @@
     {
       "name": "findModelsById",
       "category": "Model",
-      "description": "Gets a list of models  for the provided model IDs from the current user.",
+      "description": "Gets a list of models for the provided model IDs from the current user.",
       "params": [
         "modelIds"
       ],
@@ -819,7 +819,7 @@
     {
       "name": "modelFieldsOnTemplates",
       "category": "Model",
-      "description": "Returns an object indicating the fields on the question and answer side of each card template for the given model",
+      "description": "Returns an object indicating the fields on the question and answer side of each card template for the given model name. The question side is given first in each array.",
       "params": [
         "modelName"
       ],
@@ -831,7 +831,7 @@
     {
       "name": "createModel",
       "category": "Model",
-      "description": "Creates a new model to be used in Anki. User must provide the `modelName`, `inOrderFields` and `cardTemplates` to be",
+      "description": "Creates a new model to be used in Anki. User must provide the `modelName`, `inOrderFields` and `cardTemplates` to be used in the model. There are optional fields `css` and `isCloze`. If not specified, `css` will use the default Anki css and `isCloze` will be equal to `false`. If `isCloze` is `true` then model will be created as Cloze.",
       "params": [
         "modelName",
         "inOrderFields",
@@ -871,7 +871,7 @@
     {
       "name": "updateModelTemplates",
       "category": "Model",
-      "description": "Modify the templates of an existing model by name. Only specifies cards and specified sides will be modified.",
+      "description": "Modify the templates of an existing model by name. Only specifies cards and specified sides will be modified. If an existing card or side is not included in the request, it will be left unchanged.",
       "params": [
         "model"
       ],
@@ -1058,7 +1058,7 @@
     {
       "name": "addNote",
       "category": "Note",
-      "description": "Creates a note using the given deck and model, with the provided field values and tags. Returns the identifier of",
+      "description": "Creates a note using the given deck and model, with the provided field values and tags. Returns the identifier of the created note created on success, and `null` on failure.",
       "params": [
         "note"
       ],
@@ -1070,7 +1070,7 @@
     {
       "name": "addNotes",
       "category": "Note",
-      "description": "Creates multiple notes using the given deck and model, with the provided field values and tags. Returns an array of",
+      "description": "Creates multiple notes using the given deck and model, with the provided field values and tags. Returns an array of identifiers of the created notes. In the event of any errors, all errors are gathered and returned. * Please see the documentation for `addNote` for an explanation of objects in the `notes` array.",
       "params": [
         "notes"
       ],
@@ -1082,7 +1082,7 @@
     {
       "name": "canAddNotes",
       "category": "Note",
-      "description": "Accepts an array of objects which define parameters for candidate notes (see `addNote`) and returns an array of",
+      "description": "Accepts an array of objects which define parameters for candidate notes (see `addNote`) and returns an array of booleans indicating whether or not the parameters at the corresponding index could be used to create a new note.",
       "params": [
         "notes"
       ],
@@ -1094,7 +1094,7 @@
     {
       "name": "canAddNotesWithErrorDetail",
       "category": "Note",
-      "description": "Accepts an array of objects which define parameters for candidate notes (see `addNote`) and returns an array of",
+      "description": "Accepts an array of objects which define parameters for candidate notes (see `addNote`) and returns an array of objects with fields `canAdd` and `error`.",
       "params": [
         "notes"
       ],
@@ -1106,7 +1106,7 @@
     {
       "name": "updateNoteFields",
       "category": "Note",
-      "description": "Modify the fields of an existing note. You can also include audio, video, or picture files which will be added to the note with an",
+      "description": "Modify the fields of an existing note. You can also include audio, video, or picture files which will be added to the note with an optional `audio`, `video`, or `picture` property. Please see the documentation for `addNote` for an explanation of objects in the `audio`, `video`, or `picture` array.",
       "params": [
         "note"
       ],
@@ -1118,7 +1118,7 @@
     {
       "name": "updateNote",
       "category": "Note",
-      "description": "Modify the fields and/or tags of an existing note.",
+      "description": "Modify the fields and/or tags of an existing note. In other words, combines `updateNoteFields` and `updateNoteTags`. Please see their documentation for an explanation of all properties.",
       "params": [
         "note"
       ],
@@ -1130,7 +1130,7 @@
     {
       "name": "updateNoteModel",
       "category": "Note",
-      "description": "Update the model, fields, and tags of an existing note.",
+      "description": "Update the model, fields, and tags of an existing note. This allows you to change the note's model, update its fields with new content, and set new tags.",
       "params": [
         "note"
       ],
@@ -1252,7 +1252,7 @@
     {
       "name": "notesInfo",
       "category": "Note",
-      "description": "Returns a list of objects containing for each note ID the note fields, tags, note type, modification time,the cards belonging to",
+      "description": "Returns a list of objects containing for each note ID the note fields, tags, note type, modification time,the cards belonging to the note and the profile where the note was created.",
       "params": [
         "notes"
       ],
@@ -1330,7 +1330,7 @@
     {
       "name": "cardReviews",
       "category": "Statistic",
-      "description": "Requests all card reviews for a specified deck after a certain time.",
+      "description": "Requests all card reviews for a specified deck after a certain time. `startID` is the latest unix time not included in the result. Returns a list of 9-tuples `(reviewTime, cardID, usn, buttonPressed, newInterval, previousInterval, newFactor, reviewDuration, reviewType)`",
       "params": [
         "deck",
         "startID"
@@ -1343,7 +1343,7 @@
     {
       "name": "getReviewsOfCards",
       "category": "Statistic",
-      "description": "Requests all card reviews for each card ID.",
+      "description": "Requests all card reviews for each card ID. Returns a dictionary mapping each card ID to a list of dictionaries of the format:",
       "params": [
         "cards"
       ],
@@ -1392,7 +1392,7 @@
     {
       "name": "repositionNewCards",
       "category": "Card",
-      "description": "Repositions eligible new cards using Anki native reposition logic while preserving caller order.",
+      "description": "Repositions eligible new cards using Anki native reposition logic while preserving caller order. * `orderedCardIds` must be a non-empty list of integers. * Duplicates are removed by card ID only (first occurrence kept). * Cards that do not exist are reported in `skippedNotFound`. * Cards that exist but are not currently `is:new` are reported in `skippedNotNew`.",
       "params": [
         "orderedCardIds",
         "startPosition",
@@ -1407,7 +1407,7 @@
     {
       "name": "guiAddNoteSetData",
       "category": "Graphical",
-      "description": "Sets fields, tags, deck, and note type (model) in the *Add Note* dialog. Optionally appends to fields/tags instead of replacing them.",
+      "description": "Sets fields, tags, deck, and note type (model) in the *Add Note* dialog. Optionally appends to fields/tags instead of replacing them. - If the Add Note dialog is not open, returns an error. - Setting deck/model always replaces the current value. - Setting fields/tags appends if `append` is true, otherwise replaces. - Also supports importing media (images/audio) via the note object.",
       "params": [
         "note"
       ],
