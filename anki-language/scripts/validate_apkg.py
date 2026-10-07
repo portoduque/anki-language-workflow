@@ -149,7 +149,7 @@ def expectations_from_plan(plan_path: Path) -> tuple[set[str], int, set[str], se
         if deck_name and skill_meta:
             expected_decks.add(f"{deck_name}::{skill_meta[0]}")
         if deck_name and target_code and card.get("id") is not None:
-            expected_tags.add(workflow_tag(deck_name, target_code, str(card["id"])))
+            expected_tags.add(workflow_tag(deck_name, target_code, str(card["skill"]), str(card["id"])))
     return expected_media, len(cards), expected_decks, expected_tags
 
 
