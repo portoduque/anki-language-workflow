@@ -429,7 +429,32 @@ Prefer to retire/suspend the redundant scaffold **only when**:
 
 Do not infer mastery from card age alone, and do not delete user cards without permission.
 
-## 17. Store distinct linguistic data in distinct fields when useful
+## 17. Target language-specific features selectively
+
+Do not force the same lexical card pattern onto every language.
+
+During source analysis, identify language-specific dimensions that materially affect comprehension or production, such as:
+
+- grammatical gender or noun class;
+- irregular/non-obvious plural formation;
+- case, agreement, classifier/counter, or other inflectional choices;
+- irregular tense/aspect/conjugated forms;
+- script/orthographic variants;
+- other high-value form distinctions that the learner actually needs.
+
+A language-specific feature is a **candidate retrieval target**, not an automatic card.
+
+Create a dedicated card only when that feature is useful, independently difficult or non-obvious enough to deserve review, and not already adequately covered. Keep one primary form/feature per card and reveal other known dimensions when that isolates the task.
+
+Examples:
+- test determiner+noun for a useful noun whose gender is genuinely difficult;
+- test an irregular plural separately only when active recall of that plural matters;
+- test one problematic verb form instead of dumping the entire paradigm onto one card;
+- skip predictable/automatic morphology that adds little learning value.
+
+Keep these cards inside the existing skill architecture (usually Reading or Production) and classify linguistic content with fields/tags rather than language-specific microdecks.
+
+## 18. Store distinct linguistic data in distinct fields when useful
 
 When a language item has distinct auxiliary information, keep it structured instead of collapsing everything into one generic notes blob.
 
@@ -442,7 +467,7 @@ Populate them only when they help the selected card. A populated field is **not*
 
 For writing-heavy languages, handwriting/written recall may be represented as a Production card when active written output is independently worth training. Do not create handwriting cards by default.
 
-## 18. Keep answers concise and reviews fast
+## 19. Keep answers concise and reviews fast
 
 The answer should expose the information needed to verify recall quickly.
 
@@ -452,7 +477,7 @@ For grammar, morphology, conjugation, or word-order cards, a brief back-side exp
 
 Do not turn the back of every card into a lesson, paragraph, or reference article.
 
-## 19. Use the user's material as the primary source
+## 20. Use the user's material as the primary source
 
 Prefer the user's phrase, sentence, audio, image, or context when it is suitable.
 
@@ -470,7 +495,7 @@ Do not replace the user's material with generic material merely because generic 
 
 It is acceptable to create a clearer example when the original material is unsuitable, but preserve the intended meaning and do not invent uncertain facts.
 
-## 20. Ask before guessing when ambiguity affects card quality
+## 21. Ask before guessing when ambiguity affects card quality
 
 Stop and ask the user when uncertainty materially affects:
 
@@ -484,7 +509,7 @@ Stop and ask the user when uncertainty materially affects:
 
 Minor formatting decisions do not require interruption.
 
-## 21. Decks classify skill; tags classify linguistic content
+## 22. Decks classify skill; tags classify linguistic content
 
 Use the four skill subdecks:
 
@@ -508,7 +533,7 @@ Use sparse tags for dimensions such as:
 
 Do not create many micro-decks for those categories.
 
-## 22. Creation effort must also earn its keep
+## 23. Creation effort must also earn its keep
 
 Review cost is not the only cost. Card creation/customization also consumes time.
 
@@ -516,7 +541,7 @@ Do not spend disproportionate effort on decorative formatting, searching for the
 
 Use automation/media enrichment when it adds value, but keep the workflow biased toward **fast capture, selective enrichment, and more time learning/reviewing than decorating cards**.
 
-## 23. Final decision test
+## 24. Final decision test
 
 Before accepting any card, verify all five:
 
