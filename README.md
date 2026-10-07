@@ -91,6 +91,7 @@ These are product rules, not suggestions. The complete normative specification l
 41. **Reveal only non-target support:** information that is not being tested may be shown when it isolates the intended retrieval skill, but the actual target must remain hidden.
 42. **Keep distinct linguistic data structured:** use optional `reading`, `variant`, and `grammar` fields when useful instead of stuffing everything into `Notes`; populating a field never creates an extra card by itself.
 43. **Clarify before scheduling:** before a candidate becomes a scheduled card, understand its intended meaning/form/usage well enough that the review tests retrieval rather than first-time semantic discovery; prior mastery is not required.
+44. **Target language-specific features selectively:** gender/class, irregular plural/inflection, case/agreement, classifiers, verb forms, script variants, or similar language-specific dimensions may deserve atomic cards when independently useful; never generate a full paradigm merely because it exists.
 
 A source reused across multiple decks is valid only when each card covers a real additional skill gap. If the extra card mostly repeats the same retrieval, discard it.
 
@@ -111,6 +112,7 @@ Current curated notes include:
 - `anki-language/references/research/corinna-anki-wrong-vocabulary.md` — analyzes Corinna Languages' complete vocabulary-focused Anki video and selectively adopts meaning-first source mining plus optional stable mnemonic coding for difficult grammatical gender/noun-class attributes.
 - `anki-language/references/research/redchamber-optimize-anki-language.md` — analyzes Dream of the Red Chamber's complete note/card architecture tutorial and selectively adopts structured reading/variant/grammar fields plus target-isolation guidance, while deliberately keeping the current one-note-per-planned-card pipeline.
 - `anki-language/references/research/jeremiah-seven-rules-anki.md` — analyzes Jeremiah’s seven-rule Anki method, adopts clarified-before-review encoding plus native Again/Good-only and break-recovery guidance, while rejecting universal audio-only/full-sentence rules, fixed-age retirement, and destructive deck resets.
+- `anki-language/references/research/alemayhu-custom-language-card-types.md` — analyzes Alexander Alemayhu's language-specific custom-card approach and adopts selective targeting of useful grammatical/morphological features without introducing per-language note models or automatic paradigm/card explosion.
 
 Across these research sources, recommendations are not promoted automatically. Examples deliberately **not** adopted include:
 
@@ -130,6 +132,7 @@ Across these research sources, recommendations are not promoted automatically. E
 - assuming repeated success on one identical cue proves flexible language use in new contexts.
 - banning translation, forcing images on every vocabulary card, or automatically generating forward+reverse cards for every word;
 - hard-coding “sparkling/feminine”, “exploding/masculine”, or any other grammatical-gender mnemonic mapping for every learner;
+- creating a separate Anki model family per language or generating translation/definition/image/gender/plural/every verb form automatically because those fields exist;
 - making Google Images, Forvo add-ons, fixed daily review minutes, or “review five cards on bad days” part of the card-generation contract.
 
 ### Scheduling settings are not copied from research videos
