@@ -10,15 +10,25 @@ from pathlib import Path
 from typing import Any
 
 from ankiconnect_client import AnkiConnectClient, AnkiConnectError
-from build_apkg import AUDIO_FRONT_MODES, CSS, FIELDS, SKILL_META, card_context, clean, make_model, normalize_tags
+from build_apkg import CSS, FIELDS, card_context, clean, make_model, normalize_tags
+from card_contract import (
+    AUDIO_FRONT_MODES,
+    SKILL_META,
+    full_deck_name,
+    legacy_workflow_tag,
+    normalize_mode,
+    workflow_system_tags,
+    workflow_tag,
+)
 from media_validate import MediaValidationError, sha256_file, validate_media_file
 from validate_plan import load_plan, validate_plan
 
 
 REQUIRED_ACTIONS = {
     "version", "apiReflect", "deckNames", "createDeck", "modelNames",
-    "modelFieldNames", "createModel", "findNotes", "canAddNotesWithErrorDetail",
-    "addNotes", "notesInfo", "retrieveMediaFile",
+    "modelFieldNames", "modelTemplates", "modelStyling", "createModel",
+    "findNotes", "canAddNotesWithErrorDetail", "addNotes", "notesInfo",
+    "retrieveMediaFile",
 }
 
 
@@ -27,11 +37,6 @@ def media_path(plan_dir: Path, raw: str | None) -> Path | None:
         return None
     path = Path(raw)
     return path.resolve() if path.is_absolute() else (plan_dir / path).resolve()
-
-
-def workflow_tag(card_id: str) -> str:
-    digest = hashlib.sha256(card_id.encode("utf-8")).hexdigest()[:20]
-    return f"anki_language_id_{digest}"
 
 
 def model_payload(skill: str) -> dict[str, Any]:
@@ -106,17 +111,24 @@ def build_note(plan: dict[str, Any], card: dict[str, Any], plan_dir: Path) -> tu
     subdeck = SKILL_META[skill][0]
     fields = note_fields(plan, card)
     note: dict[str, Any] = {
-        "deckName": f"{plan['deck_name']}::{subdeck}",
+        "deckName": full_deck_name(str(plan["deck_name"]), skill),
         "modelName": model.name,
         "fields": fields,
         "options": {"allowDuplicate": True},
-        "tags": normalize_tags([*(card.get("tags") or []), "anki-language", workflow_tag(str(card["id"]))]),
+        "tags": normalize_tags([
+            *(card.get("tags") or []),
+            *workflow_system_tags(
+                str(plan["deck_name"]),
+                str(plan["target_language"]["code"]),
+                str(card["id"]),
+            ),
+        ]),
     }
 
     media: dict[str, Path] = {}
     audio = media_path(plan_dir, card.get("audio"))
     image = media_path(plan_dir, card.get("image"))
-    mode = str(card.get("mode", "standard")).strip().lower()
+    mode = normalize_mode(card)
     audio_on_front = skill == "listening" or (skill == "pronunciation" and mode in AUDIO_FRONT_MODES)
 
     if audio is not None:
