@@ -11,16 +11,9 @@ from typing import Any
 
 import genanki
 
+from card_contract import AUDIO_FRONT_MODES, SKILL_META, normalize_mode, workflow_system_tags
 from validate_plan import load_plan, validate_plan
 
-SKILL_META = {
-    "reading": ("01 Reading", "Reading"),
-    "listening": ("02 Listening", "Listening"),
-    "production": ("03 Production", "Production"),
-    "pronunciation": ("04 Pronunciation & Sounds", "Pronunciation & Sounds"),
-}
-
-AUDIO_FRONT_MODES = {"minimal-pair", "sound-discrimination", "audio-to-spelling"}
 MODEL_VERSION = 4
 
 FIELDS = [
@@ -227,7 +220,7 @@ def build(plan_path: Path, output_path: Path) -> dict[str, Any]:
         if image:
             media_files[image.name] = image
 
-        mode = str(card.get("mode", "standard")).strip().lower()
+        mode = normalize_mode(card)
         audio_on_front = skill == "listening" or (
             skill == "pronunciation" and mode in AUDIO_FRONT_MODES
         )
@@ -260,10 +253,15 @@ def build(plan_path: Path, output_path: Path) -> dict[str, Any]:
             skill,
             str(card.get("target_text", "")),
         )
+        system_tags = workflow_system_tags(
+            deck_name,
+            str(plan["target_language"]["code"]),
+            str(card["id"]),
+        )
         note = genanki.Note(
             model=models[skill],
             fields=fields,
-            tags=normalize_tags(card.get("tags")),
+            tags=normalize_tags([*(card.get("tags") or []), *system_tags]),
             guid=guid,
         )
         decks[skill].add_note(note)
