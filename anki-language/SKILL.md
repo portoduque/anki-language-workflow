@@ -26,11 +26,28 @@ On later runs in the same workspace, reuse that configuration unless the user as
 
 All learner-facing explanations, semantic cues, translations, and production instructions must use the configured **base language** unless the card intentionally tests the target language without a translation.
 
+## Non-negotiable card rules
+
+Before selecting cards, read [references/card-selection.md](references/card-selection.md). These invariants are mandatory:
+
+- Create the **minimum useful number of cards**. A source unit may produce 0, 1, or multiple cards; multiple cards are allowed only for genuinely different skills.
+- Every card has **one primary retrieval target**.
+- Every front must be **self-orienting in a mixed review**: show the target language and trained skill without revealing the answer.
+- Never create a prompt that makes the learner guess what the author intended. **Blind/ambiguous cloze is forbidden.**
+- Do not create automatic reverse cards. Recognition and production get separate cards only when both are worth training.
+- Do not generate every card type for every item.
+- Prefer useful chunks/collocations/patterns when the combination is the knowledge that matters.
+- Sentence mining is selective; do not turn every sentence into a card.
+- Audio and images are optional and must add learning value.
+- Listening uses audio-first; Production normally keeps answer audio on the back; sound-discrimination cards must not reveal written answers on the front.
+- Keep answers concise and reviews fast.
+- When a material ambiguity changes the learning target, ask the user instead of guessing.
+
 ## Workflow
 
 1. Resolve the mandatory target/base-language configuration.
 2. Inspect all supplied material before selecting cards.
-3. Read [references/pedagogy.md](references/pedagogy.md) and [references/card-selection.md](references/card-selection.md).
+3. Read [references/pedagogy.md](references/pedagogy.md); the mandatory card rules were already loaded from [references/card-selection.md](references/card-selection.md).
 4. Segment the source into meaningful learning units.
 5. For each unit, create zero, one, or multiple cards only when each card trains a distinct useful skill.
 6. Classify each selected card as exactly one of: `reading`, `listening`, `production`, or `pronunciation`.
