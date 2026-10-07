@@ -23,6 +23,17 @@ Best for simple bulk imports when note types/templates already exist.
 
 ### 3. AnkiConnect
 
+For any non-trivial AnkiConnect question, use the dedicated routed library first:
+
+`../anki-connect/INDEX.md`
+
+Fast lookup:
+
+`python scripts/find_ankiconnect_reference.py "<goal or action>"`
+
+The sub-library contains installation/configuration, protocol/auth/CORS, all documented standard actions, recipes, payload examples, troubleshooting, and source lineage.
+
+
 Best when an external application must interact with a running Anki collection.
 
 Typical capabilities include:
