@@ -626,7 +626,7 @@ def test_delivery_identity_and_mode_contracts_are_documented() -> None:
     assert "mode contract" in contract
     assert "unknown modes and cross-skill mode combinations are rejected" in contract
     assert "workflow identity" in contract
-    assert "deck name + target-language code + stable card" in contract
+    assert "deck name + target-language code + skill + stable card" in contract
     assert "legacy live notes" in contract
     assert "template drift" in recipes
     assert "identity match with different content is a conflict" in recipes
