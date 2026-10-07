@@ -536,17 +536,34 @@ The card plan supports three optional semantic fields for data that should not b
 
 They are rendered conditionally on the back and are delivered as separate Anki note fields through AnkiConnect. They are optional support metadata: **adding one does not generate another card**.
 
-The structured-field migration originally introduced **Anki Language v3**. The current generated templates use **Anki Language v4** so night-mode/RTL/mobile presentation improvements do not silently restyle existing v3 note types.
+The structured-field migration originally introduced **Anki Language v3**, and v4 added night-mode/RTL/mobile portability. Newly generated cards now use **Anki Language v5**, which keeps those guarantees while introducing a dedicated visual system for clearer hierarchy and better review UX. Existing v3/v4 note types are not restyled in place.
 
 Delivery identity is now shared across both output paths. New APKG and live notes receive the broad `anki-language` tag plus a deterministic scoped identity derived from **deck + target-language code + skill + stable card id**. This means cards imported from a generated APKG can participate in the same default read-only audit as live-delivered cards, while two unrelated decks can safely reuse a local card id.
 
 Live reruns are intentionally conflict-aware: an existing note is skipped only after its stored fields/media references match the expected card. Reusing the same stable identity for changed content is reported as drift rather than silently skipped or overwritten. Legacy card-id-only live tags are still recognized inside their expected deck and verified read-only.
 
-The generated v4 templates intentionally keep essential behavior transparent: ordinary Anki field replacements + HTML/CSS, with **no JavaScript or remote web assets required for the core review experience**. A concise scene/situation can live in `prompt` when it helps define the task, so the workflow does not add duplicate fields merely to imitate an external template. Existing v4 live models are also checked for field, template, and CSS drift before new notes are inserted; user/customized model changes are never silently overwritten.
+The generated v5 templates intentionally keep essential behavior transparent: ordinary Anki field replacements + HTML/CSS, with **no JavaScript or remote web assets required for the core review experience**. A concise scene/situation can live in `prompt` when it helps define the task, so the workflow does not add duplicate fields merely to imitate an external template. Existing workflow-owned live models are checked for field, template, and CSS drift before new notes are inserted; user/customized model changes are never silently overwritten.
 
 Anki itself supports one rich note generating multiple conditional card types, and Card Template Deck Override can route those generated cards into separate decks. This repository deliberately keeps the current **one note per selected planned card** architecture for now because it keeps per-card prompts/media and APKG/live delivery simpler while preserving selective card generation. See:
 - https://docs.ankiweb.net/manual/templates/generation
 - https://docs.ankiweb.net/manual/templates/intro
+
+## Card UI — Anki Language v5
+
+All **newly generated** cards use the workflow's own HTML/CSS visual system instead of Anki's plain default presentation.
+
+The UI is shared across every skill and keeps the same information architecture while giving each retrieval skill a distinct accent:
+
+- **Reading** — indigo; target text is dominant on the front and base-language meaning is dominant on the answer;
+- **Listening** — teal; audio is the dominant front interaction and transcript becomes the main answer;
+- **Production** — amber; learner-facing prompt is dominant and the produced target is the main answer;
+- **Pronunciation & Sounds** — rose; prompt/audio is dominant while the written target remains hidden on fronts where it would leak the answer.
+
+The v5 layout adds a compact skill/language header, rounded review surface, stronger typographic hierarchy, soft cue/hint panels, cleaner answer/support separation, centered media treatment, responsive mobile spacing, night-mode variants, and RTL/mixed-script support. Color never replaces textual skill labels.
+
+The design remains intentionally dependency-free: no JavaScript, remote fonts, icon libraries, or web assets. See `anki-language/references/card-ui.md` for the visual contract.
+
+Existing v3/v4 cards are not migrated automatically. The version bump prevents a visual redesign from silently changing cards the learner may already use or have customized.
 
 ### Deterministic card modes
 

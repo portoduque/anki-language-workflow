@@ -61,6 +61,7 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 - Use `prompt` for a concise learner-facing instruction or situational/scene context when it helps define the retrieval task without leaking the answer; do not add duplicate fields merely to mirror an external template.
 - Use only documented card modes. Reading/Listening/Production use `standard`; Pronunciation & Sounds may additionally use `minimal-pair`, `sound-discrimination`, `spelling-sound`, or `audio-to-spelling`. Do not invent mode strings.
 - Keep generated templates inspectable and portable: essential card behavior must not depend on JavaScript or remote web assets.
+- Visual presentation is deterministic and workflow-owned. New cards use the Anki Language v5 UI from [references/card-ui.md](references/card-ui.md); the AI must not invent per-card HTML, colors, icons, or layout variants.
 - Active handwriting/written recall may use a Production card when it is independently useful; do not create handwriting cards by default.
 - Full-sentence/chunk Production targets need a higher naturalness bar: prefer attested user/native material, and do not make an unverified AI-generated sentence the exact speaking target.
 - Audio and images are optional and must add learning value.

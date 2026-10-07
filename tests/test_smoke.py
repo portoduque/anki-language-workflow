@@ -165,15 +165,15 @@ def test_structured_language_fields_are_in_current_models() -> None:
     assert "Grammar" in field_names
 
     model = make_model("reading")
-    assert model.name == "Anki Language v4 — Reading"
+    assert model.name == "Anki Language v5 — Reading"
     back = model.templates[0]["afmt"]
     assert "{{#Reading}}" in back and "{{Reading}}" in back
     assert "{{#Variant}}" in back and "{{Variant}}" in back
     assert "{{#Grammar}}" in back and "{{Grammar}}" in back
 
 
-def test_v4_templates_are_portable_for_night_mode_rtl_and_long_cards() -> None:
-    assert MODEL_VERSION == 4
+def test_v5_templates_are_portable_for_night_mode_rtl_and_long_cards() -> None:
+    assert MODEL_VERSION == 5
     assert ".card.nightMode" in CSS
     assert "@media (max-width: 480px)" in CSS
     assert "overflow-wrap: anywhere" in CSS
@@ -185,13 +185,48 @@ def test_v4_templates_are_portable_for_night_mode_rtl_and_long_cards() -> None:
     assert 'dir="auto"' in front
     assert 'dir="auto"' in back
     assert '<hr id="answer">' in back
-    assert reading.name == "Anki Language v4 — Reading"
+    assert reading.name == "Anki Language v5 — Reading"
 
 
-def test_legacy_v3_audit_compatibility_is_not_removed() -> None:
-    # v4 is a new generated model family; audit_live remains model-agnostic and
-    # existing v3 cards are intentionally not migrated in place.
-    assert make_model("reading").name != "Anki Language v3 — Reading"
+def test_older_note_types_are_not_mutated_in_place() -> None:
+    # v5 is a new generated model family. Existing v3/v4 cards remain untouched
+    # unless a separate explicit migration is requested.
+    current = make_model("reading").name
+    assert current != "Anki Language v3 — Reading"
+    assert current != "Anki Language v4 — Reading"
+
+
+def test_v5_ui_has_shared_hierarchy_and_skill_specific_identity() -> None:
+    expected = {
+        "reading": ("skill-reading", "Reading", "Read"),
+        "listening": ("skill-listening", "Listening", "Listen"),
+        "production": ("skill-production", "Production", "Produce"),
+        "pronunciation": ("skill-pronunciation", "Pronunciation & Sounds", "Pronounce / identify"),
+    }
+
+    for skill, (skill_class, skill_label, stage_label) in expected.items():
+        model = make_model(skill)
+        front = model.templates[0]["qfmt"]
+        back = model.templates[0]["afmt"]
+
+        assert f'class="anki-card {skill_class}"' in front
+        assert skill_label in front
+        assert stage_label in front
+        assert f'class="answer-shell {skill_class}"' in back
+        assert '<div class="answer-chip">Answer</div>' in back
+        assert "{{TargetLanguage}}" in front
+        assert "{{Source}}" not in front
+        assert "{{Source}}" in back
+
+    assert "--surface:" in CSS
+    assert "--accent:" in CSS
+    assert ".skill-reading" in CSS
+    assert ".skill-listening" in CSS
+    assert ".skill-production" in CSS
+    assert ".skill-pronunciation" in CSS
+    assert ".answer-primary" in CSS
+    assert ".hint-card" in CSS
+    assert ".audio-stage" in CSS
 
 
 def test_generated_templates_require_no_javascript_or_remote_assets() -> None:

@@ -397,7 +397,7 @@ def test_live_delivery_detects_current_model_css_drift(tmp_path: Path, monkeypat
     monkeypatch.setattr(live_module, "AnkiConnectClient", lambda endpoint, api_key: fake)
     live_module.deliver_live(source)
 
-    model_name = "Anki Language v4 — Production"
+    model_name = "Anki Language v5 — Production"
     fake.models[model_name]["css"] += "\n.card { border: 1px solid red; }"
 
     with pytest.raises(Exception, match="CSS drift"):
@@ -412,7 +412,7 @@ def test_live_delivery_detects_current_model_template_drift(tmp_path: Path, monk
     monkeypatch.setattr(live_module, "AnkiConnectClient", lambda endpoint, api_key: fake)
     live_module.deliver_live(source)
 
-    model_name = "Anki Language v4 — Production"
+    model_name = "Anki Language v5 — Production"
     fake.models[model_name]["templates"]["Card 1"]["Front"] += "\n<div>custom drift</div>"
 
     with pytest.raises(Exception, match="template drift"):
