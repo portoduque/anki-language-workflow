@@ -82,6 +82,19 @@ Legacy live notes created with the older card-id-only identity tag remain detect
 
 The generated card templates must remain inspectable and portable: **essential card behavior may not depend on JavaScript or remote web assets**. Use ordinary Anki field replacements, HTML, CSS, and local packaged media for the core review experience.
 
+### Presentation contract
+
+New delivery uses **Anki Language v5** note models with the workflow-owned visual system documented in `references/card-ui.md`.
+
+Presentation is deterministic, not model-authored:
+- the AI chooses content/skill/mode, not arbitrary colors/layout HTML;
+- skill identity is always visible as text and reinforced with a stable accent;
+- the primary retrieval target is visually dominant;
+- hints, metadata, notes, media, and source stay subordinate;
+- Reading promotes base-language meaning on the answer; Listening/Production/Pronunciation promote the target-language answer;
+- responsive mobile, night mode, and `dir="auto"` support are part of the template contract;
+- v3/v4 models are not silently mutated when v5 is introduced.
+
 Do not invent source precision. A precise locator is kept only when the supplied/source material actually supports it.
 
 ## Automatic audio request
