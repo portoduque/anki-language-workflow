@@ -443,3 +443,25 @@ def test_readme_documents_jeremiah_selective_refinements() -> None:
     assert "Clarify before scheduling" in readme
     assert "Pass/Fail add-on is not required" in readme
     assert "After a long break" in readme
+
+
+def test_alemayhu_language_specific_feature_targeting_is_selective() -> None:
+    rules = (SKILL / "references" / "card-selection.md").read_text(encoding="utf-8").lower()
+    pedagogy = (SKILL / "references" / "pedagogy.md").read_text(encoding="utf-8").lower()
+    skill = (SKILL / "SKILL.md").read_text(encoding="utf-8").lower()
+    note = (SKILL / "references" / "research" / "alemayhu-custom-language-card-types.md").read_text(encoding="utf-8").lower()
+
+    assert "target language-specific features selectively" in rules
+    assert "never generate a full paradigm merely because it exists" in pedagogy
+    assert "target-language-specific features" in skill
+    assert "complete spoken transcript was reviewed" in note
+    assert "one custom note type/template family per language" in note
+    assert "automatic card generation for every available field" in note
+    assert "no schema, anki note model, deck architecture, builder, media provider, installer, or ankiconnect implementation change" in note
+
+
+def test_readme_documents_alemayhu_selective_refinement() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "alemayhu-custom-language-card-types.md" in readme
+    assert "Target language-specific features selectively" in readme
+    assert "never generate a full paradigm merely because it exists" in readme

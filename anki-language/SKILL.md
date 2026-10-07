@@ -51,6 +51,7 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 - For an absolute beginner with too little comprehensible personal material to mine, a vetted frequency/shared deck may be used as a **candidate source**; never bulk-adopt it blindly.
 - Card-creation/customization time also counts. Prefer simple cards and selective enrichment over decorative complexity that does not improve retrieval.
 - Grammar/morphology explanations on the back should be brief and only added when they explain why the target form is correct or prevent a predictable confusion.
+- Adapt card selection to genuinely useful target-language-specific features (for example gender/class, irregular plural/inflection, case/agreement, classifiers, irregular verb forms, or script variants). Treat each feature as a candidate, create only independently worthwhile atomic retrievals, and never generate a full paradigm by default.
 - Use structured optional fields `reading`, `variant`, and `grammar` when those data are useful; never generate extra cards merely because an auxiliary field is populated.
 - Active handwriting/written recall may use a Production card when it is independently useful; do not create handwriting cards by default.
 - Full-sentence/chunk Production targets need a higher naturalness bar: prefer attested user/native material, and do not make an unverified AI-generated sentence the exact speaking target.
@@ -68,8 +69,8 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 1. Resolve the mandatory target/base-language configuration.
 2. Inspect all supplied material before selecting cards.
 3. Read [references/pedagogy.md](references/pedagogy.md); the mandatory card rules were already loaded from [references/card-selection.md](references/card-selection.md).
-4. Segment the source into meaningful learning units.
-5. For each unit, create zero, one, or multiple cards only when each card trains a distinct useful skill.
+4. Segment the source into meaningful learning units and inspect whether any target-language-specific form/grammar dimension is independently worth retrieving.
+5. For each unit, create zero, one, or multiple cards only when each card trains a distinct useful skill or atomic language-specific feature.
 6. Classify each selected card as exactly one of: `reading`, `listening`, `production`, or `pronunciation`.
 7. Add sparse linguistic tags only when useful.
 8. If media may improve learning, read [references/media.md](references/media.md) before acquiring, generating, or attaching it.

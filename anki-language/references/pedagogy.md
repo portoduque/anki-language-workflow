@@ -35,6 +35,7 @@ Optimize long-term retrieval and usable language ability while keeping reviews f
 - Clarify the intended meaning/form/usage enough before scheduling a card that review tests retrieval rather than first-time semantic discovery; prior mastery is not required.
 - For longer natural input, prefer a meaning-first pass before intensive lookup/card extraction when comprehension is still possible; use dictionary lookup selectively rather than interrupting for every unknown.
 - For difficult arbitrary grammatical attributes such as noun gender/class, a stable concrete mnemonic code may be used as secondary scaffolding, while the real determiner+noun/form remains the knowledge to retrieve.
+- Adapt retrieval to the target language's genuinely useful features: gender/class, irregular plural/inflection, case/agreement, classifiers, verb forms, script variants, or similar dimensions may deserve their own atomic retrieval when independently useful; never generate a full paradigm merely because it exists.
 - Card-creation time is part of the cost function. Prefer simple cards and selective enrichment over elaborate customization that does not improve retrieval.
 - Grammar notes are useful only when a short explanation prevents confusion; avoid turning the back into a mini-lesson or dumping complete paradigms by default.
 - Repeated failure is a signal to diagnose the learning target. If the item is still valuable, improve context, contrast, collocation, or other meaningful connections before resorting to brute-force duplicate cards.
