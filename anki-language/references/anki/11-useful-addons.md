@@ -127,6 +127,12 @@ Use this only when native template TTS is desired; generated embedded audio is a
 
 ## Add-ons usually unnecessary for this project
 
+### Pass/Fail / two-button grading add-ons
+
+Current Anki documentation already permits a learner who dislikes four grading choices to use only **Again** for incorrect answers and **Good** for correct answers.
+
+Do not install a Pass/Fail add-on merely to obtain binary grading. Consider one only if it provides a specific verified UI benefit beyond native Again/Good usage, and verify compatibility before allowing any add-on to alter scheduling behavior.
+
 ### AwesomeTTS
 
 Its current AnkiWeb page recommends switching to HyperTTS and states HyperTTS is the modern successor.
