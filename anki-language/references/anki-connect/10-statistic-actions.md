@@ -1,27 +1,32 @@
 # 10 — Statistics and Review-History Actions
 
-Statistic actions expose review counts, collection stats, and review history.
+These actions inspect review counts/history and can also insert raw review records.
 
-Use them primarily for analytics/inspection.
+## Read-only analytics
 
-`insertReviews` mutates review history and is high risk.
+- `getNumCardsReviewedToday`
+- `getNumCardsReviewedByDay`
+- `getCollectionStatsHTML`
+- `cardReviews`
+- `getReviewsOfCards`
+- `getLatestReviewID`
 
-## Supported actions
+Use these for progress/behavior analysis when the user requests it.
 
-| Action | Main documented params | Purpose |
+## `insertReviews`
+
+High-risk mutation of review history. It accepts raw review tuples and can affect scheduling/statistics integrity.
+
+Project rule: do not use `insertReviews` unless the user explicitly needs review-history insertion/migration and the semantics have been verified against the current Anki version.
+
+## Current catalog
+
+| Action | Source signature | Risk |
 | --- | --- | --- |
-| `getNumCardsReviewedToday` | — | See upstream documentation. |
-| `getNumCardsReviewedByDay` | — | See upstream documentation. |
-| `getCollectionStatsHTML` | — | See upstream documentation. |
-| `cardReviews` | — | See upstream documentation. |
-| `getReviewsOfCards` | — | See upstream documentation. |
-| `getLatestReviewID` | — | See upstream documentation. |
-| `insertReviews` | — | See upstream documentation. |
-
-## Runtime verification
-
-Before using a version-sensitive or uncertain action, call `apiReflect` against the user's installed AnkiConnect. The local catalog is a curated snapshot, not a substitute for runtime capability discovery.
-
-## Source
-
-- https://github.com/ankiultimate/anki-connect/blob/master/README.md
+| `getNumCardsReviewedToday` | `self` | `read` |
+| `getNumCardsReviewedByDay` | `self` | `read` |
+| `getCollectionStatsHTML` | `self, wholeCollection=True` | `read` |
+| `cardReviews` | `self, deck, startID` | `read` |
+| `getReviewsOfCards` | `self, cards` | `read` |
+| `getLatestReviewID` | `self, deck` | `read` |
+| `insertReviews` | `self, reviews` | `destructive` |
