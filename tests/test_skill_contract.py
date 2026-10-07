@@ -415,7 +415,7 @@ def test_readme_documents_structured_fields_and_current_models() -> None:
     assert '"reading": "xuéxí"' in readme
     assert '"variant": "学习"' in readme
     assert '"grammar": "verb"' in readme
-    assert "Anki Language v4" in readme
+    assert "Anki Language v5" in readme
     assert "redchamber-optimize-anki-language.md" in readme
     assert "Reveal only non-target support" in readme
     assert "Keep distinct linguistic data structured" in readme
@@ -633,3 +633,25 @@ def test_delivery_identity_and_mode_contracts_are_documented() -> None:
     assert "deterministic card modes" in readme
     assert "conflict-aware" in readme
     assert "workflow identity tags" in readme
+
+
+def test_v5_card_ui_contract_is_documented() -> None:
+    skill = (SKILL / "SKILL.md").read_text(encoding="utf-8")
+    contract = (SKILL / "references" / "output-contract.md").read_text(encoding="utf-8")
+    ui = (SKILL / "references" / "card-ui.md").read_text(encoding="utf-8")
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+
+    assert "Anki Language v5" in skill
+    assert "references/card-ui.md" in skill
+    assert "Presentation contract" in contract
+    assert "Anki Language v5" in contract
+    assert "Presentation is deterministic, not model-authored" in contract
+    assert "Reading promotes the base-language meaning" in contract
+    assert "Card UI — Anki Language v5" in ui
+    assert "Reading — indigo" in ui
+    assert "Listening — teal" in ui
+    assert "Production — amber" in ui
+    assert "Pronunciation & Sounds — rose" in ui
+    assert "no JavaScript" in ui
+    assert "Existing v3/v4 cards are not migrated automatically" in readme
+    assert "All **newly generated** cards" in readme
