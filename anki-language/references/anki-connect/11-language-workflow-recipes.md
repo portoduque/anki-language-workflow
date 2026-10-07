@@ -35,7 +35,7 @@ Typical sequence:
    - `updateModelStyling`;
    - field/template mutation actions.
 
-For workflow-owned model names, field compatibility alone is insufficient: compare templates and CSS too. If they drift from the deterministic model, stop and surface the conflict rather than silently replacing the user's/customized model.
+For workflow-owned model names, field compatibility alone is insufficient: compare templates and CSS too. If template drift or CSS drift exists relative to the deterministic model, stop and surface the conflict rather than silently replacing the user's/customized model.
 
 Do not overwrite user-customized models casually. Prefer a namespaced workflow-specific note type.
 
