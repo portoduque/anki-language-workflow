@@ -1,40 +1,50 @@
 # 05 — Note and Tag Actions
 
-Note actions are the primary live creation/update layer for language cards.
+Note actions are the main live-creation/update layer for this language workflow.
 
-Inspect note-type fields before writing, preflight bulk creation when useful, and use stable workflow tags/IDs to find generated notes later.
+## Recommended creation flow
 
-`addNote` and `addNotes` can attach audio, video, and pictures. Deleting a note also deletes its generated cards.
+1. discover deck/model/field names;
+2. build candidate note objects;
+3. preflight with `canAddNotesWithErrorDetail`;
+4. add with `addNote` or `addNotes`;
+5. verify with `notesInfo` or a stable query/tag.
 
-## Supported actions
+## Important behavior
 
-| Action | Main documented params | Purpose |
+- `addNote` supports fields, tags, duplicate controls, and optional audio/video/picture attachments.
+- duplicate controls include `allowDuplicate`, duplicate scope, deck scope, child-deck checks, and cross-model checks.
+- `addNotes` currently gathers errors and rolls back notes created by that call if any item fails; still preflight first.
+- `updateNoteFields` updates existing fields and can attach media.
+- `updateNote` can update fields and/or tags.
+- `updateNoteModel` changes note type/model and therefore deserves extra caution.
+- `deleteNotes` also removes generated cards for those notes.
+- `findNotes` uses Anki's search syntax.
+- tag actions operate at note level.
+
+## Current catalog
+
+| Action | Source signature | Risk |
 | --- | --- | --- |
-| `addNote` | — | See upstream documentation. |
-| `addNotes` | — | See upstream documentation. |
-| `canAddNotes` | — | See upstream documentation. |
-| `canAddNotesWithErrorDetail` | — | See upstream documentation. |
-| `updateNoteFields` | — | See upstream documentation. |
-| `updateNote` | — | See upstream documentation. |
-| `updateNoteModel` | — | See upstream documentation. |
-| `updateNoteTags` | — | See upstream documentation. |
-| `getNoteTags` | — | See upstream documentation. |
-| `addTags` | — | See upstream documentation. |
-| `removeTags` | — | See upstream documentation. |
-| `getTags` | — | See upstream documentation. |
-| `clearUnusedTags` | — | See upstream documentation. |
-| `replaceTags` | — | See upstream documentation. |
-| `replaceTagsInAllNotes` | — | See upstream documentation. |
-| `findNotes` | — | See upstream documentation. |
-| `notesInfo` | — | See upstream documentation. |
-| `notesModTime` | — | See upstream documentation. |
-| `deleteNotes` | — | See upstream documentation. |
-| `removeEmptyNotes` | — | See upstream documentation. |
+| `addNote` | `self, note` | `write` |
+| `addNotes` | `self, notes` | `write` |
+| `canAddNotes` | `self, notes` | `read` |
+| `canAddNotesWithErrorDetail` | `self, notes` | `read` |
+| `updateNoteFields` | `self, note` | `write` |
+| `updateNote` | `self, note` | `write` |
+| `updateNoteModel` | `self, note` | `write` |
+| `updateNoteTags` | `self, note, tags` | `write` |
+| `getNoteTags` | `self, note` | `read` |
+| `addTags` | `self, notes, tags, add=True` | `write` |
+| `removeTags` | `self, notes, tags` | `write` |
+| `getTags` | `self` | `read` |
+| `clearUnusedTags` | `self` | `write` |
+| `replaceTags` | `self, notes, tag_to_replace, replace_with_tag` | `write` |
+| `replaceTagsInAllNotes` | `self, tag_to_replace, replace_with_tag` | `write` |
+| `findNotes` | `self, query=None` | `read` |
+| `notesInfo` | `self, notes=None, query=None` | `read` |
+| `notesModTime` | `self, notes` | `read` |
+| `deleteNotes` | `self, notes` | `destructive` |
+| `removeEmptyNotes` | `self` | `destructive` |
 
-## Runtime verification
-
-Before using a version-sensitive or uncertain action, call `apiReflect` against the user's installed AnkiConnect. The local catalog is a curated snapshot, not a substitute for runtime capability discovery.
-
-## Source
-
-- https://github.com/ankiultimate/anki-connect/blob/master/README.md
+Prefer stable workflow tags/source IDs so generated notes can be found deterministically later.
