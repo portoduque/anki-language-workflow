@@ -246,6 +246,58 @@
         "release notes",
         "faq"
       ]
+    },
+    {
+      "id": "preferences",
+      "file": "references/anki/15-installation-preferences-configuration.md",
+      "keywords": [
+        "install",
+        "installation",
+        "upgrade",
+        "preferences",
+        "settings",
+        "interface",
+        "shortcut",
+        "configuration"
+      ]
+    },
+    {
+      "id": "language-rendering",
+      "file": "references/anki/16-language-rendering-fonts-rtl-furigana.md",
+      "keywords": [
+        "rtl",
+        "right to left",
+        "furigana",
+        "ruby",
+        "font",
+        "dictionary link",
+        "diacritic",
+        "capitalization",
+        "language rendering"
+      ]
+    },
+    {
+      "id": "math",
+      "file": "references/anki/17-math-symbols-mathjax-latex.md",
+      "keywords": [
+        "math",
+        "mathjax",
+        "latex",
+        "equation",
+        "formula",
+        "symbol"
+      ]
+    },
+    {
+      "id": "coverage",
+      "file": "references/anki/COVERAGE.md",
+      "keywords": [
+        "coverage",
+        "complete docs",
+        "documentation map",
+        "manual coverage",
+        "all documentation"
+      ]
     }
   ]
 }
