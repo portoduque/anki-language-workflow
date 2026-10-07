@@ -236,7 +236,21 @@ class LiveFakeClient:
         if action == "modelStyling":
             return {"css": self.models[params["modelName"]]["css"]}
         if action == "findNotes":
-            return []
+            query = str(params.get("query", ""))
+            tag = ""
+            deck = None
+            for part in query.split():
+                if part.startswith("tag:"):
+                    tag = part[4:]
+            marker = 'deck:"'
+            if marker in query:
+                deck = query.split(marker, 1)[1].split('"', 1)[0]
+            return [
+                note_id
+                for note_id, note in self.notes.items()
+                if (not tag or tag in note.get("tags", []))
+                and (deck is None or note.get("deckName") == deck)
+            ]
         if action == "canAddNotesWithErrorDetail":
             return [{"canAdd": True, "error": None} for _ in params["notes"]]
         if action == "addNotes":
@@ -308,3 +322,112 @@ def test_live_delivery_prevalidates_and_postvalidates_media(tmp_path: Path, monk
     assert note["fields"]["Reading"]["value"] == "bon-ZHOOR"
     assert note["fields"]["Variant"]["value"] == "bonjour"
     assert note["fields"]["Grammar"]["value"] == "greeting / interjection"
+
+
+def write_simple_live_plan(path: Path, *, deck: str = "French", target: str = "Bonjour") -> None:
+    plan = {
+        "version": "2.0",
+        "target_language": {"name": "French", "code": "fr"},
+        "base_language": {"name": "English", "code": "en"},
+        "deck_name": deck,
+        "delivery": {"mode": "live"},
+        "cards": [{
+            "id": "stable-card-1",
+            "skill": "production",
+            "prompt": "Say hello.",
+            "target_text": target,
+        }],
+    }
+    path.write_text(json.dumps(plan), encoding="utf-8")
+
+
+def test_live_delivery_is_idempotent_only_after_content_verification(tmp_path: Path, monkeypatch) -> None:
+    source = tmp_path / "plan.json"
+    write_simple_live_plan(source)
+
+    fake = LiveFakeClient()
+    monkeypatch.setattr(live_module, "AnkiConnectClient", lambda endpoint, api_key: fake)
+
+    first = live_module.deliver_live(source)
+    second = live_module.deliver_live(source)
+
+    assert first["created"] == 1
+    assert second["created"] == 0
+    assert second["skipped_existing"] == ["stable-card-1"]
+    assert len(fake.notes) == 1
+
+
+def test_live_delivery_rejects_existing_card_drift(tmp_path: Path, monkeypatch) -> None:
+    source = tmp_path / "plan.json"
+    write_simple_live_plan(source)
+
+    fake = LiveFakeClient()
+    monkeypatch.setattr(live_module, "AnkiConnectClient", lambda endpoint, api_key: fake)
+    live_module.deliver_live(source)
+
+    write_simple_live_plan(source, target="Salut")
+    with pytest.raises(Exception, match="Existing workflow note drift"):
+        live_module.deliver_live(source)
+
+    assert len(fake.notes) == 1
+
+
+def test_live_identity_is_scoped_by_deck_and_language(tmp_path: Path, monkeypatch) -> None:
+    first_path = tmp_path / "general.json"
+    second_path = tmp_path / "work.json"
+    write_simple_live_plan(first_path, deck="French")
+    write_simple_live_plan(second_path, deck="French Work")
+
+    fake = LiveFakeClient()
+    monkeypatch.setattr(live_module, "AnkiConnectClient", lambda endpoint, api_key: fake)
+
+    first = live_module.deliver_live(first_path)
+    second = live_module.deliver_live(second_path)
+
+    assert first["created"] == 1
+    assert second["created"] == 1
+    assert len(fake.notes) == 2
+
+
+def test_live_delivery_detects_current_model_css_drift(tmp_path: Path, monkeypatch) -> None:
+    source = tmp_path / "plan.json"
+    write_simple_live_plan(source)
+
+    fake = LiveFakeClient()
+    monkeypatch.setattr(live_module, "AnkiConnectClient", lambda endpoint, api_key: fake)
+    live_module.deliver_live(source)
+
+    model_name = "Anki Language v4 — Production"
+    fake.models[model_name]["css"] += "\n.card { border: 1px solid red; }"
+
+    with pytest.raises(Exception, match="CSS drift"):
+        live_module.deliver_live(source)
+
+
+def test_live_delivery_recognizes_legacy_identity_without_migrating_it(tmp_path: Path, monkeypatch) -> None:
+    source = tmp_path / "plan.json"
+    write_simple_live_plan(source)
+    plan = json.loads(source.read_text(encoding="utf-8"))
+    card = plan["cards"][0]
+
+    fake = LiveFakeClient()
+    expected_note, _ = live_module.build_note(plan, card, tmp_path)
+    fields = {
+        name: {"value": value}
+        for name, value in live_module.expected_persisted_fields(expected_note).items()
+    }
+    fake.notes[900] = {
+        "noteId": 900,
+        "modelName": "Anki Language v3 — Production",
+        "deckName": expected_note["deckName"],
+        "tags": ["anki-language", live_module.legacy_workflow_tag(card["id"])],
+        "fields": fields,
+    }
+
+    monkeypatch.setattr(live_module, "AnkiConnectClient", lambda endpoint, api_key: fake)
+    report = live_module.deliver_live(source)
+
+    assert report["created"] == 0
+    assert report["skipped_existing"] == ["stable-card-1"]
+    assert report["legacy_existing_verified"] == ["stable-card-1"]
+    assert len(fake.notes) == 1
