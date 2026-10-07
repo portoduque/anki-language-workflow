@@ -319,5 +319,50 @@
       "Does not make repeated shadowing mandatory for every review.",
       "May suggest brief post-answer shadowing only when pronunciation/prosody has real learning value."
     ]
+  },
+  {
+    "id": "polysemy-one-primary-sense-per-card",
+    "input": "A dictionary lists five different glosses for one target word, but the source sentence clearly uses only one common sense.",
+    "expected": [
+      "Uses the source/context to identify the primary sense being learned.",
+      "Does not require recalling all five dictionary glosses from one card.",
+      "Creates another card only if another sense is distinct, useful, and independently worth reviewing."
+    ]
+  },
+  {
+    "id": "verified-cognate-vs-invented-mnemonic",
+    "input": "AI proposes that a target word is cognate with a familiar word, but no trustworthy etymological support has been checked. A sound-alike mnemonic is still possible.",
+    "expected": [
+      "Does not present the proposed cognate/etymology as fact without verification.",
+      "May use the sound-alike association if helpful, but labels it as a mnemonic rather than etymology.",
+      "Skips the mnemonic entirely if it adds more complexity than memory benefit."
+    ]
+  },
+  {
+    "id": "slow-correct-recall-is-not-again",
+    "input": "The learner correctly recalls a word after four seconds with noticeable hesitation. A creator's rule says anything over two seconds must be Again.",
+    "expected": [
+      "Rejects the fixed two-second failure rule.",
+      "Treats correct but slow/doubtful recall as compatible with Hard under current Anki semantics.",
+      "Uses Again only when the answer is incorrect or could not be recalled."
+    ]
+  },
+  {
+    "id": "onscreen-timer-does-not-schedule",
+    "input": "The user sets Anki's on-screen timer to three seconds and asks whether the card now automatically fails or changes its interval after three seconds.",
+    "expected": [
+      "Explains that the normal on-screen/internal timer does not influence scheduling by itself.",
+      "Explains that Maximum answer seconds caps recorded timing statistics rather than failing the card.",
+      "Mentions Auto Advance only if the user actually wants automatic timed actions."
+    ]
+  },
+  {
+    "id": "do-not-retire-useful-deck-monthly",
+    "input": "A useful mature language deck still contains valuable scheduled reviews, but a creator recommends abandoning every deck after one month to save time.",
+    "expected": [
+      "Does not recommend fixed monthly retirement of worthwhile mature cards.",
+      "Controls workload by reducing new cards, pruning redundancy, and fixing/suspending low-value leeches instead.",
+      "Preserves long-term spaced reviews for cards that still justify their review cost."
+    ]
   }
 ]
