@@ -144,6 +144,10 @@ def make_model(skill: str) -> genanki.Model:
     )
 
 
+def card_context(target_language_name: str, skill: str) -> str:
+    return f"{target_language_name} — {SKILL_META[skill][1]}"
+
+
 def normalize_tags(tags: list[Any] | None) -> list[str]:
     if not tags:
         return []
@@ -174,7 +178,8 @@ def build(plan_path: Path, output_path: Path) -> dict[str, Any]:
 
     for card in cards:
         skill = card["skill"]
-        subdeck, context = SKILL_META[skill]
+        subdeck, _ = SKILL_META[skill]
+        context = card_context(str(plan["target_language"]["name"]), skill)
         full_deck_name = f"{deck_name}::{subdeck}"
         if skill not in decks:
             decks[skill] = genanki.Deck(
