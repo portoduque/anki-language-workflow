@@ -1,31 +1,55 @@
-# 09 — Miscellaneous, Profiles, Sync, Batch, and Packages
+# 09 — Miscellaneous: Capability Discovery, Profiles, Sync, Batching, APKG
 
-These actions handle API introspection, permissions, profiles, synchronization, batching, and APKG import/export.
+These actions cover API discovery, profiles, sync, batching, import/export, and collection reload.
 
-`version`, `requestPermission`, and `apiReflect` are important for robust clients.
+## Bootstrap actions
 
-Do not make sync/profile switching/package import an automatic side effect of ordinary card generation.
+### `version`
+Returns API version. Use early.
 
-## Supported actions
+### `apiReflect`
+Runtime reflection for supported action names. Use it before uncertain/version-sensitive calls.
 
-| Action | Main documented params | Purpose |
+### `requestPermission`
+Browser-origin permission bootstrap. May prompt the user and can be called without API key.
+
+## Profiles
+
+- `getProfiles`
+- `getActiveProfile`
+- `loadProfile`
+
+Changing profile changes which collection is targeted and may involve GUI/sync transitions.
+
+## `multi`
+
+Batches independent API calls into one HTTP request.
+
+Do not assume transaction semantics across arbitrary nested actions.
+
+## Sync
+
+`sync` requires configured AnkiWeb authentication. If Anki reports a full-sync-required state, do not guess which direction should win.
+
+## Package actions
+
+- `exportPackage(deck, path, includeSched=False)`
+- `importPackage(path)`
+
+Useful for bridging live Anki with the project's APKG workflow.
+
+## Current catalog
+
+| Action | Source signature | Risk |
 | --- | --- | --- |
-| `requestPermission` | — | See upstream documentation. |
-| `version` | — | See upstream documentation. |
-| `apiReflect` | — | See upstream documentation. |
-| `sync` | — | See upstream documentation. |
-| `getProfiles` | — | See upstream documentation. |
-| `getActiveProfile` | — | See upstream documentation. |
-| `loadProfile` | — | See upstream documentation. |
-| `multi` | — | See upstream documentation. |
-| `exportPackage` | — | See upstream documentation. |
-| `importPackage` | — | See upstream documentation. |
-| `reloadCollection` | — | See upstream documentation. |
-
-## Runtime verification
-
-Before using a version-sensitive or uncertain action, call `apiReflect` against the user's installed AnkiConnect. The local catalog is a curated snapshot, not a substitute for runtime capability discovery.
-
-## Source
-
-- https://github.com/ankiultimate/anki-connect/blob/master/README.md
+| `requestPermission` | `self, origin, allowed` | `read` |
+| `version` | `self` | `read` |
+| `apiReflect` | `self, scopes=None, actions=None` | `read` |
+| `sync` | `self` | `write` |
+| `getProfiles` | `self` | `read` |
+| `getActiveProfile` | `self` | `read` |
+| `loadProfile` | `self, name` | `write` |
+| `multi` | `self, actions` | `mixed` |
+| `exportPackage` | `self, deck, path, includeSched=False` | `read-export` |
+| `importPackage` | `self, path` | `destructive` |
+| `reloadCollection` | `self` | `write` |
