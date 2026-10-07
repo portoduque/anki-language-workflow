@@ -75,6 +75,52 @@ A source reused across multiple decks is valid only when each card covers a real
 
 Final acceptance test for every card: **useful, distinct, clear, atomic, fast**. If one fails, revise or discard the card.
 
+## Complete Anki technical reference library
+
+The skill includes a dedicated Anki reference layer under `anki-language/references/anki/`. It is intentionally split by topic so an agent can retrieve only what it needs instead of loading a giant manual into context.
+
+Included coverage:
+
+- Anki's note/card/field/deck mental model;
+- built-in and custom note/card types;
+- templates, field replacement, HTML, CSS, RTL, TTS, hints, typed answers;
+- Cloze and native Image Occlusion;
+- audio/images/media packaging and filename rules;
+- decks, tags, flags, Browser, search, filtered decks;
+- scheduling and FSRS;
+- import/export, CSV/TSV, APKG and COLPKG;
+- sync, backups, profiles and collection files;
+- statistics, true retention and leeches;
+- curated useful add-ons with compatibility/security cautions;
+- AnkiConnect, add-on development and APIs;
+- AnkiMobile/AnkiDroid/platform compatibility;
+- troubleshooting, security and version-sensitive behavior;
+- authoritative source map and live documentation discovery.
+
+### Fast reference routing
+
+Agents with shell access can run:
+
+`python anki-language/scripts/find_anki_reference.py "FSRS desired retention"`
+
+or:
+
+`python anki-language/scripts/find_anki_reference.py "APKG audio media"`
+
+The router returns only the most relevant local files.
+
+The official Anki documentation now exposes a complete machine-readable documentation index at:
+
+https://docs.ankiweb.net/llms.txt
+
+The workflow uses that as the live fallback for current/version-sensitive details instead of assuming the local summaries are permanently current.
+
+### Consultation policy
+
+The AI should consult the Anki library when the task depends on Anki implementation details, configuration, package/media behavior, scheduling, add-ons, APIs, compatibility, or troubleshooting.
+
+It should **not** load the whole library during ordinary language/card pedagogy. Card-selection policy remains separate and authoritative in `references/card-selection.md`.
+
 ## Requirements
 
 - Git;
