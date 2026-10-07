@@ -1,29 +1,28 @@
 # Google Antigravity adapter
 
-Antigravity distinguishes on-demand **skills** from user-invoked **workflows**. This project installs both when using the IDE adapter.
+The canonical implementation is `anki-language/`; Antigravity adds a thin slash-workflow because it distinguishes skills from user-invoked workflows.
 
-## Project/workspace install
+## One-command IDE install after cloning
 
-`python anki-language/scripts/install_skill.py antigravity --scope project --project .`
+`python install.py antigravity`
 
-Installs:
-- skill: `.agents/skills/anki-language/`
-- slash workflow: `.agents/workflows/anki-language.md`
+This installs runtime dependencies, the user skill at `~/.gemini/config/skills/anki-language/`, and the global `/anki-language` workflow.
 
-Invoke with `/anki-language <material>`. The workflow is intentionally thin and delegates the real rules to the skill.
+Project/workspace-only install:
 
-## IDE global install
+`python install.py antigravity --scope project --project /path/to/workspace`
 
-`python anki-language/scripts/install_skill.py antigravity --scope user`
+This installs:
 
-Installs the skill to `~/.gemini/config/skills/anki-language/` and the workflow to `~/.gemini/config/global_workflows/anki-language.md`.
+- `.agents/skills/anki-language/`
+- `.agents/workflows/anki-language.md`
+
+## Invocation
+
+`/anki-language <material>`
+
+On the **first use in each workspace**, Antigravity must ask for target language and base language before analyzing the material and persist them in `anki-language.config.json`.
 
 ## Antigravity CLI
 
-Project skills also use `.agents/skills/`. For a CLI-specific user install use:
-
-`python anki-language/scripts/install_skill.py antigravity-cli --scope user`
-
-This targets `~/.gemini/antigravity-cli/skills/anki-language/`. Use `/skills` to verify discovery.
-
-The separation is deliberate: a skill is reusable knowledge loaded on demand; a workflow gives the IDE the explicit `/anki-language` entry point.
+Use `python install.py antigravity-cli`. Project skills use `.agents/skills/`; a user install targets `~/.gemini/antigravity-cli/skills/anki-language/`.
