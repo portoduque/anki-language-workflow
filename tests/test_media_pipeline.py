@@ -267,6 +267,9 @@ def test_live_delivery_prevalidates_and_postvalidates_media(tmp_path: Path, monk
             "skill": "production",
             "prompt": "Say hello.",
             "target_text": "Bonjour",
+            "reading": "bon-ZHOOR",
+            "variant": "bonjour",
+            "grammar": "greeting / interjection",
             "audio": "phrase.wav",
             "image": "thing.png",
         }],
@@ -283,3 +286,8 @@ def test_live_delivery_prevalidates_and_postvalidates_media(tmp_path: Path, monk
     assert report["created"] == 1
     assert len(report["media_verified"]) == 2
     assert all(item["verified"] is True for item in report["media_verified"])
+
+    note = fake.notes[report["note_ids"][0]]
+    assert note["fields"]["Reading"]["value"] == "bon-ZHOOR"
+    assert note["fields"]["Variant"]["value"] == "bonjour"
+    assert note["fields"]["Grammar"]["value"] == "greeting / interjection"
