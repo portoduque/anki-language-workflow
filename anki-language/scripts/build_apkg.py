@@ -256,6 +256,7 @@ def build(plan_path: Path, output_path: Path) -> dict[str, Any]:
         system_tags = workflow_system_tags(
             deck_name,
             str(plan["target_language"]["code"]),
+            skill,
             str(card["id"]),
         )
         note = genanki.Note(
