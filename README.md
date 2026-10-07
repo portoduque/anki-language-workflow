@@ -1,6 +1,6 @@
 # Anki Language Workflow
 
-AI-agnostic and language-agnostic workflow that turns study material into a small, selective, import-ready Anki `.apkg` deck with optional audio, images, tags, and validated card templates.
+AI-agnostic and language-agnostic workflow that turns study material into a small, selective Anki deck with automatic audio/image enrichment, strict media validation, and delivery as `.apkg`, directly to a running Anki through AnkiConnect, or both.
 
 **The repository has no default language and no required AI provider.** Codex, Claude Code, and Google Antigravity have ready-made adapters, while any other AI can use the same canonical `SKILL.md` and deterministic Python pipeline.
 
@@ -182,11 +182,144 @@ AnkiConnect remains **optional**. If the task is simply to create a portable dec
 
 Live AnkiConnect operations are used only when they add real value.
 
+## Automatic audio, images, and delivery
+
+The workflow can now resolve missing media automatically **after** card selection and **before** packaging/upload.
+
+The AI still decides whether media adds learning value. The automation does not generate an image/audio file for every card merely because it can.
+
+### Automatic audio
+
+For a text-only card that should have audio, the plan can contain:
+
+```json
+{
+  "audio_request": {
+    "mode": "auto",
+    "text": "J'ai fini par rester chez moi.",
+    "provider": "auto"
+  }
+}
+```
+
+The built-in automatic TTS provider is **Piper**:
+
+1. reads the current Piper voice catalog;
+2. matches the configured target-language code;
+3. selects a deterministic voice (medium quality preferred for the default efficiency/quality balance);
+4. downloads the voice model if necessary;
+5. synthesizes WAV audio locally;
+6. decodes the produced audio;
+7. verifies positive duration and records SHA-256;
+8. only then allows the media to continue to APKG/AnkiConnect delivery.
+
+The one-command installer installs Piper media support by default. Use `--skip-media-deps` only for a minimal installation.
+
+Forvo is **not** a core provider. Its Anki add-ons run inside Anki and are not a stable cross-agent automation API. The workflow never scrapes Forvo. A Forvo pronunciation may only be used through a permitted API/license/workflow that allows the intended storage/embedding.
+
+### Automatic images
+
+For a visual concept:
+
+```json
+{
+  "image_request": {
+    "mode": "auto",
+    "query": "red squirrel",
+    "provider": "auto",
+    "licenses": ["cc0", "pdm"]
+  }
+}
+```
+
+Automatic order:
+
+1. **Openverse**
+2. **Wikimedia Commons** fallback
+
+The default allowlist is deliberately strict: CC0 and Public Domain Mark. Openverse is searched with mature content disabled and dead links filtered. Wikimedia fallback reads machine-readable Commons license metadata.
+
+Downloaded images are normalized to WebP, constrained to 1600×1600, then decoded again before acceptance. Provenance stores provider/source/license/license URL/attribution when available.
+
+### Mandatory validation before any upload
+
+This is a hard project rule:
+
+> **An audio or image file must be functionally validated before it may be packaged or uploaded into an Anki card.**
+
+Validation checks:
+
+- audio is a real decodable stream;
+- audio duration is positive;
+- image fully decodes;
+- image dimensions are usable;
+- file size is non-trivial;
+- SHA-256 is recorded;
+- if the file changes after validation, build/live delivery rejects it.
+
+Useful direct checks:
+
+`python anki-language/scripts/media_validate.py audio /path/to/file.wav`
+
+`python anki-language/scripts/media_validate.py image /path/to/file.webp`
+
+Required-media failure blocks delivery. Optional-media failure is recorded in `media_issues` and the card continues without the broken media.
+
+### Delivery modes
+
+The same resolved plan supports:
+
+- **`apkg`** — validated portable package;
+- **`live`** — direct insertion into a running Anki with AnkiConnect;
+- **`both`** — live insertion plus APKG.
+
+End-to-end:
+
+`python anki-language/scripts/run_pipeline.py card-plan.json --delivery apkg`
+
+Direct Anki:
+
+`python anki-language/scripts/run_pipeline.py card-plan.json --delivery live`
+
+Both:
+
+`python anki-language/scripts/run_pipeline.py card-plan.json --delivery both --output French.apkg`
+
+### Live AnkiConnect verification
+
+Live mode does not stop at “the API returned success”.
+
+Before `addNotes`:
+- local audio/images are decoded and hashed;
+- AnkiConnect capability is checked with `version` + `apiReflect`;
+- notes are preflighted using `canAddNotesWithErrorDetail`.
+
+After `addNotes`:
+- `notesInfo` must show the media filename in the expected field;
+- `retrieveMediaFile` downloads the file back from Anki;
+- downloaded bytes must match the prevalidated local SHA-256.
+
+Only then is the media reported as successfully delivered.
+
+### Why AnkiConnect helps
+
+AnkiConnect is the delivery/integration layer, not the media generator. It lets the workflow:
+
+- create required decks/note types when absent;
+- attach local audio/images directly during note creation;
+- avoid manual copying into `collection.media`;
+- verify the created note;
+- retrieve uploaded media for byte-for-byte validation.
+
+Automatic media generation/search remains provider-independent from AnkiConnect.
+
 ## Requirements
 
 - Git;
 - Python 3.11+;
-- an AI coding/agent environment with filesystem and Python execution for fully automatic APKG generation.
+- an AI coding/agent environment with filesystem and Python execution for fully automatic APKG/live generation;
+- network access when automatic Piper voice download or image search is requested;
+- Anki Desktop + AnkiConnect only for `live`/`both` delivery.
 
 A chat-only AI can still follow the pedagogical rules and produce `card-plan.json`, but building the final `.apkg` requires a runtime capable of executing the included Python scripts.
 
@@ -222,7 +355,7 @@ Choose exactly one:
 
 `python install.py generic --dest /path/to/your-ai/skills/anki-language`
 
-The one-command installer installs the Python dependencies and copies the canonical skill to the correct user-level location. Use `--skip-deps` if you manage Python dependencies yourself.
+The one-command installer installs the core dependencies **and automatic Piper media support** and copies the canonical skill to the correct user-level location. Use `--skip-deps` to manage everything yourself, or `--skip-media-deps` to install the workflow without automatic Piper TTS.
 
 To install only inside one project/workspace instead of globally, add:
 
@@ -284,26 +417,32 @@ To switch languages later, ask the AI to change the target/base configuration or
 4. AI selects only useful learning units.
 5. AI assigns Reading, Listening, Production, or Pronunciation & Sounds.
 6. AI decides whether audio/image actually adds value.
-7. AI creates `card-plan.json` using the configured target/base languages.
-8. Deterministic scripts validate the plan and media.
-9. Builder generates the `.apkg`.
-10. Validator opens the internal Anki SQLite collection and checks notes, cards, decks, and media.
-11. AI returns the final `.apkg`, report, and card plan.
+7. AI creates `card-plan.json`; missing worthwhile media is expressed with `audio_request` / `image_request`.
+8. Media Enricher preserves existing media or generates/fetches missing media.
+9. **Every actual audio/image is functionally decoded and hashed before it can continue.**
+10. The resolved plan is delivered as `apkg`, `live`, or `both`.
+11. APKG mode validates ZIP/media manifest/internal Anki database.
+12. Live mode preflights notes, inserts them through AnkiConnect, then retrieves uploaded media and verifies SHA-256 + note-field references.
+13. AI returns the resolved plan and delivery reports; failed validation is never reported as success.
 
 ## Deterministic build
 
-From the installed skill directory:
+Preferred complete pipeline:
 
-`python scripts/build.py /path/to/card-plan.json --output /path/to/Language.apkg`
+`python scripts/run_pipeline.py /path/to/card-plan.json --delivery apkg --output /path/to/Language.apkg`
 
-The pipeline checks JSON Schema, semantic rules, media existence/collisions, APKG ZIP/media manifest, embedded Anki SQLite database, note/card counts, and expected subdecks.
+If media is already resolved and validated, direct APKG build remains available:
+
+`python scripts/build.py /path/to/card-plan.resolved.json --output /path/to/Language.apkg`
+
+The workflow checks JSON Schema, semantic rules, actual media decoding/hashes, media collisions, APKG ZIP/media manifest, embedded Anki SQLite database, note/card counts, and expected subdecks. Live delivery additionally validates the media after AnkiConnect upload.
 
 ## Repository architecture
 
 - `anki-language/SKILL.md` — canonical provider-independent workflow.
 - `anki-language/references/` — pedagogy, card selection, media, output contract.
 - `anki-language/schemas/` — workspace configuration and card-plan schemas.
-- `anki-language/scripts/` — configuration, build, install, and validation scripts.
+- `anki-language/scripts/` — configuration, media enrichment/validation, APKG build, AnkiConnect delivery, install, and validation scripts.
 - `anki-language/assets/` — thin provider-specific assets such as the Antigravity workflow.
 - `anki-language/agents/openai.yaml` — optional OpenAI/Codex interface metadata.
 - `adapters/` — usage notes for specific AIs plus a generic adapter.
@@ -334,9 +473,9 @@ Run tests:
 
 A normal successful run produces:
 
-- `<TargetLanguage>.apkg`;
-- `<TargetLanguage>.apkg.report.json`;
-- `card-plan.json`;
-- optional media files embedded inside the APKG.
+- `card-plan.resolved.json`;
+- validated local media when requested;
+- `<TargetLanguage>.apkg` + report for `apkg`/`both`;
+- live Anki note IDs + post-upload verification report for `live`/`both`.
 
-Media is only included when useful and when its use is permitted.
+Media is included only when useful, permitted, and functionally validated.

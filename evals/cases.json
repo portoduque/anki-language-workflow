@@ -122,5 +122,52 @@
       "Rejects low-value sibling cards even though the same source could technically be reused.",
       "Prioritizes memory efficiency per review minute over extracting the maximum number of cards."
     ]
+  },
+  {
+    "id": "text-only-listening-auto-audio",
+    "input": "A useful target-language sentence should train Listening but the material has text only.",
+    "expected": [
+      "Creates a Listening card only if Listening is worthwhile.",
+      "Adds an audio_request for the target sentence instead of inventing a fake audio path.",
+      "Uses automatic TTS only after user/native audio is unavailable.",
+      "Requires functional audio validation before APKG or live delivery."
+    ]
+  },
+  {
+    "id": "concrete-word-auto-image",
+    "input": "A concrete noun would be learned faster from a clear image and no image was supplied.",
+    "expected": [
+      "May create an image_request with a precise search query.",
+      "Prefers licensed/open media and records provenance.",
+      "Does not attach the image unless the downloaded file decodes successfully."
+    ]
+  },
+  {
+    "id": "abstract-word-no-image-volume",
+    "input": "An abstract connector such as 'however/nevertheless' already has a clear production cue.",
+    "expected": [
+      "Does not search for an image merely because automatic image search exists.",
+      "Prioritizes a concise text/production card."
+    ]
+  },
+  {
+    "id": "invalid-media-never-uploaded",
+    "input": "A generated/downloaded audio or image file is corrupt or fails decoding.",
+    "expected": [
+      "Rejects the file before APKG packaging or AnkiConnect addNotes.",
+      "Blocks delivery when the media is required.",
+      "Skips and records the issue when the media is optional.",
+      "Never claims that the media was successfully delivered."
+    ]
+  },
+  {
+    "id": "live-media-post-upload-verification",
+    "input": "User asks for direct Anki delivery through AnkiConnect with audio and image.",
+    "expected": [
+      "Validates local media before upload.",
+      "Preflights notes.",
+      "After creation, verifies the note field references the uploaded filename.",
+      "Retrieves media from Anki and compares it against the local SHA-256 before reporting success."
+    ]
   }
 ]

@@ -8,6 +8,8 @@ from typing import Any
 
 from jsonschema import Draft202012Validator
 
+from media_validate import MediaValidationError, validate_media_file
+
 AUDIO_FRONT_MODES = {"minimal-pair", "sound-discrimination", "audio-to-spelling"}
 CONFIG_FILENAME = "anki-language.config.json"
 
@@ -102,11 +104,13 @@ def validate_plan(
         if skill == "production" and not str(card.get("prompt", "")).strip():
             errors.append(f"{prefix}.prompt is required for production cards.")
         if skill == "listening" and not str(card.get("audio", "")).strip():
-            errors.append(f"{prefix}.audio is required for listening cards.")
+            if check_media or not card.get("audio_request"):
+                errors.append(f"{prefix}.audio is required for listening cards after media enrichment.")
         if skill == "pronunciation" and not str(card.get("prompt", "")).strip():
             errors.append(f"{prefix}.prompt is required for pronunciation cards so the builder never invents a base-language instruction.")
         if skill == "pronunciation" and mode in AUDIO_FRONT_MODES and not str(card.get("audio", "")).strip():
-            errors.append(f"{prefix}.audio is required for pronunciation mode '{mode}'.")
+            if check_media or not card.get("audio_request"):
+                errors.append(f"{prefix}.audio is required for pronunciation mode '{mode}' after media enrichment.")
 
         for media_key in ("audio", "image"):
             raw = card.get(media_key)
@@ -121,8 +125,21 @@ def validate_plan(
                 errors.append(f"Media basename collision for '{basename}': '{previous}' and '{media_path}'.")
             else:
                 media_by_basename[basename] = media_path
-            if check_media and not media_path.is_file():
-                errors.append(f"Missing {media_key} file for {prefix}: {media_path}")
+            if check_media:
+                if not media_path.is_file():
+                    errors.append(f"Missing {media_key} file for {prefix}: {media_path}")
+                    continue
+                try:
+                    current = validate_media_file(media_path, media_key)
+                except MediaValidationError as exc:
+                    errors.append(f"Invalid {media_key} for {prefix}: {exc}")
+                    continue
+                recorded = (card.get("media_validation") or {}).get(media_key)
+                if recorded and recorded.get("sha256") and recorded["sha256"] != current["sha256"]:
+                    errors.append(
+                        f"{prefix}.{media_key} changed after validation: "
+                        f"recorded sha256={recorded['sha256']} current sha256={current['sha256']}"
+                    )
 
     return errors
 

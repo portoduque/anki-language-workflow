@@ -95,3 +95,32 @@ def test_readme_documents_ankiconnect_reference_library() -> None:
     assert "114 baseline/common documented actions" in readme.lower()
     assert "118 cataloged entries total" in readme.lower()
     assert "version" in readme and "apiReflect" in readme
+
+
+def test_skill_requires_validated_automatic_media_pipeline() -> None:
+    skill = (SKILL / "SKILL.md").read_text(encoding="utf-8")
+    assert "## Automatic media and delivery" in skill
+    assert "audio_request" in skill
+    assert "image_request" in skill
+    assert "run_pipeline.py" in skill
+    assert "Never bypass this gate" in skill
+    assert "retrieveMediaFile" in skill
+    assert "SHA-256" in skill
+
+
+def test_readme_documents_media_generation_and_delivery_modes() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "## Automatic audio, images, and delivery" in readme
+    assert "Piper" in readme
+    assert "Openverse" in readme
+    assert "Wikimedia Commons" in readme
+    assert "--delivery live" in readme
+    assert "--delivery both" in readme
+    assert "retrieveMediaFile" in readme
+    assert "--skip-media-deps" in readme
+
+
+def test_antigravity_workflow_never_bypasses_media_validation() -> None:
+    workflow = (SKILL / "assets" / "antigravity-workflow.md").read_text(encoding="utf-8")
+    assert "every audio/image is decoded and hashed before packaging/upload" in workflow
+    assert "Never bypass media validation" in workflow
