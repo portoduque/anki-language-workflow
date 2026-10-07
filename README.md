@@ -77,6 +77,7 @@ These are product rules, not suggestions. The complete normative specification l
 27. **Candidate before card:** an unknown item encountered while reading/listening/watching is only a candidate until it passes the usefulness/context/review-cost test; preserve source context and batch selection when practical.
 28. **Creation time counts:** do not spend disproportionate time decorating/customizing cards when a simpler card trains the same retrieval equally well.
 29. **Grammar notes stay concise:** add a short back-side rule/contrast only when it explains why the answer is correct or prevents future confusion; avoid full paradigm/AI dumps by default.
+30. **Beginner bootstrap is allowed, not blind import:** when an absolute beginner lacks enough comprehensible personal material, a vetted frequency/shared deck may supply candidates; inspect quality/fields/audio and select items rather than importing everything as workflow cards.
 
 A source reused across multiple decks is valid only when each card covers a real additional skill gap. If the extra card mostly repeats the same retrieval, discard it.
 
@@ -90,6 +91,7 @@ Current curated notes include:
 
 - `anki-language/references/research/fluent-forever-gallery.md` — analyzes the Fluent Forever Gallery's six card families and records adopted vs. rejected ideas.
 - `anki-language/references/research/corinna-anki-tutorial.md` — analyzes the complete transcript of Corinna Languages' Anki tutorial and adopts only candidate-capture, creation-efficiency, concise grammar-note, and contextual-source lessons.
+- `anki-language/references/research/meredith-anki-setup-guide.md` — analyzes the complete 37-minute Meredith setup transcript, adopts the absolute-beginner bootstrap exception, and audits its FSRS/settings advice against current official Anki documentation.
 
 Across these research sources, recommendations are not promoted automatically. Examples deliberately **not** adopted include:
 
@@ -100,6 +102,16 @@ Across these research sources, recommendations are not promoted automatically. E
 - copying old Anki scheduling settings or universal daily-card quotas;
 - making Forvo/Google Images the default automation path;
 - requiring motivational add-ons or habit tricks as part of card generation.
+- copying fixed new-card/review limits, learning steps, display-order presets, or Easy Days behavior from a creator without verifying current Anki semantics and learner workload.
+
+### Scheduling settings are not copied from research videos
+
+When the workflow answers a scheduling/FSRS question, the current Anki manual and the learner's own review history/workload outrank research-source presets.
+
+In particular, the Meredith guide audit corrected two easy-to-miss points:
+
+- under FSRS, **Ascending retrievability** — not Descending — prioritizes lower-retrievability cards when a large backlog needs risk-first ordering;
+- Anki sibling burying only applies to cards generated from the **same note**. The current workflow creates one note per planned card, so Reading/Production/etc. cards derived from the same source are not automatically spaced by sibling burying.
 
 ## Complete Anki technical reference library
 
