@@ -37,16 +37,6 @@ def validate_plan(plan: dict[str, Any], plan_path: Path, check_media: bool = Tru
     if errors:
         return errors
 
-    support = plan["support_language"]
-    support_name = str(support["name"]).strip().lower()
-    support_code = str(support["code"]).strip().lower()
-    is_english = support_name == "english" or support_code == "en" or support_code.startswith("en-")
-    if not is_english and not bool(plan.get("support_language_override")):
-        errors.append(
-            "Support language must be English unless support_language_override=true "
-            "because the user explicitly requested another support language."
-        )
-
     seen_ids: set[str] = set()
     media_by_basename: dict[str, Path] = {}
     plan_dir = plan_path.resolve().parent
@@ -60,12 +50,14 @@ def validate_plan(plan: dict[str, Any], plan_path: Path, check_media: bool = Tru
             seen_ids.add(card_id)
 
         skill = card["skill"]
+        mode = str(card.get("mode", "standard")).strip().lower()
+
         if skill == "production" and not str(card.get("prompt", "")).strip():
             errors.append(f"{prefix}.prompt is required for production cards.")
         if skill == "listening" and not str(card.get("audio", "")).strip():
             errors.append(f"{prefix}.audio is required for listening cards.")
-
-        mode = str(card.get("mode", "standard")).strip().lower()
+        if skill == "pronunciation" and not str(card.get("prompt", "")).strip():
+            errors.append(f"{prefix}.prompt is required for pronunciation cards so the builder never invents a base-language instruction.")
         if skill == "pronunciation" and mode in AUDIO_FRONT_MODES and not str(card.get("audio", "")).strip():
             errors.append(f"{prefix}.audio is required for pronunciation mode '{mode}'.")
 
