@@ -25,7 +25,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, cards",
+      "parameters": [
+        "cards"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#geteasefactors"
     },
     {
       "name": "setEaseFactors",
@@ -38,7 +44,14 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, cards, easeFactors",
+      "parameters": [
+        "cards",
+        "easeFactors"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#seteasefactors"
     },
     {
       "name": "setSpecificValueOfCard",
@@ -52,7 +65,16 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, card, keys, newValues, warning_check=False",
+      "parameters": [
+        "card",
+        "keys",
+        "newValues",
+        "warning_check"
+      ],
+      "risk": "destructive",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#setspecificvalueofcard"
     },
     {
       "name": "suspend",
@@ -64,7 +86,14 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, cards, suspend=True",
+      "parameters": [
+        "cards",
+        "suspend"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#suspend"
     },
     {
       "name": "unsuspend",
@@ -76,7 +105,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, cards",
+      "parameters": [
+        "cards"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#unsuspend"
     },
     {
       "name": "suspended",
@@ -88,7 +123,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, card",
+      "parameters": [
+        "card"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#suspended"
     },
     {
       "name": "areSuspended",
@@ -100,7 +141,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, cards",
+      "parameters": [
+        "cards"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#aresuspended"
     },
     {
       "name": "areDue",
@@ -112,7 +159,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, cards",
+      "parameters": [
+        "cards"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#aredue"
     },
     {
       "name": "getIntervals",
@@ -124,7 +177,14 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, cards, complete=False",
+      "parameters": [
+        "cards",
+        "complete"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getintervals"
     },
     {
       "name": "findCards",
@@ -136,7 +196,15 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, query=None, fields=None, noteFields=None",
+      "parameters": [
+        "query",
+        "fields",
+        "noteFields"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#findcards"
     },
     {
       "name": "cardsToNotes",
@@ -148,7 +216,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, cards",
+      "parameters": [
+        "cards"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#cardstonotes"
     },
     {
       "name": "cardsModTime",
@@ -160,7 +234,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, cards",
+      "parameters": [
+        "cards"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#cardsmodtime"
     },
     {
       "name": "cardsInfo",
@@ -172,7 +252,16 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, cards, fields=None, noteFields=None, retrieved_info_mode='ALL'",
+      "parameters": [
+        "cards",
+        "fields",
+        "noteFields",
+        "retrieved_info_mode"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#cardsinfo"
     },
     {
       "name": "forgetCards",
@@ -184,7 +273,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, cards",
+      "parameters": [
+        "cards"
+      ],
+      "risk": "destructive",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#forgetcards"
     },
     {
       "name": "relearnCards",
@@ -196,7 +291,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, cards",
+      "parameters": [
+        "cards"
+      ],
+      "risk": "destructive",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#relearncards"
     },
     {
       "name": "answerCards",
@@ -208,7 +309,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, answers",
+      "parameters": [
+        "answers"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#answercards"
     },
     {
       "name": "setDueDate",
@@ -221,7 +328,14 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, cards, days",
+      "parameters": [
+        "cards",
+        "days"
+      ],
+      "risk": "destructive",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#setduedate"
     },
     {
       "name": "deckNames",
@@ -231,7 +345,11 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self",
+      "parameters": [],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#decknames"
     },
     {
       "name": "deckNamesAndIds",
@@ -241,7 +359,11 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self",
+      "parameters": [],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#decknamesandids"
     },
     {
       "name": "getDecks",
@@ -253,7 +375,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, cards",
+      "parameters": [
+        "cards"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getdecks"
     },
     {
       "name": "createDeck",
@@ -265,7 +393,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, deck",
+      "parameters": [
+        "deck"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#createdeck"
     },
     {
       "name": "changeDeck",
@@ -278,7 +412,14 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, cards, deck",
+      "parameters": [
+        "cards",
+        "deck"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#changedeck"
     },
     {
       "name": "deleteDecks",
@@ -291,7 +432,14 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, decks, cardsToo=False",
+      "parameters": [
+        "decks",
+        "cardsToo"
+      ],
+      "risk": "destructive",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#deletedecks"
     },
     {
       "name": "getDeckConfig",
@@ -303,7 +451,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, deck",
+      "parameters": [
+        "deck"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getdeckconfig"
     },
     {
       "name": "saveDeckConfig",
@@ -315,7 +469,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, config",
+      "parameters": [
+        "config"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#savedeckconfig"
     },
     {
       "name": "setDeckConfigId",
@@ -328,7 +488,14 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, decks, configId",
+      "parameters": [
+        "decks",
+        "configId"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#setdeckconfigid"
     },
     {
       "name": "cloneDeckConfigId",
@@ -341,7 +508,14 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, name, cloneFrom='1'",
+      "parameters": [
+        "name",
+        "cloneFrom"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#clonedeckconfigid"
     },
     {
       "name": "removeDeckConfigId",
@@ -353,7 +527,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, configId",
+      "parameters": [
+        "configId"
+      ],
+      "risk": "destructive",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#removedeckconfigid"
     },
     {
       "name": "getDeckStats",
@@ -365,7 +545,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, decks",
+      "parameters": [
+        "decks"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getdeckstats"
     },
     {
       "name": "guiBrowse",
@@ -378,7 +564,14 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, query=None, reorderCards=None",
+      "parameters": [
+        "query",
+        "reorderCards"
+      ],
+      "risk": "gui-state",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guibrowse"
     },
     {
       "name": "guiSelectCard",
@@ -390,7 +583,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, card",
+      "parameters": [
+        "card"
+      ],
+      "risk": "gui-state",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guiselectcard"
     },
     {
       "name": "guiSelectedNotes",
@@ -400,7 +599,11 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self",
+      "parameters": [],
+      "risk": "gui-state",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guiselectednotes"
     },
     {
       "name": "guiAddCards",
@@ -412,7 +615,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, note=None",
+      "parameters": [
+        "note"
+      ],
+      "risk": "gui-state",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guiaddcards"
     },
     {
       "name": "guiEditNote",
@@ -424,7 +633,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, note",
+      "parameters": [
+        "note"
+      ],
+      "risk": "gui-state",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guieditnote"
     },
     {
       "name": "guiCurrentCard",
@@ -434,7 +649,11 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self",
+      "parameters": [],
+      "risk": "gui-state",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guicurrentcard"
     },
     {
       "name": "guiStartCardTimer",
@@ -444,7 +663,11 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self",
+      "parameters": [],
+      "risk": "gui-state",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guistartcardtimer"
     },
     {
       "name": "guiShowQuestion",
@@ -454,7 +677,11 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self",
+      "parameters": [],
+      "risk": "gui-state",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guishowquestion"
     },
     {
       "name": "guiShowAnswer",
@@ -464,7 +691,11 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self",
+      "parameters": [],
+      "risk": "gui-state",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guishowanswer"
     },
     {
       "name": "guiAnswerCard",
@@ -476,7 +707,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, ease",
+      "parameters": [
+        "ease"
+      ],
+      "risk": "gui-state",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guianswercard"
     },
     {
       "name": "guiUndo",
@@ -486,7 +723,11 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self",
+      "parameters": [],
+      "risk": "gui-state",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guiundo"
     },
     {
       "name": "guiDeckOverview",
@@ -498,7 +739,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, name",
+      "parameters": [
+        "name"
+      ],
+      "risk": "gui-state",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guideckoverview"
     },
     {
       "name": "guiDeckBrowser",
@@ -508,7 +755,11 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self",
+      "parameters": [],
+      "risk": "gui-state",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guideckbrowser"
     },
     {
       "name": "guiDeckReview",
@@ -520,7 +771,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, name",
+      "parameters": [
+        "name"
+      ],
+      "risk": "gui-state",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guideckreview"
     },
     {
       "name": "guiImportFile",
@@ -532,7 +789,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, path=None",
+      "parameters": [
+        "path"
+      ],
+      "risk": "gui-state",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guiimportfile"
     },
     {
       "name": "guiExitAnki",
@@ -542,7 +805,11 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self",
+      "parameters": [],
+      "risk": "gui-state",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guiexitanki"
     },
     {
       "name": "guiCheckDatabase",
@@ -552,7 +819,11 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self",
+      "parameters": [],
+      "risk": "gui-state",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guicheckdatabase"
     },
     {
       "name": "storeMediaFile",
@@ -565,7 +836,18 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, filename, data=None, path=None, url=None, skipHash=None, deleteExisting=True",
+      "parameters": [
+        "filename",
+        "data",
+        "path",
+        "url",
+        "skipHash",
+        "deleteExisting"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#storemediafile"
     },
     {
       "name": "retrieveMediaFile",
@@ -577,7 +859,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, filename",
+      "parameters": [
+        "filename"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#retrievemediafile"
     },
     {
       "name": "getMediaFilesNames",
@@ -589,7 +877,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, pattern='*'",
+      "parameters": [
+        "pattern"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getmediafilesnames"
     },
     {
       "name": "getMediaDirPath",
@@ -599,7 +893,11 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self",
+      "parameters": [],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getmediadirpath"
     },
     {
       "name": "deleteMediaFile",
@@ -611,7 +909,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, filename",
+      "parameters": [
+        "filename"
+      ],
+      "risk": "destructive",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#deletemediafile"
     },
     {
       "name": "requestPermission",
@@ -621,7 +925,14 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, origin, allowed",
+      "parameters": [
+        "origin",
+        "allowed"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#requestpermission"
     },
     {
       "name": "version",
@@ -631,7 +942,11 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self",
+      "parameters": [],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#version"
     },
     {
       "name": "apiReflect",
@@ -644,7 +959,14 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, scopes=None, actions=None",
+      "parameters": [
+        "scopes",
+        "actions"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#apireflect"
     },
     {
       "name": "sync",
@@ -654,7 +976,11 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self",
+      "parameters": [],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#sync"
     },
     {
       "name": "getProfiles",
@@ -664,7 +990,11 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self",
+      "parameters": [],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getprofiles"
     },
     {
       "name": "getActiveProfile",
@@ -674,7 +1004,11 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self",
+      "parameters": [],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getactiveprofile"
     },
     {
       "name": "loadProfile",
@@ -686,7 +1020,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, name",
+      "parameters": [
+        "name"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#loadprofile"
     },
     {
       "name": "multi",
@@ -698,7 +1038,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, actions",
+      "parameters": [
+        "actions"
+      ],
+      "risk": "mixed",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#multi"
     },
     {
       "name": "exportPackage",
@@ -712,7 +1058,15 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, deck, path, includeSched=False",
+      "parameters": [
+        "deck",
+        "path",
+        "includeSched"
+      ],
+      "risk": "read-export",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#exportpackage"
     },
     {
       "name": "importPackage",
@@ -724,7 +1078,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, path",
+      "parameters": [
+        "path"
+      ],
+      "risk": "destructive",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#importpackage"
     },
     {
       "name": "reloadCollection",
@@ -734,7 +1094,11 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self",
+      "parameters": [],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#reloadcollection"
     },
     {
       "name": "modelNames",
@@ -744,7 +1108,11 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self",
+      "parameters": [],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelnames"
     },
     {
       "name": "modelNamesAndIds",
@@ -754,7 +1122,11 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self",
+      "parameters": [],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelnamesandids"
     },
     {
       "name": "findModelsById",
@@ -766,7 +1138,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, modelIds",
+      "parameters": [
+        "modelIds"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#findmodelsbyid"
     },
     {
       "name": "findModelsByName",
@@ -778,7 +1156,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, modelNames",
+      "parameters": [
+        "modelNames"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#findmodelsbyname"
     },
     {
       "name": "modelFieldNames",
@@ -790,7 +1174,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, modelName",
+      "parameters": [
+        "modelName"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldnames"
     },
     {
       "name": "modelFieldDescriptions",
@@ -802,7 +1192,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, modelName",
+      "parameters": [
+        "modelName"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfielddescriptions"
     },
     {
       "name": "modelFieldFonts",
@@ -814,7 +1210,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, modelName",
+      "parameters": [
+        "modelName"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldfonts"
     },
     {
       "name": "modelFieldsOnTemplates",
@@ -826,7 +1228,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, modelName",
+      "parameters": [
+        "modelName"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldsontemplates"
     },
     {
       "name": "createModel",
@@ -842,7 +1250,17 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, modelName, inOrderFields, cardTemplates, css = None, isCloze = False",
+      "parameters": [
+        "modelName",
+        "inOrderFields",
+        "cardTemplates",
+        "css",
+        "isCloze"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#createmodel"
     },
     {
       "name": "modelTemplates",
@@ -854,7 +1272,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, modelName",
+      "parameters": [
+        "modelName"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modeltemplates"
     },
     {
       "name": "modelStyling",
@@ -866,7 +1290,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, modelName",
+      "parameters": [
+        "modelName"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelstyling"
     },
     {
       "name": "updateModelTemplates",
@@ -878,7 +1308,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, model",
+      "parameters": [
+        "model"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#updatemodeltemplates"
     },
     {
       "name": "updateModelStyling",
@@ -890,7 +1326,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, model",
+      "parameters": [
+        "model"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#updatemodelstyling"
     },
     {
       "name": "findAndReplaceInModels",
@@ -902,7 +1344,18 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, modelName, findText, replaceText, front=True, back=True, css=True",
+      "parameters": [
+        "modelName",
+        "findText",
+        "replaceText",
+        "front",
+        "back",
+        "css"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#findandreplaceinmodels"
     },
     {
       "name": "modelTemplateRename",
@@ -916,7 +1369,15 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, modelName, oldTemplateName, newTemplateName",
+      "parameters": [
+        "modelName",
+        "oldTemplateName",
+        "newTemplateName"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modeltemplaterename"
     },
     {
       "name": "modelTemplateReposition",
@@ -930,7 +1391,15 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, modelName, templateName, index",
+      "parameters": [
+        "modelName",
+        "templateName",
+        "index"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modeltemplatereposition"
     },
     {
       "name": "modelTemplateAdd",
@@ -943,7 +1412,14 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, modelName, template",
+      "parameters": [
+        "modelName",
+        "template"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modeltemplateadd"
     },
     {
       "name": "modelTemplateRemove",
@@ -956,7 +1432,14 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, modelName, templateName",
+      "parameters": [
+        "modelName",
+        "templateName"
+      ],
+      "risk": "destructive",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modeltemplateremove"
     },
     {
       "name": "modelFieldRename",
@@ -970,7 +1453,15 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, modelName, oldFieldName, newFieldName",
+      "parameters": [
+        "modelName",
+        "oldFieldName",
+        "newFieldName"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldrename"
     },
     {
       "name": "modelFieldReposition",
@@ -984,7 +1475,15 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, modelName, fieldName, index",
+      "parameters": [
+        "modelName",
+        "fieldName",
+        "index"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldreposition"
     },
     {
       "name": "modelFieldAdd",
@@ -998,7 +1497,15 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, modelName, fieldName, index=None",
+      "parameters": [
+        "modelName",
+        "fieldName",
+        "index"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldadd"
     },
     {
       "name": "modelFieldRemove",
@@ -1011,7 +1518,14 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, modelName, fieldName",
+      "parameters": [
+        "modelName",
+        "fieldName"
+      ],
+      "risk": "destructive",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldremove"
     },
     {
       "name": "modelFieldSetFont",
@@ -1025,7 +1539,15 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, modelName, fieldName, font",
+      "parameters": [
+        "modelName",
+        "fieldName",
+        "font"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldsetfont"
     },
     {
       "name": "modelFieldSetFontSize",
@@ -1039,7 +1561,15 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, modelName, fieldName, fontSize",
+      "parameters": [
+        "modelName",
+        "fieldName",
+        "fontSize"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldsetfontsize"
     },
     {
       "name": "modelFieldSetDescription",
@@ -1053,7 +1583,15 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, modelName, fieldName, description",
+      "parameters": [
+        "modelName",
+        "fieldName",
+        "description"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#modelfieldsetdescription"
     },
     {
       "name": "addNote",
@@ -1065,7 +1603,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, note",
+      "parameters": [
+        "note"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#addnote"
     },
     {
       "name": "addNotes",
@@ -1077,7 +1621,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, notes",
+      "parameters": [
+        "notes"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#addnotes"
     },
     {
       "name": "canAddNotes",
@@ -1089,7 +1639,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, notes",
+      "parameters": [
+        "notes"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#canaddnotes"
     },
     {
       "name": "canAddNotesWithErrorDetail",
@@ -1101,7 +1657,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, notes",
+      "parameters": [
+        "notes"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#canaddnoteswitherrordetail"
     },
     {
       "name": "updateNoteFields",
@@ -1113,7 +1675,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, note",
+      "parameters": [
+        "note"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#updatenotefields"
     },
     {
       "name": "updateNote",
@@ -1125,7 +1693,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, note",
+      "parameters": [
+        "note"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#updatenote"
     },
     {
       "name": "updateNoteModel",
@@ -1137,7 +1711,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, note",
+      "parameters": [
+        "note"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#updatenotemodel"
     },
     {
       "name": "updateNoteTags",
@@ -1150,7 +1730,14 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, note, tags",
+      "parameters": [
+        "note",
+        "tags"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#updatenotetags"
     },
     {
       "name": "getNoteTags",
@@ -1162,7 +1749,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, note",
+      "parameters": [
+        "note"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getnotetags"
     },
     {
       "name": "addTags",
@@ -1175,7 +1768,15 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, notes, tags, add=True",
+      "parameters": [
+        "notes",
+        "tags",
+        "add"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#addtags"
     },
     {
       "name": "removeTags",
@@ -1188,7 +1789,14 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, notes, tags",
+      "parameters": [
+        "notes",
+        "tags"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#removetags"
     },
     {
       "name": "getTags",
@@ -1198,7 +1806,11 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self",
+      "parameters": [],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#gettags"
     },
     {
       "name": "clearUnusedTags",
@@ -1208,7 +1820,11 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self",
+      "parameters": [],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#clearunusedtags"
     },
     {
       "name": "replaceTags",
@@ -1222,7 +1838,15 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, notes, tag_to_replace, replace_with_tag",
+      "parameters": [
+        "notes",
+        "tag_to_replace",
+        "replace_with_tag"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#replacetags"
     },
     {
       "name": "replaceTagsInAllNotes",
@@ -1235,7 +1859,14 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, tag_to_replace, replace_with_tag",
+      "parameters": [
+        "tag_to_replace",
+        "replace_with_tag"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#replacetagsinallnotes"
     },
     {
       "name": "findNotes",
@@ -1247,7 +1878,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, query=None",
+      "parameters": [
+        "query"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#findnotes"
     },
     {
       "name": "notesInfo",
@@ -1259,7 +1896,14 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, notes=None, query=None",
+      "parameters": [
+        "notes",
+        "query"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#notesinfo"
     },
     {
       "name": "notesModTime",
@@ -1271,7 +1915,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, notes",
+      "parameters": [
+        "notes"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#notesmodtime"
     },
     {
       "name": "deleteNotes",
@@ -1283,7 +1933,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, notes",
+      "parameters": [
+        "notes"
+      ],
+      "risk": "destructive",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#deletenotes"
     },
     {
       "name": "removeEmptyNotes",
@@ -1293,7 +1949,11 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self",
+      "parameters": [],
+      "risk": "destructive",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#removeemptynotes"
     },
     {
       "name": "getNumCardsReviewedToday",
@@ -1303,7 +1963,11 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self",
+      "parameters": [],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getnumcardsreviewedtoday"
     },
     {
       "name": "getNumCardsReviewedByDay",
@@ -1313,7 +1977,11 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self",
+      "parameters": [],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getnumcardsreviewedbyday"
     },
     {
       "name": "getCollectionStatsHTML",
@@ -1325,7 +1993,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, wholeCollection=True",
+      "parameters": [
+        "wholeCollection"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getcollectionstatshtml"
     },
     {
       "name": "cardReviews",
@@ -1338,7 +2012,14 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, deck, startID",
+      "parameters": [
+        "deck",
+        "startID"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#cardreviews"
     },
     {
       "name": "getReviewsOfCards",
@@ -1350,7 +2031,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, cards",
+      "parameters": [
+        "cards"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getreviewsofcards"
     },
     {
       "name": "getLatestReviewID",
@@ -1362,7 +2049,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, deck",
+      "parameters": [
+        "deck"
+      ],
+      "risk": "read",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#getlatestreviewid"
     },
     {
       "name": "insertReviews",
@@ -1374,7 +2067,13 @@
       "documented_version": 6,
       "status": "baseline",
       "source_repo": "ankiultimate/anki-connect",
-      "version_sensitive": false
+      "version_sensitive": false,
+      "source_signature": "self, reviews",
+      "parameters": [
+        "reviews"
+      ],
+      "risk": "destructive",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#insertreviews"
     },
     {
       "name": "gradeNow",
@@ -1387,7 +2086,14 @@
       "documented_version": 6,
       "status": "extended",
       "source_repo": "JSchoreels/anki-connect",
-      "version_sensitive": true
+      "version_sensitive": true,
+      "source_signature": "self, cards, ease",
+      "parameters": [
+        "cards",
+        "ease"
+      ],
+      "risk": "write",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#gradenow"
     },
     {
       "name": "repositionNewCards",
@@ -1402,7 +2108,16 @@
       "documented_version": 6,
       "status": "extended",
       "source_repo": "JSchoreels/anki-connect",
-      "version_sensitive": true
+      "version_sensitive": true,
+      "source_signature": "self, orderedCardIds, startPosition, step, shift",
+      "parameters": [
+        "orderedCardIds",
+        "startPosition",
+        "step",
+        "shift"
+      ],
+      "risk": "destructive",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#repositionnewcards"
     },
     {
       "name": "guiAddNoteSetData",
@@ -1414,7 +2129,14 @@
       "documented_version": 6,
       "status": "extended",
       "source_repo": "JSchoreels/anki-connect",
-      "version_sensitive": true
+      "version_sensitive": true,
+      "source_signature": "self, note, append=False",
+      "parameters": [
+        "note",
+        "append"
+      ],
+      "risk": "gui-state",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guiaddnotesetdata"
     },
     {
       "name": "guiPlayAudio",
@@ -1424,7 +2146,13 @@
       "documented_version": 6,
       "status": "extended",
       "source_repo": "JSchoreels/anki-connect",
-      "version_sensitive": true
+      "version_sensitive": true,
+      "source_signature": "self",
+      "parameters": [],
+      "risk": "gui-state",
+      "source_anchor": "https://github.com/JSchoreels/anki-connect/blob/9c88a41c0e919fe02153dda0f0afa9a0f9cb232a/README.md#guiplayaudio"
     }
-  ]
+  ],
+  "reference_mirror_commit": "9c88a41c0e919fe02153dda0f0afa9a0f9cb232a",
+  "snapshot_date": "2026-10-06"
 }
