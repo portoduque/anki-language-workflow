@@ -51,6 +51,7 @@ For an exact action name, the router checks `ACTION_CATALOG.json`.
 | Stats/review-history actions | [10-statistic-actions.md](10-statistic-actions.md) |
 | Language-workflow integration recipes | [11-language-workflow-recipes.md](11-language-workflow-recipes.md) |
 | Troubleshooting/security/destructive operations | [12-troubleshooting-safety.md](12-troubleshooting-safety.md) |
+| Concrete JSON payload examples | [13-request-examples.md](13-request-examples.md) |
 | All 114 documented actions machine-readable | [ACTION_CATALOG.json](ACTION_CATALOG.json) |
 | Source authority/currentness | [SOURCES.md](SOURCES.md) |
 
