@@ -230,3 +230,36 @@ def test_readme_documents_meredith_settings_corrections() -> None:
     assert "Ascending retrievability" in readme
     assert "same note" in readme
     assert "Beginner bootstrap is allowed, not blind import" in readme
+
+
+def test_evildea_tutorial_refinements_are_explicit_and_selective() -> None:
+    rules = (SKILL / "references" / "card-selection.md").read_text(encoding="utf-8").lower()
+    pedagogy = (SKILL / "references" / "pedagogy.md").read_text(encoding="utf-8").lower()
+    skill = (SKILL / "SKILL.md").read_text(encoding="utf-8").lower()
+
+    assert "prefer near-i+1 sentence mining" in rules
+    assert "inspect polysemy before deciding the card" in rules
+    assert "production targets need a higher naturalness bar" in rules
+    assert "one primary unknown/focus item" in skill
+    assert "polysemous words/expressions" in skill
+    assert "unverified ai-generated sentence" in skill
+    assert "near-i+1 mined sentences" in pedagogy
+
+
+def test_evildea_research_note_records_adopted_and_rejected_ideas() -> None:
+    note = (SKILL / "references" / "research" / "evildea-anki-language-tutorial.md").read_text(encoding="utf-8").lower()
+    assert "complete spoken transcript was reviewed" in note
+    assert "strong near-i+1 sentence-mining default" in note
+    assert "production sentences need stronger authenticity" in note
+    assert "six sentences on one reading front" in note
+    assert "post-answer shadowing / chorusing" in note
+    assert "fixed new-card range" in note
+    assert "no schema, deck architecture, builder, media provider, or ankiconnect change" in note
+
+
+def test_readme_documents_evildea_refinements() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "evildea-anki-language-tutorial.md" in readme
+    assert "Near-i+1 mining is the default" in readme
+    assert "Explore polysemy before encoding it" in readme
+    assert "Production authenticity is stricter" in readme
