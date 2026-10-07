@@ -240,6 +240,18 @@
                 }
               }
             }
+          },
+          "reading": {
+            "type": "string",
+            "description": "Optional target-language reading/romanization/script-reading aid."
+          },
+          "variant": {
+            "type": "string",
+            "description": "Optional alternate written/script/orthographic form."
+          },
+          "grammar": {
+            "type": "string",
+            "description": "Optional concise grammatical attribute such as gender, noun class, part of speech, or form."
           }
         }
       }

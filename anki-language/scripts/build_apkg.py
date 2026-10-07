@@ -33,6 +33,9 @@ FIELDS = [
     {"name": "Hint"},
     {"name": "Notes"},
     {"name": "IPA"},
+    {"name": "Reading"},
+    {"name": "Variant"},
+    {"name": "Grammar"},
     {"name": "FrontAudio"},
     {"name": "BackAudio"},
     {"name": "Image"},
@@ -53,7 +56,7 @@ CSS = """
 .context { font-size: 13px; opacity: .65; margin-bottom: 14px; text-transform: uppercase; letter-spacing: .08em; }
 .prompt { margin: 10px 0 18px; }
 .target { font-size: 27px; font-weight: 600; margin: 12px 0; }
-.support, .focus, .hint, .notes, .ipa, .source { margin-top: 10px; }
+.support, .focus, .hint, .notes, .ipa, .reading, .variant, .grammar, .source { margin-top: 10px; }
 .label { font-size: 12px; opacity: .55; text-transform: uppercase; letter-spacing: .06em; }
 img { max-width: 100%; max-height: 360px; object-fit: contain; }
 hr { margin: 20px 0; }
@@ -89,7 +92,7 @@ def image_ref(path: Path | None) -> str:
 
 
 def make_model(skill: str) -> genanki.Model:
-    model_id = stable_id(f"anki-language:model:v2:{skill}")
+    model_id = stable_id(f"anki-language:model:v3:{skill}")
     common_back = """
 {{FrontSide}}
 <hr>
@@ -97,6 +100,9 @@ def make_model(skill: str) -> genanki.Model:
 {{#Base}}<div class="label">{{BaseLanguage}}</div><div class="support">{{Base}}</div>{{/Base}}
 {{#Focus}}<div class="label">Focus</div><div class="focus">{{Focus}}</div>{{/Focus}}
 {{#IPA}}<div class="label">IPA</div><div class="ipa">{{IPA}}</div>{{/IPA}}
+{{#Reading}}<div class="label">Reading</div><div class="reading">{{Reading}}</div>{{/Reading}}
+{{#Variant}}<div class="label">Variant</div><div class="variant">{{Variant}}</div>{{/Variant}}
+{{#Grammar}}<div class="label">Grammar</div><div class="grammar">{{Grammar}}</div>{{/Grammar}}
 {{#BackAudio}}<div class="back-audio">{{BackAudio}}</div>{{/BackAudio}}
 {{#Image}}<div class="image">{{Image}}</div>{{/Image}}
 {{#Notes}}<div class="label">Notes</div><div class="notes">{{Notes}}</div>{{/Notes}}
@@ -137,7 +143,7 @@ def make_model(skill: str) -> genanki.Model:
 
     return genanki.Model(
         model_id,
-        f"Anki Language — {SKILL_META[skill][1]}",
+        f"Anki Language v3 — {SKILL_META[skill][1]}",
         fields=FIELDS,
         templates=[{"name": "Card 1", "qfmt": front, "afmt": common_back}],
         css=CSS,
@@ -212,6 +218,9 @@ def build(plan_path: Path, output_path: Path) -> dict[str, Any]:
             clean(card.get("hint", "")),
             clean(card.get("notes", "")),
             clean(card.get("ipa", "")),
+            clean(card.get("reading", "")),
+            clean(card.get("variant", "")),
+            clean(card.get("grammar", "")),
             sound_ref(audio) if audio_on_front else "",
             sound_ref(audio) if audio and not audio_on_front else "",
             image_ref(image),

@@ -13,6 +13,9 @@ Examples for a language-learning note:
 - hint;
 - notes;
 - IPA;
+- reading/romanization when useful;
+- alternate written/script form when useful;
+- concise grammatical attribute when useful;
 - audio;
 - image;
 - source/provenance.
@@ -49,13 +52,26 @@ Special fields are available in templates and should not be repurposed as normal
 
 A note type may contain one or more card types. Each card has independent review history.
 
+Anki can use conditional replacement to generate a card only when required fields are populated, and each card template can use Deck Override to route generated cards into different decks. That makes a rich-note → selective-card architecture technically possible.
+
+### Current workflow trade-off
+
+The current deterministic builder still creates **one Anki note per selected planned card**. This keeps APKG and AnkiConnect/live delivery simple, preserves per-card prompts/media, and matches the card-first plan contract.
+
+Therefore:
+- do not claim that cross-skill cards from the same source are native Anki siblings;
+- do not create extra cards merely because another card template could exist;
+- use semantic fields (`Target`, `Base`, `Reading`, `Variant`, `Grammar`, media, source, etc.) so useful linguistic data is not collapsed into a generic Front/Back blob;
+- revisit grouped multi-card notes only if the learning/maintenance benefit clearly outweighs the added live-delivery/model complexity.
+
 For this workflow:
 - do not equate “possible card type” with “card that should exist”;
 - do not build automatic reverse templates unless the card-selection rules require them;
-- keep note fields rich enough that a single source unit can selectively generate different skill cards.
+- use optional structured fields without treating them as reasons to create sibling cards.
 
 ## Source
 
 - https://docs.ankiweb.net/manual/getting-started
 - https://docs.ankiweb.net/manual/editing
 - https://docs.ankiweb.net/manual/templates/intro
+- https://docs.ankiweb.net/manual/templates/generation

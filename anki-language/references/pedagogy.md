@@ -8,6 +8,8 @@ Optimize long-term retrieval and usable language ability while keeping reviews f
 
 - Retrieval must be clear: the learner should know what is being tested.
 - Prefer one primary retrieval target per card.
+- Information that is not being tested may be revealed when it cleanly isolates the intended skill; the actual retrieval target must remain hidden.
+- Keep useful reading/romanization, orthographic variants, and grammatical attributes structured when they serve different functions instead of burying all metadata in one notes blob.
 - Context should disambiguate, not give away the answer.
 - Recognition and production are different skills; create both only when both matter.
 - Listening is not the same as reading. Use audio-first cards when listening is the actual target.

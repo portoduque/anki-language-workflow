@@ -10,7 +10,7 @@ SKILL = ROOT / "anki-language"
 EXAMPLE = SKILL / "examples" / "card-plan.example.json"
 
 sys.path.insert(0, str(SKILL / "scripts"))
-from build_apkg import card_context, make_model  # noqa: E402
+from build_apkg import FIELDS, card_context, make_model  # noqa: E402
 
 
 def run(*args: str) -> subprocess.CompletedProcess[str]:
@@ -54,6 +54,9 @@ def test_non_english_base_language_builds(tmp_path: Path) -> None:
                 "skill": "reading",
                 "target_text": "猫",
                 "base_text": "gato",
+                "reading": "ねこ",
+                "variant": "ネコ",
+                "grammar": "noun",
                 "tags": ["vocabulary"],
             }
         ],
@@ -150,3 +153,17 @@ def test_workspace_config_rejects_mismatched_plan_languages(tmp_path: Path) -> N
 def test_front_context_identifies_target_language_and_skill() -> None:
     assert card_context("French", "listening") == "French — Listening"
     assert card_context("Japanese", "production") == "Japanese — Production"
+
+
+def test_structured_language_fields_are_in_v3_models() -> None:
+    field_names = [field["name"] for field in FIELDS]
+    assert "Reading" in field_names
+    assert "Variant" in field_names
+    assert "Grammar" in field_names
+
+    model = make_model("reading")
+    assert model.name == "Anki Language v3 — Reading"
+    back = model.templates[0]["afmt"]
+    assert "{{#Reading}}" in back and "{{Reading}}" in back
+    assert "{{#Variant}}" in back and "{{Variant}}" in back
+    assert "{{#Grammar}}" in back and "{{Grammar}}" in back

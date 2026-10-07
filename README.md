@@ -88,6 +88,8 @@ These are product rules, not suggestions. The complete normative specification l
 38. **Graduate redundant scaffolds carefully:** when maintaining an existing collection and reliable mastery evidence exists, retire/suspend an easier card only if a richer contextual card fully covers the same target and no skill gap is lost; never infer mastery from age alone or delete user cards without permission.
 39. **Preserve comprehension flow:** with continuous natural input, prefer a meaning-first pass before intensive lookup/card extraction when comprehension remains possible; do not stop for every unfamiliar word by default.
 40. **Grammar-attribute mnemonics are secondary:** for difficult arbitrary features such as noun gender/class, a stable concrete code may help, but the real determiner+noun/form remains the retrieval target and no universal color/action mapping is hard-coded.
+41. **Reveal only non-target support:** information that is not being tested may be shown when it isolates the intended retrieval skill, but the actual target must remain hidden.
+42. **Keep distinct linguistic data structured:** use optional `reading`, `variant`, and `grammar` fields when useful instead of stuffing everything into `Notes`; populating a field never creates an extra card by itself.
 
 A source reused across multiple decks is valid only when each card covers a real additional skill gap. If the extra card mostly repeats the same retrieval, discard it.
 
@@ -106,6 +108,7 @@ Current curated notes include:
 - `anki-language/references/research/hodos-37000-anki-tips.md` — analyzes Hodos' complete 37,000-card tips video, adopts one-sense-per-card and verified mnemonic scaffolding, and audits its grading/timer/deck-retirement advice against current Anki semantics.
 - `anki-language/references/research/justin-sung-anki-pro.md` — analyzes Justin Sung's complete 20-minute Anki strategy video and selectively adapts relational retrieval, cue-overfitting prevention, contextual transfer, and evidence-based scaffold graduation without importing multi-answer mega cards.
 - `anki-language/references/research/corinna-anki-wrong-vocabulary.md` — analyzes Corinna Languages' complete vocabulary-focused Anki video and selectively adopts meaning-first source mining plus optional stable mnemonic coding for difficult grammatical gender/noun-class attributes.
+- `anki-language/references/research/redchamber-optimize-anki-language.md` — analyzes Dream of the Red Chamber's complete note/card architecture tutorial and selectively adopts structured reading/variant/grammar fields plus target-isolation guidance, while deliberately keeping the current one-note-per-planned-card pipeline.
 
 Across these research sources, recommendations are not promoted automatically. Examples deliberately **not** adopted include:
 
@@ -473,6 +476,31 @@ After the user answers the two language questions, the agent persists them with 
 The exact values are examples only; no language is preferred by the project.
 
 To switch languages later, ask the AI to change the target/base configuration or run the helper again with new values.
+
+## Structured language fields
+
+The card plan supports three optional semantic fields for data that should not be collapsed into a generic notes blob:
+
+```json
+{
+  "target_text": "學習",
+  "reading": "xuéxí",
+  "variant": "学习",
+  "grammar": "verb"
+}
+```
+
+- `reading` — pinyin, kana, romanization, or another reading aid;
+- `variant` — alternate script/spelling/orthographic form;
+- `grammar` — concise grammatical information such as gender, noun class, part of speech, or form.
+
+They are rendered conditionally on the back and are delivered as separate Anki note fields through AnkiConnect. They are optional support metadata: **adding one does not generate another card**.
+
+Because the note-field contract changed, newly created notes use the **Anki Language v3** note types. Existing live cards remain untouched; stable workflow tags still prevent already-delivered cards from being inserted again.
+
+Anki itself supports one rich note generating multiple conditional card types, and Card Template Deck Override can route those generated cards into separate decks. This repository deliberately keeps the current **one note per selected planned card** architecture for now because it keeps per-card prompts/media and APKG/live delivery simpler while preserving selective card generation. See:
+- https://docs.ankiweb.net/manual/templates/generation
+- https://docs.ankiweb.net/manual/templates/intro
 
 ## End-to-end workflow
 

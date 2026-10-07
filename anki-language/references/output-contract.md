@@ -42,6 +42,9 @@ Optional fields:
 - `hint`;
 - `notes`;
 - `ipa`;
+- `reading`: optional target-script reading/romanization aid such as pinyin, kana, or another reading representation;
+- `variant`: optional alternate written/script/orthographic form such as simplified/traditional or another spelling variant;
+- `grammar`: optional concise grammatical attribute such as gender, noun class, part of speech, or form;
 - `audio`: resolved media path;
 - `image`: resolved media path;
 - `audio_request`: request for automatic Piper TTS;
@@ -51,6 +54,8 @@ Optional fields:
 - `media_issues`: non-fatal failures for optional media that was skipped;
 - `source`;
 - `tags`.
+
+These structured fields are **metadata/support**, not card-generation quotas. Populate them only when they help the selected retrieval target. An empty field creates no extra card by itself in this workflow.
 
 ## Automatic audio request
 
