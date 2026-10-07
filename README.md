@@ -536,7 +536,7 @@ The card plan supports three optional semantic fields for data that should not b
 
 They are rendered conditionally on the back and are delivered as separate Anki note fields through AnkiConnect. They are optional support metadata: **adding one does not generate another card**.
 
-The structured-field migration originally introduced **Anki Language v3**, and v4 added night-mode/RTL/mobile portability. Newly generated cards now use **Anki Language v5**, which keeps those guarantees while introducing a dedicated visual system for clearer hierarchy and better review UX. Existing v3/v4 note types are not restyled in place.
+The structured-field migration originally introduced **Anki Language v3**, and v4 added night-mode/RTL/mobile portability. Reading, Listening, and Production still use **Anki Language v5** with the approved visual system. Pronunciation now uses **Anki Language v6** to add a mode-aware front cue without affecting existing v5 cards. Existing v3/v4/v5 note types are not restyled in place.
 
 Delivery identity is now shared across both output paths. New APKG and live notes receive the broad `anki-language` tag plus a deterministic scoped identity derived from **deck + target-language code + skill + stable card id**. This means cards imported from a generated APKG can participate in the same default read-only audit as live-delivered cards, while two unrelated decks can safely reuse a local card id.
 
@@ -548,9 +548,23 @@ Anki itself supports one rich note generating multiple conditional card types, a
 - https://docs.ankiweb.net/manual/templates/generation
 - https://docs.ankiweb.net/manual/templates/intro
 
+## Real-deck quality hardening
+
+An audit of a real exported French deck identified six Pronunciation cards whose fronts all said only "Say this naturally" without showing what should be spoken. The deterministic workflow now fixes this instead of relying on AI instructions alone:
+
+- **Pronunciation read-aloud (`standard`) / spelling-to-sound (`spelling-sound`)**: show a mode-appropriate written `FrontCue` on the front, with optional answer audio on the back.
+- **Audio identification (`minimal-pair`, `sound-discrimination`, `audio-to-spelling`)**: front audio remains visible while the written target remains concealed.
+- **Model-version isolation**: only Pronunciation changes to **Anki Language v6**. Reading, Listening, Production stay on v5; all four keep the same approved visual CSS. Older Pronunciation v5 cards are **not modified automatically**.
+- **Production quality**: prefer short useful chunks/constructions; request whole-utterance reproduction only when that whole utterance is the real learning target. Grade semantically valid alternatives rather than blindly enforcing a single translation.
+- **Skill selection**: do not add extra Pronunciation cards merely because another dialogue line already generated Reading, Listening or Production.
+- **Audio alignment**: if an audio file is reused across distinct target texts, each use must declare its verified `audio_transcript`. Validation checks agreement and textual inclusion; **it cannot establish acoustic truth**.
+- **Source accessibility**: keep a reopenable URL/timestamp/section/path when available; a screenshot filename alone is not a portable source link.
+
+The changes add deterministic regression tests without publishing any personal source data. Existing decks are not rewritten by this update.
+
 ## Card UI — Anki Language v5
 
-All **newly generated** cards use the workflow's own HTML/CSS visual system instead of Anki's plain default presentation.
+All **newly generated** cards use the workflow's own HTML/CSS visual system instead of Anki's plain default presentation; the same v5 design is preserved in Pronunciation v6.
 
 The UI is shared across every skill and keeps the same information architecture while giving each retrieval skill a distinct accent:
 
