@@ -55,8 +55,9 @@ def main() -> int:
         action_text = " ".join([
             name,
             action.get("category", ""),
-            action.get("description", ""),
-            " ".join(action.get("params", []) or []),
+            action.get("signature", ""),
+            " ".join(action.get("parameters", []) or []),
+            action.get("risk", ""),
         ])
         overlap = len(q_tokens & tokens(action_text))
         if overlap:
