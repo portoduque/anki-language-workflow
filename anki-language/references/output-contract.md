@@ -1,6 +1,6 @@
 # Output Contract
 
-The AI produces an intermediate `card-plan.json`; deterministic scripts turn that plan into the APKG.
+The AI produces an intermediate `card-plan.json`; deterministic scripts enrich media, validate it, and deliver the result.
 
 ## Language contract
 
@@ -21,6 +21,10 @@ These choices are stored in `anki-language.config.json` and must be copied into 
 - `deck_name`
 - `cards`
 
+Optional plan-level field:
+
+- `delivery.mode`: `apkg`, `live`, or `both`.
+
 ## Card fields
 
 Each card includes:
@@ -32,24 +36,97 @@ Each card includes:
 Optional fields:
 
 - `mode`: subtype such as `standard`, `minimal-pair`, `sound-discrimination`, `spelling-sound`, or `audio-to-spelling`;
-- `base_text`: meaning/explanation in the configured base language when useful;
-- `prompt`: precise learner-facing task written in the configured base language. Required for production and pronunciation cards;
-- `focus`: target word/chunk/structure;
-- `hint`: disambiguating cue;
-- `notes`: concise explanation, normally in the base language unless linguistic notation is more appropriate;
-- `ipa`: pronunciation;
-- `audio`: media path relative to the plan file;
-- `image`: media path relative to the plan file;
-- `audio_provenance` / `image_provenance`: structured provenance when known;
-- `source`: source-material provenance;
-- `tags`: sparse linguistic/content tags.
+- `base_text`;
+- `prompt`;
+- `focus`;
+- `hint`;
+- `notes`;
+- `ipa`;
+- `audio`: resolved media path;
+- `image`: resolved media path;
+- `audio_request`: request for automatic Piper TTS;
+- `image_request`: request for licensed image search/download;
+- `audio_provenance` / `image_provenance`;
+- `media_validation`: deterministic validation record including SHA-256;
+- `source`;
+- `tags`.
 
-## Build pipeline
+## Automatic audio request
 
-Run `python scripts/build.py card-plan.json --output <Language>.apkg`.
+Example:
 
-The pipeline validates the JSON Schema and semantic rules, checks referenced media, builds the package, opens the embedded Anki collection database, verifies note/card counts and deck names, and verifies the media manifest.
+```json
+{
+  "audio_request": {
+    "mode": "auto",
+    "text": "Bonjour",
+    "provider": "auto"
+  }
+}
+```
 
-## Report
+`provider` currently supports `auto` and `piper`. A specific `voice` is optional.
 
-The APKG builder writes a sibling `.report.json` containing target/base language, total card count, per-skill counts, media count, skipped count, and output path.
+## Automatic image request
+
+Example:
+
+```json
+{
+  "image_request": {
+    "mode": "auto",
+    "query": "red squirrel",
+    "provider": "auto",
+    "licenses": ["cc0", "pdm"]
+  }
+}
+```
+
+`provider=auto` tries Openverse then Wikimedia Commons.
+
+## Resolved-plan rule
+
+A Listening/sound-discrimination card may contain an unresolved `audio_request` during planning, but **final build/live delivery requires an actual validated `audio` file**.
+
+Automatic requests are resolved with:
+
+`python scripts/media_enrich.py card-plan.json --output card-plan.resolved.json`
+
+## End-to-end pipeline
+
+Preferred command:
+
+`python scripts/run_pipeline.py card-plan.json --delivery apkg`
+
+Live Anki:
+
+`python scripts/run_pipeline.py card-plan.json --delivery live`
+
+Both:
+
+`python scripts/run_pipeline.py card-plan.json --delivery both --output <Language>.apkg`
+
+Stages:
+
+1. resolve requested media;
+2. functionally validate every local audio/image;
+3. write resolved card plan with provenance + SHA-256;
+4. deliver as APKG and/or via AnkiConnect;
+5. APKG: validate package/database/media manifest;
+6. live: verify uploaded media bytes and note-field references.
+
+## Direct APKG build
+
+When the plan already contains resolved media:
+
+`python scripts/build.py card-plan.resolved.json --output <Language>.apkg`
+
+## Reports
+
+APKG writes `.report.json`.
+
+The end-to-end pipeline prints a JSON report containing:
+- enrichment counts;
+- resolved-plan path;
+- APKG validation when used;
+- live note IDs and post-upload media verification when used.
