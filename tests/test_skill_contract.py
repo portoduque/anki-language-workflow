@@ -509,7 +509,7 @@ def test_refold_candidate_source_progression_is_evidence_driven() -> None:
     assert "do not hard-code external roadmap phases or vocabulary-count milestones" in rules
     assert "let candidate sources evolve with learner evidence" in pedagogy
     assert "repeated real speaking/writing/domain gaps" in skill
-    assert "do not hard-code an external roadmap phase or vocabulary-count milestone" in skill
+    assert "never hard-code an external roadmap phase or vocabulary-count milestone" in skill
     assert "roadmap sidebar/submenus were also expanded" in note
     assert "fixed 5 to 10 new cards/day" in note
     assert "no schema, config, deck, note-model, media, scheduler, installer, or ankiconnect change" in note
