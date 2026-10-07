@@ -1,25 +1,40 @@
 # 07 — Media Actions
 
-Media actions write/read/list/delete files in the active profile's `collection.media` directory.
+Media actions manipulate files in the active profile's `collection.media` folder.
 
-`storeMediaFile` supports base64 and current implementations also support path/URL inputs.
+## `storeMediaFile`
 
-Capture the returned filename and use exact basenames in card fields.
+Current implementations accept:
+- base64 `data`;
+- absolute/local `path`;
+- remote `url`.
 
-## Supported actions
+The current source signature also includes optional `skipHash` and `deleteExisting`.
 
-| Action | Main documented params | Purpose |
+Priority when multiple sources are supplied is implementation-defined/documented; use one source per request for clarity.
+
+Capture the filename returned by AnkiConnect and reference that exact basename.
+
+Prefix files with underscore only for special/template/config media that should be protected from unused-media cleanup; do not do this for ordinary card audio/images.
+
+## Note-embedded media
+
+`addNote` / `addNotes` can also accept `audio`, `video`, and `picture` objects with:
+- filename;
+- one source (`data`, `path`, or `url`);
+- destination `fields`;
+- optional `skipHash`.
+
+Media rights/provenance rules from this project still apply.
+
+## Current catalog
+
+| Action | Source signature | Risk |
 | --- | --- | --- |
-| `storeMediaFile` | — | See upstream documentation. |
-| `retrieveMediaFile` | — | See upstream documentation. |
-| `getMediaFilesNames` | — | See upstream documentation. |
-| `getMediaDirPath` | — | See upstream documentation. |
-| `deleteMediaFile` | — | See upstream documentation. |
+| `storeMediaFile` | `self, filename, data=None, path=None, url=None, skipHash=None, deleteExisting=True` | `write` |
+| `retrieveMediaFile` | `self, filename` | `read` |
+| `getMediaFilesNames` | `self, pattern='*'` | `read` |
+| `getMediaDirPath` | `self` | `read` |
+| `deleteMediaFile` | `self, filename` | `destructive` |
 
-## Runtime verification
-
-Before using a version-sensitive or uncertain action, call `apiReflect` against the user's installed AnkiConnect. The local catalog is a curated snapshot, not a substitute for runtime capability discovery.
-
-## Source
-
-- https://github.com/ankiultimate/anki-connect/blob/master/README.md
+`deleteMediaFile` is destructive; confirm references before deleting.
