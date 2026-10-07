@@ -4,71 +4,99 @@ Last curated: 2026-10-06.
 
 ## Authority chain
 
-### 1. AnkiWeb add-on listing
+### 1. Running AnkiConnect instance
 
-https://ankiweb.net/shared/info/2055492159
-
-Use for:
-- installation code;
-- current listing/update status;
-- supported Anki version metadata;
-- user-facing release information.
-
-### 2. Original project lineage
-
-Historical GitHub:
-https://github.com/FooSoft/anki-connect
-
-The owner archived this repository on GitHub and states that the project moved to SourceHut.
-
-Current upstream location advertised by the archived repository:
-https://git.sr.ht/~foosoft/anki-connect
-
-If SourceHut is unavailable to the agent, do not silently replace authority with a random fork.
-
-### 3. Public readable mirror used for API extraction
-
-https://github.com/ankiultimate/anki-connect
-
-This repository exposes the current-style README/API documentation and implementation files used to build the local action catalog.
-
-Important files:
-- README.md — API documentation/examples;
-- plugin/config.json — normal exposed config defaults;
-- plugin/util.py — runtime defaults;
-- plugin/web.py — HTTP/CORS server behavior;
-- plugin/__init__.py — action implementation and minimum-version checks.
-
-### 4. Official Anki search syntax
-
-https://docs.ankiweb.net/searching.html
-
-AnkiConnect passes search queries into Anki. Use official Anki search documentation for query syntax.
-
-## Runtime truth
-
-For an installed AnkiConnect instance, runtime introspection outranks a stale local action list:
+For what the user's installed add-on actually supports, runtime discovery wins:
 
 - `version`
 - `apiReflect`
 
-Use `apiReflect` to confirm actions before invoking uncertain/version-sensitive APIs.
+Use these before relying on a version-sensitive action.
+
+### 2. Authoritative upstream lineage
+
+Historical GitHub:
+
+https://github.com/FooSoft/anki-connect
+
+That repository was archived on 2025-11-04 and states that the project permanently moved to:
+
+https://git.sr.ht/~foosoft/anki-connect
+
+SourceHut is the authoritative upstream.
+
+### 3. AnkiWeb add-on listing
+
+Add-on code:
+
+`2055492159`
+
+https://ankiweb.net/shared/info/2055492159
+
+Use it for installation/listing/support metadata.
+
+### 4. Recent machine-readable mirror used for the 2026 catalog
+
+https://github.com/JSchoreels/anki-connect
+
+Inspected head:
+
+`9c88a41c0e919fe02153dda0f0afa9a0f9cb232a`
+
+This mirror has 2026 commits and exposes 118 documented actions, including actions not present in older 2025 mirrors:
+
+- `gradeNow`
+- `repositionNewCards`
+- `guiAddNoteSetData`
+- `guiPlayAudio`
+
+Because it is a mirror/fork, do not treat it as more authoritative than the SourceHut upstream or the user's live runtime.
+
+### 5. Older readable mirror useful for core behavior/config source
+
+https://github.com/ankiultimate/anki-connect
+
+Inspected historical/current-readable head:
+
+`47da1c5039f42ad004acc57f528d6f873caffdc9`
+
+It documents the core 114-action surface and confirms the standard config/protocol implementation.
+
+## Official Anki dependencies
+
+Anki search syntax used by `findCards` / `findNotes`:
+
+https://docs.ankiweb.net/searching.html
+
+General Anki docs index:
+
+https://docs.ankiweb.net/llms.txt
+
+## Runtime truth and version drift
+
+The local `ACTION_CATALOG.json` is a dated searchable snapshot, not a claim that every installed AnkiConnect exposes all 118 actions.
+
+For a live integration:
+
+1. call `version`;
+2. call `apiReflect` for the needed actions;
+3. use the local reference to understand signatures/risk;
+4. consult current upstream/mirror source for version-sensitive semantics.
 
 ## Source priority
 
 When sources disagree:
 
-1. runtime behavior of user's installed AnkiConnect (`version`, `apiReflect`);
-2. current upstream/original project docs;
-3. AnkiWeb add-on listing;
-4. current public mirror of upstream docs/code;
-5. this local summarized reference;
-6. forks/community posts.
+1. live user's AnkiConnect capability/behavior;
+2. SourceHut upstream;
+3. AnkiWeb listing for installation/support metadata;
+4. recent synchronized mirror;
+5. older readable mirrors;
+6. this local summary;
+7. unrelated forks/community posts.
 
-Community forks such as AnkiConnect Plus/Extended/Fixed may expose actions not present in standard AnkiConnect. Never assume fork-specific actions exist in the standard add-on.
+Fork-specific actions must never be assumed to exist in standard AnkiConnect.
 
-## Web research notes
+## Licensing/copying policy
 
-The original GitHub repo was archived in 2025 and links to SourceHut. Current AnkiWeb directory data in 2026 still lists AnkiConnect add-on code 2055492159.
-
-For exact current compatibility after future Anki releases, verify again rather than relying on this date-stamped summary.
+The local library stores summaries and factual API metadata. It does not vendor the upstream README wholesale. Follow source links for full upstream examples/implementation.
