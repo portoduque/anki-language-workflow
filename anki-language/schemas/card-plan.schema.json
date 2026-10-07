@@ -7,13 +7,13 @@
   "required": [
     "version",
     "target_language",
-    "support_language",
+    "base_language",
     "deck_name",
     "cards"
   ],
   "properties": {
     "version": {
-      "const": "1.0"
+      "const": "2.0"
     },
     "target_language": {
       "type": "object",
@@ -33,7 +33,7 @@
         }
       }
     },
-    "support_language": {
+    "base_language": {
       "type": "object",
       "additionalProperties": false,
       "required": [
@@ -50,10 +50,6 @@
           "minLength": 2
         }
       }
-    },
-    "support_language_override": {
-      "type": "boolean",
-      "default": false
     },
     "deck_name": {
       "type": "string",
@@ -84,13 +80,14 @@
           },
           "mode": {
             "type": "string",
+            "minLength": 1,
             "default": "standard"
           },
           "target_text": {
             "type": "string",
             "minLength": 1
           },
-          "support_text": {
+          "base_text": {
             "type": "string"
           },
           "prompt": {

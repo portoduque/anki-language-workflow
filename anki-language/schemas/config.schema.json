@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/portoduque/anki-language-workflow/anki-language/schemas/config.schema.json",
+  "title": "Anki Language Workspace Configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "target_language",
+    "base_language"
+  ],
+  "properties": {
+    "version": {
+      "const": "1.0"
+    },
+    "target_language": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "code"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "code": {
+          "type": "string",
+          "minLength": 2
+        }
+      }
+    },
+    "base_language": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "code"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "code": {
+          "type": "string",
+          "minLength": 2
+        }
+      }
+    }
+  }
+}

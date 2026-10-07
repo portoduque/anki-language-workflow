@@ -25,8 +25,10 @@ AUDIO_FRONT_MODES = {"minimal-pair", "sound-discrimination", "audio-to-spelling"
 FIELDS = [
     {"name": "Context"},
     {"name": "Prompt"},
+    {"name": "TargetLanguage"},
     {"name": "Target"},
-    {"name": "Support"},
+    {"name": "BaseLanguage"},
+    {"name": "Base"},
     {"name": "Focus"},
     {"name": "Hint"},
     {"name": "Notes"},
@@ -87,12 +89,12 @@ def image_ref(path: Path | None) -> str:
 
 
 def make_model(skill: str) -> genanki.Model:
-    model_id = stable_id(f"anki-language:model:{skill}")
+    model_id = stable_id(f"anki-language:model:v2:{skill}")
     common_back = """
 {{FrontSide}}
 <hr>
-{{#Target}}<div class="label">Target</div><div class="target">{{Target}}</div>{{/Target}}
-{{#Support}}<div class="label">English</div><div class="support">{{Support}}</div>{{/Support}}
+{{#Target}}<div class="label">{{TargetLanguage}}</div><div class="target">{{Target}}</div>{{/Target}}
+{{#Base}}<div class="label">{{BaseLanguage}}</div><div class="support">{{Base}}</div>{{/Base}}
 {{#Focus}}<div class="label">Focus</div><div class="focus">{{Focus}}</div>{{/Focus}}
 {{#IPA}}<div class="label">IPA</div><div class="ipa">{{IPA}}</div>{{/IPA}}
 {{#BackAudio}}<div class="back-audio">{{BackAudio}}</div>{{/BackAudio}}
@@ -193,19 +195,14 @@ def build(plan_path: Path, output_path: Path) -> dict[str, Any]:
         )
 
         prompt = str(card.get("prompt", "")).strip()
-        if skill == "listening" and not prompt:
-            prompt = "What did you hear and understand?"
-        if skill == "pronunciation" and not prompt:
-            if audio_on_front:
-                prompt = "Which sound or word did you hear?"
-            else:
-                prompt = f"Pronounce this aloud: {card['target_text']}"
 
         fields = [
             clean(context),
             clean(prompt),
+            clean(plan["target_language"]["name"]),
             clean(card.get("target_text", "")),
-            clean(card.get("support_text", "")),
+            clean(plan["base_language"]["name"]),
+            clean(card.get("base_text", "")),
             clean(card.get("focus", "")),
             clean(card.get("hint", "")),
             clean(card.get("notes", "")),
@@ -239,7 +236,7 @@ def build(plan_path: Path, output_path: Path) -> dict[str, Any]:
     report = {
         "version": plan.get("version"),
         "target_language": plan.get("target_language"),
-        "support_language": plan.get("support_language"),
+        "base_language": plan.get("base_language"),
         "deck_name": deck_name,
         "cards_total": len(cards),
         "cards_by_skill": dict(sorted(counts.items())),

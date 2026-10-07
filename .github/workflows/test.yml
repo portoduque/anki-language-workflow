@@ -6,6 +6,25 @@ on:
   pull_request:
 
 jobs:
+  readme-contract:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Require README update with project changes
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          changed="$(git diff --name-only "$BASE_SHA" "$HEAD_SHA")"
+          echo "$changed"
+          if echo "$changed" | grep -qv '^README.md$' && ! echo "$changed" | grep -qx 'README.md'; then
+            echo 'ERROR: Repository changes must include an updated README.md.'
+            exit 1
+          fi
+
   smoke:
     strategy:
       matrix:

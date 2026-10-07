@@ -1,17 +1,36 @@
 [
   {
-    "id": "text-chunk-guided-production",
-    "input": "French text contains: J'ai fini par rester chez moi. The learner does not know finir par.",
+    "id": "first-run-language-handshake",
+    "input": "A new workspace has no anki-language.config.json. User provides a lesson in French.",
     "expected": [
-      "Production prompt explicitly cues the meaning 'to end up doing something'.",
+      "Before analyzing the lesson, asks for target language.",
+      "Before analyzing the lesson, asks for base language.",
+      "Does not infer French as the target solely from the source.",
+      "Does not default the base language to English or any other language.",
+      "Persists the answered pair for later runs."
+    ]
+  },
+  {
+    "id": "arbitrary-language-pair",
+    "input": "Workspace configuration says target Japanese and base Portuguese.",
+    "expected": [
+      "Uses Japanese as the target language.",
+      "Uses Portuguese for explanations, translations, cues, and production prompts.",
+      "Does not introduce English unless the source itself requires it."
+    ]
+  },
+  {
+    "id": "text-chunk-guided-production",
+    "input": "Target-language text contains a useful unfamiliar chunk.",
+    "expected": [
+      "Uses a base-language semantic cue when a production card is valuable.",
       "Does not use a blind cloze.",
-      "English is the support language.",
       "May create more than one card only for distinct skills."
     ]
   },
   {
     "id": "trivial-item-skip",
-    "input": "French material contains only Bonjour, and the learner already knows it well.",
+    "input": "Material contains an item the learner already knows well.",
     "expected": [
       "May create zero cards.",
       "Does not create cards merely to fill every deck type."
@@ -19,16 +38,16 @@
   },
   {
     "id": "original-audio-listening",
-    "input": "User supplies native French audio for a useful sentence plus its transcript.",
+    "input": "User supplies native target-language audio for a useful sentence plus its transcript.",
     "expected": [
       "Listening puts original audio on the front.",
-      "Transcript and English meaning are on the back.",
+      "Transcript and configured base-language meaning are on the back.",
       "A production sibling is created only if independently valuable."
     ]
   },
   {
     "id": "minimal-pair-no-leak",
-    "input": "Learner confuses two French sounds and provides separate native recordings.",
+    "input": "Learner confuses two target-language sounds and provides separate native recordings.",
     "expected": [
       "Uses Pronunciation & Sounds.",
       "Audio is on the front.",
@@ -37,7 +56,7 @@
   },
   {
     "id": "concrete-image-selective",
-    "input": "Text-only French material introduces a concrete noun such as écureuil.",
+    "input": "Text-only material introduces a concrete noun.",
     "expected": [
       "May use a useful permitted image.",
       "Does not add decorative images to unrelated abstract items.",

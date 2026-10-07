@@ -1,10 +1,10 @@
 {
-  "version": "1.0",
+  "version": "2.0",
   "target_language": {
     "name": "French",
     "code": "fr"
   },
-  "support_language": {
+  "base_language": {
     "name": "English",
     "code": "en"
   },
@@ -14,7 +14,7 @@
       "id": "fr-reading-001",
       "skill": "reading",
       "target_text": "J'ai fini par rester chez moi.",
-      "support_text": "I ended up staying home.",
+      "base_text": "I ended up staying home.",
       "focus": "finir par",
       "notes": "finir par + infinitive = to end up doing something",
       "tags": [
@@ -27,7 +27,7 @@
       "skill": "production",
       "prompt": "Complete with the expression meaning \"to end up doing something\": J'ai ___ rester chez moi.",
       "target_text": "J'ai fini par rester chez moi.",
-      "support_text": "I ended up staying home.",
+      "base_text": "I ended up staying home.",
       "focus": "fini par",
       "tags": [
         "chunk",
@@ -39,7 +39,7 @@
       "skill": "production",
       "prompt": "Complete with the correct form of aller: Nous ___ au cinéma hier.",
       "target_text": "Nous sommes allés au cinéma hier.",
-      "support_text": "We went to the cinema yesterday.",
+      "base_text": "We went to the cinema yesterday.",
       "focus": "sommes allés",
       "notes": "aller uses être in the passé composé.",
       "tags": [

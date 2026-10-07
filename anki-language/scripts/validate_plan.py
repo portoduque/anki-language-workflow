@@ -9,43 +9,81 @@ from typing import Any
 from jsonschema import Draft202012Validator
 
 AUDIO_FRONT_MODES = {"minimal-pair", "sound-discrimination", "audio-to-spelling"}
+CONFIG_FILENAME = "anki-language.config.json"
 
 
-def load_plan(path: Path) -> dict[str, Any]:
+def load_json_object(path: Path, label: str) -> dict[str, Any]:
     with path.open("r", encoding="utf-8") as handle:
         data = json.load(handle)
     if not isinstance(data, dict):
-        raise ValueError("Plan root must be a JSON object.")
+        raise ValueError(f"{label} root must be a JSON object.")
     return data
 
 
-def schema_errors(plan: dict[str, Any]) -> list[str]:
-    schema_path = Path(__file__).resolve().parents[1] / "schemas" / "card-plan.schema.json"
+def load_plan(path: Path) -> dict[str, Any]:
+    return load_json_object(path, "Plan")
+
+
+def schema_errors(data: dict[str, Any], schema_name: str, label: str) -> list[str]:
+    schema_path = Path(__file__).resolve().parents[1] / "schemas" / schema_name
     schema = json.loads(schema_path.read_text(encoding="utf-8"))
     validator = Draft202012Validator(schema)
     errors: list[str] = []
-    for error in sorted(validator.iter_errors(plan), key=lambda item: list(item.absolute_path)):
+    for error in sorted(validator.iter_errors(data), key=lambda item: list(item.absolute_path)):
         path = "$"
         for part in error.absolute_path:
             path += f"[{part}]" if isinstance(part, int) else f".{part}"
-        errors.append(f"{path}: {error.message}")
+        errors.append(f"{label} {path}: {error.message}")
     return errors
 
 
-def validate_plan(plan: dict[str, Any], plan_path: Path, check_media: bool = True) -> list[str]:
-    errors = schema_errors(plan)
+def discover_config(plan_path: Path, explicit: Path | None = None) -> Path | None:
+    if explicit is not None:
+        return explicit.resolve()
+    candidates = [Path.cwd() / CONFIG_FILENAME, plan_path.resolve().parent / CONFIG_FILENAME]
+    seen: set[Path] = set()
+    for candidate in candidates:
+        resolved = candidate.resolve()
+        if resolved in seen:
+            continue
+        seen.add(resolved)
+        if resolved.is_file():
+            return resolved
+    return None
+
+
+def validate_language_config(plan: dict[str, Any], config_path: Path) -> list[str]:
+    try:
+        config = load_json_object(config_path, "Configuration")
+    except (OSError, json.JSONDecodeError, ValueError) as exc:
+        return [f"Invalid workspace configuration: {exc}"]
+    errors = schema_errors(config, "config.schema.json", "Config")
+    if errors:
+        return errors
+    for key in ("target_language", "base_language"):
+        plan_lang = plan[key]
+        config_lang = config[key]
+        if str(plan_lang["code"]).casefold() != str(config_lang["code"]).casefold() or str(plan_lang["name"]).casefold() != str(config_lang["name"]).casefold():
+            errors.append(
+                f"Plan {key} ({plan_lang['name']} / {plan_lang['code']}) does not match "
+                f"workspace configuration ({config_lang['name']} / {config_lang['code']})."
+            )
+    return errors
+
+
+def validate_plan(
+    plan: dict[str, Any],
+    plan_path: Path,
+    check_media: bool = True,
+    config_path: Path | None = None,
+) -> list[str]:
+    errors = schema_errors(plan, "card-plan.schema.json", "Plan")
     if errors:
         return errors
 
-    support = plan["support_language"]
-    support_name = str(support["name"]).strip().lower()
-    support_code = str(support["code"]).strip().lower()
-    is_english = support_name == "english" or support_code == "en" or support_code.startswith("en-")
-    if not is_english and not bool(plan.get("support_language_override")):
-        errors.append(
-            "Support language must be English unless support_language_override=true "
-            "because the user explicitly requested another support language."
-        )
+    resolved_config = discover_config(plan_path, config_path)
+    if resolved_config is not None:
+        errors.extend(validate_language_config(plan, resolved_config))
 
     seen_ids: set[str] = set()
     media_by_basename: dict[str, Path] = {}
@@ -60,12 +98,13 @@ def validate_plan(plan: dict[str, Any], plan_path: Path, check_media: bool = Tru
             seen_ids.add(card_id)
 
         skill = card["skill"]
+        mode = str(card.get("mode", "standard")).strip().lower()
         if skill == "production" and not str(card.get("prompt", "")).strip():
             errors.append(f"{prefix}.prompt is required for production cards.")
         if skill == "listening" and not str(card.get("audio", "")).strip():
             errors.append(f"{prefix}.audio is required for listening cards.")
-
-        mode = str(card.get("mode", "standard")).strip().lower()
+        if skill == "pronunciation" and not str(card.get("prompt", "")).strip():
+            errors.append(f"{prefix}.prompt is required for pronunciation cards so the builder never invents a base-language instruction.")
         if skill == "pronunciation" and mode in AUDIO_FRONT_MODES and not str(card.get("audio", "")).strip():
             errors.append(f"{prefix}.audio is required for pronunciation mode '{mode}'.")
 
@@ -91,11 +130,12 @@ def validate_plan(plan: dict[str, Any], plan_path: Path, check_media: bool = Tru
 def main() -> int:
     parser = argparse.ArgumentParser(description="Validate an anki-language card plan.")
     parser.add_argument("plan", type=Path)
+    parser.add_argument("--config", type=Path, help="Explicit workspace language configuration. Auto-discovered when omitted.")
     parser.add_argument("--allow-missing-media", action="store_true", help="Validate structure without requiring referenced media files to exist.")
     args = parser.parse_args()
     try:
         plan = load_plan(args.plan)
-        errors = validate_plan(plan, args.plan, check_media=not args.allow_missing_media)
+        errors = validate_plan(plan, args.plan, check_media=not args.allow_missing_media, config_path=args.config)
     except (OSError, json.JSONDecodeError, ValueError) as exc:
         print(f"ERROR: {exc}")
         return 2

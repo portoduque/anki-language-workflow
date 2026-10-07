@@ -4,7 +4,7 @@ Evaluate each source unit independently.
 
 ## First question: should this become a card?
 
-Create a card when the item is useful, non-trivial, likely to recur, or exposes a real comprehension/production/pronunciation gap.
+Create a card when the item is useful, non-trivial, likely to recur, or exposes a real comprehension, production, listening, or pronunciation gap.
 
 Skip a card when the item is already obvious, redundant, low-value, too context-dependent, or would create disproportionate review cost.
 
@@ -20,7 +20,7 @@ Use when the learner should understand spoken target-language material without s
 
 ### Production
 
-Use when the learner should actively retrieve a word, chunk, expression, grammatical form, or sentence. The prompt must constrain the intended answer.
+Use when the learner should actively retrieve a word, chunk, expression, grammatical form, or sentence. The prompt must constrain the intended answer and should be written in the configured base language when an explanation/cue is needed.
 
 ### Pronunciation & Sounds
 
@@ -32,8 +32,8 @@ One source unit may create more than one card only when each card trains a meani
 
 Valid example:
 
-- Listening card: French audio -> understand/transcribe.
-- Production card: English meaning/context -> produce French expression.
+- Listening card: target-language audio -> understand/transcribe.
+- Production card: base-language meaning/context -> produce the target-language expression.
 
 Invalid example:
 
@@ -43,27 +43,16 @@ Invalid example:
 
 Never create an ambiguous blank that could accept many correct expressions.
 
-Use a semantic/function cue, a provided lemma, or another precise constraint.
+Use a semantic/function cue in the configured base language, a provided lemma, or another precise constraint.
 
-Examples:
+Good pattern:
 
-- Good: `Complete with the expression meaning "to end up doing something": J'ai ___ rester chez moi.`
-- Good: `Complete with the correct form of aller: Nous ___ au cinéma hier.`
-- Bad: `Nous ___ au cinéma hier.` when the intended verb/form is not otherwise constrained.
+`Complete with the expression meaning <base-language meaning>: <target-language sentence with one constrained blank>.`
+
+Bad pattern:
+
+`<target-language sentence with an unconstrained blank>.`
 
 ## Tags
 
-Use tags for content dimensions, including:
-
-- `vocabulary`
-- `chunk`
-- `collocation`
-- `grammar`
-- `word-form`
-- `word-order`
-- `expression`
-- `spelling`
-- `minimal-pair`
-- `sentence-mining`
-
-Keep tags sparse and useful.
+Use sparse tags for useful content dimensions such as `vocabulary`, `chunk`, `collocation`, `grammar`, `word-form`, `word-order`, `expression`, `spelling`, `minimal-pair`, and `sentence-mining`.

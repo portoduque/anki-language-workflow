@@ -6,16 +6,19 @@ import shutil
 from pathlib import Path
 
 SKILL_NAME = "anki-language"
-AGENTS = ("codex", "claude", "antigravity", "antigravity-cli")
+AGENTS = ("codex", "claude", "antigravity", "antigravity-cli", "generic")
 
 
-def skill_destination(agent: str, scope: str, project: Path) -> Path:
+def skill_destination(agent: str, scope: str, project: Path, custom_dest: Path | None) -> Path:
+    if agent == "generic":
+        if custom_dest is None:
+            raise ValueError("generic installation requires --dest <skill-directory>.")
+        return custom_dest.expanduser().resolve()
     if scope == "project":
         if agent in {"codex", "antigravity", "antigravity-cli"}:
             return project / ".agents" / "skills" / SKILL_NAME
         if agent == "claude":
             return project / ".claude" / "skills" / SKILL_NAME
-
     home = Path.home()
     if agent == "codex":
         return home / ".agents" / "skills" / SKILL_NAME
@@ -46,13 +49,18 @@ def main() -> int:
     parser.add_argument("agent", choices=AGENTS)
     parser.add_argument("--scope", choices=["project", "user"], default="project")
     parser.add_argument("--project", type=Path, default=Path.cwd())
+    parser.add_argument("--dest", type=Path, help="Custom destination for generic Agent Skill installation.")
     parser.add_argument("--force", action="store_true")
     parser.add_argument("--no-workflow", action="store_true", help="Skip Antigravity slash-workflow installation.")
     args = parser.parse_args()
 
     source = Path(__file__).resolve().parents[1]
     project = args.project.resolve()
-    target = skill_destination(args.agent, args.scope, project)
+    try:
+        target = skill_destination(args.agent, args.scope, project, args.dest)
+    except ValueError as exc:
+        print(f"ERROR: {exc}")
+        return 2
     workflow = None if args.no_workflow else workflow_destination(args.agent, args.scope, project)
 
     if target.exists() and source == target.resolve():
@@ -85,11 +93,12 @@ def main() -> int:
     print(f"Installed {SKILL_NAME} for {args.agent} ({args.scope}) at: {target}")
     if workflow is not None:
         print(f"Installed Antigravity workflow at: {workflow}")
-    print(f"Install runtime dependencies with: python -m pip install -r {target / 'requirements.txt'}")
     if args.agent == "codex":
         print("Invoke explicitly with: $anki-language")
     elif args.agent in {"claude", "antigravity"}:
         print("Invoke explicitly with: /anki-language")
+    elif args.agent == "generic":
+        print("Point your AI to the installed SKILL.md or use its native Agent Skills discovery mechanism.")
     else:
         print("Use /skills to verify discovery, then ask the CLI to use anki-language.")
     return 0
