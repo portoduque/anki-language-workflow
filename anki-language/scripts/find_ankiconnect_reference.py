@@ -55,7 +55,8 @@ def main() -> int:
         action_text = " ".join([
             name,
             action.get("category", ""),
-            action.get("signature", ""),
+            action.get("description", ""),
+            action.get("source_signature", ""),
             " ".join(action.get("parameters", []) or []),
             action.get("risk", ""),
         ])
