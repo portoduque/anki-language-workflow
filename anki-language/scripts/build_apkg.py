@@ -130,11 +130,6 @@ CSS = """
   --accent-soft: #fff4df;
   --accent-text: #9a4d00;
 }
-.skill-writing {
-  --accent: #2463c8;
-  --accent-soft: #eaf2ff;
-  --accent-text: #174a9d;
-}
 .skill-pronunciation {
   --accent: #d94f70;
   --accent-soft: #fff0f4;
@@ -155,11 +150,6 @@ CSS = """
   --accent: #f1aa4b;
   --accent-soft: #4a3317;
   --accent-text: #ffe2b4;
-}
-.nightMode .skill-writing {
-  --accent: #79aaff;
-  --accent-soft: #1e365b;
-  --accent-text: #d5e5ff;
 }
 .nightMode .skill-pronunciation {
   --accent: #f07d99;
@@ -446,6 +436,70 @@ a.replay-button svg {
   line-height: 1.45;
 }
 
+@media (max-width: 480px) {
+  .card {
+    padding: 12px 8px 22px;
+    font-size: 19px;
+  }
+
+  .anki-card,
+  .answer-shell {
+    border-radius: 18px;
+  }
+
+  .card-head,
+  .answer-head {
+    padding: 14px 16px 0;
+  }
+
+  .card-main {
+    padding: 27px 18px 24px;
+  }
+
+  .front-stage {
+    min-height: 155px;
+    gap: 15px;
+  }
+
+  .answer-body {
+    padding: 18px 18px 22px;
+  }
+
+  .skill-chip,
+  .language-chip,
+  .answer-chip {
+    font-size: 11px;
+  }
+
+  .target.hero {
+    font-size: clamp(27px, 9vw, 36px);
+  }
+
+  .prompt.hero {
+    font-size: clamp(24px, 7.5vw, 32px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+  }
+}
+"""
+
+# Existing four models retain their original CSS byte-for-byte. Writing alone
+# gets additional accent/input styling; this avoids false AnkiConnect CSS drift.
+WRITING_CSS = CSS + """
+.skill-writing {
+  --accent: #2463c8;
+  --accent-soft: #eaf2ff;
+  --accent-text: #174a9d;
+}
+.nightMode .skill-writing {
+  --accent: #79aaff;
+  --accent-soft: #1e365b;
+  --accent-text: #d5e5ff;
+}
 .writing-sentence {
   color: var(--text);
   font-size: clamp(25px, 4.6vw, 34px);
@@ -499,55 +553,6 @@ code#typeans {
   white-space: pre-wrap;
 }
 
-@media (max-width: 480px) {
-  .card {
-    padding: 12px 8px 22px;
-    font-size: 19px;
-  }
-
-  .anki-card,
-  .answer-shell {
-    border-radius: 18px;
-  }
-
-  .card-head,
-  .answer-head {
-    padding: 14px 16px 0;
-  }
-
-  .card-main {
-    padding: 27px 18px 24px;
-  }
-
-  .front-stage {
-    min-height: 155px;
-    gap: 15px;
-  }
-
-  .answer-body {
-    padding: 18px 18px 22px;
-  }
-
-  .skill-chip,
-  .language-chip,
-  .answer-chip {
-    font-size: 11px;
-  }
-
-  .target.hero {
-    font-size: clamp(27px, 9vw, 36px);
-  }
-
-  .prompt.hero {
-    font-size: clamp(24px, 7.5vw, 32px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  * {
-    scroll-behavior: auto !important;
-  }
-}
 """
 
 
@@ -806,7 +811,7 @@ def make_model(skill: str) -> genanki.Model:
         f"Anki Language v{model_version(skill)} — {skill_label}",
         fields=fields_for_skill(skill),
         templates=[{"name": "Card 1", "qfmt": front, "afmt": back}],
-        css=CSS,
+        css=WRITING_CSS if skill == "writing" else CSS,
     )
 
 
