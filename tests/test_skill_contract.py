@@ -189,3 +189,44 @@ def test_readme_documents_corinna_research_refinements() -> None:
     assert "Candidate before card" in readme
     assert "Creation time counts" in readme
     assert "Grammar notes stay concise" in readme
+
+
+def test_meredith_guide_adaptation_is_selective_and_complete() -> None:
+    note = (SKILL / "references" / "research" / "meredith-anki-setup-guide.md").read_text(encoding="utf-8").lower()
+    assert "complete spoken transcript was reviewed" in note
+    assert "bootstrap candidate source" in note
+    assert "maximum reviews/day = 9999" in note
+    assert "learning step = 10m" in note
+    assert "descending retrievability" in note
+    assert "ascending retrievability" in note
+    assert "sibling burying" in note
+
+
+def test_fsrs_reference_uses_current_semantics_not_copied_presets() -> None:
+    ref = (SKILL / "references" / "anki" / "07-scheduling-fsrs-study-options.md").read_text(encoding="utf-8")
+    assert "current official Anki documentation" in ref
+    assert "Do not hard-code `9999`" in ref
+    assert "Do not prescribe a universal `10m`" in ref
+    assert "Ascending retrievability" in ref
+    assert "Descending retrievability" in ref
+    assert "one Anki note per planned card" in ref
+    assert "will **not automatically space those cross-skill cards**" in ref
+    assert "Easy Days" in ref and "redistributes" in ref
+
+
+def test_beginner_shared_deck_is_candidate_source_not_blind_import() -> None:
+    rules = (SKILL / "references" / "card-selection.md").read_text(encoding="utf-8")
+    skill = (SKILL / "SKILL.md").read_text(encoding="utf-8")
+    assert "### Beginner bootstrap exception" in rules
+    assert "Do not blindly import the whole shared deck" in rules
+    assert "absolute beginner" in skill
+    assert "candidate source" in skill
+
+
+def test_readme_documents_meredith_settings_corrections() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "meredith-anki-setup-guide.md" in readme
+    assert "Scheduling settings are not copied from research videos" in readme
+    assert "Ascending retrievability" in readme
+    assert "same note" in readme
+    assert "Beginner bootstrap is allowed, not blind import" in readme
