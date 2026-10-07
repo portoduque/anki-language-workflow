@@ -31,6 +31,8 @@ Optimize long-term retrieval and usable language ability while keeping reviews f
 - Avoid cue overfitting: repeated retrieval should test the language knowledge rather than recognition of one fixed card wording. Varied natural contexts can improve transfer when they are independently useful.
 - When reliable mastery evidence exists, retire redundant scaffolds instead of stacking easier cards underneath a richer contextual card forever.
 - The Anki deck should make learned material retrievable. It does not replace reading, listening, speaking, or writing practice.
+- Let candidate sources evolve with learner evidence: bootstrap from vetted frequency/shared material only when needed, prefer personally encountered natural context once it is accessible, and treat recurring real-world output/domain gaps as candidates for targeted verification.
+- Do not hard-code external phase labels or vocabulary-count milestones as mandatory switches between those source strategies.
 - Treat encountered unknown items as candidates, not automatic cards; preserve context and select after the passage/clip when that is less disruptive.
 - Clarify the intended meaning/form/usage enough before scheduling a card that review tests retrieval rather than first-time semantic discovery; prior mastery is not required.
 - For longer natural input, prefer a meaning-first pass before intensive lookup/card extraction when comprehension is still possible; use dictionary lookup selectively rather than interrupting for every unknown.
