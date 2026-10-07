@@ -243,6 +243,16 @@ A mined sentence is a good candidate when it is:
 
 Prefer sentences close to the learner's current level rather than dense sentences that require learning many things at once.
 
+### Capture candidates first; commit to cards second
+
+When useful material is encountered while reading, watching, listening, or studying, it is acceptable to collect words/phrases/sentences as **candidates** first and decide later which ones deserve cards.
+
+Do not equate “unknown item encountered” with “create a card now.”
+
+When practical, preserve enough local context (sentence, timestamp, paragraph, source) and batch the selection decision after the current passage/chapter/clip. This reduces interruption, preserves context, and gives the workflow enough evidence to discard trivial, redundant, low-frequency, or low-value items.
+
+Immediate card creation is still fine when the item is clearly high-value and context is already sufficient.
+
 ## 13. Images are selective
 
 Use an image when it encodes or disambiguates meaning better than text, especially for concrete nouns, objects, actions, or visually distinctive concepts.
@@ -283,13 +293,17 @@ The answer should expose the information needed to verify recall quickly.
 
 Extra explanations belong below the answer and should remain concise.
 
+For grammar, morphology, conjugation, or word-order cards, a brief back-side explanation may be added when it answers **why this form is correct** or prevents a predictable future confusion. Prefer one short rule or contrast over a pasted conjugation table or long AI-generated breakdown.
+
 Do not turn the back of every card into a lesson, paragraph, or reference article.
 
 ## 17. Use the user's material as the primary source
 
 Prefer the user's phrase, sentence, audio, image, or context when it is suitable.
 
-Do not replace it with generic material merely because generic examples are easier to generate.
+Personally encountered material usually has stronger context than a random list or generic shared deck. Shared decks, frequency lists, and word lists may be mined as **candidate sources**, but their entries must still pass the same usefulness/context/review-cost test before becoming cards.
+
+Do not replace the user's material with generic material merely because generic examples are easier to generate.
 
 It is acceptable to create a clearer example when the original material is unsuitable, but preserve the intended meaning and do not invent uncertain facts.
 
@@ -331,7 +345,15 @@ Use sparse tags for dimensions such as:
 
 Do not create many micro-decks for those categories.
 
-## 20. Final decision test
+## 20. Creation effort must also earn its keep
+
+Review cost is not the only cost. Card creation/customization also consumes time.
+
+Do not spend disproportionate effort on decorative formatting, searching for the “perfect” image, collecting multiple redundant pronunciations, or writing long explanations when a simpler card would train the same retrieval just as well.
+
+Use automation/media enrichment when it adds value, but keep the workflow biased toward **fast capture, selective enrichment, and more time learning/reviewing than decorating cards**.
+
+## 21. Final decision test
 
 Before accepting any card, verify all five:
 
