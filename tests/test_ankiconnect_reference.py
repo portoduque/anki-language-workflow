@@ -26,8 +26,10 @@ def route(query: str) -> dict:
 def test_action_catalog_is_complete_snapshot() -> None:
     catalog = json.loads((REF / "ACTION_CATALOG.json").read_text(encoding="utf-8"))
     assert catalog["api_version"] == 6
-    assert catalog["action_count"] == 114
-    assert len(catalog["actions"]) == 114
+    assert catalog["baseline_action_count"] == 114
+    assert catalog["extended_action_count"] == 4
+    assert catalog["action_count"] == 118
+    assert len(catalog["actions"]) == 118
     names = {action["name"] for action in catalog["actions"]}
     for required in (
         "addNote",
@@ -125,7 +127,7 @@ def test_skill_routes_live_collection_work_to_ankiconnect_library() -> None:
     assert "## AnkiConnect live-integration reference" in skill
     assert "find_ankiconnect_reference.py" in skill
     assert "Never invent plausible AnkiConnect actions" in skill
-    assert "versionapiReflect" in skill
+    assert "`version` + `apiReflect`" in skill
 
 
 def test_general_anki_router_can_escalate_to_ankiconnect() -> None:
@@ -153,7 +155,8 @@ def test_machine_readable_config_reference_has_safe_defaults() -> None:
 
 def test_coverage_map_accounts_for_all_actions() -> None:
     coverage = (REF / "COVERAGE.md").read_text(encoding="utf-8")
-    assert "| **Total** | **114** | ACTION_CATALOG.json |" in coverage
+    assert "| **Baseline common snapshot** | **114** | ACTION_CATALOG.json |" in coverage
+    assert "| **Catalog total** | **118** | ACTION_CATALOG.json |" in coverage
 
 
 def test_router_returns_config_and_coverage_paths() -> None:
