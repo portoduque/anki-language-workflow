@@ -1,0 +1,1027 @@
+{
+  "generated_from": "https://github.com/ankiultimate/anki-connect/blob/master/README.md",
+  "upstream_lineage_note": "FooSoft/anki-connect was archived on GitHub and points to the author's current SourceHut project; this public mirror is used as a readable current documentation source. Verify version-sensitive details against the AnkiWeb listing/source project when needed.",
+  "api_version": 6,
+  "action_count": 114,
+  "actions": [
+    {
+      "name": "getEaseFactors",
+      "category": "Card",
+      "description": "Returns an array with the ease factor for each of the given cards (in the same order).",
+      "params": [
+        "cards"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "setEaseFactors",
+      "category": "Card",
+      "description": "Sets ease factor of cards by card ID; returns `true` if successful (all cards existed) or `false` otherwise.",
+      "params": [
+        "cards",
+        "easeFactors"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "setSpecificValueOfCard",
+      "category": "Card",
+      "description": "Sets specific value of a single card. Given the risk of wreaking havor in the database when changing some of the values of a card, some of the keys require the argument \"warning_check\" set to True.",
+      "params": [
+        "card",
+        "keys",
+        "newValues"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "suspend",
+      "category": "Card",
+      "description": "Suspend cards by card ID; returns `true` if successful (at least one card wasn't already suspended) or `false`",
+      "params": [
+        "cards"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "unsuspend",
+      "category": "Card",
+      "description": "Unsuspend cards by card ID; returns `true` if successful (at least one card was previously suspended) or `false`",
+      "params": [
+        "cards"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "suspended",
+      "category": "Card",
+      "description": "Check if card is suspended by its ID. Returns `true` if suspended, `false` otherwise.",
+      "params": [
+        "card"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "areSuspended",
+      "category": "Card",
+      "description": "Returns an array indicating whether each of the given cards is suspended (in the same order). If card doesn't",
+      "params": [
+        "cards"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "areDue",
+      "category": "Card",
+      "description": "Returns an array indicating whether each of the given cards is due (in the same order). *Note*: cards in the",
+      "params": [
+        "cards"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "getIntervals",
+      "category": "Card",
+      "description": "Returns an array of the most recent intervals for each given card ID, or a 2-dimensional array of all the intervals",
+      "params": [
+        "cards"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "findCards",
+      "category": "Card",
+      "description": "Returns an array of card IDs for a given query. Functionally identical to `guiBrowse` but doesn't use the GUI for",
+      "params": [
+        "query"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "cardsToNotes",
+      "category": "Card",
+      "description": "Returns an unordered array of note IDs for the given card IDs. For cards with the same note, the ID is only given",
+      "params": [
+        "cards"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "cardsModTime",
+      "category": "Card",
+      "description": "Returns a list of objects containings for each card ID the modification time.",
+      "params": [
+        "cards"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "cardsInfo",
+      "category": "Card",
+      "description": "Returns a list of objects containing for each card ID the card fields, front and back sides including CSS, note",
+      "params": [
+        "cards"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "forgetCards",
+      "category": "Card",
+      "description": "Forget cards, making the cards new again.",
+      "params": [
+        "cards"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "relearnCards",
+      "category": "Card",
+      "description": "Make cards be \"relearning\".",
+      "params": [
+        "cards"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "answerCards",
+      "category": "Card",
+      "description": "Answer cards. Ease is between 1 (Again) and 4 (Easy). Will start the timer immediately before answering. Returns `true` if card exists, `false` otherwise.",
+      "params": [
+        "answers"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "setDueDate",
+      "category": "Card",
+      "description": "Set Due Date. Turns cards into review cards if they are new, and makes them due on a certain date.",
+      "params": [
+        "cards",
+        "days"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "deckNames",
+      "category": "Deck",
+      "description": "Gets the complete list of deck names for the current user.",
+      "params": [],
+      "documented_version": 6
+    },
+    {
+      "name": "deckNamesAndIds",
+      "category": "Deck",
+      "description": "Gets the complete list of deck names and their respective IDs for the current user.",
+      "params": [],
+      "documented_version": 6
+    },
+    {
+      "name": "getDecks",
+      "category": "Deck",
+      "description": "Accepts an array of card IDs and returns an object with each deck name as a key, and its value an array of the given",
+      "params": [
+        "cards"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "createDeck",
+      "category": "Deck",
+      "description": "Create a new empty deck. Will not overwrite a deck that exists with the same name.",
+      "params": [
+        "deck"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "changeDeck",
+      "category": "Deck",
+      "description": "Moves cards with the given IDs to a different deck, creating the deck if it doesn't exist yet.",
+      "params": [
+        "cards",
+        "deck"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "deleteDecks",
+      "category": "Deck",
+      "description": "Deletes decks with the given names.",
+      "params": [
+        "decks",
+        "cardsToo"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "getDeckConfig",
+      "category": "Deck",
+      "description": "Gets the configuration group object for the given deck.",
+      "params": [
+        "deck"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "saveDeckConfig",
+      "category": "Deck",
+      "description": "Saves the given configuration group, returning `true` on success or `false` if the ID of the configuration group is",
+      "params": [
+        "config"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "setDeckConfigId",
+      "category": "Deck",
+      "description": "Changes the configuration group for the given decks to the one with the given ID. Returns `true` on success or",
+      "params": [
+        "decks",
+        "configId"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "cloneDeckConfigId",
+      "category": "Deck",
+      "description": "Creates a new configuration group with the given name, cloning from the group with the given ID, or from the default",
+      "params": [
+        "name",
+        "cloneFrom"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "removeDeckConfigId",
+      "category": "Deck",
+      "description": "Removes the configuration group with the given ID, returning `true` if successful, or `false` if attempting to",
+      "params": [
+        "configId"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "getDeckStats",
+      "category": "Deck",
+      "description": "Gets statistics such as total cards and cards due for the given decks.",
+      "params": [
+        "decks"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "guiBrowse",
+      "category": "Graphical",
+      "description": "Invokes the *Card Browser* dialog and searches for a given query. Returns an array of identifiers of the cards that",
+      "params": [
+        "query",
+        "reorderCards"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "guiSelectCard",
+      "category": "Graphical",
+      "description": "Finds the open instance of the *Card Browser* dialog and selects a card given a card identifier.",
+      "params": [
+        "card"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "guiSelectedNotes",
+      "category": "Graphical",
+      "description": "Finds the open instance of the *Card Browser* dialog and returns an array of identifiers of the notes that are",
+      "params": [],
+      "documented_version": 6
+    },
+    {
+      "name": "guiAddCards",
+      "category": "Graphical",
+      "description": "Invokes the *Add Cards* dialog, presets the note using the given deck and model, with the provided field values and tags.",
+      "params": [
+        "note"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "guiEditNote",
+      "category": "Graphical",
+      "description": "Opens the *Edit* dialog with a note corresponding to given note ID.",
+      "params": [
+        "note"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "guiCurrentCard",
+      "category": "Graphical",
+      "description": "Returns information about the current card or `null` if not in review mode.",
+      "params": [],
+      "documented_version": 6
+    },
+    {
+      "name": "guiStartCardTimer",
+      "category": "Graphical",
+      "description": "Starts or resets the `timerStarted` value for the current card. This is useful for deferring the start time to when",
+      "params": [],
+      "documented_version": 6
+    },
+    {
+      "name": "guiShowQuestion",
+      "category": "Graphical",
+      "description": "Shows question text for the current card; returns `true` if in review mode or `false` otherwise.",
+      "params": [],
+      "documented_version": 6
+    },
+    {
+      "name": "guiShowAnswer",
+      "category": "Graphical",
+      "description": "Shows answer text for the current card; returns `true` if in review mode or `false` otherwise.",
+      "params": [],
+      "documented_version": 6
+    },
+    {
+      "name": "guiAnswerCard",
+      "category": "Graphical",
+      "description": "Answers the current card; returns `true` if succeeded or `false` otherwise. Note that the answer for the current",
+      "params": [
+        "ease"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "guiUndo",
+      "category": "Graphical",
+      "description": "Undo the last action / card; returns `true` if succeeded or `false` otherwise.",
+      "params": [],
+      "documented_version": 6
+    },
+    {
+      "name": "guiDeckOverview",
+      "category": "Graphical",
+      "description": "Opens the *Deck Overview* dialog for the deck with the given name; returns `true` if succeeded or `false` otherwise.",
+      "params": [
+        "name"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "guiDeckBrowser",
+      "category": "Graphical",
+      "description": "Opens the *Deck Browser* dialog.",
+      "params": [],
+      "documented_version": 6
+    },
+    {
+      "name": "guiDeckReview",
+      "category": "Graphical",
+      "description": "Starts review for the deck with the given name; returns `true` if succeeded or `false` otherwise.",
+      "params": [
+        "name"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "guiImportFile",
+      "category": "Graphical",
+      "description": "Invokes the *Import... (Ctrl+Shift+I)* dialog with an optional file path. Brings up the dialog for user to review the import. Supports all file types that Anki supports. Brings open file dialog if no path is provided. Forward slashes must be used in the path on Windows. Only supported for Anki 2.1.52+.",
+      "params": [
+        "path"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "guiExitAnki",
+      "category": "Graphical",
+      "description": "Schedules a request to gracefully close Anki. This operation is asynchronous, so it will return immediately and",
+      "params": [],
+      "documented_version": 6
+    },
+    {
+      "name": "guiCheckDatabase",
+      "category": "Graphical",
+      "description": "Requests a database check, but returns immediately without waiting for the check to complete. Therefore, the action will always return `true` even if errors are detected during the database check.",
+      "params": [],
+      "documented_version": 6
+    },
+    {
+      "name": "storeMediaFile",
+      "category": "Media",
+      "description": "Stores a file with the specified base64-encoded contents inside the media folder. Alternatively you can specify a",
+      "params": [
+        "filename",
+        "data"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "retrieveMediaFile",
+      "category": "Media",
+      "description": "Retrieves the base64-encoded contents of the specified file, returning `false` if the file does not exist.",
+      "params": [
+        "filename"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "getMediaFilesNames",
+      "category": "Media",
+      "description": "Gets the names of media files matched the pattern. Returning all names by default.",
+      "params": [
+        "pattern"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "getMediaDirPath",
+      "category": "Media",
+      "description": "Gets the full path to the `collection.media` folder of the currently opened profile.",
+      "params": [],
+      "documented_version": 6
+    },
+    {
+      "name": "deleteMediaFile",
+      "category": "Media",
+      "description": "Deletes the specified file inside the media folder.",
+      "params": [
+        "filename"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "requestPermission",
+      "category": "Miscellaneous",
+      "description": "Requests permission to use the API exposed by this plugin. This method does not require the API key, and is the",
+      "params": [],
+      "documented_version": 6
+    },
+    {
+      "name": "version",
+      "category": "Miscellaneous",
+      "description": "Gets the version of the API exposed by this plugin. Currently versions `1` through `6` are defined.",
+      "params": [],
+      "documented_version": 6
+    },
+    {
+      "name": "apiReflect",
+      "category": "Miscellaneous",
+      "description": "Gets information about the AnkiConnect APIs available. The request supports the following params:",
+      "params": [
+        "scopes",
+        "actions"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "sync",
+      "category": "Miscellaneous",
+      "description": "Synchronizes the local Anki collections with AnkiWeb.",
+      "params": [],
+      "documented_version": 6
+    },
+    {
+      "name": "getProfiles",
+      "category": "Miscellaneous",
+      "description": "Retrieve the list of profiles.",
+      "params": [],
+      "documented_version": 6
+    },
+    {
+      "name": "getActiveProfile",
+      "category": "Miscellaneous",
+      "description": "Retrieve the active profile.",
+      "params": [],
+      "documented_version": 6
+    },
+    {
+      "name": "loadProfile",
+      "category": "Miscellaneous",
+      "description": "Selects the profile specified in request.",
+      "params": [
+        "name"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "multi",
+      "category": "Miscellaneous",
+      "description": "Performs multiple actions in one request, returning an array with the response of each action (in the given order).",
+      "params": [
+        "actions"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "exportPackage",
+      "category": "Miscellaneous",
+      "description": "Exports a given deck in `.apkg` format. Returns `true` if successful or `false` otherwise. The optional property",
+      "params": [
+        "deck",
+        "path",
+        "includeSched"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "importPackage",
+      "category": "Miscellaneous",
+      "description": "Imports a file in `.apkg` format into the collection. Returns `true` if successful or `false` otherwise.",
+      "params": [
+        "path"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "reloadCollection",
+      "category": "Miscellaneous",
+      "description": "Tells anki to reload all data from the database.",
+      "params": [],
+      "documented_version": 6
+    },
+    {
+      "name": "modelNames",
+      "category": "Model",
+      "description": "Gets the complete list of model names for the current user.",
+      "params": [],
+      "documented_version": 6
+    },
+    {
+      "name": "modelNamesAndIds",
+      "category": "Model",
+      "description": "Gets the complete list of model names and their corresponding IDs for the current user.",
+      "params": [],
+      "documented_version": 6
+    },
+    {
+      "name": "findModelsById",
+      "category": "Model",
+      "description": "Gets a list of models  for the provided model IDs from the current user.",
+      "params": [
+        "modelIds"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "findModelsByName",
+      "category": "Model",
+      "description": "Gets a list of models for the provided model names from the current user.",
+      "params": [
+        "modelNames"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "modelFieldNames",
+      "category": "Model",
+      "description": "Gets the complete list of field names for the provided model name.",
+      "params": [
+        "modelName"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "modelFieldDescriptions",
+      "category": "Model",
+      "description": "Gets the complete list of field descriptions (the text seen in the gui editor when a field is empty) for the provided model name.",
+      "params": [
+        "modelName"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "modelFieldFonts",
+      "category": "Model",
+      "description": "Gets the complete list of fonts along with their font sizes.",
+      "params": [
+        "modelName"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "modelFieldsOnTemplates",
+      "category": "Model",
+      "description": "Returns an object indicating the fields on the question and answer side of each card template for the given model",
+      "params": [
+        "modelName"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "createModel",
+      "category": "Model",
+      "description": "Creates a new model to be used in Anki. User must provide the `modelName`, `inOrderFields` and `cardTemplates` to be",
+      "params": [
+        "modelName",
+        "inOrderFields",
+        "css",
+        "isCloze",
+        "cardTemplates"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "modelTemplates",
+      "category": "Model",
+      "description": "Returns an object indicating the template content for each card connected to the provided model by name.",
+      "params": [
+        "modelName"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "modelStyling",
+      "category": "Model",
+      "description": "Gets the CSS styling for the provided model by name.",
+      "params": [
+        "modelName"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "updateModelTemplates",
+      "category": "Model",
+      "description": "Modify the templates of an existing model by name. Only specifies cards and specified sides will be modified.",
+      "params": [
+        "model"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "updateModelStyling",
+      "category": "Model",
+      "description": "Modify the CSS styling of an existing model by name.",
+      "params": [
+        "model"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "findAndReplaceInModels",
+      "category": "Model",
+      "description": "Find and replace string in existing model by model name. Customise to replace in front, back or css by setting to true/false.",
+      "params": [
+        "model"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "modelTemplateRename",
+      "category": "Model",
+      "description": "Renames a template in an existing model.",
+      "params": [
+        "modelName",
+        "oldTemplateName",
+        "newTemplateName"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "modelTemplateReposition",
+      "category": "Model",
+      "description": "Repositions a template in an existing model.",
+      "params": [
+        "modelName",
+        "templateName",
+        "index"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "modelTemplateAdd",
+      "category": "Model",
+      "description": "Adds a template to an existing model by name. If you want to update an existing template, use `updateModelTemplates`.",
+      "params": [
+        "modelName",
+        "template"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "modelTemplateRemove",
+      "category": "Model",
+      "description": "Removes a template from an existing model.",
+      "params": [
+        "modelName",
+        "templateName"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "modelFieldRename",
+      "category": "Model",
+      "description": "Rename the field name of a given model.",
+      "params": [
+        "modelName",
+        "oldFieldName",
+        "newFieldName"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "modelFieldReposition",
+      "category": "Model",
+      "description": "Reposition the field within the field list of a given model.",
+      "params": [
+        "modelName",
+        "fieldName",
+        "index"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "modelFieldAdd",
+      "category": "Model",
+      "description": "Creates a new field within a given model.",
+      "params": [
+        "modelName",
+        "fieldName",
+        "index"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "modelFieldRemove",
+      "category": "Model",
+      "description": "Deletes a field within a given model.",
+      "params": [
+        "modelName",
+        "fieldName"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "modelFieldSetFont",
+      "category": "Model",
+      "description": "Sets the font for a field within a given model.",
+      "params": [
+        "modelName",
+        "fieldName",
+        "font"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "modelFieldSetFontSize",
+      "category": "Model",
+      "description": "Sets the font size for a field within a given model.",
+      "params": [
+        "modelName",
+        "fieldName",
+        "fontSize"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "modelFieldSetDescription",
+      "category": "Model",
+      "description": "Sets the description (the text seen in the gui editor when a field is empty) for a field within a given model.",
+      "params": [
+        "modelName",
+        "fieldName",
+        "description"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "addNote",
+      "category": "Note",
+      "description": "Creates a note using the given deck and model, with the provided field values and tags. Returns the identifier of",
+      "params": [
+        "note"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "addNotes",
+      "category": "Note",
+      "description": "Creates multiple notes using the given deck and model, with the provided field values and tags. Returns an array of",
+      "params": [
+        "notes"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "canAddNotes",
+      "category": "Note",
+      "description": "Accepts an array of objects which define parameters for candidate notes (see `addNote`) and returns an array of",
+      "params": [
+        "notes"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "canAddNotesWithErrorDetail",
+      "category": "Note",
+      "description": "Accepts an array of objects which define parameters for candidate notes (see `addNote`) and returns an array of",
+      "params": [
+        "notes"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "updateNoteFields",
+      "category": "Note",
+      "description": "Modify the fields of an existing note. You can also include audio, video, or picture files which will be added to the note with an",
+      "params": [
+        "note"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "updateNote",
+      "category": "Note",
+      "description": "Modify the fields and/or tags of an existing note.",
+      "params": [
+        "note"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "updateNoteModel",
+      "category": "Note",
+      "description": "Update the model, fields, and tags of an existing note.",
+      "params": [
+        "note"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "updateNoteTags",
+      "category": "Note",
+      "description": "Set a note's tags by note ID. Old tags will be removed.",
+      "params": [
+        "note",
+        "tags"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "getNoteTags",
+      "category": "Note",
+      "description": "Get a note's tags by note ID.",
+      "params": [
+        "note"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "addTags",
+      "category": "Note",
+      "description": "Adds tags to notes by note ID.",
+      "params": [
+        "notes",
+        "tags"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "removeTags",
+      "category": "Note",
+      "description": "Remove tags from notes by note ID.",
+      "params": [
+        "notes",
+        "tags"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "getTags",
+      "category": "Note",
+      "description": "Gets the complete list of tags for the current user.",
+      "params": [],
+      "documented_version": 6
+    },
+    {
+      "name": "clearUnusedTags",
+      "category": "Note",
+      "description": "Clears all the unused tags in the notes for the current user.",
+      "params": [],
+      "documented_version": 6
+    },
+    {
+      "name": "replaceTags",
+      "category": "Note",
+      "description": "Replace tags in notes by note ID.",
+      "params": [
+        "notes",
+        "tag_to_replace",
+        "replace_with_tag"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "replaceTagsInAllNotes",
+      "category": "Note",
+      "description": "Replace tags in all the notes for the current user.",
+      "params": [
+        "tag_to_replace",
+        "replace_with_tag"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "findNotes",
+      "category": "Note",
+      "description": "Returns an array of note IDs for a given query. Query syntax is [documented here](https://docs.ankiweb.net/searching.html).",
+      "params": [
+        "query"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "notesInfo",
+      "category": "Note",
+      "description": "Returns a list of objects containing for each note ID the note fields, tags, note type, modification time,the cards belonging to",
+      "params": [
+        "notes"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "notesModTime",
+      "category": "Note",
+      "description": "Returns a list of objects containings for each note ID the modification time.",
+      "params": [
+        "notes"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "deleteNotes",
+      "category": "Note",
+      "description": "Deletes notes with the given ids. If a note has several cards associated with it, all associated cards will be deleted.",
+      "params": [
+        "notes"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "removeEmptyNotes",
+      "category": "Note",
+      "description": "Removes all the empty notes for the current user.",
+      "params": [],
+      "documented_version": 6
+    },
+    {
+      "name": "getNumCardsReviewedToday",
+      "category": "Statistic",
+      "description": "Gets the count of cards that have been reviewed in the current day (with day start time as configured by user in anki)",
+      "params": [],
+      "documented_version": 6
+    },
+    {
+      "name": "getNumCardsReviewedByDay",
+      "category": "Statistic",
+      "description": "Gets the number of cards reviewed as a list of pairs of `(dateString, number)`",
+      "params": [],
+      "documented_version": 6
+    },
+    {
+      "name": "getCollectionStatsHTML",
+      "category": "Statistic",
+      "description": "Gets the collection statistics report",
+      "params": [
+        "wholeCollection"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "cardReviews",
+      "category": "Statistic",
+      "description": "Requests all card reviews for a specified deck after a certain time.",
+      "params": [
+        "deck",
+        "startID"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "getReviewsOfCards",
+      "category": "Statistic",
+      "description": "Requests all card reviews for each card ID.",
+      "params": [
+        "cards"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "getLatestReviewID",
+      "category": "Statistic",
+      "description": "Returns the unix time of the latest review for the given deck. 0 if no review has ever been made for the deck.",
+      "params": [
+        "deck"
+      ],
+      "documented_version": 6
+    },
+    {
+      "name": "insertReviews",
+      "category": "Statistic",
+      "description": "Inserts the given reviews into the database. Required format: list of 9-tuples `(reviewTime, cardID, usn, buttonPressed, newInterval, previousInterval, newFactor, reviewDuration, reviewType)`",
+      "params": [
+        "reviews"
+      ],
+      "documented_version": 6
+    }
+  ]
+}
