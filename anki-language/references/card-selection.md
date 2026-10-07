@@ -4,7 +4,7 @@ These rules are normative. They define what the workflow is allowed to turn into
 
 ## 1. Optimize for useful retrieval, not card count
 
-The goal is the **smallest sustainable set of cards that produces useful retrieval practice**.
+The goal is the **smallest sustainable set of cards that produces useful retrieval practice**. **Cards must be quick to create, answer, and check during review.** Source length does not dictate card length: even if every supplied sentence is long, actively search within it for shorter, meaningful, independently valuable chunks before considering a full-sentence card.
 
 For every source unit, the valid outcome is:
 
@@ -304,6 +304,25 @@ Examples include:
 
 Do not split a useful chunk into isolated-word cards if doing so destroys the knowledge the learner needs.
 
+### Long-source to short-card chunk mining — mandatory selection step
+
+**Treat each long sentence, paragraph, screenshot transcript, and dialogue turn as a source of candidate chunks, not a mandatory full-sentence flashcard.** This applies even if **all** of the user's material consists of long sentences. The workflow must actively identify shorter, reusable units in the supplied source before deciding which cards are worth creating.
+
+For each long source passage:
+
+1. **Understand the complete source first.** Preserve the intended meaning and speaker context; do not mechanically cut by punctuation, word count, or line length.
+2. **Mine natural, meaningful candidates:** useful phrases, collocations, verb+preposition combinations, pragmatic expressions, and small grammatical frames with enough context to stand alone. A candidate may be a short phrase rather than a complete sentence.
+3. **Prioritize the most useful candidates, not every fragment.** Choose zero, one, or several **distinct** chunks from the same long source only when each tests a separate worthwhile target. Skip obvious, already-known, incidental, ambiguous, and overlapping fragments; do not generate a card for every clause or word.
+4. **Give each selected chunk its own short retrieval task.** Use a precise base-language meaning/situation for Production, an intelligible focused target for Reading, or an independently justified Listening/Pronunciation operation. Avoid asking for the entire original sentence when only the chunk is being learned.
+5. **Retain just enough context.** Add a minimal contextual cue if the chunk alone has multiple meanings, and preserve the full source locator/verified example as optional back-side support. Do not paste the complete long sentence onto the front by default.
+6. **Match media to the chosen chunk.** For long native recordings, use `audio_clip` with verified timestamps or conservative alignment so the audio on a short card does not play an unrelated full dialogue. Never guess cut boundaries.
+
+**Illustrative extraction (not a quota):** From *« Vous pouvez me suivre, c'est à deux minutes d'ici. »*, the useful units might be *« vous pouvez me suivre »* (inviting someone to follow) and *« à deux minutes d'ici »* (distance/time from here). Produce **two separate short cards only if both are new and useful**. If just one is needed, create one; if both are already known, create none. Do not create a third card merely to memorize the full source sentence.
+
+**Exceptions:** retain a complete sentence when its precise whole-utterance meaning, grammar, prosody, or conversational function is the actual learning target, and the resulting card is still quick to answer and verify. Never force all material into short fragments when splitting would damage the idiom, dependency, meaning, or naturalness.
+
+**Fast-review gate:** Mentally simulate one review. Can the learner identify the task immediately, retrieve **one** target without reconstructing several clauses, and check it at a glance? If not, shorten/refocus the card, split into independently valuable candidates, use a clearer cue, or omit it. No universal word-count, number-of-chunks, or seconds-per-card quota applies; perceived effort and retrieval clarity matter more.
+
 ## 12. Sentence mining must be selective
 
 Do not convert every sentence in the source into a card.
@@ -532,6 +551,8 @@ For writing-heavy languages, handwriting/written recall may be represented as a 
 
 ## 19. Keep answers concise and reviews fast
 
+**Fast retrieval is a default requirement, not a cosmetic preference.** The front should not require memorizing a whole multi-clause sentence merely to demonstrate one phrase, and the back should let the learner judge the response at a glance. Prefer the shortest natural chunk that preserves the intended knowledge; the full source sentence can remain secondary context when useful. Do not create more chunks than the user's future review workload justifies.
+
 The answer should expose the information needed to verify recall quickly.
 
 Extra explanations belong below the answer and should remain concise.
@@ -650,6 +671,6 @@ Before accepting any card, verify all five:
 2. **Distinct:** Does it test something not already adequately covered?
 3. **Clear:** Can the learner know exactly what to retrieve?
 4. **Atomic:** Is there one primary retrieval target?
-5. **Fast:** Can the learner answer and verify it efficiently?
+5. **Fast:** Can the learner identify the target, answer, and verify it quickly **without reconstructing an unnecessarily long sentence**?
 
 If any answer is no, revise or discard the card.
