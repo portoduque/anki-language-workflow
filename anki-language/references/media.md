@@ -39,6 +39,40 @@ A technically decodable MP3 is not proof that the recording says the target text
 - This transcript comparison is a **consistency check only**. It does not transcribe or listen to audio, validate its speaker/accent, or prove the user-entered transcript is accurate. The author still must verify the original recording.
 - An audio clip that illustrates an alternative phrasing rather than the specific target should not be presented as the exact target's pronunciation. Prefer omitting that optional audio or using a genuinely matching clip.
 
+## Long recordings: one phrase per card
+
+**Do not attach an entire dialogue/lesson as a card's `audio` when `target_text` is only one line.** Use the optional `audio_clip` request so the enricher creates a separate, focused WAV **before** APKG/AnkiConnect delivery:
+
+```json
+{
+  "target_text": "Vous pouvez me suivre.",
+  "audio_clip": {
+    "source": "materials/dialogue.mp3",
+    "start_seconds": 12.4,
+    "end_seconds": 14.9
+  }
+}
+```
+
+When the source or transcript has **verified timestamps**, use those; no automatic speech model is required. When timestamps are missing, omit both bounds:
+
+```json
+{
+  "target_text": "Vous pouvez me suivre.",
+  "audio_clip": {"source": "materials/dialogue.mp3"}
+}
+```
+
+This second form invokes **optional local faster-whisper** with word timestamps (CPU, small model) and matches the normalized target **exactly once** in the transcript. Exact transcription matching is deliberately conservative; OCR differences, ASR mistakes, isolated words, repeated phrases, and uncertain timing should be resolved with verified start/end times, a focused audio clip, or user confirmation. Do not guess the match. The program does **not** use forced-alignment proof or guarantee that ASR has perfectly heard the speaker.
+
+- **Requirements:** FFmpeg executable on PATH for any `audio_clip`; install `requirements-alignment.txt` separately only when automatic timing is needed. The speech model downloads on first use; inference runs locally. Neither FFmpeg nor faster-whisper is required for ordinary audio files or Piper TTS.
+- The enricher adds small lead/tail padding, creates a speech-friendly 24 kHz mono WAV, keeps the original untouched, then performs the normal decode/duration/SHA-256 validation.
+- On success, `audio_clip` is replaced by `audio` and the original path, actual boundaries, and method are saved in `audio_provenance`. The **generated short clip** is what gets packaged or uploaded.
+- On ambiguity, missing phrase, invalid timestamp, missing dependency, or failed FFmpeg, delivery **stops**. No silent full-audio fallback, approximate wrong segment, or unrelated synthesized alternative. Resolve the source or explicitly choose matching TTS.
+- Manual timestamps still need to come from the real recording, not guesses. Inspect representative clips by listening before bulk import, especially when transcripts or subtitles differ from spoken phrasing.
+
+`audio`, `audio_clip`, and `audio_request` are alternative input strategies: choose **one** per card. The other three skill decks and Anki note templates are unchanged.
+
 ## Audio priority
 
 1. User-supplied original audio.
