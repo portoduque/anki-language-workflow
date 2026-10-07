@@ -78,6 +78,9 @@ These are product rules, not suggestions. The complete normative specification l
 28. **Creation time counts:** do not spend disproportionate time decorating/customizing cards when a simpler card trains the same retrieval equally well.
 29. **Grammar notes stay concise:** add a short back-side rule/contrast only when it explains why the answer is correct or prevents future confusion; avoid full paradigm/AI dumps by default.
 30. **Beginner bootstrap is allowed, not blind import:** when an absolute beginner lacks enough comprehensible personal material, a vetted frequency/shared deck may supply candidates; inspect quality/fields/audio and select items rather than importing everything as workflow cards.
+31. **Near-i+1 mining is the default:** prefer sentences where the learner already understands essentially everything except the one primary target; avoid contexts with several independent unknowns.
+32. **Explore polysemy before encoding it:** inspect several trustworthy contexts to understand distinct senses/usages, then keep each review front concise instead of putting a pile of examples on it.
+33. **Production authenticity is stricter:** full-sentence/chunk speaking targets should preferably be attested in user/native material; AI-generated wording must be sufficiently validated for naturalness, meaning, variety, and register before becoming an exact production target.
 
 A source reused across multiple decks is valid only when each card covers a real additional skill gap. If the extra card mostly repeats the same retrieval, discard it.
 
@@ -92,6 +95,7 @@ Current curated notes include:
 - `anki-language/references/research/fluent-forever-gallery.md` — analyzes the Fluent Forever Gallery's six card families and records adopted vs. rejected ideas.
 - `anki-language/references/research/corinna-anki-tutorial.md` — analyzes the complete transcript of Corinna Languages' Anki tutorial and adopts only candidate-capture, creation-efficiency, concise grammar-note, and contextual-source lessons.
 - `anki-language/references/research/meredith-anki-setup-guide.md` — analyzes the complete 37-minute Meredith setup transcript, adopts the absolute-beginner bootstrap exception, and audits its FSRS/settings advice against current official Anki documentation.
+- `anki-language/references/research/evildea-anki-language-tutorial.md` — analyzes Evildea's complete language-learning Anki tutorial, confirms the Reading/Listening/Production architecture, and selectively adopts near-i+1 mining, polysemy-before-encoding, and stronger Production-naturalness rules.
 
 Across these research sources, recommendations are not promoted automatically. Examples deliberately **not** adopted include:
 
@@ -103,6 +107,9 @@ Across these research sources, recommendations are not promoted automatically. E
 - making Forvo/Google Images the default automation path;
 - requiring motivational add-ons or habit tricks as part of card generation.
 - copying fixed new-card/review limits, learning steps, display-order presets, or Easy Days behavior from a creator without verifying current Anki semantics and learner workload.
+- putting many example sentences on a Reading front just to display every possible sense;
+- treating generated sentences as exact speaking targets without adequate naturalness/register validation;
+- making shadowing, translation bans, or a creator's personal new-card quota universal workflow rules.
 
 ### Scheduling settings are not copied from research videos
 
