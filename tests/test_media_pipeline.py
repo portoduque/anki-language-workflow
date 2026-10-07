@@ -404,6 +404,21 @@ def test_live_delivery_detects_current_model_css_drift(tmp_path: Path, monkeypat
         live_module.deliver_live(source)
 
 
+def test_live_delivery_detects_current_model_template_drift(tmp_path: Path, monkeypatch) -> None:
+    source = tmp_path / "plan.json"
+    write_simple_live_plan(source)
+
+    fake = LiveFakeClient()
+    monkeypatch.setattr(live_module, "AnkiConnectClient", lambda endpoint, api_key: fake)
+    live_module.deliver_live(source)
+
+    model_name = "Anki Language v4 — Production"
+    fake.models[model_name]["templates"]["Card 1"]["Front"] += "\n<div>custom drift</div>"
+
+    with pytest.raises(Exception, match="template drift"):
+        live_module.deliver_live(source)
+
+
 def test_live_delivery_recognizes_legacy_identity_without_migrating_it(tmp_path: Path, monkeypatch) -> None:
     source = tmp_path / "plan.json"
     write_simple_live_plan(source)
