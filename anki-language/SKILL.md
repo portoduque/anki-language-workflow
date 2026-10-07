@@ -39,6 +39,9 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 - Prefer useful chunks/collocations/patterns when the combination is the knowledge that matters.
 - Sentence mining is selective; do not turn every sentence into a card.
 - Audio and images are optional and must add learning value.
+- For minimal-pair/sound-discrimination cards, prefer the same speaker/voice and comparable recording conditions when feasible so irrelevant audio cues do not solve the card.
+- Spelling/spelling-sound cards are scaffolding: stop generating them once the learner handles representative patterns reliably, except for genuinely difficult exceptions.
+- When a card tests meaning or valid usage, accept semantically correct alternative examples; require exact wording only when wording/form/order is the actual target.
 - Listening uses audio-first; Production normally keeps answer audio on the back; sound-discrimination cards must not reveal written answers on the front.
 - Keep answers concise and reviews fast.
 - When a material ambiguity changes the learning target, ask the user instead of guessing.

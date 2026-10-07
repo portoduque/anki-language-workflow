@@ -70,10 +70,33 @@ These are product rules, not suggestions. The complete normative specification l
 20. **Fast reviews:** answers should be concise enough to verify recall quickly; extra explanation is secondary.
 21. **Prefer the user's material:** preserve useful source sentences/audio/context instead of replacing them with generic content without reason.
 22. **Ask instead of guessing:** if uncertainty changes meaning, target expression, transcription, register, acceptable answers, or media rights, ask the user before building.
+23. **Minimal-pair isolation:** when feasible, use the same speaker/voice and similar recording conditions so the target sound—not speaker/microphone differences—drives the answer.
+24. **Spelling fade-out:** spelling and spelling↔sound cards are temporary scaffolding; stop creating them when representative patterns are reliably automatic, except for genuinely difficult cases.
+25. **Semantic success over verbatim recall:** when the target is meaning or valid usage, another natural example can count as correct; exact wording is required only when wording, collocation, form, spelling, or word order is itself the target.
+26. **Monolingual definitions are optional:** a concise target-language definition may be useful when already easy to understand, but the workflow never bans the configured base language merely for methodological purity.
 
 A source reused across multiple decks is valid only when each card covers a real additional skill gap. If the extra card mostly repeats the same retrieval, discard it.
 
 Final acceptance test for every card: **useful, distinct, clear, atomic, fast**. If one fails, revise or discard the card.
+
+## Research-derived refinements
+
+The workflow keeps a small set of source-analysis notes under `anki-language/references/research/`. These are **not** automatically treated as rules; only ideas that survive comparison with the existing pedagogy are promoted into the normative card-selection rules.
+
+The first curated note is:
+
+`anki-language/references/research/fluent-forever-gallery.md`
+
+It analyzes the Fluent Forever Gallery's six card families (minimal pairs, spelling/sound, picture words, new words, new word forms, and word order) and records both the ideas adopted and those deliberately rejected because they are outdated, overly rigid, or inefficient for this project.
+
+Not adopted from that source include:
+
+- rigidly banning translation;
+- adding loosely related images to almost every sentence;
+- forcing a fixed Sounds → Words → Grammar progression;
+- auto-generating every sibling card type;
+- copying old Anki scheduling settings;
+- making Forvo/Google Images the default automation path.
 
 ## Complete Anki technical reference library
 
