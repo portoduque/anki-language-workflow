@@ -1,37 +1,41 @@
-# 03 — Card Actions
+# 03 — Card and Scheduling Actions
 
-Card actions operate on generated review cards and their scheduling state.
+Card actions work on generated review cards, scheduling state, suspension, due dates, and review answers.
 
-Use read-only actions for inspection. Scheduling mutations require an explicit user goal because they can change review behavior/history.
+Use read-only inspection first. Scheduling mutations can materially change FSRS/review behavior and should require a clear user goal.
 
-High-risk actions include `setSpecificValueOfCard`, `forgetCards`, `relearnCards`, `answerCards`, and `setDueDate`.
+## Important behavior
 
-## Supported actions
+- `findCards` uses normal Anki search syntax.
+- `cardsInfo` returns rendered question/answer plus card metadata.
+- `getIntervals` returns recent/all intervals; negative intervals represent seconds and positive intervals days in the documented API.
+- `answerCards` grades cards with ease 1–4 (Again→Easy).
+- `gradeNow` is present in the recent 2026 mirror and should be runtime-verified before use.
+- `setDueDate`, `forgetCards`, `relearnCards`, `repositionNewCards`, and `setSpecificValueOfCard` can change scheduling materially.
+- `setSpecificValueOfCard` is low-level and can damage scheduling/database semantics if used carelessly.
 
-| Action | Main documented params | Purpose |
+## Current catalog
+
+| Action | Source signature | Risk |
 | --- | --- | --- |
-| `getEaseFactors` | — | See upstream documentation. |
-| `setEaseFactors` | — | See upstream documentation. |
-| `setSpecificValueOfCard` | — | See upstream documentation. |
-| `suspend` | — | See upstream documentation. |
-| `unsuspend` | — | See upstream documentation. |
-| `suspended` | — | See upstream documentation. |
-| `areSuspended` | — | See upstream documentation. |
-| `areDue` | — | See upstream documentation. |
-| `getIntervals` | — | See upstream documentation. |
-| `findCards` | — | See upstream documentation. |
-| `cardsToNotes` | — | See upstream documentation. |
-| `cardsModTime` | — | See upstream documentation. |
-| `cardsInfo` | — | See upstream documentation. |
-| `forgetCards` | — | See upstream documentation. |
-| `relearnCards` | — | See upstream documentation. |
-| `answerCards` | — | See upstream documentation. |
-| `setDueDate` | — | See upstream documentation. |
+| `getEaseFactors` | `self, cards` | `read` |
+| `setEaseFactors` | `self, cards, easeFactors` | `write` |
+| `setSpecificValueOfCard` | `self, card, keys, newValues, warning_check=False` | `destructive` |
+| `suspend` | `self, cards, suspend=True` | `write` |
+| `unsuspend` | `self, cards` | `write` |
+| `suspended` | `self, card` | `write` |
+| `areSuspended` | `self, cards` | `read` |
+| `areDue` | `self, cards` | `read` |
+| `getIntervals` | `self, cards, complete=False` | `read` |
+| `findCards` | `self, query=None, fields=None, noteFields=None` | `read` |
+| `cardsToNotes` | `self, cards` | `read` |
+| `cardsModTime` | `self, cards` | `read` |
+| `cardsInfo` | `self, cards, fields=None, noteFields=None, retrieved_info_mode='ALL'` | `read` |
+| `forgetCards` | `self, cards` | `destructive` |
+| `relearnCards` | `self, cards` | `destructive` |
+| `answerCards` | `self, answers` | `write` |
+| `gradeNow` | `self, cards, ease` | `write` |
+| `setDueDate` | `self, cards, days` | `destructive` |
+| `repositionNewCards` | `self, orderedCardIds, startPosition, step, shift` | `destructive` |
 
-## Runtime verification
-
-Before using a version-sensitive or uncertain action, call `apiReflect` against the user's installed AnkiConnect. The local catalog is a curated snapshot, not a substitute for runtime capability discovery.
-
-## Source
-
-- https://github.com/ankiultimate/anki-connect/blob/master/README.md
+For exact examples/edge cases, use the action's `source_anchor` in `ACTION_CATALOG.json` and confirm live support with `apiReflect`.
