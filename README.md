@@ -538,7 +538,7 @@ They are rendered conditionally on the back and are delivered as separate Anki n
 
 The structured-field migration originally introduced **Anki Language v3**. The current generated templates use **Anki Language v4** so night-mode/RTL/mobile presentation improvements do not silently restyle existing v3 note types.
 
-Delivery identity is now shared across both output paths. New APKG and live notes receive the broad `anki-language` tag plus a deterministic scoped identity derived from **deck + target-language code + stable card id**. This means cards imported from a generated APKG can participate in the same default read-only audit as live-delivered cards, while two unrelated decks can safely reuse a local card id.
+Delivery identity is now shared across both output paths. New APKG and live notes receive the broad `anki-language` tag plus a deterministic scoped identity derived from **deck + target-language code + skill + stable card id**. This means cards imported from a generated APKG can participate in the same default read-only audit as live-delivered cards, while two unrelated decks can safely reuse a local card id.
 
 Live reruns are intentionally conflict-aware: an existing note is skipped only after its stored fields/media references match the expected card. Reusing the same stable identity for changed content is reported as drift rather than silently skipped or overwritten. Legacy card-id-only live tags are still recognized inside their expected deck and verified read-only.
 
