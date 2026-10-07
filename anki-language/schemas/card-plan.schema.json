@@ -79,8 +79,13 @@
             ]
           },
           "mode": {
-            "type": "string",
-            "minLength": 1,
+            "enum": [
+              "standard",
+              "minimal-pair",
+              "sound-discrimination",
+              "spelling-sound",
+              "audio-to-spelling"
+            ],
             "default": "standard"
           },
           "target_text": {
