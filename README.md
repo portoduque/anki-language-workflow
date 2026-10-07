@@ -121,7 +121,7 @@ For example, the AI can create **one** Writing card with:
 }
 ```
 
-On the Front, the user sees `Je vais […] .` (the actual sentence punctuation is preserved), a short instruction, and Anki's built-in input to **type only `à l'école`**. On reveal, Anki compares the typed form with the exact answer, and the Back shows the complete sentence. No JavaScript, add-on, manual cloze syntax, or extra review cards. The typed answer appears exactly once within `target_text` and is split deterministically into visible `WritingBefore`/`WritingAfter` fields.
+On the Front, the user sees `Je vais […].` (the actual sentence punctuation is preserved), a short instruction, and Anki's built-in input to **type only `à l'école`**. On reveal, Anki compares the typed form with the exact answer, and the Back shows the complete sentence. No JavaScript, add-on, manual cloze syntax, or extra review cards. The typed answer appears exactly once within `target_text` and is split deterministically into visible `WritingBefore`/`WritingAfter` fields.
 
 The `prompt` must make the gap unambiguous. Writing is useful for orthography, accents, article+preposition forms, verb inflections and short chunks. The workflow **does not** generate Writing for every source line or known Production card. It creates a Writing card only when correct **written form** deserves its own quick review. Optional audio belongs on the Back. Long source material should still yield **short** Writing sentences/chunks.
 
@@ -628,7 +628,7 @@ An audit of a real exported French deck identified six Pronunciation cards whose
 
 - **Pronunciation read-aloud (`standard`) / spelling-to-sound (`spelling-sound`)**: show a mode-appropriate written `FrontCue` on the front, with optional answer audio on the back.
 - **Audio identification (`minimal-pair`, `sound-discrimination`, `audio-to-spelling`)**: front audio remains visible while the written target remains concealed.
-- **Model-version isolation**: only Pronunciation changes to **Anki Language v6**. Reading, Listening, Production stay on v5; all four keep the same approved visual CSS. Older Pronunciation v5 cards are **not modified automatically**.
+- **Model-version isolation**: only Pronunciation changes to **Anki Language v6**. Reading, Listening, Production and newly added Writing use v5; all five share the approved visual CSS. Older Pronunciation v5 cards are **not modified automatically**.
 - **Production quality**: prefer short useful chunks/constructions; request whole-utterance reproduction only when that whole utterance is the real learning target. Grade semantically valid alternatives rather than blindly enforcing a single translation.
 - **Skill selection**: do not add extra Pronunciation cards merely because another dialogue line already generated Reading, Listening or Production.
 - **Audio alignment**: if an audio file is reused across distinct target texts, each use must declare its verified `audio_transcript`. Validation checks agreement and textual inclusion; **it cannot establish acoustic truth**.
@@ -656,7 +656,7 @@ Existing v3/v4 cards are not migrated automatically. The version bump prevents a
 
 ### Functional coverage
 
-The v5 UI has deterministic functional tests for all four skills. The suite verifies front/back answer-leak boundaries, answer hierarchy, conditional optional sections, mobile/night-mode/RTL guarantees, dependency-free HTML/CSS, a real four-skill APKG build with audio/image media, deep APKG validation, and live AnkiConnect model compatibility for all four v5 note types.
+The v5 UI has deterministic functional tests for the original four skills plus new end-to-end Writing-specific coverage. The suite verifies front/back answer-leak boundaries, answer hierarchy, conditional optional sections, mobile/night-mode/RTL guarantees, dependency-free HTML/CSS, a real four-skill APKG build with audio/image media, deep APKG validation, and live AnkiConnect model compatibility for the original v5 note types and the new Writing note type.
 
 ### Deterministic card modes
 
