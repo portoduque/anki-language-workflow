@@ -20,6 +20,7 @@ from card_contract import (
     pronunciation_front_cue,
     workflow_system_tags,
     workflow_tag,
+    writing_parts,
 )
 from media_validate import MediaValidationError, sha256_file, validate_media_file
 from validate_plan import load_plan, validate_plan
@@ -157,6 +158,11 @@ def note_fields(plan: dict[str, Any], card: dict[str, Any]) -> dict[str, str]:
     }
     if skill == "pronunciation":
         fields["FrontCue"] = clean(pronunciation_front_cue(card))
+    if skill == "writing":
+        before, answer, after = writing_parts(card)
+        fields["WritingBefore"] = clean(before)
+        fields["WritingAfter"] = clean(after)
+        fields["WritingAnswer"] = clean(answer)
     return fields
 
 
