@@ -72,7 +72,7 @@ Unknown modes and cross-skill mode combinations are rejected instead of silently
 Delivery injects system tags deterministically; the AI/card plan does not need to author them:
 
 - `anki-language` marks workflow-owned notes so read-only audits can find them regardless of whether they arrived through APKG or live delivery;
-- a scoped identity tag is derived from deck name + target-language code + stable card `id`.
+- a scoped identity tag is derived from deck name + target-language code + skill + stable card `id`.
 
 The scoped identity prevents an unrelated card with the same local `id` in another deck/language workspace from being mistaken for an already-delivered note.
 
