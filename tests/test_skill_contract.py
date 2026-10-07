@@ -124,3 +124,36 @@ def test_antigravity_workflow_never_bypasses_media_validation() -> None:
     workflow = (SKILL / "assets" / "antigravity-workflow.md").read_text(encoding="utf-8")
     assert "every audio/image is decoded and hashed before packaging/upload" in workflow
     assert "Never bypass media validation" in workflow
+
+
+def test_fluent_forever_refinements_are_explicit_and_selective() -> None:
+    card_rules = (SKILL / "references" / "card-selection.md").read_text(encoding="utf-8").lower()
+    pedagogy = (SKILL / "references" / "pedagogy.md").read_text(encoding="utf-8").lower()
+    skill = (SKILL / "SKILL.md").read_text(encoding="utf-8").lower()
+
+    assert "same speaker/voice" in card_rules
+    assert "fade out spelling/sound scaffolding" in card_rules
+    assert "semantic success over exact example reproduction" in card_rules
+    assert "target-language definition" in card_rules
+    assert "same speaker/voice" in skill
+    assert "spelling/spelling-sound cards are scaffolding" in skill
+    assert "semantically correct alternative examples" in skill
+    assert "monolinguality is not a goal by itself" in pedagogy
+
+
+def test_fluent_forever_research_note_records_rejections() -> None:
+    note = (SKILL / "references" / "research" / "fluent-forever-gallery.md").read_text(encoding="utf-8").lower()
+    assert "rigid “no translation on cards”" in note
+    assert "an image for almost every sentence" in note
+    assert "fixed phase progression" in note
+    assert "old anki scheduling settings" in note
+    assert "100–300" in note
+
+
+def test_readme_documents_research_derived_refinements() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "## Research-derived refinements" in readme
+    assert "fluent-forever-gallery.md" in readme
+    assert "Minimal-pair isolation" in readme
+    assert "Spelling fade-out" in readme
+    assert "Semantic success over verbatim recall" in readme
