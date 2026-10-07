@@ -143,6 +143,7 @@ def openverse_candidates(query: str, licenses: list[str]) -> list[dict[str, Any]
             "license": item.get("license") or "",
             "license_url": item.get("license_url") or "",
             "creator": item.get("creator") or "",
+            "attribution": item.get("attribution") or "",
             "source_url": item.get("foreign_landing_url") or item.get("detail_url") or "",
             "provider": f"openverse:{item.get('source') or item.get('provider') or 'unknown'}",
         })
@@ -184,6 +185,7 @@ def wikimedia_candidates(query: str, licenses: list[str]) -> list[dict[str, Any]
             "license": strip_html((meta.get("LicenseShortName") or {}).get("value", "")),
             "license_url": strip_html((meta.get("LicenseUrl") or {}).get("value", "")),
             "creator": strip_html((meta.get("Artist") or {}).get("value", "")),
+            "attribution": strip_html((meta.get("Credit") or {}).get("value", "")) or strip_html((meta.get("Artist") or {}).get("value", "")),
             "source_url": info.get("descriptionurl") or "",
             "provider": "wikimedia-commons",
         })
@@ -291,6 +293,8 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
                 "provider": str(result["provider"]),
                 "source_url": str(result.get("source_url") or ""),
                 "license": str(result.get("license") or ""),
+                **({"license_url": str(result.get("license_url"))} if result.get("license_url") else {}),
+                **({"attribution": str(result.get("attribution"))} if result.get("attribution") else {}),
             }
             card_validation["image"] = result["validation"]
             counts["images_downloaded"] += 1
