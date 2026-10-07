@@ -21,6 +21,9 @@ Optimize long-term retrieval and usable language ability while keeping reviews f
 - Genuine user-provided personal associations can strengthen concrete-memory cues; never invent them.
 - Similar new items can interfere with one another; avoid creating large batches of near-synonyms or semantic siblings without need.
 - The Anki deck should make learned material retrievable. It does not replace reading, listening, speaking, or writing practice.
+- Treat encountered unknown items as candidates, not automatic cards; preserve context and select after the passage/clip when that is less disruptive.
+- Card-creation time is part of the cost function. Prefer simple cards and selective enrichment over elaborate customization that does not improve retrieval.
+- Grammar notes are useful only when a short explanation prevents confusion; avoid turning the back into a mini-lesson or dumping complete paradigms by default.
 
 ## Review-efficiency rule
 

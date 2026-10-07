@@ -74,6 +74,9 @@ These are product rules, not suggestions. The complete normative specification l
 24. **Spelling fade-out:** spelling and spelling↔sound cards are temporary scaffolding; stop creating them when representative patterns are reliably automatic, except for genuinely difficult cases.
 25. **Semantic success over verbatim recall:** when the target is meaning or valid usage, another natural example can count as correct; exact wording is required only when wording, collocation, form, spelling, or word order is itself the target.
 26. **Monolingual definitions are optional:** a concise target-language definition may be useful when already easy to understand, but the workflow never bans the configured base language merely for methodological purity.
+27. **Candidate before card:** an unknown item encountered while reading/listening/watching is only a candidate until it passes the usefulness/context/review-cost test; preserve source context and batch selection when practical.
+28. **Creation time counts:** do not spend disproportionate time decorating/customizing cards when a simpler card trains the same retrieval equally well.
+29. **Grammar notes stay concise:** add a short back-side rule/contrast only when it explains why the answer is correct or prevents future confusion; avoid full paradigm/AI dumps by default.
 
 A source reused across multiple decks is valid only when each card covers a real additional skill gap. If the extra card mostly repeats the same retrieval, discard it.
 
@@ -83,20 +86,20 @@ Final acceptance test for every card: **useful, distinct, clear, atomic, fast**.
 
 The workflow keeps a small set of source-analysis notes under `anki-language/references/research/`. These are **not** automatically treated as rules; only ideas that survive comparison with the existing pedagogy are promoted into the normative card-selection rules.
 
-The first curated note is:
+Current curated notes include:
 
-`anki-language/references/research/fluent-forever-gallery.md`
+- `anki-language/references/research/fluent-forever-gallery.md` — analyzes the Fluent Forever Gallery's six card families and records adopted vs. rejected ideas.
+- `anki-language/references/research/corinna-anki-tutorial.md` — analyzes the complete transcript of Corinna Languages' Anki tutorial and adopts only candidate-capture, creation-efficiency, concise grammar-note, and contextual-source lessons.
 
-It analyzes the Fluent Forever Gallery's six card families (minimal pairs, spelling/sound, picture words, new words, new word forms, and word order) and records both the ideas adopted and those deliberately rejected because they are outdated, overly rigid, or inefficient for this project.
-
-Not adopted from that source include:
+Across these research sources, recommendations are not promoted automatically. Examples deliberately **not** adopted include:
 
 - rigidly banning translation;
 - adding loosely related images to almost every sentence;
 - forcing a fixed Sounds → Words → Grammar progression;
 - auto-generating every sibling card type;
-- copying old Anki scheduling settings;
-- making Forvo/Google Images the default automation path.
+- copying old Anki scheduling settings or universal daily-card quotas;
+- making Forvo/Google Images the default automation path;
+- requiring motivational add-ons or habit tricks as part of card generation.
 
 ## Complete Anki technical reference library
 

@@ -157,3 +157,35 @@ def test_readme_documents_research_derived_refinements() -> None:
     assert "Minimal-pair isolation" in readme
     assert "Spelling fade-out" in readme
     assert "Semantic success over verbatim recall" in readme
+
+
+def test_corinna_tutorial_refinements_are_explicit() -> None:
+    card_rules = (SKILL / "references" / "card-selection.md").read_text(encoding="utf-8").lower()
+    pedagogy = (SKILL / "references" / "pedagogy.md").read_text(encoding="utf-8").lower()
+    skill = (SKILL / "SKILL.md").read_text(encoding="utf-8").lower()
+
+    assert "capture candidates first; commit to cards second" in card_rules
+    assert "creation effort must also earn its keep" in card_rules
+    assert "brief back-side explanation" in card_rules
+    assert "candidate" in skill and "batch selection" in skill
+    assert "card-creation/customization time also counts" in skill
+    assert "grammar/morphology explanations" in skill
+    assert "card-creation time is part of the cost function" in pedagogy
+
+
+def test_corinna_research_note_records_adopted_and_rejected_ideas() -> None:
+    note = (SKILL / "references" / "research" / "corinna-anki-tutorial.md").read_text(encoding="utf-8").lower()
+    assert "complete transcript was reviewed" in note
+    assert "separate capture from card commitment" in note
+    assert "creation/customization time is a real cost" in note
+    assert "concise grammar explanation" in note
+    assert "universal 20 new / 200 review rule" in note
+    assert "forvo add-on as the core audio pipeline" in note
+
+
+def test_readme_documents_corinna_research_refinements() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "corinna-anki-tutorial.md" in readme
+    assert "Candidate before card" in readme
+    assert "Creation time counts" in readme
+    assert "Grammar notes stay concise" in readme
