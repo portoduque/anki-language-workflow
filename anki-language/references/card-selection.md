@@ -135,6 +135,8 @@ Typical back:
 
 Prefer contextual words/chunks over decontextualized memorization when context helps.
 
+For a learner who can comfortably understand the explanation, a concise **target-language definition** may replace or supplement a base-language gloss when it clarifies meaning without adding several new unknowns. Do not force monolingual definitions merely to avoid translation.
+
 Do not create Reading cards for material the learner already understands reliably.
 
 ## 8. Listening cards
@@ -177,6 +179,16 @@ Choose between full-sentence production and guided expression production based o
 
 Do not require an exact full sentence when many natural translations would be equally correct unless the prompt explicitly constrains the wording.
 
+### Semantic success over exact example reproduction
+
+When a card's goal is to demonstrate **meaning or valid usage**, score the underlying retrieval, not whether the learner reproduced the stored example verbatim.
+
+For example, if the task is to recall a valid context for a target word/form, another natural sentence that demonstrates the same meaning/form can count as correct.
+
+Only require the exact stored wording when exact wording, collocation, spelling, morphology, or word order is itself the learning target.
+
+This does **not** permit vague prompts. The front must still make clear what knowledge is being tested.
+
 ## 10. Pronunciation & Sounds cards
 
 Create these only when sound is genuinely worth training.
@@ -189,7 +201,17 @@ Supported purposes:
 
 Never show the written answer on the front of a sound-discrimination/minimal-pair card.
 
+For minimal-pair/sound-discrimination material, prefer recordings produced by the **same speaker/voice under similar recording conditions** when feasible. This reduces irrelevant speaker, loudness, microphone, and prosody cues so the learner must discriminate the target sound itself. Different speakers are acceptable when matched recordings are unavailable; do not block a useful card solely for that reason.
+
 Do not generate large minimal-pair or spelling decks automatically. Create them when the language or learner difficulty makes them useful.
+
+### Fade out spelling/sound scaffolding
+
+Spelling and spelling↔sound cards are scaffolding, not a permanent quota.
+
+Create them when orthography or grapheme↔sound mapping is still effortful. Once the learner can handle representative examples reliably and the cards have become trivial, stop generating new cards of that subtype unless a genuinely difficult spelling/sound pattern appears.
+
+The Fluent Forever Gallery mentions roughly the first 100–300 words as a historical personal heuristic for this transition. Treat that as an example, **not a hard threshold**. The workflow should use demonstrated difficulty/automaticity instead of a fixed word count.
 
 ## 11. Prefer chunks, collocations, and useful patterns when they improve usable language
 
@@ -224,6 +246,8 @@ Prefer sentences close to the learner's current level rather than dense sentence
 ## 13. Images are selective
 
 Use an image when it encodes or disambiguates meaning better than text, especially for concrete nouns, objects, actions, or visually distinctive concepts.
+
+A genuine personal association supplied by the user may be used when it makes a concrete cue more distinctive or memorable. Never invent personal associations or add them merely to imitate a method.
 
 An image may even replace a base-language translation when the concept is obvious from the image.
 
