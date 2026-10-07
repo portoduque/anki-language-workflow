@@ -29,6 +29,51 @@ Official Anki documentation was also checked for the technical claims adopted he
 - answer scrolling through `id=answer`;
 - platform/client differences.
 
+## Exact free-template pack audit
+
+The dedicated free-template page and the downloadable plain-text pack were later inspected directly, not only through the surrounding blog guidance:
+
+- `language-learning-starter-deck.txt`;
+- `front-template.html`;
+- `back-template.html`;
+- `README.txt`;
+- the dedicated styling guidance associated with the pack.
+
+The pack is deliberately transparent:
+
+- seven semantic fields: Target sentence, Meaning, Context, Source, Audio, Image, Notes;
+- ordinary Anki field replacements + HTML/CSS;
+- no JavaScript;
+- no bundled media;
+- no APKG database or scheduling history;
+- empty optional Audio/Image values instead of broken placeholder references;
+- source/provenance retained separately;
+- preview in Anki Desktop before syncing/bulk use.
+
+### Why this repository is not copying the seven-field schema
+
+The free pack uses `Context` for a short **situational/scene cue** shown around the target sentence.
+
+This repository already separates the same roles differently:
+
+- `Context` inside the generated Anki note is the self-orienting `<TargetLanguage> — <Skill>` header;
+- `prompt` carries the learner-facing instruction and may also contain the concise situation/context that defines the retrieval task;
+- `base_text` carries contextual meaning/translation;
+- `source` preserves provenance/locator;
+- media and Notes remain separate.
+
+Renaming the current `Context` field or adding another schema field solely to mirror VidToAnki would force another model migration without adding retrieval capability. That is not justified.
+
+What **is** worth making explicit is the semantic contract for `prompt`: it may contain a concise situation/scene cue when that improves retrieval without leaking the answer.
+
+### Transparency/portability invariant reinforced by the pack
+
+The pack's strongest technical property is that a learner can inspect every essential behavior before import. The repository already follows that design in practice, so this source justifies making it an explicit invariant:
+
+> Generated templates must not depend on JavaScript or remote web assets for essential card behavior.
+
+Ordinary Anki HTML/CSS/field replacements remain the baseline. This reduces mobile/client variance and makes generated card behavior auditable.
+
 ## What the site consistently argues
 
 Across the related pages, the same design model repeats:
@@ -125,5 +170,7 @@ This is a human QA boundary, not a reason to add browser automation or JavaScrip
 3. Add the answer scroll anchor for long/mobile cards.
 4. Document that Anki client preview remains the final rendering authority after structural validation.
 5. Add regression tests for these guarantees.
+6. Make inspectability explicit: generated templates do not depend on JavaScript or remote assets for essential behavior.
+7. Clarify that `prompt` may carry concise situational/scene context, avoiding an unnecessary schema/model migration just to copy the free template's field names.
 
 No card-plan schema, deck hierarchy, media provider, scheduler, installer, or AnkiConnect protocol change is justified.
