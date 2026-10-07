@@ -409,13 +409,13 @@ def test_anki_reference_documents_current_note_card_tradeoff() -> None:
     assert "`Reading`" in ref and "`Variant`" in ref and "`Grammar`" in ref
 
 
-def test_readme_documents_structured_fields_and_v3_models() -> None:
+def test_readme_documents_structured_fields_and_current_models() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "## Structured language fields" in readme
     assert '"reading": "xuéxí"' in readme
     assert '"variant": "学习"' in readme
     assert '"grammar": "verb"' in readme
-    assert "Anki Language v3" in readme
+    assert "Anki Language v4" in readme
     assert "redchamber-optimize-anki-language.md" in readme
     assert "Reveal only non-target support" in readme
     assert "Keep distinct linguistic data structured" in readme
@@ -569,3 +569,23 @@ def test_readme_documents_keiffenheim_selective_refinement() -> None:
     assert "keiffenheim-flashcards-language-learning.md" in readme
     assert "Natural re-encounter scarcity matters" in readme
     assert "inaccessible paywalled article headings" in readme
+
+
+def test_vidtoanki_refinement_is_technical_and_selective() -> None:
+    skill = (SKILL / "SKILL.md").read_text(encoding="utf-8").lower()
+    contract = (SKILL / "references" / "output-contract.md").read_text(encoding="utf-8").lower()
+    note = (SKILL / "references" / "research" / "vidtoanki-card-format-ecosystem.md").read_text(encoding="utf-8").lower()
+
+    assert "structural validation, not proof of cross-client rendering" in skill
+    assert "anki client rendering is the final authority" in contract
+    assert "generated templates were not fully portable across night mode and bidirectional scripts" in note
+    assert "anki language v4" in note
+    assert "one rich note → several optional card types" in note
+    assert "no card-plan schema, deck hierarchy, media provider, scheduler, installer, or ankiconnect protocol change" in note
+
+
+def test_readme_documents_vidtoanki_portability_refinement() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "vidtoanki-card-format-ecosystem.md" in readme
+    assert "Anki Language v4" in readme
+    assert "spot-check representative cards in Anki" in readme
