@@ -139,6 +139,18 @@ For a learner who can comfortably understand the explanation, a concise **target
 
 Do not create Reading cards for material the learner already understands reliably.
 
+### Inspect polysemy before deciding the card
+
+When a target word/expression appears to have multiple senses or productive uses, inspect several trustworthy contexts before selecting cards. The purpose of those extra contexts is to understand the target's semantic range, not to make the learner read a wall of examples on every review.
+
+Prefer:
+
+- one clear primary context on the front;
+- at most a small number of concise supporting examples on the back when they materially clarify usage;
+- separate cards only for distinct, useful senses that deserve independent retrieval.
+
+Do **not** copy six or ten example sentences onto the front merely to show every possible use. Context exploration belongs mainly in analysis; review cards must remain fast.
+
 ## 8. Listening cards
 
 Use Listening only when spoken comprehension is actually a learning target.
@@ -174,6 +186,14 @@ Back:
 - natural full sentence when useful;
 - audio normally on the back so it does not reveal the answer before retrieval;
 - concise explanation only when needed.
+
+### Production targets need a higher naturalness bar
+
+When the learner is expected to actively reproduce a full sentence or chunk, prefer language that is **attested in user/native material** or independently verified as natural for the intended variety/register.
+
+An AI-generated sentence may be used as a production target only when its naturalness and intended meaning have been validated sufficiently. If that confidence is missing, prefer an attested source sentence or a direct semantic production prompt instead of training a potentially unnatural phrase.
+
+Reading/listening examples may tolerate generated support material more readily, but they still must be correct and natural enough not to teach bad language.
 
 Choose between full-sentence production and guided expression production based on what the learner actually needs to retrieve.
 
@@ -242,6 +262,14 @@ A mined sentence is a good candidate when it is:
 - a good context for one primary target.
 
 Prefer sentences close to the learner's current level rather than dense sentences that require learning many things at once.
+
+### Prefer near-i+1 sentence mining
+
+A strong default is a sentence where the learner already understands essentially everything except the **one primary target**.
+
+One incidental item that is immediately inferable and does not compete with the target may be acceptable, but do not use a sentence that requires learning several independent unknown words/forms at once.
+
+If multiple unknowns each demand attention, choose a cleaner sentence, split the learning targets, or skip the sentence.
 
 ### Capture candidates first; commit to cards second
 

@@ -13,6 +13,9 @@ Optimize long-term retrieval and usable language ability while keeping reviews f
 - Listening is not the same as reading. Use audio-first cards when listening is the actual target.
 - Chunks and collocations often deserve priority over isolated words because they support fluent production.
 - Sentence mining is selective. Do not convert every sentence into a card.
+- Prefer near-i+1 mined sentences: essentially known context plus one primary unknown/focus item.
+- For polysemous targets, inspect multiple contexts during analysis, then keep each review card concise instead of placing many examples on the front.
+- Full-sentence Production targets require a higher naturalness bar than passive support examples; prefer attested/native material or independently validated generated language.
 - Concrete vocabulary may benefit from an image; abstract language usually benefits more from context.
 - When a card tests meaning or valid usage, semantic correctness matters more than reproducing the stored example verbatim; exact wording is required only when exact wording is the target.
 - Minimal-pair audio should minimize irrelevant cues. Prefer the same speaker/voice and comparable recording conditions when feasible.
