@@ -465,3 +465,34 @@ def test_readme_documents_alemayhu_selective_refinement() -> None:
     assert "alemayhu-custom-language-card-types.md" in readme
     assert "Target language-specific features selectively" in readme
     assert "never generate a full paradigm merely because it exists" in readme
+
+
+def test_feedback_loop_refinements_are_selective_and_safe() -> None:
+    rules = (SKILL / "references" / "card-selection.md").read_text(encoding="utf-8").lower()
+    pedagogy = (SKILL / "references" / "pedagogy.md").read_text(encoding="utf-8").lower()
+    skill = (SKILL / "SKILL.md").read_text(encoding="utf-8").lower()
+    contract = (SKILL / "references" / "output-contract.md").read_text(encoding="utf-8").lower()
+    note = (SKILL / "references" / "research" / "claude-code-anki-feedback-loop.md").read_text(encoding="utf-8").lower()
+
+    assert "review history is evidence, not an automatic diagnosis" in rules
+    assert "start with read-only inspection" in rules
+    assert "preserve precise source locators when available" in rules
+    assert "review history is evidence for diagnosis" in pedagogy
+    assert "preserve precise source locators" in pedagogy
+    assert "optional live maintenance / feedback audit" in skill
+    assert "audit_live.py" in skill
+    assert "explicit user approval" in skill
+    assert "stable locator" in contract
+    assert "complete spoken transcript was reviewed from start to finish" in note
+    assert "automatic scheduling reprioritization from ai guesses" in note
+    assert "automatic deletion of “low-value” cards" in note
+    assert "no card-plan schema, note model, deck architecture, scheduler, media provider, installer, or live-delivery semantics need to change" in note
+
+
+def test_readme_documents_feedback_audit_and_source_locators() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "claude-code-anki-feedback-loop.md" in readme
+    assert "Preserve precise source locators" in readme
+    assert "Maintenance starts read-only" in readme
+    assert "audit_live.py" in readme
+    assert "There is deliberately no universal “bad card” threshold" in readme
