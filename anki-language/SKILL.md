@@ -53,9 +53,10 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 6. Classify each selected card as exactly one of: `reading`, `listening`, `production`, or `pronunciation`.
 7. Add sparse linguistic tags only when useful.
 8. If media may improve learning, read [references/media.md](references/media.md) before acquiring, generating, or attaching it.
-9. Write `card-plan.json` according to [references/output-contract.md](references/output-contract.md) and `schemas/card-plan.schema.json`. Its target/base languages must match the workspace configuration.
-10. Run `python scripts/build.py card-plan.json --output <Language>.apkg`.
-11. Deliver the APKG, build report, and card plan. Report skipped or unresolved items concisely.
+9. Write `card-plan.json` according to [references/output-contract.md](references/output-contract.md) and `schemas/card-plan.schema.json`. Its target/base languages must match the workspace configuration. Use `audio_request` / `image_request` only for cards where media adds real value.
+10. Select delivery: `apkg` by default; `live` only when the user wants direct AnkiConnect delivery; `both` when live insertion plus a portable APKG is useful.
+11. Run `python scripts/run_pipeline.py card-plan.json --delivery <apkg|live|both>`. This resolves media, validates it, then delivers it.
+12. Deliver the resolved plan plus APKG/live report. Never claim media success when a validation or post-upload verification failed.
 
 ## Deck architecture
 
@@ -74,6 +75,67 @@ Use tags, not extra micro-decks, for vocabulary, grammar, chunks, levels, source
 - **Pronunciation & Sounds:** use pronunciation production, sound discrimination/minimal pair, or spelling-sound behavior according to the actual target.
 
 Never use a blind or ambiguous cloze. The learner must know what knowledge to retrieve without the prompt revealing the answer.
+
+## Automatic media and delivery
+
+The AI decides **whether media is worth adding**. Deterministic scripts decide how to generate/fetch, validate, and deliver it.
+
+### Audio
+
+Priority:
+
+1. user-supplied original audio;
+2. permitted native audio;
+3. automatic local TTS.
+
+For text-only material, use `audio_request` when audio materially improves the card. The built-in automatic TTS provider is Piper.
+
+Do not use the Forvo add-on as the core automation path. It runs inside Anki and is not a stable cross-agent media API. Do not scrape Forvo. Use it only through a workflow whose terms permit storage/embedding.
+
+### Images
+
+Use `image_request` only for concepts where an image improves retrieval.
+
+Automatic provider order:
+
+1. Openverse with explicit license filter;
+2. Wikimedia Commons fallback with machine-readable license metadata.
+
+Default automatic licenses are intentionally restricted to `cc0` and `pdm`.
+
+### Mandatory validation before any upload/build
+
+Before media is attached to a card, the pipeline must validate the actual local file:
+
+- audio must decode and have positive duration;
+- image must fully decode and have usable dimensions;
+- SHA-256 is recorded;
+- a file that changed after validation is rejected.
+
+Never bypass this gate.
+
+Required media failures block delivery. Optional media failures are recorded in `media_issues` and the card continues without that media; never upload a broken fallback merely to fill the field.
+
+### AnkiConnect live delivery
+
+When delivery mode is `live` or `both`:
+
+1. verify AnkiConnect with `version` + `apiReflect`;
+2. inspect/create required decks/models;
+3. validate every local media file **before** `addNotes`;
+4. preflight notes with `canAddNotesWithErrorDetail`;
+5. create notes with local audio/image paths;
+6. re-read created notes with `notesInfo`;
+7. retrieve uploaded media with `retrieveMediaFile`;
+8. compare uploaded bytes against the prevalidated local SHA-256.
+
+Success requires both the note-field reference and uploaded bytes to validate. If post-upload verification fails, report failure and the affected note IDs instead of claiming success.
+
+### Delivery modes
+
+- `apkg`: portable validated package only.
+- `live`: direct validated insertion into running Anki.
+- `both`: direct insertion plus APKG.
 
 ## Anki technical reference routing
 
@@ -146,6 +208,6 @@ The router understands both natural-language goals and exact action names. It se
 
 ## Quality gate
 
-Do not deliver until the deterministic pipeline passes. It validates plan structure, media references, package integrity, note/card counts, deck hierarchy, and the final APKG.
+Do not deliver until the deterministic pipeline passes. It validates plan structure, actual media decodability, media hashes, package integrity, note/card counts, deck hierarchy, and the final APKG. In live mode it additionally verifies AnkiConnect-uploaded bytes and note-field references.
 
 The builder, not the model, is the source of truth for package structure. Do not hand-edit Anki collection databases.
