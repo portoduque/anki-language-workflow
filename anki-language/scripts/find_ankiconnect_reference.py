@@ -111,6 +111,8 @@ def main() -> int:
         "matched_actions": matched_actions,
         "references": ranked,
         "catalog": str(ref_dir / "ACTION_CATALOG.json"),
+        "config_reference": str(ref_dir / "CONFIG_REFERENCE.json"),
+        "coverage": str(ref_dir / "COVERAGE.md"),
         "sources": str(ref_dir / "SOURCES.md"),
         "policy": (
             "Read only the returned local references first. "
