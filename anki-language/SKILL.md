@@ -108,6 +108,38 @@ https://docs.ankiweb.net/llms.txt
 
 Current official Anki documentation outranks old blogs, old add-on instructions, and remembered behavior.
 
+## AnkiConnect live-integration reference
+
+When the user wants to **inspect or modify a running Anki collection**, configure/troubleshoot AnkiConnect, or asks how to perform an AnkiConnect action, route to the dedicated sub-library:
+
+`references/anki-connect/INDEX.md`
+
+When scripts are available, use:
+
+`python scripts/find_ankiconnect_reference.py "<goal or action>"`
+
+Examples:
+
+- `python scripts/find_ankiconnect_reference.py "addNote audio duplicate"`
+- `python scripts/find_ankiconnect_reference.py "createModel templates css"`
+- `python scripts/find_ankiconnect_reference.py "api key cors permission"`
+- `python scripts/find_ankiconnect_reference.py "review history stats"`
+
+The router understands both natural-language goals and exact action names. It searches the complete local action catalog of the documented standard AnkiConnect API.
+
+### Mandatory live-integration rules
+
+- AnkiConnect is optional; APKG generation remains the default when live collection access is unnecessary.
+- Before using an uncertain/version-sensitive action, prefer live `version` + `apiReflect` capability discovery.
+- Never invent plausible AnkiConnect actions.
+- Do not assume fork-specific actions exist in standard AnkiConnect.
+- Preserve localhost binding by default.
+- Never expose port 8765 publicly as a convenience shortcut.
+- Use API-key authentication and network restrictions when access extends beyond localhost.
+- Treat delete, scheduling, review-history, model-schema, sync, and profile-changing actions as higher risk.
+- Use human-visible GUI actions when user verification is valuable.
+- Use the AnkiConnect reference library selectively; do not load all 114 actions into context unless exhaustive API analysis is actually required.
+
 ## AI portability
 
 `SKILL.md`, `references/`, `schemas/`, and `scripts/` are the canonical implementation. Provider-specific adapters must remain thin. If an AI supports Agent Skills, install this bundle in its skill directory. If it does not, instruct the AI to read this `SKILL.md` and use the deterministic scripts directly.
