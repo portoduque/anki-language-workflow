@@ -131,7 +131,7 @@ def test_writing_keeps_one_card_and_separate_skill_tag_from_production(tmp_path:
     output = tmp_path / "French.apkg"
     report = build(input_path, output)
     assert report["cards_total"] == 2
-    assert report["by_skill"]["writing"] == 1
+    assert report["cards_by_skill"]["writing"] == 1
     assert output.is_file()
 
     with zipfile.ZipFile(output) as archive:
