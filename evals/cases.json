@@ -434,5 +434,43 @@
       "Uses the configured base language when it gives the clearest efficient cue.",
       "Creates extra retrieval directions only when they independently justify future review cost."
     ]
+  },
+  {
+    "id": "structured-reading-variant-grammar-fields",
+    "input": "A Chinese vocabulary item has target text, pinyin, a simplified variant, and a concise grammatical label. Only written recognition is currently worth training.",
+    "expected": [
+      "Keeps the selected Reading card as the only card unless another skill independently adds value.",
+      "Stores pinyin/reading aid in the structured reading field.",
+      "Stores the alternate written form in variant.",
+      "Stores the concise grammatical label in grammar.",
+      "Does not create Listening, Production, or Pronunciation cards merely because those fields are populated."
+    ]
+  },
+  {
+    "id": "reveal-non-target-support-to-isolate-skill",
+    "input": "A card tests the meaning of a written target item; decoding/pronunciation is not being tested and a reading aid would remove irrelevant difficulty.",
+    "expected": [
+      "May show the reading/pronunciation aid as support because it is not the retrieval target.",
+      "Keeps the target meaning hidden until answer reveal.",
+      "If the card instead tests script decoding/pronunciation, hides the reading aid because it would become the answer."
+    ]
+  },
+  {
+    "id": "handwriting-is-optional-production",
+    "input": "The learner studies Chinese characters and actively wants to practice writing a subset from memory.",
+    "expected": [
+      "May create a Production card whose task is active written/handwriting recall.",
+      "Does not add a new handwriting deck or card type family.",
+      "Creates handwriting cards only for items where active written output is independently useful."
+    ]
+  },
+  {
+    "id": "rich-fields-do-not-imply-multi-card-note",
+    "input": "One source item has reading, variant, grammar, audio, and image fields, but only one retrieval skill is worth reviewing.",
+    "expected": [
+      "Uses the rich structured data without turning every field into a card.",
+      "Keeps the current one-note-per-selected-planned-card workflow behavior.",
+      "Does not auto-generate reverse or sibling cards simply because Anki technically supports multiple templates."
+    ]
   }
 ]
