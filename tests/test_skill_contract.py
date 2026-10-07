@@ -48,3 +48,26 @@ def test_readme_documents_all_install_surfaces() -> None:
     for command in ("python install.py codex", "python install.py claude", "python install.py antigravity", "python install.py generic"):
         assert command in readme
     assert "README maintenance rule" in readme
+
+def test_skill_exposes_non_negotiable_card_rules() -> None:
+    text = (SKILL / "SKILL.md").read_text(encoding="utf-8").lower()
+    required = (
+        "minimum useful number of cards",
+        "one primary retrieval target",
+        "self-orienting",
+        "blind/ambiguous cloze is forbidden",
+        "do not create automatic reverse cards",
+        "do not generate every card type",
+        "sentence mining is selective",
+        "audio and images are optional",
+        "keep answers concise",
+        "ask the user instead of guessing",
+    )
+    for phrase in required:
+        assert phrase in text
+
+
+def test_readme_contains_official_card_creation_rules() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "## Official card-creation rules" in readme
+    assert "useful, distinct, clear, atomic, fast" in readme
