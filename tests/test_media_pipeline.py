@@ -220,10 +220,21 @@ class LiveFakeClient:
         if action == "modelNames":
             return list(self.models)
         if action == "createModel":
-            self.models[params["modelName"]] = list(params["inOrderFields"])
+            self.models[params["modelName"]] = {
+                "fields": list(params["inOrderFields"]),
+                "templates": {
+                    item["Name"]: {"Front": item["Front"], "Back": item["Back"]}
+                    for item in params["cardTemplates"]
+                },
+                "css": params.get("css", ""),
+            }
             return {"id": 1}
         if action == "modelFieldNames":
-            return self.models[params["modelName"]]
+            return self.models[params["modelName"]]["fields"]
+        if action == "modelTemplates":
+            return self.models[params["modelName"]]["templates"]
+        if action == "modelStyling":
+            return {"css": self.models[params["modelName"]]["css"]}
         if action == "findNotes":
             return []
         if action == "canAddNotesWithErrorDetail":
@@ -240,7 +251,13 @@ class LiveFakeClient:
                         self.media[item["filename"]] = path.read_bytes()
                         for field in item["fields"]:
                             fields[field]["value"] += markup.format(name=item["filename"])
-                self.notes[note_id] = {"noteId": note_id, "fields": fields}
+                self.notes[note_id] = {
+                    "noteId": note_id,
+                    "modelName": note["modelName"],
+                    "deckName": note["deckName"],
+                    "tags": list(note.get("tags", [])),
+                    "fields": fields,
+                }
                 ids.append(note_id)
             return ids
         if action == "notesInfo":
