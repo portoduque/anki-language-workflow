@@ -79,7 +79,7 @@ def normalized_utterance(value: str) -> str:
     """Compare target/transcript tokens, retaining meaningful contractions."""
     folded = unicodedata.normalize("NFKC", value).casefold().replace("’", "'")
     # "can" and "can't" must never be matched as the same spoken word.
-    return " ".join(re.findall(r"[^\\W_]+(?:'[^\\W_]+)*", folded, flags=re.UNICODE))
+    return " ".join(re.findall(r"[^\W_]+(?:'[^\W_]+)*", folded, flags=re.UNICODE))
 
 
 def retrieval_signature(card: dict[str, Any]) -> tuple[str, ...]:
