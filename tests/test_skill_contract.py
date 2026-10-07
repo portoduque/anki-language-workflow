@@ -655,3 +655,54 @@ def test_v5_card_ui_contract_is_documented() -> None:
     assert "no JavaScript" in ui
     assert "Existing v3/v4 cards are not migrated automatically" in readme
     assert "All **newly generated** cards" in readme
+
+
+
+def test_long_source_chunk_mining_is_mandatory_and_fast_by_default() -> None:
+    skill = (SKILL / "SKILL.md").read_text(encoding="utf-8").lower()
+    rules = (SKILL / "references" / "card-selection.md").read_text(encoding="utf-8").lower()
+    pedagogy = (SKILL / "references" / "pedagogy.md").read_text(encoding="utf-8").lower()
+    output = (SKILL / "references" / "output-contract.md").read_text(encoding="utf-8").lower()
+    readme = (ROOT / "README.md").read_text(encoding="utf-8").lower()
+
+    assert "mandatory long-source chunk mining" in skill
+    assert "even from exclusively long source sentences" in skill
+    assert "review speed is a top priority" in skill
+    assert "zero, one, or several" in skill
+    assert "never split blindly by punctuation/word count" in skill
+
+    assert "long-source to short-card chunk mining" in rules
+    assert "all" in rules and "long sentences" in rules
+    assert "natural, meaningful candidates" in rules
+    assert "fast-review gate" in rules
+    assert "not a quota" in rules
+    assert "do not mechanically cut by punctuation" in rules
+    assert "do not create a third card merely to memorize the full source sentence" in rules
+
+    assert "long input is a source of candidates" in pedagogy
+    assert "answer and verification speed take priority" in pedagogy
+    assert "long source, short card" in output
+    assert "audio_clip" in output
+    assert "no automatic slicing by punctuation/word count" in output
+    assert "long sentences → useful short chunks" in readme
+    assert "creation itself should remain simple" in readme
+
+
+def test_chunk_mining_behavioral_evals_cover_long_input_and_exceptions() -> None:
+    import json
+
+    cases = json.loads((ROOT / "evals" / "cases.json").read_text(encoding="utf-8"))
+    assert isinstance(cases, list)
+    indexed = {item["id"]: item for item in cases}
+    required = {
+        "all-source-sentences-long-chunk-first",
+        "long-source-natural-idiom-not-mechanically-split",
+        "full-utterance-exception-and-review-speed",
+        "short-listening-chunk-from-long-recording",
+    }
+    assert required.issubset(indexed)
+    for case_id in required:
+        case = indexed[case_id]
+        assert case["input"]
+        assert len(case["expected"]) >= 3
+    assert "audio_clip" in " ".join(indexed["short-listening-chunk-from-long-recording"]["expected"])

@@ -616,5 +616,46 @@
       "Avoids presenting a different/longer utterance as the exact pronunciation of a target that it does not contain.",
       "Retains the user-selected base language rather than changing English to Portuguese without consent."
     ]
+  },
+  {
+    "id": "all-source-sentences-long-chunk-first",
+    "input": "Learner sends screenshots containing only long, multi-clause French sentences (no short isolated phrases) and asks for rapid, efficient Anki cards. One line says: 'Vous pouvez me suivre, c'est à deux minutes d'ici.'",
+    "expected": [
+      "Understands each complete line, then actively mines natural, useful shorter chunks even though all supplied sentences are long.",
+      "May select 'vous pouvez me suivre' and 'à deux minutes d'ici' as separate candidates when each is useful and unknown, with separate concise retrieval prompts.",
+      "Does not create a full-sentence card merely because the input line is long, nor force the learner to reproduce both clauses at once.",
+      "May generate zero, one, or several cards from that line based on distinct usefulness; never one card per clause by default.",
+      "Preserves the source locator and avoids wasting review time with unrelated full-sentence front context."
+    ]
+  },
+  {
+    "id": "long-source-natural-idiom-not-mechanically-split",
+    "input": "Learner supplies a lengthy sentence containing the idiom 'avoir beau essayer' and other familiar text. Simple cutting by commas or words would break the idiom into nonsensical fragments.",
+    "expected": [
+      "Preserves the idiom/verb construction as one meaningful learning unit, with the context needed to distinguish the intended sense.",
+      "Does not cut inside an idiom or make standalone cards for semantically empty fragments.",
+      "Selects only genuinely useful chunks from the surrounding long sentence; may skip the rest.",
+      "Makes the resulting card quick to understand, retrieve and verify."
+    ]
+  },
+  {
+    "id": "full-utterance-exception-and-review-speed",
+    "input": "A long source sentence is also a genuinely useful complete routine utterance whose overall conversational function is the learner's intended target. Other sentences from the same source are long but contain one short new collocation each.",
+    "expected": [
+      "Retains the complete utterance only if reproducing/recognizing the whole is independently valuable and review remains quick.",
+      "Prefers short, natural chunks for the other lines, not exact memorization of full multi-clause text.",
+      "Does not enforce a fixed word limit, chunk quota, or requirement that every sentence yield a card.",
+      "Uses clear single-target fronts and quick-to-check backs; omits ambiguous or high-effort candidates."
+    ]
+  },
+  {
+    "id": "short-listening-chunk-from-long-recording",
+    "input": "A long French audio dialogue and full transcript contain several short useful expressions. The learner wants quick Listening cards for only two expressions, without replaying the entire audio or making cards for every clause.",
+    "expected": [
+      "Selects only the useful independent expressions, not the whole recording as the target of each card.",
+      "Uses the matching audio_clip for each selected spoken chunk with source-verified timestamps or conservative alignment, never a full-dialogue audio attachment.",
+      "Preserves the exact meaning, natural context, and source locator, and blocks ambiguous audio cuts for clarification.",
+      "Does not create additional full-line Listening/Pronunciation cards unless they train an independently valuable skill."
+    ]
   }
 ]

@@ -59,6 +59,19 @@ Optional fields:
 
 These structured fields are **metadata/support**, not card-generation quotas. Populate them only when they help the selected retrieval target. An empty field creates no extra card by itself in this workflow.
 
+### Long source, short card — content contract
+
+An original sentence/turn may be long, but `target_text` should **normally contain the selected useful chunk or short utterance**, not automatically the whole source line. One long sentence may supply zero, one, or multiple **distinct** short `cards[]` entries; selection is based on independent retrieval value and fast review, not a required quantity.
+
+- **Reading:** use a natural, readable target phrase with just enough context to understand what is being tested; do not force the learner to process an irrelevant long paragraph.
+- **Production:** make `prompt` a concise meaning/situation in the configured base language and `target_text` a short, useful expression or grammatical frame when that is the real target.
+- **Listening / Pronunciation:** when the chosen unit is a chunk from a longer recording, set `audio_clip` for the **same exact spoken portion**. Source text and audio must align; never replay an entire dialogue for a short target.
+- **Source:** preserve the original material's valid locator in `source` (and only minimal helpful explanation on the back). Do not insert the full original sentence into every Front as mandatory context.
+- A complete sentence is allowed when the **entire utterance** is what the learner must retrieve and the card still passes the quick-answer/quick-verification test.
+- No automatic slicing by punctuation/word count, fixed chunk quota, new deck type, note model, or extra schema field is required. The selection step is semantic and remains the responsibility of the AI operating the skill.
+
+For each candidate, mentally simulate one review: can the learner tell what to retrieve immediately, recover one target, and check the answer quickly? Otherwise simplify, split useful targets, or skip.
+
 ### Mode contract
 
 `mode` is not an open-ended label. The deterministic pipeline validates it against the selected skill:

@@ -16,6 +16,9 @@ Optimize long-term retrieval and usable language ability while keeping reviews f
 - For grammar, choose the card format from the intended retrieval operation: declarative rule recall, recognition/discrimination, or contextual application/production. Do not memorize a rule merely because it was presented in the source.
 - Listening is not the same as reading. Use audio-first cards when listening is the actual target.
 - Chunks and collocations often deserve priority over isolated words because they support fluent production.
+- Even if every source sentence is long, actively search for shorter **natural and meaningful chunks** that support one quick retrieval. Long input is a source of candidates, not an obligation to produce a long-sentence card.
+- A single long sentence may yield several independent high-value short cards (or only one, or none). Do not split mechanically, create one card per clause, or force unrelated fragments; preserve real collocations/idioms and minimal disambiguating context.
+- **Answer and verification speed take priority** over verbatim reconstruction of whole multi-clause passages. Retain complete utterances only when the whole utterance is the genuinely useful retrieval target.
 - Sentence mining is selective. Do not convert every sentence into a card.
 - Prefer near-i+1 mined sentences: essentially known context plus one primary unknown/focus item.
 - For polysemous targets, inspect multiple contexts during analysis, then keep each review card concise instead of placing many examples on the front.
