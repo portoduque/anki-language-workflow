@@ -19,13 +19,32 @@ def test_portable_skill_validates() -> None:
     assert result.returncode == 0, result.stdout + result.stderr
 
 
-def test_openai_metadata_mentions_skill() -> None:
+def test_skill_requires_first_run_target_and_base_languages() -> None:
+    text = (SKILL / "SKILL.md").read_text(encoding="utf-8")
+    assert "Mandatory first-run language setup" in text
+    assert "Target language" in text
+    assert "Base language" in text
+    assert "do not use a default" in text.lower()
+    assert "anki-language.config.json" in text
+
+
+def test_openai_metadata_mentions_skill_and_first_run() -> None:
     data = yaml.safe_load((SKILL / "agents" / "openai.yaml").read_text(encoding="utf-8"))
     assert "$anki-language" in data["interface"]["default_prompt"]
+    assert "target language" in data["interface"]["default_prompt"].lower()
+    assert "base language" in data["interface"]["default_prompt"].lower()
     assert data["policy"]["allow_implicit_invocation"] is True
 
 
-def test_antigravity_workflow_is_thin_delegate() -> None:
+def test_antigravity_workflow_delegates_and_has_first_run_handshake() -> None:
     workflow = (SKILL / "assets" / "antigravity-workflow.md").read_text(encoding="utf-8")
     assert "use the installed `anki-language` skill as the source of truth" in workflow
-    assert "/anki-language" in workflow
+    assert "target language" in workflow.lower()
+    assert "base language" in workflow.lower()
+
+
+def test_readme_documents_all_install_surfaces() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    for command in ("python install.py codex", "python install.py claude", "python install.py antigravity", "python install.py generic"):
+        assert command in readme
+    assert "README maintenance rule" in readme
