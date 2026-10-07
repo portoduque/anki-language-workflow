@@ -1,37 +1,45 @@
-# 08 — GUI / Browser / Reviewer Actions
+# 08 — GUI, Browser, and Reviewer Actions
 
-GUI actions automate visible Anki windows such as Browser, Add Cards, deck overview, and reviewer.
+GUI actions drive visible Anki windows and reviewer state. They are useful when human review/confirmation is desirable.
 
-Use them when human review/interaction is part of the workflow. Prefer non-GUI actions for deterministic bulk/headless operations.
+Prefer non-GUI actions for headless deterministic automation.
 
-Reviewer actions depend on current GUI state.
+## Important behavior
 
-## Supported actions
+- `guiBrowse` opens/searches Browser and returns matching card IDs.
+- `guiSelectCard` selects a card in an open Browser.
+- `guiSelectedNotes` reads selected note IDs.
+- `guiAddCards` opens Add Cards prefilled with note data.
+- `guiAddNoteSetData` is a newer action in the 2026 mirror; runtime-verify before use.
+- `guiEditNote` opens the note editor.
+- reviewer actions show question/answer, answer the current card, and manage timer/state.
+- `guiPlayAudio` is a newer action in the 2026 mirror.
+- `guiImportFile` opens Anki's import UI for human review.
+- `guiCheckDatabase` returns immediately; a true return does not mean the database check found no issues.
+- `guiExitAnki` is asynchronous.
 
-| Action | Main documented params | Purpose |
+## Current catalog
+
+| Action | Source signature | Risk |
 | --- | --- | --- |
-| `guiBrowse` | — | See upstream documentation. |
-| `guiSelectCard` | — | See upstream documentation. |
-| `guiSelectedNotes` | — | See upstream documentation. |
-| `guiAddCards` | — | See upstream documentation. |
-| `guiEditNote` | — | See upstream documentation. |
-| `guiCurrentCard` | — | See upstream documentation. |
-| `guiStartCardTimer` | — | See upstream documentation. |
-| `guiShowQuestion` | — | See upstream documentation. |
-| `guiShowAnswer` | — | See upstream documentation. |
-| `guiAnswerCard` | — | See upstream documentation. |
-| `guiUndo` | — | See upstream documentation. |
-| `guiDeckOverview` | — | See upstream documentation. |
-| `guiDeckBrowser` | — | See upstream documentation. |
-| `guiDeckReview` | — | See upstream documentation. |
-| `guiImportFile` | — | See upstream documentation. |
-| `guiExitAnki` | — | See upstream documentation. |
-| `guiCheckDatabase` | — | See upstream documentation. |
+| `guiBrowse` | `self, query=None, reorderCards=None` | `gui-state` |
+| `guiSelectCard` | `self, card` | `gui-state` |
+| `guiSelectedNotes` | `self` | `gui-state` |
+| `guiAddCards` | `self, note=None` | `gui-state` |
+| `guiEditNote` | `self, note` | `gui-state` |
+| `guiAddNoteSetData` | `self, note, append=False` | `gui-state` |
+| `guiCurrentCard` | `self` | `gui-state` |
+| `guiStartCardTimer` | `self` | `gui-state` |
+| `guiShowQuestion` | `self` | `gui-state` |
+| `guiShowAnswer` | `self` | `gui-state` |
+| `guiAnswerCard` | `self, ease` | `gui-state` |
+| `guiUndo` | `self` | `gui-state` |
+| `guiDeckOverview` | `self, name` | `gui-state` |
+| `guiDeckBrowser` | `self` | `gui-state` |
+| `guiDeckReview` | `self, name` | `gui-state` |
+| `guiImportFile` | `self, path=None` | `gui-state` |
+| `guiExitAnki` | `self` | `gui-state` |
+| `guiCheckDatabase` | `self` | `gui-state` |
+| `guiPlayAudio` | `self` | `gui-state` |
 
-## Runtime verification
-
-Before using a version-sensitive or uncertain action, call `apiReflect` against the user's installed AnkiConnect. The local catalog is a curated snapshot, not a substitute for runtime capability discovery.
-
-## Source
-
-- https://github.com/ankiultimate/anki-connect/blob/master/README.md
+GUI actions depend on current application state; failures can mean the relevant Browser/Reviewer window is not active.
