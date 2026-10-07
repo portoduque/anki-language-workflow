@@ -92,6 +92,8 @@ These are product rules, not suggestions. The complete normative specification l
 42. **Keep distinct linguistic data structured:** use optional `reading`, `variant`, and `grammar` fields when useful instead of stuffing everything into `Notes`; populating a field never creates an extra card by itself.
 43. **Clarify before scheduling:** before a candidate becomes a scheduled card, understand its intended meaning/form/usage well enough that the review tests retrieval rather than first-time semantic discovery; prior mastery is not required.
 44. **Target language-specific features selectively:** gender/class, irregular plural/inflection, case/agreement, classifiers, verb forms, script variants, or similar language-specific dimensions may deserve atomic cards when independently useful; never generate a full paradigm merely because it exists.
+45. **Preserve precise source locators:** when available, keep timestamps/pages/sections/transcript anchors in `source` so the original context can be reopened; never invent precision.
+46. **Maintenance starts read-only:** use review history to identify cards worth inspecting, diagnose the actual card/source first, and require explicit approval before rewriting, suspending, deleting, rescheduling, or reprioritizing existing cards.
 
 A source reused across multiple decks is valid only when each card covers a real additional skill gap. If the extra card mostly repeats the same retrieval, discard it.
 
@@ -113,6 +115,7 @@ Current curated notes include:
 - `anki-language/references/research/redchamber-optimize-anki-language.md` — analyzes Dream of the Red Chamber's complete note/card architecture tutorial and selectively adopts structured reading/variant/grammar fields plus target-isolation guidance, while deliberately keeping the current one-note-per-planned-card pipeline.
 - `anki-language/references/research/jeremiah-seven-rules-anki.md` — analyzes Jeremiah’s seven-rule Anki method, adopts clarified-before-review encoding plus native Again/Good-only and break-recovery guidance, while rejecting universal audio-only/full-sentence rules, fixed-age retirement, and destructive deck resets.
 - `anki-language/references/research/alemayhu-custom-language-card-types.md` — analyzes Alexander Alemayhu's language-specific custom-card approach and adopts selective targeting of useful grammatical/morphological features without introducing per-language note models or automatic paradigm/card explosion.
+- `anki-language/references/research/claude-code-anki-feedback-loop.md` — analyzes the complete “Claude Code + Anki = Learn ANYTHING!” transcript and selectively adopts precise source locators plus a read-only review-feedback audit, while rejecting silent AI scheduling/card mutations and automatic card/example expansion.
 
 Across these research sources, recommendations are not promoted automatically. Examples deliberately **not** adopted include:
 
@@ -389,6 +392,24 @@ AnkiConnect is the delivery/integration layer, not the media generator. It lets 
 - retrieve uploaded media for byte-for-byte validation.
 
 Automatic media generation/search remains provider-independent from AnkiConnect.
+
+### Read-only maintenance / review-feedback audit
+
+When the user wants to diagnose or maintain an existing collection, the workflow can inspect its own delivered cards without mutating them:
+
+`python anki-language/scripts/audit_live.py --query "tag:anki-language" --output anki-audit.json`
+
+The audit:
+
+- verifies required read-only AnkiConnect capabilities with `version` + `apiReflect`;
+- reads matching card metadata and note fields;
+- reads review history with `getReviewsOfCards`;
+- records suspension state;
+- summarizes Again/Hard/Good/Easy counts, Again rate, and the latest review ID;
+- orders repeated-failure evidence for easier inspection;
+- does **not** rewrite, suspend, delete, reschedule, grade, or reprioritize cards.
+
+There is deliberately no universal “bad card” threshold. Review history tells the AI/human what deserves inspection; the actual card and source context determine the likely repair. Any mutation of an existing collection requires explicit user approval.
 
 ## Requirements
 

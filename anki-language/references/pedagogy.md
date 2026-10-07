@@ -39,6 +39,8 @@ Optimize long-term retrieval and usable language ability while keeping reviews f
 - Card-creation time is part of the cost function. Prefer simple cards and selective enrichment over elaborate customization that does not improve retrieval.
 - Grammar notes are useful only when a short explanation prevents confusion; avoid turning the back into a mini-lesson or dumping complete paradigms by default.
 - Repeated failure is a signal to diagnose the learning target. If the item is still valuable, improve context, contrast, collocation, or other meaningful connections before resorting to brute-force duplicate cards.
+- Review history is evidence for diagnosis, not permission for automatic collection mutation. Inspect cards read-only first; rewrite/suspend/delete/reschedule existing cards only for a clear user goal with explicit approval.
+- Preserve precise source locators such as timestamps/pages/sections when available so difficult or ambiguous cards can be reopened in their original context.
 
 ## Review-efficiency rule
 

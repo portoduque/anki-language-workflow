@@ -429,6 +429,23 @@ Prefer to retire/suspend the redundant scaffold **only when**:
 
 Do not infer mastery from card age alone, and do not delete user cards without permission.
 
+### Review history is evidence, not an automatic diagnosis
+
+When maintaining an existing live collection, use actual review history to decide **which cards deserve inspection**, not to let an agent silently rewrite the collection.
+
+A repeated-failure pattern may come from:
+- an ambiguous or overloaded prompt;
+- insufficient context;
+- confusable items;
+- a missing prerequisite/bridge concept;
+- malformed or incorrect content;
+- a genuinely difficult but useful target;
+- or a low-value item that no longer deserves review cost.
+
+Inspect the actual card and source context before deciding what the pattern means. Prefer the smallest justified repair.
+
+Start with read-only inspection. Any mutation of existing notes/cards or scheduling — rewriting fields, suspending/deleting cards, changing due dates, reprioritizing queues, or resetting learning state — requires a clear user goal and explicit approval for that action.
+
 ## 17. Target language-specific features selectively
 
 Do not force the same lexical card pattern onto every language.
@@ -494,6 +511,19 @@ Do not blindly import the whole shared deck into the workflow. Select useful ite
 Do not replace the user's material with generic material merely because generic examples are easier to generate.
 
 It is acceptable to create a clearer example when the original material is unsuitable, but preserve the intended meaning and do not invent uncertain facts.
+
+### Preserve precise source locators when available
+
+When the source has a stable location, keep that locator in `source` so the learner can reopen the exact context later.
+
+Useful examples include:
+- a video/audio timestamp;
+- page number;
+- chapter/section;
+- transcript segment;
+- another stable source anchor.
+
+Prefer a directly reopenable locator when possible. Do not invent precision the source does not provide. A source locator is provenance/support, not an extra retrieval target.
 
 ## 21. Ask before guessing when ambiguity affects card quality
 

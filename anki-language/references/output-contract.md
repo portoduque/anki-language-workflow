@@ -52,10 +52,12 @@ Optional fields:
 - `audio_provenance` / `image_provenance`;
 - `media_validation`: deterministic validation record including SHA-256;
 - `media_issues`: non-fatal failures for optional media that was skipped;
-- `source`;
+- `source`: source/provenance text; when the material exposes a stable locator, preserve the most useful precise locator available (for example a video timestamp, page, chapter/section, or transcript anchor);
 - `tags`.
 
 These structured fields are **metadata/support**, not card-generation quotas. Populate them only when they help the selected retrieval target. An empty field creates no extra card by itself in this workflow.
+
+Do not invent source precision. A precise locator is kept only when the supplied/source material actually supports it.
 
 ## Automatic audio request
 

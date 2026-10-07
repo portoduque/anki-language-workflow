@@ -101,7 +101,13 @@ Use:
 - `getReviewsOfCards`;
 - `getLatestReviewID`.
 
-This can support analytics/progress inspection, but the project should not change scheduling simply because the API permits it.
+For this repository's workflow-owned cards, the deterministic read-only helper is:
+
+`python scripts/audit_live.py --query "tag:anki-language" --output anki-audit.json`
+
+It summarizes card fields plus review-rating history without applying a universal leech threshold and without calling mutation actions.
+
+This can support analytics/progress inspection, but the project should not change scheduling simply because the API permits it. Treat review history as evidence for inspection; inspect the actual card/source before diagnosing a cause, and require explicit user approval before any existing-card or scheduling mutation.
 
 ## Recipe I — Import/export APKG through live Anki
 

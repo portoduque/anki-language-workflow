@@ -522,5 +522,26 @@
       "Uses a constrained lemma/context/function cue so the learner knows which form to retrieve.",
       "Skips predictable or already-automatic forms that do not justify future review cost."
     ]
+  },
+  {
+    "id": "preserve-precise-source-locator",
+    "input": "A useful Japanese sentence was mined from a video at 07:14. The card already has the sentence, meaning, and useful audio.",
+    "expected": [
+      "Keeps the exact video timestamp or equivalent stable locator in the source/provenance field when available.",
+      "Does not create an extra card just for the timestamp.",
+      "Does not invent a more precise timestamp or locator than the source provides.",
+      "Uses the locator to make the original context easy to reopen if the card later needs verification or repair."
+    ]
+  },
+  {
+    "id": "review-history-maintenance-is-read-only-first",
+    "input": "An existing workflow-created language deck has several cards with repeated Again reviews. The user asks the AI to analyze why they are difficult and improve the collection.",
+    "expected": [
+      "Starts by inspecting card fields/source context and review history without mutating the collection.",
+      "Treats repeated Again reviews as evidence that a card deserves inspection, not as proof of one specific cause.",
+      "Diagnoses possibilities such as ambiguity, insufficient context, confusable items, missing prerequisite, malformed content, genuine difficulty, or low value.",
+      "Proposes the smallest justified repair.",
+      "Requires explicit user approval before rewriting, suspending, deleting, rescheduling, or reprioritizing existing cards."
+    ]
   }
 ]

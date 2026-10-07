@@ -61,7 +61,9 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 - When a card tests meaning or valid usage, accept semantically correct alternative examples; require exact wording only when wording/form/order is the actual target.
 - Listening uses audio-first; Production normally keeps answer audio on the back; sound-discrimination cards must not reveal written answers on the front.
 - Keep answers concise and reviews fast.
-- When maintaining an existing collection and reliable mastery evidence is available, prefer retiring redundant scaffolds that are fully subsumed by richer contextual cards; never infer mastery from age alone or delete user cards without permission.
+- Preserve precise source locators (for example video timestamps, pages, sections, or transcript anchors) when the source provides them; never invent precision.
+- When maintaining an existing collection, use review history to identify cards that deserve inspection, but treat the history as evidence rather than an automatic diagnosis. Start read-only, inspect the actual card/source, and require explicit user approval before rewriting, suspending, deleting, rescheduling, or reprioritizing existing cards.
+- When reliable mastery evidence is available, prefer retiring redundant scaffolds that are fully subsumed by richer contextual cards; never infer mastery from age alone or delete user cards without permission.
 - When a material ambiguity changes the learning target, ask the user instead of guessing.
 
 ## Workflow
@@ -78,6 +80,22 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 10. Select delivery: `apkg` by default; `live` only when the user wants direct AnkiConnect delivery; `both` when live insertion plus a portable APKG is useful.
 11. Run `python scripts/run_pipeline.py card-plan.json --delivery <apkg|live|both>`. This resolves media, validates it, then delivers it.
 12. Deliver the resolved plan plus APKG/live report. Never claim media success when a validation or post-upload verification failed.
+
+## Optional live maintenance / feedback audit
+
+When the user explicitly asks to inspect, maintain, repair, or diagnose an existing live Anki collection, use a **read-only-first** workflow.
+
+1. Ensure Anki Desktop + AnkiConnect are available.
+2. Run:
+   `python scripts/audit_live.py --query "tag:anki-language" --output anki-audit.json`
+   or use a narrower Anki search query chosen for the user's goal.
+3. Use the report to identify cards with meaningful review evidence that deserve inspection.
+4. Inspect the actual prompt/answer/source context before inferring why a card is difficult.
+5. Diagnose the smallest likely cause: ambiguity, overload, insufficient context, confusable items, missing prerequisite, malformed content, low value, or another evidence-supported issue.
+6. Propose the smallest repair.
+7. Do **not** mutate existing notes/cards/scheduling until the user explicitly approves the relevant action.
+
+The audit command itself is read-only. It uses AnkiConnect review/card inspection actions and reports fields, interval/suspension metadata, review counts, rating counts, Again rate, and latest review ID. It deliberately does not define a universal leech threshold or make scheduling changes.
 
 ## Deck architecture
 
