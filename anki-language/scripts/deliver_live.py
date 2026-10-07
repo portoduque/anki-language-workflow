@@ -47,7 +47,7 @@ def model_payload(skill: str) -> dict[str, Any]:
     return {
         "modelName": model.name,
         "inOrderFields": [field["name"] for field in fields_for_skill(skill)],
-        "css": CSS,
+        "css": model.css,
         "isCloze": False,
         "cardTemplates": [{
             "Name": template["name"],
@@ -117,7 +117,7 @@ def ensure_models(client: AnkiConnectClient, skills: set[str]) -> None:
             if isinstance(styling, dict)
             else styling
         )
-        if normalize_markup(actual_css) != normalize_markup(CSS):
+        if normalize_markup(actual_css) != normalize_markup(model.css):
             raise AnkiConnectError(
                 f"Existing model '{model.name}' has CSS drift. "
                 "The workflow will not overwrite user/customized styling automatically."
