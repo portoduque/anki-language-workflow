@@ -123,10 +123,12 @@ def make_model(skill: str) -> genanki.Model:
 """
         common_back = common_back.replace('{{#Image}}<div class="image">{{Image}}</div>{{/Image}}', "")
     else:
+        # Do not render Target directly on the pronunciation front. For
+        # sound-discrimination/minimal-pair cards that would reveal the answer.
+        # Standard pronunciation cards put the written target inside Prompt.
         front = """
 <div class="context">{{Context}}</div>
 {{#Prompt}}<div class="prompt">{{Prompt}}</div>{{/Prompt}}
-{{#Target}}<div class="target">{{Target}}</div>{{/Target}}
 {{#Hint}}<div class="label">Hint</div><div class="hint">{{Hint}}</div>{{/Hint}}
 {{#FrontAudio}}<div>{{FrontAudio}}</div>{{/FrontAudio}}
 """
@@ -194,7 +196,10 @@ def build(plan_path: Path, output_path: Path) -> dict[str, Any]:
         if skill == "listening" and not prompt:
             prompt = "What did you hear and understand?"
         if skill == "pronunciation" and not prompt:
-            prompt = "Pronounce this aloud, then check the audio."
+            if audio_on_front:
+                prompt = "Which sound or word did you hear?"
+            else:
+                prompt = f"Pronounce this aloud: {card['target_text']}"
 
         fields = [
             clean(context),
