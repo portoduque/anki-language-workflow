@@ -50,7 +50,8 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 - Before promoting a candidate to a scheduled card, clarify its intended meaning/form/usage enough that review tests retrieval rather than first-time semantic discovery; prior mastery is not required.
 - For an absolute beginner with too little comprehensible personal material to mine, a vetted frequency/shared deck may be used as a **candidate source**; never bulk-adopt it blindly.
 - Let candidate sources evolve with learner evidence: as useful natural input becomes comprehensible, prefer personally encountered/context-rich items over generic lists; when repeated real speaking/writing/domain gaps appear, treat them as candidates for targeted verification.
-- Never hard-code an external roadmap phase or vocabulary-count milestone as a mandatory source-strategy switch.
+- Consider expected natural re-encounter frequency when deciding whether a candidate deserves SRS: useful rare/domain-specific items may benefit from deliberate review when natural exposure will not reinforce them soon, while constantly re-encountered easy items may not need cards. Rarity alone is never sufficient.
+- Never hard-code an external roadmap phase, corpus-frequency cutoff, or vocabulary-count milestone as a mandatory source-strategy switch.
 - A real output gap must not become a literal/unverified translation card: verify a natural target-language expression for the intended variety/register before using it as a Production answer.
 - Card-creation/customization time also counts. Prefer simple cards and selective enrichment over decorative complexity that does not improve retrieval.
 - For grammar, choose the card format from the retrieval intent: rule recall, recognition/discrimination, or contextual application/production. Create declarative rule cards only when recalling the rule itself is independently useful; do not default to full tables/paradigms.
