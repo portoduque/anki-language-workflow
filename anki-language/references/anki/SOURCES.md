@@ -119,6 +119,8 @@ Specific projects used in the curated add-on guide:
 - FSRS Helper: https://github.com/open-spaced-repetition/fsrs4anki-helper
 - Review Heatmap: https://github.com/glutanimate/review-heatmap
 - AnkiMorphs: https://github.com/mortii/anki-morphs
+- Anki MCP Server: https://github.com/ankimcp/anki-mcp-server
+- Anki MCP Server add-on: https://github.com/ankimcp/anki-mcp-server-addon
 
 ## Source priority
 
