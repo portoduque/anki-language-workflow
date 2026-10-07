@@ -496,3 +496,27 @@ def test_readme_documents_feedback_audit_and_source_locators() -> None:
     assert "Maintenance starts read-only" in readme
     assert "audit_live.py" in readme
     assert "There is deliberately no universal “bad card” threshold" in readme
+
+
+def test_refold_candidate_source_progression_is_evidence_driven() -> None:
+    rules = (SKILL / "references" / "card-selection.md").read_text(encoding="utf-8").lower()
+    pedagogy = (SKILL / "references" / "pedagogy.md").read_text(encoding="utf-8").lower()
+    skill = (SKILL / "SKILL.md").read_text(encoding="utf-8").lower()
+    note = (SKILL / "references" / "research" / "refold-learning-words-roadmap.md").read_text(encoding="utf-8").lower()
+
+    assert "let candidate sources evolve with learner evidence" in rules
+    assert "output/domain gaps are candidates, not literal translations" in rules
+    assert "do not hard-code external roadmap phases or vocabulary-count milestones" in rules
+    assert "let candidate sources evolve with learner evidence" in pedagogy
+    assert "repeated real speaking/writing/domain gaps" in skill
+    assert "do not hard-code an external roadmap phase or vocabulary-count milestone" in skill
+    assert "roadmap sidebar/submenus were also expanded" in note
+    assert "fixed 5 to 10 new cards/day" in note
+    assert "no schema, config, deck, note-model, media, scheduler, installer, or ankiconnect change" in note
+
+
+def test_readme_documents_refold_selective_adaptation() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "refold-learning-words-roadmap.md" in readme
+    assert "Candidate sources evolve with learner evidence" in readme
+    assert "external roadmap phase labels" in readme
