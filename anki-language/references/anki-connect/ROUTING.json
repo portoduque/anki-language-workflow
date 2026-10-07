@@ -3,7 +3,9 @@
   "fallback": {
     "index": "references/anki-connect/INDEX.md",
     "catalog": "references/anki-connect/ACTION_CATALOG.json",
-    "sources": "references/anki-connect/SOURCES.md"
+    "sources": "references/anki-connect/SOURCES.md",
+    "config": "references/anki-connect/CONFIG_REFERENCE.json",
+    "coverage": "references/anki-connect/COVERAGE.md"
   },
   "topics": [
     {
