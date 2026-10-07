@@ -98,7 +98,7 @@ Example:
 }
 ```
 
-`provider` currently supports `auto` and `piper`. A specific `voice` is optional. Set `required: true` when failure must block delivery; Listening and sound-discrimination audio is treated as required even when the flag is omitted.
+`provider` currently supports `auto` and `piper`. A specific `voice` is optional. Set `required: true` when failure must block delivery. Listening audio is always required, and sound-dependent Pronunciation modes (`minimal-pair`, `sound-discrimination`, `spelling-sound`, `audio-to-spelling`) also treat audio as required even when the flag is omitted.
 
 ## Automatic image request
 
@@ -119,7 +119,7 @@ Example:
 
 ## Resolved-plan rule
 
-A Listening/sound-discrimination card may contain an unresolved `audio_request` during planning, but **final build/live delivery requires an actual validated `audio` file**.
+A Listening card or sound-dependent Pronunciation card may contain an unresolved `audio_request` during planning, but **final build/live delivery requires an actual validated `audio` file**.
 
 Automatic requests are resolved with:
 
