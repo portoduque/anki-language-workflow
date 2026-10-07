@@ -16,7 +16,10 @@ The local catalog contains **118 documented actions** from the recent 2026 reada
 | Model | 25 | 06-model-actions.md |
 | Note | 20 | 05-note-actions.md |
 | Statistic | 7 | 10-statistic-actions.md |
-| **Total** | **118** | ACTION_CATALOG.json |
+| **Total by current category surface** | **118** | ACTION_CATALOG.json |
+| **Baseline common snapshot** | **114** | ACTION_CATALOG.json |
+| **Newer/version-sensitive additions** | **4** | ACTION_CATALOG.json |
+| **Catalog total** | **118** | ACTION_CATALOG.json |
 
 The four actions present in the recent 2026 mirror beyond the older 114-action baseline are:
 
