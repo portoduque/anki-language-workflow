@@ -50,3 +50,32 @@ Preferred flow:
 5. preserve attested context/source when possible.
 
 This extends the existing Production naturalness rule without changing the schema.
+
+
+## Intentionally not adopted
+
+- required Refold phase field or Phase 0 to 7 workflow state;
+- fixed 1k/2k/3k/etc vocabulary thresholds for card-generation decisions;
+- fixed 5 to 10 new cards/day;
+- mandatory completion of every due review every day;
+- fixed 25 to 30 percent study-time cap or phase percentage tables;
+- automatic deletion of every difficult card;
+- commercial deck/vendor dependencies.
+
+Repeated failure remains diagnosis-first: repair a valuable card when possible, suspend/delete low-value cards when justified, and require approval before mutating an existing collection.
+
+## Technical audit
+
+Current official Anki guidance confirms:
+- learners may use only Again + Good;
+- new-card intake increases future review load;
+- a backlog is a reason to pause new cards;
+- review limits may smooth workload peaks;
+- FSRS is native and should be tuned using current guidance and learner-specific history.
+
+## Net changes justified
+
+1. Explicit candidate-source progression driven by learner evidence, not fixed stages/counts.
+2. Output/domain-gap mining as a valid candidate source, with naturalness verification before Production.
+3. Behavioral evals for both.
+4. No schema, config, deck, note-model, media, scheduler, installer, or AnkiConnect change.
