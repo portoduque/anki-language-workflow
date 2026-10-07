@@ -103,5 +103,24 @@
       "Prioritizes the collocation/chunk as the retrieval target.",
       "Does not create redundant isolated-word cards solely because the words appear in the phrase."
     ]
+  },
+  {
+    "id": "same-source-multiple-skills-when-worthwhile",
+    "input": "A native audio sentence contains a useful chunk. The learner has difficulty understanding the sentence by ear and also wants to actively use the chunk in speech.",
+    "expected": [
+      "May create a Listening card from the audio.",
+      "May create a separate Production card from the same source sentence because it trains a different retrieval operation.",
+      "Does not treat reuse of the same source as duplication when the skills are genuinely distinct.",
+      "Creates no additional Reading or Pronunciation card unless those skills have independent learning value."
+    ]
+  },
+  {
+    "id": "same-source-reject-low-value-siblings",
+    "input": "A sentence already has a useful Reading card. Listening, Production, and Pronunciation versions would add little or no new learning value.",
+    "expected": [
+      "Keeps the useful Reading card.",
+      "Rejects low-value sibling cards even though the same source could technically be reused.",
+      "Prioritizes memory efficiency per review minute over extracting the maximum number of cards."
+    ]
   }
 ]
