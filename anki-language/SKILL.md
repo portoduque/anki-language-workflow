@@ -36,6 +36,7 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 - Every front must be **self-orienting in a mixed review**: show the target language and trained skill without revealing the answer.
 - Never create a prompt that makes the learner guess what the author intended. **Blind/ambiguous cloze is forbidden.**
 - Do not create automatic reverse cards. Recognition and production get separate cards only when both are worth training.
+- **Writing is a fifth optional skill** for fast **typed** orthographic/grammatical retrieval. After reading [references/card-selection.md](references/card-selection.md), consult [references/writing.md](references/writing.md) for its native Anki typing constraints. Pick a short natural sentence, exactly one word/short chunk to type, and a precise `prompt` that removes ambiguity; never make the user type a whole long sentence. **No automatic Writing sibling** for every Reading/Production card.
 - Do not generate every card type for every item. For every extra sibling card, require enough incremental learning value to justify its future review cost; optimize memory efficiency, not volume.
 - Prefer useful chunks/collocations/patterns when the combination is the knowledge that matters.
 - **Mandatory long-source chunk mining:** even when all supplied screenshots, transcripts, sentences, or recordings are long, first look inside each complete sentence/turn for the **shortest natural, meaningful and reusable chunks** worth learning. A long source sentence is **not** a mandate to make a long card. Generate separate short cards for distinct high-value chunks if justified, not one card for every clause and not a multi-clause mega-card.
@@ -62,7 +63,7 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 - Adapt card selection to genuinely useful target-language-specific features (for example gender/class, irregular plural/inflection, case/agreement, classifiers, irregular verb forms, or script variants). Treat each feature as a candidate, create only independently worthwhile atomic retrievals, and never generate a full paradigm by default.
 - Use structured optional fields `reading`, `variant`, and `grammar` when those data are useful; never generate extra cards merely because an auxiliary field is populated.
 - Use `prompt` for a concise learner-facing instruction or situational/scene context when it helps define the retrieval task without leaking the answer; do not add duplicate fields merely to mirror an external template.
-- Use only documented card modes. Reading/Listening/Production use `standard`; Pronunciation & Sounds may additionally use `minimal-pair`, `sound-discrimination`, `spelling-sound`, or `audio-to-spelling`. Do not invent mode strings.
+- Use only documented card modes. Reading/Listening/Production/Writing use `standard`; Pronunciation & Sounds may additionally use `minimal-pair`, `sound-discrimination`, `spelling-sound`, or `audio-to-spelling`. Do not invent mode strings.
 - Every Pronunciation Front must contain a usable retrieval cue, not a generic instruction. The deterministic builder shows the written target for `standard` (read-aloud) and `spelling-sound`; it hides the target for audio-identification modes and requires the front audio there. Never create Pronunciation cards for whole dialogue lines without a specific independent sound/rhythm/spelling difficulty.
 - For Production, favor the smallest useful expression/construction; require the entire sentence only when that complete utterance is the learning target, and accept other natural answers when exact wording is not being tested.
 - If a recording is reused across different target texts, attach `audio_transcript` verified from the actual clip to each reuse; otherwise use separate focused recordings or omit optional audio. The validator checks transcript consistency, not acoustic truth.
@@ -78,7 +79,7 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 - Spelling/spelling-sound cards are scaffolding: stop generating them once the learner handles representative patterns reliably, except for genuinely difficult exceptions.
 - When a card tests meaning or valid usage, accept semantically correct alternative examples; require exact wording only when wording/form/order is the actual target.
 - Listening uses audio-first; Production normally keeps answer audio on the back; sound-discrimination cards must not reveal written answers on the front.
-- Keep answers concise and reviews fast.
+- Keep answers concise and reviews fast. In Writing, type one small, meaningful missing part, not the entire long utterance.
 - Preserve precise source locators (for example video timestamps, pages, sections, or transcript anchors) when the source provides them; never invent precision. Avoid screenshot-only references without an accessible path/URL in a portable deck.
 - When maintaining an existing collection, use review history to identify cards that deserve inspection, but treat the history as evidence rather than an automatic diagnosis. Start read-only, inspect the actual card/source, and require explicit user approval before rewriting, suspending, deleting, rescheduling, or reprioritizing existing cards.
 - When reliable mastery evidence is available, prefer retiring redundant scaffolds that are fully subsumed by richer contextual cards; never infer mastery from age alone or delete user cards without permission.
@@ -92,7 +93,7 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 4. Read/understand the complete source, then **mine short, natural, meaningful chunk candidates even from exclusively long source sentences**; identify useful collocations, phrases, and grammatical frames instead of defaulting to full-sentence cards. Never split blindly by punctuation/word count.
 5. Rank chunk candidates by usefulness, clarity, distinctness, and expected review effort. Keep **zero, one, or several** independent targets from one long source only when each earns its review cost; reject filler and redundant fragments. Prefer fast, single-target cards; retain a complete sentence only when the whole utterance is the actual independently valuable target.
 6. For each selected chunk, create a short, answerable Front and a glance-checkable Back with only sufficient context. Keep a reliable source locator, and match any original audio to the selected short wording using `audio_clip`.
-7. Classify each selected card as exactly one of: `reading`, `listening`, `production`, or `pronunciation`.
+7. Classify each selected card as exactly one of: `reading`, `listening`, `production`, `pronunciation`, or `writing`.
 8. Add sparse linguistic tags only when useful.
 9. If media may improve learning, read [references/media.md](references/media.md) before acquiring, generating, or attaching it.
 10. Write `card-plan.json` according to [references/output-contract.md](references/output-contract.md) and `schemas/card-plan.schema.json`. Its target/base languages must match the workspace configuration. Use `audio_clip` for selected spoken excerpts from longer original recordings; use `audio_request` / `image_request` only where generated media adds real value.
@@ -124,6 +125,7 @@ The audit command itself is read-only. It uses AnkiConnect review/card inspectio
 - `<TargetLanguage>::02 Listening`
 - `<TargetLanguage>::03 Production`
 - `<TargetLanguage>::04 Pronunciation & Sounds`
+- `<TargetLanguage>::05 Writing`
 
 Use tags, not extra micro-decks, for vocabulary, grammar, chunks, levels, sources, and similar dimensions.
 
@@ -132,6 +134,7 @@ Use tags, not extra micro-decks, for vocabulary, grammar, chunks, levels, source
 - **Reading:** written target-language context on the front; meaning/explanation in the configured base language on the back when useful.
 - **Listening:** audio on the front; target transcript and base-language meaning/explanation on the back.
 - **Production:** a precise base-language/semantic/context prompt on the front; target-language answer and normally audio on the back.
+- **Writing:** a short target-language sentence with **one hidden word/chunk** on the Front, a semantic/grammar cue, and native `{{type:WritingAnswer}}` input; the Back compares typed text, shows the complete sentence and optionally plays short audio. Do not use blind gaps or entire-paragraph typing.
 - **Pronunciation & Sounds:** use pronunciation production, sound discrimination/minimal pair, or spelling-sound behavior according to the actual target. The written target is visible only for read-aloud/spelling-to-sound; identification-by-ear modes have audio on the front and conceal the written answer.
 
 Never use a blind or ambiguous cloze. The learner must know what knowledge to retrieve without the prompt revealing the answer.
