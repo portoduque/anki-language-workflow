@@ -53,6 +53,7 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 - Never hard-code an external roadmap phase or vocabulary-count milestone as a mandatory source-strategy switch.
 - A real output gap must not become a literal/unverified translation card: verify a natural target-language expression for the intended variety/register before using it as a Production answer.
 - Card-creation/customization time also counts. Prefer simple cards and selective enrichment over decorative complexity that does not improve retrieval.
+- For grammar, choose the card format from the retrieval intent: rule recall, recognition/discrimination, or contextual application/production. Create declarative rule cards only when recalling the rule itself is independently useful; do not default to full tables/paradigms.
 - Grammar/morphology explanations on the back should be brief and only added when they explain why the target form is correct or prevent a predictable confusion.
 - Adapt card selection to genuinely useful target-language-specific features (for example gender/class, irregular plural/inflection, case/agreement, classifiers, irregular verb forms, or script variants). Treat each feature as a candidate, create only independently worthwhile atomic retrievals, and never generate a full paradigm by default.
 - Use structured optional fields `reading`, `variant`, and `grammar` when those data are useful; never generate extra cards merely because an auxiliary field is populated.

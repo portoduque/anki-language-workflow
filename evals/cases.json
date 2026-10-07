@@ -563,5 +563,16 @@
       "Finds or verifies a natural target-language expression for the intended meaning, variety, and register before scheduling Production.",
       "Creates a card only if the gap is useful enough to justify future review cost and preserves attested context/source when possible."
     ]
+  },
+  {
+    "id": "grammar-format-follows-retrieval-intent",
+    "input": "A textbook section states a grammar rule, gives a full conjugation table, and provides contextual examples. The learner mainly needs to choose the correct form in ordinary sentences, not recite the wording of the rule.",
+    "expected": [
+      "Does not automatically create a declarative rule-recall card merely because the rule is written in the source.",
+      "Identifies contextual application/production as the useful retrieval target.",
+      "Uses constrained Production or an unambiguous cloze/contextual task rather than a full-table recall card.",
+      "Keeps one primary grammatical decision/form per card and avoids dumping the complete paradigm onto one card.",
+      "May add a brief back-side explanation of the rule only when it helps verify or prevent confusion."
+    ]
   }
 ]

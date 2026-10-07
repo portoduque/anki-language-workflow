@@ -95,6 +95,7 @@ These are product rules, not suggestions. The complete normative specification l
 45. **Preserve precise source locators:** when available, keep timestamps/pages/sections/transcript anchors in `source` so the original context can be reopened; never invent precision.
 46. **Maintenance starts read-only:** use review history to identify cards worth inspecting, diagnose the actual card/source first, and require explicit approval before rewriting, suspending, deleting, rescheduling, or reprioritizing existing cards.
 47. **Candidate sources evolve with learner evidence:** bootstrap from vetted shared/frequency material only when needed, prefer personally encountered natural context once accessible, and treat recurring real output/domain gaps as candidates for verified Production targets; never hard-code external phase or vocabulary-count thresholds.
+48. **Grammar format follows retrieval intent:** decide whether the useful target is declarative rule recall, recognition/discrimination, or contextual application/production before choosing Q/A, contrast, cloze, Reading, or Production; do not memorize a rule or full paradigm merely because the source presents one.
 
 A source reused across multiple decks is valid only when each card covers a real additional skill gap. If the extra card mostly repeats the same retrieval, discard it.
 
@@ -118,6 +119,7 @@ Current curated notes include:
 - `anki-language/references/research/alemayhu-custom-language-card-types.md` — analyzes Alexander Alemayhu's language-specific custom-card approach and adopts selective targeting of useful grammatical/morphological features without introducing per-language note models or automatic paradigm/card explosion.
 - `anki-language/references/research/claude-code-anki-feedback-loop.md` — analyzes the complete “Claude Code + Anki = Learn ANYTHING!” transcript and selectively adopts precise source locators plus a read-only review-feedback audit, while rejecting silent AI scheduling/card mutations and automatic card/example expansion.
 - `anki-language/references/research/refold-learning-words-roadmap.md` — analyzes Refold's “Learning words with Anki” article in the context of the expanded roadmap/sidebar and adopts evidence-driven candidate-source progression plus output/domain-gap mining, while rejecting fixed phase/word-count/workload quotas.
+- `anki-language/references/research/anki-forum-language-card-structure.md` — analyzes the full Anki Forums thread behind the supplied /4 URL and adopts only the grammar-retrieval-intent distinction, while confirming the existing structured-audio, skill-deck/tag, selective-reverse, and support-example policies.
 
 Across these research sources, recommendations are not promoted automatically. Examples deliberately **not** adopted include:
 
@@ -139,7 +141,8 @@ Across these research sources, recommendations are not promoted automatically. E
 - hard-coding “sparkling/feminine”, “exploding/masculine”, or any other grammatical-gender mnemonic mapping for every learner;
 - creating a separate Anki model family per language or generating translation/definition/image/gender/plural/every verb form automatically because those fields exist;
 - making Google Images, Forvo add-ons, fixed daily review minutes, or “review five cards on bad days” part of the card-generation contract;
-- importing external roadmap phase labels, vocabulary-count milestones, fixed 5–10 new-card quotas, or fixed priming/immersion percentages into the card-generation contract.
+- importing external roadmap phase labels, vocabulary-count milestones, fixed 5–10 new-card quotas, or fixed priming/immersion percentages into the card-generation contract;
+- making topic-specific microdecks, automatic reversed grammar/vocabulary cards, complete-paradigm cloze tables, permanent filtered decks, or separate time/location/background-music rituals required language-learning architecture.
 
 ### Scheduling settings are not copied from research videos
 
