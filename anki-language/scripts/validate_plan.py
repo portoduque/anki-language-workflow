@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
+import unicodedata
 from pathlib import Path
 from typing import Any
 
@@ -73,6 +75,12 @@ def validate_language_config(plan: dict[str, Any], config_path: Path) -> list[st
     return errors
 
 
+def normalized_utterance(value: str) -> str:
+    """Compare transcript/target wording without punctuation or whitespace noise."""
+    folded = unicodedata.normalize("NFKC", value).casefold()
+    return " ".join(re.findall(r"[^\W_]+", folded, flags=re.UNICODE))
+
+
 def validate_plan(
     plan: dict[str, Any],
     plan_path: Path,
@@ -89,6 +97,7 @@ def validate_plan(
 
     seen_ids: set[str] = set()
     media_by_basename: dict[str, Path] = {}
+    audio_uses: dict[Path, list[tuple[int, str, str]]] = {}
     plan_dir = plan_path.resolve().parent
 
     for index, card in enumerate(plan["cards"]):
@@ -118,6 +127,19 @@ def validate_plan(
             if check_media or not card.get("audio_request"):
                 errors.append(f"{prefix}.audio is required for pronunciation mode '{mode}' after media enrichment.")
 
+        raw_audio = card.get("audio")
+        if raw_audio:
+            path = Path(str(raw_audio))
+            resolved_audio = (path if path.is_absolute() else plan_dir / path).resolve()
+            target = normalized_utterance(str(card.get("target_text", "")))
+            transcript = normalized_utterance(str(card.get("audio_transcript", "")))
+            audio_uses.setdefault(resolved_audio, []).append((index, target, transcript))
+            if transcript and target and target not in transcript:
+                errors.append(
+                    f"{prefix}.audio_transcript does not contain the target wording; "
+                    "use a matching clip, adjust the target, or omit the audio."
+                )
+
         for media_key in ("audio", "image"):
             raw = card.get(media_key)
             if not raw:
@@ -146,6 +168,22 @@ def validate_plan(
                         f"{prefix}.{media_key} changed after validation: "
                         f"recorded sha256={recorded['sha256']} current sha256={current['sha256']}"
                     )
+
+    for path, uses in audio_uses.items():
+        if len({target for _, target, _ in uses}) <= 1:
+            continue
+        transcripts = {transcript for _, _, transcript in uses if transcript}
+        for index, _, transcript in uses:
+            if not transcript:
+                errors.append(
+                    f"cards[{index}].audio_transcript is required because audio "
+                    f"'{path.name}' is reused for different target texts. "
+                    "Verify the recording transcript before reusing it."
+                )
+        if len(transcripts) > 1:
+            errors.append(
+                f"Audio '{path.name}' has inconsistent transcripts across reused cards."
+            )
 
     return errors
 

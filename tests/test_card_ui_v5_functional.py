@@ -65,7 +65,8 @@ def test_every_v5_skill_has_safe_front_and_clear_answer_hierarchy() -> None:
     assert "{{Base}}" not in fronts["production"]
     assert "{{Source}}" not in fronts["production"]
 
-    # Pronunciation/sound cards keep the written target hidden when it could leak the answer.
+    # The written target itself remains off the template front. The deterministic
+    # FrontCue is populated only for read-aloud/spelling-to-sound tasks.
     assert "{{Prompt}}" in fronts["pronunciation"]
     assert "{{Target}}" not in fronts["pronunciation"]
     assert "{{Base}}" not in fronts["pronunciation"]
@@ -247,7 +248,7 @@ def test_live_model_contract_accepts_all_four_v5_models() -> None:
         "Anki Language v5 — Reading",
         "Anki Language v5 — Listening",
         "Anki Language v5 — Production",
-        "Anki Language v5 — Pronunciation & Sounds",
+        "Anki Language v6 — Pronunciation & Sounds",
     }
 
     # A second pass proves the stored templates/CSS match the deterministic

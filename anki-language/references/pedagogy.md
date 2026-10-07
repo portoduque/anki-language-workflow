@@ -12,6 +12,7 @@ Optimize long-term retrieval and usable language ability while keeping reviews f
 - Keep useful reading/romanization, orthographic variants, and grammatical attributes structured when they serve different functions instead of burying all metadata in one notes blob.
 - Context should disambiguate, not give away the answer.
 - Recognition and production are different skills; create both only when both matter.
+- Pronunciation practice needs an answerable front: written cue for read-aloud/spelling-to-sound and audio for sound identification. Do not produce six indistinguishable 'say this' fronts from six different lines.
 - For grammar, choose the card format from the intended retrieval operation: declarative rule recall, recognition/discrimination, or contextual application/production. Do not memorize a rule merely because it was presented in the source.
 - Listening is not the same as reading. Use audio-first cards when listening is the actual target.
 - Chunks and collocations often deserve priority over isolated words because they support fluent production.
@@ -21,6 +22,7 @@ Optimize long-term retrieval and usable language ability while keeping reviews f
 - Prefer one primary sense/usage per card when a multi-definition answer would overload retrieval; let context carry secondary nuance.
 - Mnemonics are optional scaffolding for difficult items. Verified cognates can help; invented sound-alike mnemonics must be labeled as mnemonics, not etymology.
 - Full-sentence Production targets require a higher naturalness bar than passive support examples; prefer attested/native material or independently validated generated language.
+- When the real Production target is a short reusable phrase/construction, do not force verbatim reproduction of the entire dialogue line; keep prompts constrained and grade natural semantic alternatives.
 - Concrete vocabulary may benefit from an image; abstract language usually benefits more from context.
 - When a card tests meaning or valid usage, semantic correctness matters more than reproducing the stored example verbatim; exact wording is required only when exact wording is the target.
 - Minimal-pair audio should minimize irrelevant cues. Prefer the same speaker/voice and comparable recording conditions when feasible.

@@ -238,6 +238,12 @@ Reading/listening examples may tolerate generated support material more readily,
 
 Choose between full-sentence production and guided expression production based on what the learner actually needs to retrieve.
 
+### Keep Production focused and independently gradable
+
+Before creating a Production card from a longer dialogue line, identify the **smallest useful phrase, collocation, or grammatical construction** the learner actually needs to retrieve. Prefer a short contextual prompt testing that expression rather than requiring a verbatim long sentence just because the source contains one.
+
+When a full sentence itself is the real goal (e.g., a high-value practical utterance), keep it, but constrain the situation/register sufficiently and accept other natural correct formulations unless **exact wording** is explicitly the target. Do not silently grade a valid paraphrase as wrong. A card whose front could elicit many unrelated answers needs a better cue or should be omitted.
+
 Do not require an exact full sentence when many natural translations would be equally correct unless the prompt explicitly constrains the wording.
 
 ### Semantic success over exact example reproduction
@@ -261,6 +267,14 @@ Supported purposes:
 - **spelling-sound:** orthography -> sound or audio -> spelling, when the relationship is genuinely difficult/useful.
 
 Never show the written answer on the front of a sound-discrimination/minimal-pair card.
+
+**Answerability gate:** the front must contain enough information to know *what* to pronounce or discriminate before revealing the answer. A generic instruction such as "Say this naturally in French" with no written phrase and no front audio is not a valid card.
+
+- For pronunciation production (`standard`) and spelling-to-sound (`spelling-sound`), display the written target on the front; use audio/IPA as feedback on the back.
+- For audio identification (`minimal-pair`, `sound-discrimination`, `audio-to-spelling`), play audio on the front, keep the written answer on the back, and use a concise, task-specific prompt when needed.
+- A pronunciation card must target a **real sound, stress, rhythm, linking, or spelling-sound difficulty**; do not convert every sentence of a dialogue into a redundant read-aloud card. A short difficult segment is usually better than a full multi-clause sentence.
+- If the recording contains a longer utterance than the target, verify the alignment; provide a focused segment when the extra context interferes with the comparison.
+
 
 For minimal-pair/sound-discrimination material, prefer recordings produced by the **same speaker/voice under similar recording conditions** when feasible. This reduces irrelevant speaker, loudness, microphone, and prosody cues so the learner must discriminate the target sound itself. Different speakers are acceptable when matched recordings are unavailable; do not block a useful card solely for that reason.
 
@@ -431,6 +445,9 @@ Do not hard-code one universal mapping such as “sparkling = feminine.” The w
 
 Do not create near-duplicate cards that test essentially the same retrieval.
 
+Before making a second/third card from one dialogue line, articulate the **independent retrieval operation** for each skill (e.g. recognizing a phrase by ear vs actively producing a reusable chunk). If the alleged Pronunciation card simply asks to repeat the already-familiar whole sentence without a distinct difficulty, omit it. Repetition of the same text in different decks is not itself evidence of independent value.
+
+
 Avoid introducing large batches of very similar new synonyms, near-synonyms, or semantic siblings when that would make them harder to discriminate.
 
 If two cards are easily confused because the prompt does not distinguish them, improve the context instead of accepting ambiguity.
@@ -577,7 +594,7 @@ Useful examples include:
 - transcript segment;
 - another stable source anchor.
 
-Prefer a directly reopenable locator when possible. Do not invent precision the source does not provide. A source locator is provenance/support, not an extra retrieval target.
+Prefer a directly reopenable locator when possible. Do not invent precision the source does not provide. Prefer a directly openable URL, timestamp, page, or document/section reference over a screenshot filename that will not be included with the exported deck. Add an image only when the visual itself helps retrieval; do not embed screenshots solely to decorate provenance. A source locator is provenance/support, not an extra retrieval target.
 
 ## 21. Ask before guessing when ambiguity affects card quality
 

@@ -46,6 +46,7 @@ Optional fields:
 - `variant`: optional alternate written/script/orthographic form such as simplified/traditional or another spelling variant;
 - `grammar`: optional concise grammatical attribute such as gender, noun class, part of speech, or form;
 - `audio`: resolved media path;
+- `audio_transcript`: optional **verified actual wording** of a recording; mandatory whenever the same resolved audio file serves cards with different target texts, and validated for target-text inclusion;
 - `image`: resolved media path;
 - `audio_request`: request for automatic Piper TTS;
 - `image_request`: request for licensed image search/download;
@@ -63,6 +64,8 @@ These structured fields are **metadata/support**, not card-generation quotas. Po
 
 - Reading, Listening, and Production currently support only `standard`;
 - Pronunciation & Sounds supports `standard`, `minimal-pair`, `sound-discrimination`, `spelling-sound`, and `audio-to-spelling`;
+- Pronunciation `standard` and `spelling-sound` deterministically show the written target on the front (internal `FrontCue` field); audio-identification modes keep the answer hidden and use front audio;
+- generic "say this" pronunciation fronts without a target/recognition cue are invalid study tasks; only create an extra Pronunciation card when it trains an independent relevant difficulty;
 - Pronunciation subtypes that depend on sound require resolved audio before delivery. This includes `spelling-sound`, even though its audio is normally feedback rather than the front-side cue.
 
 Unknown modes and cross-skill mode combinations are rejected instead of silently falling back to standard behavior.
@@ -80,6 +83,8 @@ Live reruns are conflict-aware. An existing workflow note is skipped only after 
 
 Legacy live notes created with the older card-id-only identity tag remain detectable in their expected deck. They are verified read-only and are not silently migrated.
 
+Validated audio formats/hashes only prove file integrity, not spoken content. When a file is reused for different target texts, `audio_transcript` is required for each use; the validator checks transcript consistency and wording inclusion, but a human/source review must verify that the recording really says it. Favor focused clips; an unrelated long clip should not masquerade as exact answer audio.
+
 The generated card templates must remain inspectable and portable: **essential card behavior may not depend on JavaScript or remote web assets**. Use ordinary Anki field replacements, HTML, CSS, and local packaged media for the core review experience.
 
 ### Presentation contract
@@ -94,6 +99,7 @@ Presentation is deterministic, not model-authored:
 - Reading promotes base-language meaning on the answer; Listening/Production/Pronunciation promote the target-language answer;
 - responsive mobile, night mode, and `dir="auto"` support are part of the template contract;
 - v3/v4 models are not silently mutated when v5 is introduced.
+- Pronunciation alone now uses a v6 note model with an internal FrontCue field; Reading, Listening, and Production remain v5, with the same approved CSS/visual appearance. Existing v5 Pronunciation notes are not changed automatically.
 
 Do not invent source precision. A precise locator is kept only when the supplied/source material actually supports it.
 

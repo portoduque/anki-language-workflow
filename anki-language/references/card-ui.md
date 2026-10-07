@@ -93,11 +93,11 @@ Front hierarchy:
 Front hierarchy:
 1. Pronunciation & Sounds + language header
 2. “Pronounce / identify” stage label
-3. prompt
-4. optional hint
-5. optional front audio
+3. task-specific prompt
+4. **written FrontCue** for `standard` (read-aloud) and `spelling-sound`, or **front audio** for `minimal-pair`, `sound-discrimination`, and `audio-to-spelling`
+5. optional hint
 
-The target field is still not rendered directly on pronunciation fronts.
+The target/answer field is never inserted directly on pronunciation fronts. Only the deterministic `FrontCue` is populated when the written form is the prompt, so sound-identification cards still hide the answer. A generic "say this" prompt without a visible target or front audio is not a usable retrieval task.
 
 ## Answer behavior
 
@@ -117,8 +117,10 @@ The visual redesign is introduced as **Anki Language v5** rather than mutating v
 This matters because:
 - existing user cards keep their current styling;
 - customized v4 templates are not overwritten;
-- new workflow-generated cards receive the v5 UI automatically;
+- new workflow-generated cards receive the same v5 visual design automatically; Pronunciation uses a v6 note type for its internal FrontCue, while the other three skills stay v5;
 - any future migration of old cards must be explicit and separate.
+
+The v6 Pronunciation change does **not** restyle or migrate existing v5 Pronunciation cards. To fix already-imported v5 cards, regenerate/import corrected cards after reviewing potential identity/duplication implications, or edit them explicitly in Anki with user approval.
 
 ## Rendering validation
 

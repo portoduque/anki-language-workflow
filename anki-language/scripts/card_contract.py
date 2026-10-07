@@ -24,6 +24,7 @@ SUPPORTED_MODES_BY_SKILL = {
 }
 
 AUDIO_FRONT_MODES = frozenset({"minimal-pair", "sound-discrimination", "audio-to-spelling"})
+WRITTEN_FRONT_PRONUNCIATION_MODES = frozenset({"standard", "spelling-sound"})
 AUDIO_REQUIRED_PRONUNCIATION_MODES = frozenset({
     "minimal-pair",
     "sound-discrimination",
@@ -36,6 +37,15 @@ WORKFLOW_TAG = "anki-language"
 
 def normalize_mode(card: dict[str, Any]) -> str:
     return str(card.get("mode", "standard")).strip().lower()
+
+
+def pronunciation_front_cue(card: dict[str, Any]) -> str:
+    """Show the written target only when the task is to pronounce its spelling."""
+    if card.get("skill") != "pronunciation":
+        return ""
+    if normalize_mode(card) in WRITTEN_FRONT_PRONUNCIATION_MODES:
+        return str(card.get("target_text", "")).strip()
+    return ""
 
 
 def full_deck_name(deck_name: str, skill: str) -> str:

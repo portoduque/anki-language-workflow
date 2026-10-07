@@ -11,10 +11,11 @@ from typing import Any
 
 import genanki
 
-from card_contract import AUDIO_FRONT_MODES, SKILL_META, normalize_mode, workflow_system_tags
+from card_contract import AUDIO_FRONT_MODES, SKILL_META, normalize_mode, pronunciation_front_cue, workflow_system_tags
 from validate_plan import load_plan, validate_plan
 
 MODEL_VERSION = 5
+PRONUNCIATION_MODEL_VERSION = 6
 
 FIELDS = [
     {"name": "Context"},
@@ -35,6 +36,17 @@ FIELDS = [
     {"name": "Image"},
     {"name": "Source"},
 ]
+
+FRONT_CUE_FIELD = {"name": "FrontCue"}
+
+
+def model_version(skill: str) -> int:
+    return PRONUNCIATION_MODEL_VERSION if skill == "pronunciation" else MODEL_VERSION
+
+
+def fields_for_skill(skill: str) -> list[dict[str, str]]:
+    return [*FIELDS, FRONT_CUE_FIELD] if skill == "pronunciation" else list(FIELDS)
+
 
 CSS = """
 .card {
@@ -500,7 +512,7 @@ def image_ref(path: Path | None) -> str:
 
 
 def make_model(skill: str) -> genanki.Model:
-    model_id = stable_id(f"anki-language:model:v{MODEL_VERSION}:{skill}")
+    model_id = stable_id(f"anki-language:model:v{model_version(skill)}:{skill}")
     skill_label = SKILL_META[skill][1]
     skill_class = f"skill-{skill}"
 
@@ -597,6 +609,7 @@ def make_model(skill: str) -> genanki.Model:
     <div class="front-stage">
       <div class="stage-label">Pronounce / identify</div>
       {{#Prompt}}<div class="prompt hero" dir="auto">{{Prompt}}</div>{{/Prompt}}
+      {{#FrontCue}}<div class="target hero" dir="auto">{{FrontCue}}</div>{{/FrontCue}}
       {{#Hint}}
       <div class="hint-card">
         <div class="section-label">Hint</div>
@@ -694,8 +707,8 @@ def make_model(skill: str) -> genanki.Model:
 
     return genanki.Model(
         model_id,
-        f"Anki Language v{MODEL_VERSION} — {skill_label}",
-        fields=FIELDS,
+        f"Anki Language v{model_version(skill)} — {skill_label}",
+        fields=fields_for_skill(skill),
         templates=[{"name": "Card 1", "qfmt": front, "afmt": back}],
         css=CSS,
     )
@@ -776,6 +789,7 @@ def build(plan_path: Path, output_path: Path) -> dict[str, Any]:
             sound_ref(audio) if audio and not audio_on_front else "",
             image_ref(image),
             clean(card.get("source", "")),
+            *([clean(pronunciation_front_cue(card))] if skill == "pronunciation" else []),
         ]
 
         guid = genanki.guid_for(

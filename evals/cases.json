@@ -585,5 +585,36 @@
       "Does not use a fixed corpus-frequency cutoff or vocabulary-count threshold.",
       "Still requires clarity/context and future review cost to justify the card."
     ]
+  },
+  {
+    "id": "pronunciation-front-must-identify-utterance",
+    "input": "Six separate French dialogue lines were used to create six Pronunciation cards. Their fronts all say only 'Say this naturally in French, then compare with the recording' with no visible phrase and no front audio; their full written target is revealed only on the back.",
+    "expected": [
+      "Rejects the six indistinguishable unanswerable fronts instead of keeping them as-is.",
+      "For genuine read-aloud practice, uses the written target as the front cue and answer audio on the back.",
+      "For audio identification, puts sound on the front without leaking the written target.",
+      "Does not create Pronunciation for every dialogue line by default; requires distinct useful pronunciation difficulty."
+    ]
+  },
+  {
+    "id": "production-chunk-instead-of-obligatory-sentence",
+    "input": "A useful dialogue line contains the expression 'depuis l’âge de'. A proposed Production card demands an exact long French sentence corresponding to a broad base-language cue, even though several natural French sentences could answer the cue.",
+    "expected": [
+      "Identifies whether the important retrieval target is the reusable construction rather than the entire sentence.",
+      "Prefers a concise contextual Production card for the phrase when that is the actual learning goal.",
+      "Only requires entire exact wording when that wording is itself the target and clearly constrained.",
+      "Accepts natural alternate correct French formulations instead of treating the stored full example as the only possible answer."
+    ]
+  },
+  {
+    "id": "reused-recording-needs-evidence-of-target-alignment",
+    "input": "A single audio clip taken from a long dialogue utterance is reused for Listening, Production, and Pronunciation cards. Those cards contain different target-language strings and the recording's verified transcript is missing.",
+    "expected": [
+      "Does not infer that identical audio bytes prove alignment with all different target texts.",
+      "Obtains/verifies the actual clip transcript or creates separate focused clips instead of silently reusing audio.",
+      "Provides audio_transcript consistently for all distinct target uses when one recording is intentionally shared.",
+      "Avoids presenting a different/longer utterance as the exact pronunciation of a target that it does not contain.",
+      "Retains the user-selected base language rather than changing English to Portuguese without consent."
+    ]
   }
 ]

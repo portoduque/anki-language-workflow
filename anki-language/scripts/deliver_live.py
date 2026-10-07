@@ -10,13 +10,14 @@ from pathlib import Path
 from typing import Any
 
 from ankiconnect_client import AnkiConnectClient, AnkiConnectError
-from build_apkg import CSS, FIELDS, card_context, clean, make_model, normalize_tags
+from build_apkg import CSS, card_context, clean, fields_for_skill, make_model, normalize_tags
 from card_contract import (
     AUDIO_FRONT_MODES,
     SKILL_META,
     full_deck_name,
     legacy_workflow_tag,
     normalize_mode,
+    pronunciation_front_cue,
     workflow_system_tags,
     workflow_tag,
 )
@@ -44,7 +45,7 @@ def model_payload(skill: str) -> dict[str, Any]:
     template = model.templates[0]
     return {
         "modelName": model.name,
-        "inOrderFields": [field["name"] for field in FIELDS],
+        "inOrderFields": [field["name"] for field in fields_for_skill(skill)],
         "css": CSS,
         "isCloze": False,
         "cardTemplates": [{
@@ -85,8 +86,8 @@ def expected_template_map(skill: str) -> dict[str, dict[str, str]]:
 
 def ensure_models(client: AnkiConnectClient, skills: set[str]) -> None:
     existing = set(client.invoke("modelNames") or [])
-    expected_fields = [field["name"] for field in FIELDS]
     for skill in sorted(skills):
+        expected_fields = [field["name"] for field in fields_for_skill(skill)]
         model = make_model(skill)
         if model.name not in existing:
             client.invoke("createModel", model_payload(skill))
@@ -135,7 +136,7 @@ def ensure_decks(client: AnkiConnectClient, plan: dict[str, Any]) -> None:
 
 def note_fields(plan: dict[str, Any], card: dict[str, Any]) -> dict[str, str]:
     skill = card["skill"]
-    return {
+    fields = {
         "Context": clean(card_context(str(plan["target_language"]["name"]), skill)),
         "Prompt": clean(card.get("prompt", "")),
         "TargetLanguage": clean(plan["target_language"]["name"]),
@@ -154,6 +155,9 @@ def note_fields(plan: dict[str, Any], card: dict[str, Any]) -> dict[str, str]:
         "Image": "",
         "Source": clean(card.get("source", "")),
     }
+    if skill == "pronunciation":
+        fields["FrontCue"] = clean(pronunciation_front_cue(card))
+    return fields
 
 
 def build_note(plan: dict[str, Any], card: dict[str, Any], plan_dir: Path) -> tuple[dict[str, Any], dict[str, Path]]:
