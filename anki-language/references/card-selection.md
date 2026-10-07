@@ -130,6 +130,20 @@ For grammar, a provided lemma or explicit function is often appropriate:
 
 `Complete with the correct form of aller: Nous ___ au cinéma hier.`
 
+### Choose grammar card format from retrieval intent
+
+Before choosing cloze, direct Q/A, Reading, or Production for a grammar item, decide what the learner actually needs to retrieve:
+
+- **rule recall** — state/identify a concise declarative rule itself;
+- **recognition/discrimination** — recognize which structure/form/function is present or which competing form fits a context;
+- **application/production** — select or produce the correct grammatical form in context.
+
+Create a direct declarative grammar-rule card only when recalling the rule itself is independently useful. Do not memorize a rule merely because a textbook stated it.
+
+Prefer contextual Reading/contrast cards when recognition or discrimination is the real target. Prefer constrained Production or a clear cloze when application is the real target.
+
+Keep each card to one primary grammatical decision/form. Do not dump a full paradigm/table onto one card merely because the source presents the grammar that way.
+
 ## 6. Recognition and production are different skills
 
 Do not create automatic reverse cards.
