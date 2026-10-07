@@ -22,8 +22,9 @@ MAX_CLIP_SECONDS = 30.0
 
 
 def tokenize(text: str) -> list[str]:
-    folded = unicodedata.normalize("NFKC", text).casefold()
-    return re.findall(r"[^\W_]+", folded, flags=re.UNICODE)
+    folded = unicodedata.normalize("NFKC", text).casefold().replace("’", "'")
+    # Keep contractions intact: "I can" must not match "I can't".
+    return re.findall(r"[^\W_]+(?:'[^\W_]+)*", folded, flags=re.UNICODE)
 
 
 @lru_cache(maxsize=1)
@@ -70,10 +71,23 @@ def locate_exact_phrase(
             "start_seconds/end_seconds or use focused audio."
         )
     flat: list[tuple[str, float, float]] = []
+    join_next = False
     for text, start, end in timed_words:
         if not math.isfinite(start) or not math.isfinite(end) or not 0 <= start < end:
             raise ValueError("Invalid word timestamps in transcription.")
-        flat.extend((word, start, end) for word in tokenize(text))
+        raw = str(text).strip().replace("’", "'")
+        if not raw:
+            continue
+        # ASR may time "J'" + "habite" or "can" + "'t" separately.
+        # Reconstruct the contraction before matching lexical targets.
+        if (join_next or raw.startswith("'")) and flat:
+            previous, first, _ = flat.pop()
+            raw = previous + ("'" if join_next else "") + raw
+            start = first
+        elif raw.startswith("'"):
+            raise ValueError("Unanchored apostrophe fragment in word timestamps.")
+        flat.extend((word, start, end) for word in tokenize(raw))
+        join_next = raw.endswith("'")
 
     matches = [
         i for i in range(len(flat) - len(wanted) + 1)
