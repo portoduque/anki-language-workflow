@@ -61,16 +61,16 @@ def writing_parts(card: dict[str, Any]) -> tuple[str, str, str]:
     answer = str(card.get("writing_answer", ""))
     if not answer or not answer.strip() or answer != answer.strip():
         raise ValueError("writing_answer must be a nonempty single-line word/chunk without outer whitespace.")
-    if any(ch in answer for ch in ("\\n", "\\r", "<", ">")):
+    if any(ch in answer for ch in ("\n", "\r", "<", ">")):
         raise ValueError("writing_answer must be plain text on one line.")
-    if not target.strip() or any(ch in target for ch in ("\\n", "\\r")):
+    if not target.strip() or any(ch in target for ch in ("\n", "\r")):
         raise ValueError("Writing target_text must be a short, single-line sentence.")
     if target.count(answer) != 1:
         raise ValueError("writing_answer must occur exactly once in target_text.")
     before, after = target.split(answer, 1)
     if not (before.strip() or after.strip()):
         raise ValueError("Writing must test a part of the sentence, not the whole sentence.")
-    if (before and re.match(r"\\w", before[-1], re.UNICODE)) or (after and re.match(r"\\w", after[0], re.UNICODE)):
+    if (before and re.match(r"\w", before[-1], re.UNICODE)) or (after and re.match(r"\w", after[0], re.UNICODE)):
         raise ValueError("writing_answer must align to word boundaries, not cut through a word.")
     return before, answer, after
 
