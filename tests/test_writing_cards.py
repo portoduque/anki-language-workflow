@@ -78,6 +78,17 @@ def test_writing_native_typing_template_is_single_gap_and_keeps_answer_hidden() 
     assert "https://" not in (front + back).lower()
 
 
+def test_writing_parts_allow_meaningful_chunks_in_unspaced_scripts() -> None:
+    assert writing_parts(card(
+        target_text="私は学校に行きます。",
+        writing_answer="学校",
+    )) == ("私は", "学校", "に行きます。")
+    assert writing_parts(card(
+        target_text="我喜欢学习中文。",
+        writing_answer="中文",
+    )) == ("我喜欢学习", "中文", "。")
+
+
 def test_writing_parts_preserve_unicode_accents_quotes_and_word_boundaries() -> None:
     assert writing_parts(card()) == ("Je vais ", "à l'école", ".")
     assert writing_parts(card(
