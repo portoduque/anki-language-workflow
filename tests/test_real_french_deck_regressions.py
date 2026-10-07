@@ -108,8 +108,11 @@ def test_apkg_stores_front_cue_for_read_aloud_without_changing_v5_other_models(t
     assert output.is_file()
 
     with zipfile.ZipFile(output) as archive:
-        db_path = tmp_path / "collection.anki21"
-        db_path.write_bytes(archive.read("collection.anki21"))
+        # genanki currently exports collection.anki2; newer Anki exports may
+        # use collection.anki21. Exercise the actual archive layout.
+        db_name = "collection.anki21" if "collection.anki21" in archive.namelist() else "collection.anki2"
+        db_path = tmp_path / db_name
+        db_path.write_bytes(archive.read(db_name))
     with sqlite3.connect(db_path) as conn:
         rows = conn.execute("SELECT flds FROM notes").fetchall()
     by_target = {row[0].split("\x1f")[3]: row[0].split("\x1f") for row in rows}
