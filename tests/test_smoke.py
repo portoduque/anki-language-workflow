@@ -10,7 +10,7 @@ SKILL = ROOT / "anki-language"
 EXAMPLE = SKILL / "examples" / "card-plan.example.json"
 
 sys.path.insert(0, str(SKILL / "scripts"))
-from build_apkg import FIELDS, card_context, make_model  # noqa: E402
+from build_apkg import CSS, FIELDS, MODEL_VERSION, card_context, make_model  # noqa: E402
 
 
 def run(*args: str) -> subprocess.CompletedProcess[str]:
@@ -162,8 +162,30 @@ def test_structured_language_fields_are_in_v3_models() -> None:
     assert "Grammar" in field_names
 
     model = make_model("reading")
-    assert model.name == "Anki Language v3 — Reading"
+    assert model.name == "Anki Language v4 — Reading"
     back = model.templates[0]["afmt"]
     assert "{{#Reading}}" in back and "{{Reading}}" in back
     assert "{{#Variant}}" in back and "{{Variant}}" in back
     assert "{{#Grammar}}" in back and "{{Grammar}}" in back
+
+
+def test_v4_templates_are_portable_for_night_mode_rtl_and_long_cards() -> None:
+    assert MODEL_VERSION == 4
+    assert ".card.nightMode" in CSS
+    assert "@media (max-width: 480px)" in CSS
+    assert "overflow-wrap: anywhere" in CSS
+
+    reading = make_model("reading")
+    front = reading.templates[0]["qfmt"]
+    back = reading.templates[0]["afmt"]
+
+    assert 'dir="auto"' in front
+    assert 'dir="auto"' in back
+    assert '<hr id="answer">' in back
+    assert reading.name == "Anki Language v4 — Reading"
+
+
+def test_legacy_v3_audit_compatibility_is_not_removed() -> None:
+    # v4 is a new generated model family; audit_live remains model-agnostic and
+    # existing v3 cards are intentionally not migrated in place.
+    assert make_model("reading").name != "Anki Language v3 — Reading"

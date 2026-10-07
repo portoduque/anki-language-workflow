@@ -138,3 +138,16 @@ The end-to-end pipeline prints a JSON report containing:
 - resolved-plan path;
 - APKG validation when used;
 - live note IDs and post-upload media verification when used.
+
+## Rendering boundary
+
+Deterministic APKG validation checks package/database/media structure. It does **not** prove that every Anki client will render every template perfectly.
+
+After a meaningful template/model migration, spot-check representative cards in Anki before large-scale adoption. Include:
+- a long card that requires answer scrolling;
+- empty optional fields;
+- audio/image media when used;
+- night mode;
+- the target writing system, especially right-to-left or mixed-direction text.
+
+Anki client rendering is the final authority for presentation. Do not claim cross-client rendering success from structural APKG validation alone.

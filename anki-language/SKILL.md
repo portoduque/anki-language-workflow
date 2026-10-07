@@ -84,7 +84,8 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 9. Write `card-plan.json` according to [references/output-contract.md](references/output-contract.md) and `schemas/card-plan.schema.json`. Its target/base languages must match the workspace configuration. Use `audio_request` / `image_request` only for cards where media adds real value.
 10. Select delivery: `apkg` by default; `live` only when the user wants direct AnkiConnect delivery; `both` when live insertion plus a portable APKG is useful.
 11. Run `python scripts/run_pipeline.py card-plan.json --delivery <apkg|live|both>`. This resolves media, validates it, then delivers it.
-12. Deliver the resolved plan plus APKG/live report. Never claim media success when a validation or post-upload verification failed.
+12. Treat deterministic APKG validation as structural validation, not proof of cross-client rendering. After a meaningful template/model migration, ask for or perform a representative Anki spot-check (long text, empty optional fields, media, night mode, and the target writing system) before large-scale adoption.
+13. Deliver the resolved plan plus APKG/live report. Never claim media or rendering success when the relevant validation/spot-check did not occur.
 
 ## Optional live maintenance / feedback audit
 

@@ -21,6 +21,7 @@ SKILL_META = {
 }
 
 AUDIO_FRONT_MODES = {"minimal-pair", "sound-discrimination", "audio-to-spelling"}
+MODEL_VERSION = 4
 
 FIELDS = [
     {"name": "Context"},
@@ -44,22 +45,48 @@ FIELDS = [
 
 CSS = """
 .card {
+  box-sizing: border-box;
   font-family: Arial, sans-serif;
   font-size: 21px;
-  text-align: left;
+  text-align: start;
   color: #222;
   background: #fff;
   max-width: 760px;
   margin: 0 auto;
+  padding: 24px 18px;
   line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 .context { font-size: 13px; opacity: .65; margin-bottom: 14px; text-transform: uppercase; letter-spacing: .08em; }
 .prompt { margin: 10px 0 18px; }
 .target { font-size: 27px; font-weight: 600; margin: 12px 0; }
 .support, .focus, .hint, .notes, .ipa, .reading, .variant, .grammar, .source { margin-top: 10px; }
 .label { font-size: 12px; opacity: .55; text-transform: uppercase; letter-spacing: .06em; }
-img { max-width: 100%; max-height: 360px; object-fit: contain; }
-hr { margin: 20px 0; }
+img { display: block; max-width: 100%; max-height: 360px; object-fit: contain; margin: 12px auto 0; }
+hr { margin: 20px 0; border: 0; border-top: 1px solid #d8d8d8; }
+
+.card.nightMode {
+  color: #f2f3f5;
+  background: #1f2125;
+}
+.nightMode .label,
+.nightMode .context,
+.nightMode .source {
+  color: #b5bac1;
+}
+.nightMode hr {
+  border-top-color: #454a50;
+}
+
+@media (max-width: 480px) {
+  .card {
+    font-size: 20px;
+    padding: 18px 12px;
+  }
+  .target {
+    font-size: 25px;
+  }
+}
 """
 
 
@@ -92,41 +119,41 @@ def image_ref(path: Path | None) -> str:
 
 
 def make_model(skill: str) -> genanki.Model:
-    model_id = stable_id(f"anki-language:model:v3:{skill}")
+    model_id = stable_id(f"anki-language:model:v{MODEL_VERSION}:{skill}")
     common_back = """
 {{FrontSide}}
-<hr>
-{{#Target}}<div class="label">{{TargetLanguage}}</div><div class="target">{{Target}}</div>{{/Target}}
-{{#Base}}<div class="label">{{BaseLanguage}}</div><div class="support">{{Base}}</div>{{/Base}}
-{{#Focus}}<div class="label">Focus</div><div class="focus">{{Focus}}</div>{{/Focus}}
-{{#IPA}}<div class="label">IPA</div><div class="ipa">{{IPA}}</div>{{/IPA}}
-{{#Reading}}<div class="label">Reading</div><div class="reading">{{Reading}}</div>{{/Reading}}
-{{#Variant}}<div class="label">Variant</div><div class="variant">{{Variant}}</div>{{/Variant}}
-{{#Grammar}}<div class="label">Grammar</div><div class="grammar">{{Grammar}}</div>{{/Grammar}}
+<hr id="answer">
+{{#Target}}<div class="label">{{TargetLanguage}}</div><div class="target" dir="auto">{{Target}}</div>{{/Target}}
+{{#Base}}<div class="label">{{BaseLanguage}}</div><div class="support" dir="auto">{{Base}}</div>{{/Base}}
+{{#Focus}}<div class="label">Focus</div><div class="focus" dir="auto">{{Focus}}</div>{{/Focus}}
+{{#IPA}}<div class="label">IPA</div><div class="ipa" dir="auto">{{IPA}}</div>{{/IPA}}
+{{#Reading}}<div class="label">Reading</div><div class="reading" dir="auto">{{Reading}}</div>{{/Reading}}
+{{#Variant}}<div class="label">Variant</div><div class="variant" dir="auto">{{Variant}}</div>{{/Variant}}
+{{#Grammar}}<div class="label">Grammar</div><div class="grammar" dir="auto">{{Grammar}}</div>{{/Grammar}}
 {{#BackAudio}}<div class="back-audio">{{BackAudio}}</div>{{/BackAudio}}
 {{#Image}}<div class="image">{{Image}}</div>{{/Image}}
-{{#Notes}}<div class="label">Notes</div><div class="notes">{{Notes}}</div>{{/Notes}}
-{{#Source}}<div class="label">Source</div><div class="source">{{Source}}</div>{{/Source}}
+{{#Notes}}<div class="label">Notes</div><div class="notes" dir="auto">{{Notes}}</div>{{/Notes}}
+{{#Source}}<div class="label">Source</div><div class="source" dir="auto">{{Source}}</div>{{/Source}}
 """
 
     if skill == "reading":
         front = """
-<div class="context">{{Context}}</div>
-<div class="target">{{Target}}</div>
-{{#Prompt}}<div class="prompt">{{Prompt}}</div>{{/Prompt}}
+<div class="context" dir="auto">{{Context}}</div>
+<div class="target" dir="auto">{{Target}}</div>
+{{#Prompt}}<div class="prompt" dir="auto">{{Prompt}}</div>{{/Prompt}}
 {{#FrontAudio}}<div>{{FrontAudio}}</div>{{/FrontAudio}}
 """
     elif skill == "listening":
         front = """
-<div class="context">{{Context}}</div>
-{{#Prompt}}<div class="prompt">{{Prompt}}</div>{{/Prompt}}
+<div class="context" dir="auto">{{Context}}</div>
+{{#Prompt}}<div class="prompt" dir="auto">{{Prompt}}</div>{{/Prompt}}
 <div>{{FrontAudio}}</div>
 """
     elif skill == "production":
         front = """
-<div class="context">{{Context}}</div>
-<div class="prompt">{{Prompt}}</div>
-{{#Hint}}<div class="label">Hint</div><div class="hint">{{Hint}}</div>{{/Hint}}
+<div class="context" dir="auto">{{Context}}</div>
+<div class="prompt" dir="auto">{{Prompt}}</div>
+{{#Hint}}<div class="label">Hint</div><div class="hint" dir="auto">{{Hint}}</div>{{/Hint}}
 {{#Image}}<div class="image">{{Image}}</div>{{/Image}}
 """
         common_back = common_back.replace('{{#Image}}<div class="image">{{Image}}</div>{{/Image}}', "")
@@ -135,15 +162,15 @@ def make_model(skill: str) -> genanki.Model:
         # sound-discrimination/minimal-pair cards that would reveal the answer.
         # Standard pronunciation cards put the written target inside Prompt.
         front = """
-<div class="context">{{Context}}</div>
-{{#Prompt}}<div class="prompt">{{Prompt}}</div>{{/Prompt}}
-{{#Hint}}<div class="label">Hint</div><div class="hint">{{Hint}}</div>{{/Hint}}
+<div class="context" dir="auto">{{Context}}</div>
+{{#Prompt}}<div class="prompt" dir="auto">{{Prompt}}</div>{{/Prompt}}
+{{#Hint}}<div class="label">Hint</div><div class="hint" dir="auto">{{Hint}}</div>{{/Hint}}
 {{#FrontAudio}}<div>{{FrontAudio}}</div>{{/FrontAudio}}
 """
 
     return genanki.Model(
         model_id,
-        f"Anki Language v3 — {SKILL_META[skill][1]}",
+        f"Anki Language v{MODEL_VERSION} — {SKILL_META[skill][1]}",
         fields=FIELDS,
         templates=[{"name": "Card 1", "qfmt": front, "afmt": common_back}],
         css=CSS,

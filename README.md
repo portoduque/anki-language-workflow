@@ -122,6 +122,7 @@ Current curated notes include:
 - `anki-language/references/research/refold-learning-words-roadmap.md` — analyzes Refold's “Learning words with Anki” article in the context of the expanded roadmap/sidebar and adopts evidence-driven candidate-source progression plus output/domain-gap mining, while rejecting fixed phase/word-count/workload quotas.
 - `anki-language/references/research/anki-forum-language-card-structure.md` — analyzes the full Anki Forums thread behind the supplied /4 URL and adopts only the grammar-retrieval-intent distinction, while confirming the existing structured-audio, skill-deck/tag, selective-reverse, and support-example policies.
 - `anki-language/references/research/keiffenheim-flashcards-language-learning.md` — analyzes the publicly accessible portion of Eva Keiffenheim's 2026 flashcard article and adopts natural re-encounter scarcity as a card-selection factor; inaccessible gated sections are explicitly not inferred.
+- `anki-language/references/research/vidtoanki-card-format-ecosystem.md` — reviews VidToAnki's card-template guide together with its related workflow, fields, media, Cloze, CSS, typed-answer, sentence-mining, review-load, and APKG-checker pages; adopts only template portability/rendering QA improvements.
 
 Across these research sources, recommendations are not promoted automatically. Examples deliberately **not** adopted include:
 
@@ -535,7 +536,7 @@ The card plan supports three optional semantic fields for data that should not b
 
 They are rendered conditionally on the back and are delivered as separate Anki note fields through AnkiConnect. They are optional support metadata: **adding one does not generate another card**.
 
-Because the note-field contract changed, newly created notes use the **Anki Language v3** note types. Existing live cards remain untouched; stable workflow tags still prevent already-delivered cards from being inserted again.
+The structured-field migration originally introduced **Anki Language v3**. The current generated templates use **Anki Language v4** so night-mode/RTL/mobile presentation improvements do not silently restyle existing v3 note types. Existing live cards remain untouched; stable workflow tags still prevent already-delivered card ids from being inserted again.
 
 Anki itself supports one rich note generating multiple conditional card types, and Card Template Deck Override can route those generated cards into separate decks. This repository deliberately keeps the current **one note per selected planned card** architecture for now because it keeps per-card prompts/media and APKG/live delivery simpler while preserving selective card generation. See:
 - https://docs.ankiweb.net/manual/templates/generation
@@ -555,7 +556,8 @@ Anki itself supports one rich note generating multiple conditional card types, a
 10. The resolved plan is delivered as `apkg`, `live`, or `both`.
 11. APKG mode validates ZIP/media manifest/internal Anki database.
 12. Live mode preflights notes, inserts them through AnkiConnect, then retrieves uploaded media and verifies SHA-256 + note-field references.
-13. AI returns the resolved plan and delivery reports; failed validation is never reported as success.
+13. Deterministic validation is structural, not a substitute for final client rendering. After a meaningful template/model migration, spot-check representative cards in Anki (long text, empty optional fields, media, night mode, and the target script) before large-scale adoption.
+14. AI returns the resolved plan and delivery reports; failed validation is never reported as success.
 
 ## Deterministic build
 
