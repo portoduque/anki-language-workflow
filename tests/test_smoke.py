@@ -155,7 +155,7 @@ def test_front_context_identifies_target_language_and_skill() -> None:
     assert card_context("Japanese", "production") == "Japanese — Production"
 
 
-def test_structured_language_fields_are_in_v3_models() -> None:
+def test_structured_language_fields_are_in_current_models() -> None:
     field_names = [field["name"] for field in FIELDS]
     assert "Reading" in field_names
     assert "Variant" in field_names
@@ -189,3 +189,26 @@ def test_legacy_v3_audit_compatibility_is_not_removed() -> None:
     # v4 is a new generated model family; audit_live remains model-agnostic and
     # existing v3 cards are intentionally not migrated in place.
     assert make_model("reading").name != "Anki Language v3 — Reading"
+
+
+def test_generated_templates_require_no_javascript_or_remote_assets() -> None:
+    for skill in ("reading", "listening", "production", "pronunciation"):
+        model = make_model(skill)
+        rendered = "\n".join([
+            CSS,
+            model.templates[0]["qfmt"],
+            model.templates[0]["afmt"],
+        ]).lower()
+
+        assert "<script" not in rendered
+        assert "javascript:" not in rendered
+        assert "http://" not in rendered
+        assert "https://" not in rendered
+        assert "<iframe" not in rendered
+
+
+def test_source_metadata_stays_off_the_front() -> None:
+    for skill in ("reading", "listening", "production", "pronunciation"):
+        model = make_model(skill)
+        assert "{{Source}}" not in model.templates[0]["qfmt"]
+        assert "{{Source}}" in model.templates[0]["afmt"]
