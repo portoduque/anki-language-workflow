@@ -15,6 +15,8 @@ Optimize long-term retrieval and usable language ability while keeping reviews f
 - Sentence mining is selective. Do not convert every sentence into a card.
 - Prefer near-i+1 mined sentences: essentially known context plus one primary unknown/focus item.
 - For polysemous targets, inspect multiple contexts during analysis, then keep each review card concise instead of placing many examples on the front.
+- Prefer one primary sense/usage per card when a multi-definition answer would overload retrieval; let context carry secondary nuance.
+- Mnemonics are optional scaffolding for difficult items. Verified cognates can help; invented sound-alike mnemonics must be labeled as mnemonics, not etymology.
 - Full-sentence Production targets require a higher naturalness bar than passive support examples; prefer attested/native material or independently validated generated language.
 - Concrete vocabulary may benefit from an image; abstract language usually benefits more from context.
 - When a card tests meaning or valid usage, semantic correctness matters more than reproducing the stored example verbatim; exact wording is required only when exact wording is the target.

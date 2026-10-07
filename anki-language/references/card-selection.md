@@ -145,9 +145,12 @@ When a target word/expression appears to have multiple senses or productive uses
 
 Prefer:
 
+- **one primary sense/usage per card** when a single gloss would otherwise collapse several meanings into one overloaded answer;
 - one clear primary context on the front;
 - at most a small number of concise supporting examples on the back when they materially clarify usage;
 - separate cards only for distinct, useful senses that deserve independent retrieval.
+
+Do not require the learner to recall a dictionary-style list of several translations/senses on one card. Let context carry secondary nuance unless another sense independently deserves its own retrieval target.
 
 Do **not** copy six or ten example sentences onto the front merely to show every possible use. Context exploration belongs mainly in analysis; review cards must remain fast.
 
@@ -307,7 +310,26 @@ Preferred order:
 
 Do not scrape or embed media without permission. Preserve provenance when known.
 
-## 15. Avoid redundancy and interference
+## 15. Mnemonics are optional scaffolding
+
+A mnemonic may be added when a word/form is genuinely hard to retrieve and a short association materially reduces learning friction.
+
+Useful forms include:
+
+- a verified cognate/etymological connection to a language the learner already knows;
+- a keyword/sound-alike association;
+- a concise image or verbal association.
+
+Rules:
+
+- **Do not add mnemonics to every card.** They are scaffolding for difficult items, not a quota.
+- Put the mnemonic in secondary/back-side information so it does not replace the actual retrieval target.
+- If claiming a real cognate, borrowing, or etymological relationship, verify it from a trustworthy source before presenting it as fact.
+- If the link is merely an invented sound-alike/keyword, label it as a mnemonic rather than pretending it is etymology.
+- Avoid a mnemonic that is more complicated, misleading, or memorable than the target in a way that creates interference.
+- AI may propose mnemonic candidates, but it must not fabricate linguistic ancestry or false-friend relationships.
+
+## 16. Avoid redundancy and interference
 
 Do not create near-duplicate cards that test essentially the same retrieval.
 
@@ -315,7 +337,7 @@ Avoid introducing large batches of very similar new synonyms, near-synonyms, or 
 
 If two cards are easily confused because the prompt does not distinguish them, improve the context instead of accepting ambiguity.
 
-## 16. Keep answers concise and reviews fast
+## 17. Keep answers concise and reviews fast
 
 The answer should expose the information needed to verify recall quickly.
 
@@ -325,7 +347,7 @@ For grammar, morphology, conjugation, or word-order cards, a brief back-side exp
 
 Do not turn the back of every card into a lesson, paragraph, or reference article.
 
-## 17. Use the user's material as the primary source
+## 18. Use the user's material as the primary source
 
 Prefer the user's phrase, sentence, audio, image, or context when it is suitable.
 
@@ -343,7 +365,7 @@ Do not replace the user's material with generic material merely because generic 
 
 It is acceptable to create a clearer example when the original material is unsuitable, but preserve the intended meaning and do not invent uncertain facts.
 
-## 18. Ask before guessing when ambiguity affects card quality
+## 19. Ask before guessing when ambiguity affects card quality
 
 Stop and ask the user when uncertainty materially affects:
 
@@ -357,7 +379,7 @@ Stop and ask the user when uncertainty materially affects:
 
 Minor formatting decisions do not require interruption.
 
-## 19. Decks classify skill; tags classify linguistic content
+## 20. Decks classify skill; tags classify linguistic content
 
 Use the four skill subdecks:
 
@@ -381,7 +403,7 @@ Use sparse tags for dimensions such as:
 
 Do not create many micro-decks for those categories.
 
-## 20. Creation effort must also earn its keep
+## 21. Creation effort must also earn its keep
 
 Review cost is not the only cost. Card creation/customization also consumes time.
 
@@ -389,7 +411,7 @@ Do not spend disproportionate effort on decorative formatting, searching for the
 
 Use automation/media enrichment when it adds value, but keep the workflow biased toward **fast capture, selective enrichment, and more time learning/reviewing than decorating cards**.
 
-## 21. Final decision test
+## 22. Final decision test
 
 Before accepting any card, verify all five:
 

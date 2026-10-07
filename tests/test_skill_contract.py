@@ -263,3 +263,46 @@ def test_readme_documents_evildea_refinements() -> None:
     assert "Near-i+1 mining is the default" in readme
     assert "Explore polysemy before encoding it" in readme
     assert "Production authenticity is stricter" in readme
+
+
+def test_hodos_refinements_are_explicit_and_selective() -> None:
+    rules = (SKILL / "references" / "card-selection.md").read_text(encoding="utf-8").lower()
+    pedagogy = (SKILL / "references" / "pedagogy.md").read_text(encoding="utf-8").lower()
+    skill = (SKILL / "SKILL.md").read_text(encoding="utf-8").lower()
+
+    assert "one primary sense/usage per card" in rules
+    assert "mnemonics are optional scaffolding" in rules
+    assert "verify it from a trustworthy source" in rules
+    assert "invented sound-alike/keyword" in rules
+    assert "one primary sense/usage per card" in skill
+    assert "ai must not fabricate linguistic ancestry" in skill
+    assert "mnemonics are optional scaffolding" in pedagogy
+
+
+def test_hodos_research_note_records_adopted_and_rejected_advice() -> None:
+    note = (SKILL / "references" / "research" / "hodos-37000-anki-tips.md").read_text(encoding="utf-8").lower()
+    assert "complete spoken transcript was reviewed" in note
+    assert "one primary sense/usage per card" in note
+    assert "mnemonics can be useful scaffolding" in note
+    assert "two-second rule" in note
+    assert "on-screen timer" in note
+    assert "monthly deck retirement" in note
+    assert "automatic “doubled” cards" in note
+
+
+def test_scheduling_reference_rejects_arbitrary_speed_failures() -> None:
+    ref = (SKILL / "references" / "anki" / "07-scheduling-fsrs-study-options.md").read_text(encoding="utf-8")
+    assert "Response latency is not a fixed fail threshold" in ref
+    assert "Do not turn a correct answer into **Again**" in ref
+    assert "## Timers" in ref
+    assert "time does not influence scheduling by itself" in ref
+    assert "Auto Advance" in ref
+    assert "## Deck continuity" in ref
+
+
+def test_readme_documents_hodos_refinements() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "hodos-37000-anki-tips.md" in readme
+    assert "One primary sense per card" in readme
+    assert "Mnemonics are selective scaffolding" in readme
+    assert "Correct-but-slow recall is **not** automatically a failure" in readme

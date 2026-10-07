@@ -39,7 +39,8 @@ Before selecting cards, read [references/card-selection.md](references/card-sele
 - Prefer useful chunks/collocations/patterns when the combination is the knowledge that matters.
 - Sentence mining is selective; do not turn every sentence into a card.
 - Prefer near-i+1 mined sentences: the surrounding context should already be understood, with one primary unknown/focus item. If several independent unknowns compete for attention, choose a cleaner sentence, split targets, or skip it.
-- For polysemous words/expressions, inspect multiple trustworthy contexts during analysis, but keep each review front concise; do not paste many examples onto the front merely to cover every sense.
+- For polysemous words/expressions, inspect multiple trustworthy contexts during analysis, but keep each review front concise; prefer one primary sense/usage per card when a multi-definition answer would overload retrieval.
+- Mnemonics are optional scaffolding for difficult items. Verified cognates/etymology may help; invented sound-alike mnemonics must be labeled as mnemonics, and AI must not fabricate linguistic ancestry.
 - An encountered unknown word/phrase is only a **candidate** until it passes the usefulness/context/review-cost test; preserve source context and batch selection after a passage/chapter/clip when practical.
 - For an absolute beginner with too little comprehensible personal material to mine, a vetted frequency/shared deck may be used as a **candidate source**; never bulk-adopt it blindly.
 - Card-creation/customization time also counts. Prefer simple cards and selective enrichment over decorative complexity that does not improve retrieval.

@@ -17,6 +17,18 @@ The learner grades recall with:
 
 With FSRS, **Hard is a passing grade**. If the answer was forgotten, use **Again**, not Hard. Consistently using Hard for forgotten cards teaches FSRS the wrong signal and can produce intervals that are too long.
 
+### Response latency is not a fixed fail threshold
+
+Do not turn a correct answer into **Again** merely because it took more than an arbitrary 2 or 3 seconds.
+
+Current official Anki guidance distinguishes:
+- **Again** — incorrect or could not recall;
+- **Hard** — correct, but doubtful or slow;
+- **Good** — correct with ordinary mental effort;
+- **Easy** — correct with little/no effort.
+
+The manual also suggests that if the learner is still unable to answer after roughly 10 seconds, it is usually better to reveal the answer than to keep struggling. Treat that as a practical anti-stalling guideline, not a universal stopwatch rule for every card type.
+
 ## FSRS
 
 Modern Anki includes FSRS natively.
@@ -101,11 +113,35 @@ Burying can still be useful for true siblings in user-created/external note type
 
 If future versions intentionally group multiple generated cards under one note, revisit this rule and add regression tests for sibling behavior.
 
+## Timers
+
+Anki's normal internal/on-screen timers are **measurement/display tools**, not scheduling signals.
+
+- Answer time does not influence scheduling by itself.
+- Maximum answer seconds caps recorded study-time statistics; it does not automatically fail the card.
+- The on-screen timer simply displays elapsed time.
+- Automatic actions after a time threshold require the separate **Auto Advance** feature.
+
+Therefore, do not describe a 3-second on-screen timer as "limiting every card to 3 seconds," and do not use the timer alone to decide Again/Hard/Good/Easy.
+
 ## Easy Days
 
 Easy Days shifts future due dates by a small amount so selected weekdays can be lighter. It **redistributes** workload; it does not eliminate the underlying reviews.
 
 Do not interpret a low/minimum day as "zero Anki work" or as a replacement for sustainable new-card intake.
+
+## Deck continuity
+
+Do not retire or abandon an otherwise useful deck on a fixed monthly schedule merely to escape mature reviews. That discards the long-term spacing benefit Anki is designed to preserve.
+
+When workload becomes excessive, prefer:
+- reducing new-card intake;
+- deleting/suspending low-value cards;
+- fixing leeches or poor prompts;
+- pruning redundant cards;
+- adjusting workload-aware FSRS settings when appropriate.
+
+Changing the source material or starting a new deck is fine; worthwhile old cards can continue to mature under spaced repetition.
 
 ## Leeches
 
