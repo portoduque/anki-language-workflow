@@ -46,6 +46,10 @@ The router returns the highest-scoring local reference files plus the official l
 | AnkiConnect, add-on development, APIs, automation | [12-automation-development-apis.md](12-automation-development-apis.md) |
 | AnkiMobile/AnkiDroid/platform compatibility | [13-platforms-mobile-compatibility.md](13-platforms-mobile-compatibility.md) |
 | Troubleshooting, security, performance, version-sensitive decisions | [14-troubleshooting-security-performance.md](14-troubleshooting-security-performance.md) |
+| Installation, upgrades, preferences, interface settings | [15-installation-preferences-configuration.md](15-installation-preferences-configuration.md) |
+| RTL, furigana/ruby, fonts, dictionary links, typed-answer language details | [16-language-rendering-fonts-rtl-furigana.md](16-language-rendering-fonts-rtl-furigana.md) |
+| MathJax, LaTeX, mathematical symbols | [17-math-symbols-mathjax-latex.md](17-math-symbols-mathjax-latex.md) |
+| What official documentation families are covered locally | [COVERAGE.md](COVERAGE.md) |
 | Authoritative URLs and live-doc discovery | [SOURCES.md](SOURCES.md) |
 
 ## Rules for this project
