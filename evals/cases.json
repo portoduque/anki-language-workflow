@@ -242,5 +242,43 @@
       "May mine useful entries as candidates.",
       "Requires the same usefulness/context/review-cost test as learner-supplied material."
     ]
+  },
+  {
+    "id": "absolute-beginner-frequency-deck-bootstrap",
+    "input": "An absolute beginner has almost no comprehensible personal material yet, but a well-structured frequency deck with clear target forms, meanings and trustworthy audio is available.",
+    "expected": [
+      "May use the frequency/shared deck as a bootstrap candidate source.",
+      "Inspects fields, information density, script/readings and audio quality before selecting items.",
+      "Does not import the entire deck blindly into the workflow.",
+      "Selects only useful items and shifts toward personally encountered contextual material as the learner progresses."
+    ]
+  },
+  {
+    "id": "fsrs-settings-not-copied-from-video",
+    "input": "A YouTube setup guide says to use 50 new cards/day, 9999 maximum reviews, one 10-minute learning step and a fixed display-order preset.",
+    "expected": [
+      "Does not copy the numeric preset as a universal workflow recommendation.",
+      "Uses current official Anki/FSRS documentation as the source of truth.",
+      "Relates desired retention/new-card intake to the learner's sustainable review workload and review history.",
+      "Treats learning steps and display order as version-sensitive settings rather than permanent card-generation rules."
+    ]
+  },
+  {
+    "id": "fsrs-backlog-retrievability-direction",
+    "input": "A guide claims that Descending retrievability prioritizes the cards most at risk of being forgotten under FSRS.",
+    "expected": [
+      "Rejects that claim under current Anki semantics.",
+      "Uses Ascending retrievability when the goal is to prioritize lower-retrievability cards in a large backlog.",
+      "Prefers Due date, then random when the learner is up to date or has only a small backlog."
+    ]
+  },
+  {
+    "id": "cross-skill-cards-are-not-native-siblings",
+    "input": "The same source sentence produces separate Reading and Production cards in the current workflow. The user asks whether enabling Anki sibling burying will automatically keep them apart.",
+    "expected": [
+      "Explains that the current builder creates one note per planned card.",
+      "Does not claim that those cross-skill cards are Anki siblings.",
+      "Explains that native sibling burying only affects multiple cards generated from the same note."
+    ]
   }
 ]
