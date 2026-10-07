@@ -92,5 +92,6 @@ def test_readme_documents_ankiconnect_reference_library() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "## Complete AnkiConnect reference library" in readme
     assert "find_ankiconnect_reference.py" in readme
-    assert "all 114 actions" in readme.lower()
+    assert "114 baseline/common documented actions" in readme.lower()
+    assert "118 cataloged entries total" in readme.lower()
     assert "version" in readme and "apiReflect" in readme
