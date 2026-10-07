@@ -30,8 +30,15 @@ Each card includes:
 - `ipa`: optional pronunciation field;
 - `audio`: optional path relative to the plan file;
 - `image`: optional path relative to the plan file;
+- `audio_provenance` / `image_provenance`: optional structured provenance (`kind`, provider, source URL, license note) when known;
 - `source`: optional provenance;
 - `tags`: optional linguistic/content tags.
+
+## Build pipeline
+
+Run `python scripts/build.py card-plan.json --output <Language>.apkg`.
+
+The pipeline validates the JSON Schema and semantic rules, checks referenced media, builds the package, opens the embedded Anki collection database, verifies note/card counts and deck names, and verifies the media manifest.
 
 ## Report
 
