@@ -71,3 +71,11 @@ def test_readme_contains_official_card_creation_rules() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "## Official card-creation rules" in readme
     assert "useful, distinct, clear, atomic, fast" in readme
+
+
+def test_skill_allows_selective_multi_card_reuse_without_volume_inflation() -> None:
+    text = (SKILL / "SKILL.md").read_text(encoding="utf-8").lower()
+    assert "same sentence, word, expression, audio, image, or passage may produce multiple cards" in text
+    assert "incremental learning value" in text
+    assert "future review cost" in text
+    assert "optimize memory efficiency, not volume" in text
