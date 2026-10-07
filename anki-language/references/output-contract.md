@@ -30,12 +30,13 @@ Optional plan-level field:
 Each card includes:
 
 - `id`: stable unique string;
-- `skill`: `reading`, `listening`, `production`, or `pronunciation`;
+- `skill`: `reading`, `listening`, `production`, `pronunciation`, or `writing`;
 - `target_text`: target-language answer/context.
 
 Optional fields:
 
 - `mode`: deterministic retrieval subtype. Valid values are `standard`, `minimal-pair`, `sound-discrimination`, `spelling-sound`, and `audio-to-spelling`;
+- `writing_answer`: Writing only; the exact unique missing word/short chunk inside `target_text`, in one line. The builder derives the two visible sentence parts; do not author HTML or cloze markup;
 - `base_text`;
 - `prompt`: learner-facing instruction or a concise situational/scene cue that defines the retrieval task without revealing the target;
 - `focus`;
@@ -65,6 +66,7 @@ An original sentence/turn may be long, but `target_text` should **normally conta
 
 - **Reading:** use a natural, readable target phrase with just enough context to understand what is being tested; do not force the learner to process an irrelevant long paragraph.
 - **Production:** make `prompt` a concise meaning/situation in the configured base language and `target_text` a short, useful expression or grammatical frame when that is the real target.
+- **Writing:** use a short natural `target_text`, one meaningful `writing_answer` occurring exactly once, and a clear non-leaking `prompt`. The learner types only the missing part; compare with Anki's native type-answer mechanism, not JavaScript. Writing audio (when useful) stays on the back.
 - **Listening / Pronunciation:** when the chosen unit is a chunk from a longer recording, set `audio_clip` for the **same exact spoken portion**. Source text and audio must align; never replay an entire dialogue for a short target.
 - **Source:** preserve the original material's valid locator in `source` (and only minimal helpful explanation on the back). Do not insert the full original sentence into every Front as mandatory context.
 - A complete sentence is allowed when the **entire utterance** is what the learner must retrieve and the card still passes the quick-answer/quick-verification test.
@@ -76,13 +78,31 @@ For each candidate, mentally simulate one review: can the learner tell what to r
 
 `mode` is not an open-ended label. The deterministic pipeline validates it against the selected skill:
 
-- Reading, Listening, and Production currently support only `standard`;
+- Reading, Listening, Production, and Writing currently support only `standard`;
 - Pronunciation & Sounds supports `standard`, `minimal-pair`, `sound-discrimination`, `spelling-sound`, and `audio-to-spelling`;
 - Pronunciation `standard` and `spelling-sound` deterministically show the written target on the front (internal `FrontCue` field); audio-identification modes keep the answer hidden and use front audio;
 - generic "say this" pronunciation fronts without a target/recognition cue are invalid study tasks; only create an extra Pronunciation card when it trains an independent relevant difficulty;
 - Pronunciation subtypes that depend on sound require resolved audio before delivery. This includes `spelling-sound`, even though its audio is normally feedback rather than the front-side cue.
 
 Unknown modes and cross-skill mode combinations are rejected instead of silently falling back to standard behavior.
+
+### Writing contract
+
+**Writing is distinct from Production:** it practices the **correct spelling/form** of one written chunk in an already-short sentence. The card must specify `writing_answer` and `prompt`; validation rejects missing/non-unique answers, full-sentence blanks, unaligned word fragments, newlines, and use of `writing_answer` on other skills.
+
+```json
+{
+  "id": "write-01",
+  "skill": "writing",
+  "target_text": "Je vais à l'école.",
+  "writing_answer": "à l'école",
+  "prompt": "Complete a frase com a expressão que significa 'para a escola'."
+}
+```
+
+The deterministic model **Anki Language v5 — Writing** uses the same visual family with dedicated fields `WritingBefore`, `WritingAfter`, `WritingAnswer`. The Front has visible context plus **one native `{{type:WritingAnswer}}` input**, and the Back has **`{{FrontSide}}` comparison** plus complete answer. The comparison is for single-line typing and the learner selects the review rating. AnkiWeb/preview do not display an interactive typing input; spot-check on desktop/mobile Anki. Additional reference: `references/writing.md`.
+
+Do not generate Writing for every learned chunk or force multiword, multigap, full-sentence transcription.
 
 ### Workflow identity
 
@@ -113,6 +133,7 @@ Presentation is deterministic, not model-authored:
 - Reading promotes base-language meaning on the answer; Listening/Production/Pronunciation promote the target-language answer;
 - responsive mobile, night mode, and `dir="auto"` support are part of the template contract;
 - v3/v4 models are not silently mutated when v5 is introduced.
+- The new Writing note type v5 is independent and does not mutate existing v5/v6 types.
 - Pronunciation alone now uses a v6 note model with an internal FrontCue field; Reading, Listening, and Production remain v5, with the same approved CSS/visual appearance. Existing v5 Pronunciation notes are not changed automatically.
 
 Do not invent source precision. A precise locator is kept only when the supplied/source material actually supports it.
