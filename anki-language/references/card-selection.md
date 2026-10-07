@@ -54,6 +54,17 @@ Do not combine several unrelated questions, several independent blanks, or multi
 
 A note may contain rich metadata, examples, audio, images, explanations, and provenance, but each generated card must still have one primary retrieval target.
 
+### Atomic does not mean isolated
+
+A relationship or contrast can itself be **one primary retrieval target**.
+
+Useful relational cards include:
+- choosing between two confusable forms because the distinction is the knowledge being trained;
+- identifying why one tense/aspect/preposition fits a specific context instead of its competitor;
+- discriminating near-synonyms, collocations, or grammatical patterns when isolated cards are causing interference.
+
+The card must still ask for one decision/relationship. Do not turn this into a "mega card" that demands several independent facts, conjugations, translations, or explanations at once.
+
 ## 3. Every front must be immediately understandable in a mixed review
 
 The learner may review cards from many languages, topics, and skills in one session.
@@ -336,6 +347,29 @@ Do not create near-duplicate cards that test essentially the same retrieval.
 Avoid introducing large batches of very similar new synonyms, near-synonyms, or semantic siblings when that would make them harder to discriminate.
 
 If two cards are easily confused because the prompt does not distinguish them, improve the context instead of accepting ambiguity.
+
+### Avoid learning the card wording instead of the language
+
+Repeatedly seeing the same surface cue can make the learner recognize the **card** without being able to use the knowledge in a new context.
+
+When flexible transfer matters:
+- do not rely on a stereotyped preamble or accidental clue that uniquely predicts the answer;
+- prefer natural contextual cues that require the intended semantic/grammatical distinction;
+- when multiple cards are independently justified, vary the natural context or retrieval direction instead of creating near-duplicate copies;
+- do not manufacture extra variants solely for volume.
+
+The goal is retrieval of the language knowledge, not memorization of the card's visual/verbal fingerprint.
+
+### Graduate redundant scaffolds when mastery evidence exists
+
+When maintaining an existing collection and there is reliable evidence that a simple scaffold is already automatic, do not keep accumulating easier cards if a richer contextual card now covers the same retrieval adequately.
+
+Prefer to retire/suspend the redundant scaffold **only when**:
+- the learner/user or review history provides evidence of reliable mastery;
+- the richer card genuinely covers the old learning target;
+- removing the scaffold does not create a meaningful skill gap.
+
+Do not infer mastery from card age alone, and do not delete user cards without permission.
 
 ## 17. Keep answers concise and reviews fast
 
