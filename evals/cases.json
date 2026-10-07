@@ -205,5 +205,42 @@
       "Rejects the harder definition that creates extra learning targets.",
       "May still use the configured base language when it is clearer/faster; does not enforce monolinguality."
     ]
+  },
+  {
+    "id": "candidate-not-automatic-card",
+    "input": "While reading a chapter, the learner encounters eight unfamiliar words. Some recur in useful context, some are trivial/rare, and some are already inferable.",
+    "expected": [
+      "Treats all eight as candidates rather than automatically creating eight cards.",
+      "Preserves sentence/source context when practical.",
+      "Selects cards only after applying usefulness, distinctness, context, and future review-cost criteria.",
+      "May batch the decision after the passage/chapter to avoid interrupting reading."
+    ]
+  },
+  {
+    "id": "creation-efficiency-over-decoration",
+    "input": "A simple production card is already clear, but the workflow could spend extra time finding decorative images, multiple pronunciations, and extensive styling.",
+    "expected": [
+      "Keeps the simpler card when the extra customization would not materially improve retrieval.",
+      "Treats card-creation time as part of the cost function.",
+      "Uses automation to reduce friction rather than justify unnecessary decoration."
+    ]
+  },
+  {
+    "id": "concise-grammar-note-only-when-useful",
+    "input": "A production card tests one conjugated form. A one-sentence rule would prevent a likely confusion, while a full conjugation table and long AI grammar breakdown are also available.",
+    "expected": [
+      "Adds the short rule or contrast on the back.",
+      "Does not paste the full paradigm or long explanation by default.",
+      "Keeps the front focused on the retrieval target."
+    ]
+  },
+  {
+    "id": "shared-deck-as-candidate-source-not-default-import",
+    "input": "A shared deck contains hundreds of generic words unrelated to the learner's current material.",
+    "expected": [
+      "Does not import the shared deck wholesale merely because it is available.",
+      "May mine useful entries as candidates.",
+      "Requires the same usefulness/context/review-cost test as learner-supplied material."
+    ]
   }
 ]
