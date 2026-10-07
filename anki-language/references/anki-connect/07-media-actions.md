@@ -1,40 +1,31 @@
 # 07 — Media Actions
 
-Media actions manipulate files in the active profile's `collection.media` folder.
+Media actions write/read/list/delete files in the active profile's `collection.media` directory.
 
-## `storeMediaFile`
+`storeMediaFile` supports base64 and current implementations also support path/URL inputs.
 
-Current implementations accept:
-- base64 `data`;
-- absolute/local `path`;
-- remote `url`.
+Capture the returned filename and use exact basenames in card fields.
 
-The current source signature also includes optional `skipHash` and `deleteExisting`.
+## Supported actions
 
-Priority when multiple sources are supplied is implementation-defined/documented; use one source per request for clarity.
+| Action | Status | Main documented params | Purpose |
+| --- | --- | --- | --- |
+| `storeMediaFile` | baseline | `filename`, `data` | Stores a file with the specified base64-encoded contents inside the media folder. Alternatively you can specify a |
+| `retrieveMediaFile` | baseline | `filename` | Retrieves the base64-encoded contents of the specified file, returning `false` if the file does not exist. |
+| `getMediaFilesNames` | baseline | `pattern` | Gets the names of media files matched the pattern. Returning all names by default. |
+| `getMediaDirPath` | baseline | — | Gets the full path to the `collection.media` folder of the currently opened profile. |
+| `deleteMediaFile` | baseline | `filename` | Deletes the specified file inside the media folder. |
 
-Capture the filename returned by AnkiConnect and reference that exact basename.
+## Status policy
 
-Prefix files with underscore only for special/template/config media that should be protected from unused-media cleanup; do not do this for ordinary card audio/images.
+- **baseline**: present in the baseline public standard documentation snapshot.
+- **extended / verify via `apiReflect`**: present in a newer upstream-tracking mirror but absent from the baseline mirror; verify the user's installed AnkiConnect before invoking.
 
-## Note-embedded media
+## Runtime verification
 
-`addNote` / `addNotes` can also accept `audio`, `video`, and `picture` objects with:
-- filename;
-- one source (`data`, `path`, or `url`);
-- destination `fields`;
-- optional `skipHash`.
+Before using a version-sensitive or uncertain action, call `apiReflect` against the user's installed AnkiConnect.
 
-Media rights/provenance rules from this project still apply.
+## Sources
 
-## Current catalog
-
-| Action | Source signature | Risk |
-| --- | --- | --- |
-| `storeMediaFile` | `self, filename, data=None, path=None, url=None, skipHash=None, deleteExisting=True` | `write` |
-| `retrieveMediaFile` | `self, filename` | `read` |
-| `getMediaFilesNames` | `self, pattern='*'` | `read` |
-| `getMediaDirPath` | `self` | `read` |
-| `deleteMediaFile` | `self, filename` | `destructive` |
-
-`deleteMediaFile` is destructive; confirm references before deleting.
+- https://github.com/ankiultimate/anki-connect
+- https://github.com/JSchoreels/anki-connect
