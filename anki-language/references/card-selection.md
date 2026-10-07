@@ -14,7 +14,7 @@ For every source unit, the valid outcome is:
 
 There is no quota and no requirement to fill every deck type.
 
-Never create Reading + Listening + Production + Pronunciation versions automatically.
+Never create Reading + Listening + Production + Pronunciation + Writing versions automatically.
 
 ### Selective multi-card reuse of the same source
 
@@ -287,6 +287,21 @@ Spelling and spelling↔sound cards are scaffolding, not a permanent quota.
 Create them when orthography or grapheme↔sound mapping is still effortful. Once the learner can handle representative examples reliably and the cards have become trivial, stop generating new cards of that subtype unless a genuinely difficult spelling/sound pattern appears.
 
 The Fluent Forever Gallery mentions roughly the first 100–300 words as a historical personal heuristic for this transition. Treat that as an example, **not a hard threshold**. The workflow should use demonstrated difficulty/automaticity instead of a fixed word count.
+
+### Writing — fast typed gap practice
+
+Writing is a separate skill when **correct written retrieval** (spelling, accents, verb forms, agreement, article, or a short reusable chunk) independently deserves practice. It is **not** an automatic typed copy of every Production/Reading card.
+
+- Create a **short, natural sentence** with exactly **one meaningful word/chunk missing**. The missing `writing_answer` must appear exactly once in the original `target_text`; use a short semantic/grammatical `prompt` to make the intended answer unambiguous.
+- The learner types **only the missing part** using Anki's native `{{type:WritingAnswer}}` comparison. The visible words provide context but must not contain the answer.
+- Prefer a short missing verb form, collocation, preposition+article, or orthographically difficult word. Do not require typing a full passage, copying a whole long sentence, or solving multiple gaps in one card.
+- Do not split inside words, damage idioms, or remove the entire sentence. The answer is a written *piece* of a meaningful utterance, not a blind blank.
+- Keep accents and spelling meaningful: use exact native typing comparison rather than silently ignoring diacritics. Anki's comparison assists feedback; the learner still grades their own recall.
+- If Reading/Production already provides the same knowledge and typing adds no important orthographic/grammatical skill, **skip Writing**. One source chunk can justify multiple skill cards only for genuinely different retrieval gaps.
+- Optional audio belongs on the **Back** as reinforcement; trim original audio to the short utterance with `audio_clip` when needed.
+- The writing input is not shown in AnkiWeb or the preview; test in the actual Anki reviewer. Refer to [writing.md](writing.md) for official documentation and implementation tradeoffs.
+
+The aim is **rapid, active recall**, not full free-writing composition. Do not add cloze note-type multiplication, a custom editor, add-ons, JS scoring, or fixed quotas.
 
 ## 11. Prefer chunks, collocations, and useful patterns when they improve usable language
 
@@ -652,6 +667,7 @@ Use sparse tags for dimensions such as:
 - `spelling`
 - `minimal-pair`
 - `sentence-mining`
+- `writing`
 
 Do not create many micro-decks for those categories.
 
