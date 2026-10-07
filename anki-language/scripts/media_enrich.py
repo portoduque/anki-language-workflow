@@ -234,10 +234,11 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
     media_root = (media_dir or (plan_dir / "media")).resolve()
     voice_dir = media_root / ".piper-voices"
     media_root.mkdir(parents=True, exist_ok=True)
-    counts = {"audio_generated": 0, "images_downloaded": 0, "media_validated": 0}
+    counts = {"audio_generated": 0, "images_downloaded": 0, "media_validated": 0, "media_skipped": 0}
 
     for card in plan.get("cards", []):
         card_validation = dict(card.get("media_validation") or {})
+        media_issues = list(card.get("media_issues") or [])
 
         if card.get("audio"):
             path = resolve_path(plan_dir, str(card["audio"]))
@@ -246,32 +247,42 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
         elif card.get("audio_request"):
             request = card["audio_request"]
             provider = request.get("provider", "auto")
-            if provider not in {"auto", "piper"}:
-                raise RuntimeError(f"Unsupported audio provider: {provider}")
-            output = media_root / f"{safe_id(str(card['id']))}-audio.wav"
-            selected, metadata = synthesize_piper(
-                str(request["text"]),
-                str(plan["target_language"]["code"]),
-                output,
-                request.get("voice"),
-                voice_dir,
+            mode = str(card.get("mode", "standard")).strip().lower()
+            audio_required = bool(request.get("required")) or card.get("skill") == "listening" or (
+                card.get("skill") == "pronunciation" and mode in {"minimal-pair", "sound-discrimination", "audio-to-spelling"}
             )
-            validation = validate_media_file(output, "audio")
-            card["audio"] = relative_to_plan(output, plan_dir)
-            license_meta = metadata.get("license") if isinstance(metadata, dict) else None
-            if isinstance(license_meta, dict):
-                license_text = str(license_meta.get("name") or license_meta.get("url") or "")
-            else:
-                license_text = str(license_meta or "")
-            card["audio_provenance"] = {
-                "kind": "tts",
-                "provider": f"piper:{selected}",
-                "source_url": "https://github.com/OHF-Voice/piper1-gpl",
-                **({"license": license_text} if license_text else {}),
-            }
-            card_validation["audio"] = validation
-            counts["audio_generated"] += 1
-            counts["media_validated"] += 1
+            try:
+                if provider not in {"auto", "piper"}:
+                    raise RuntimeError(f"Unsupported audio provider: {provider}")
+                output = media_root / f"{safe_id(str(card['id']))}-audio.wav"
+                selected, metadata = synthesize_piper(
+                    str(request["text"]),
+                    str(plan["target_language"]["code"]),
+                    output,
+                    request.get("voice"),
+                    voice_dir,
+                )
+                validation = validate_media_file(output, "audio")
+                card["audio"] = relative_to_plan(output, plan_dir)
+                license_meta = metadata.get("license") if isinstance(metadata, dict) else None
+                if isinstance(license_meta, dict):
+                    license_text = str(license_meta.get("name") or license_meta.get("url") or "")
+                else:
+                    license_text = str(license_meta or "")
+                card["audio_provenance"] = {
+                    "kind": "tts",
+                    "provider": f"piper:{selected}",
+                    "source_url": "https://github.com/OHF-Voice/piper1-gpl",
+                    **({"license": license_text} if license_text else {}),
+                }
+                card_validation["audio"] = validation
+                counts["audio_generated"] += 1
+                counts["media_validated"] += 1
+            except Exception as exc:
+                if audio_required:
+                    raise RuntimeError(f"Required audio could not be generated for card {card['id']}: {exc}") from exc
+                media_issues.append({"kind": "audio", "provider": str(provider), "error": str(exc)})
+                counts["media_skipped"] += 1
 
         if card.get("image"):
             path = resolve_path(plan_dir, str(card["image"]))
@@ -280,28 +291,37 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
         elif card.get("image_request"):
             request = card["image_request"]
             licenses = [str(x).casefold() for x in (request.get("licenses") or DEFAULT_IMAGE_LICENSES)]
-            output = media_root / f"{safe_id(str(card['id']))}-image.webp"
-            result = fetch_image(
-                str(request["query"]),
-                str(request.get("provider", "auto")),
-                licenses,
-                output,
-            )
-            card["image"] = relative_to_plan(output, plan_dir)
-            card["image_provenance"] = {
-                "kind": "licensed",
-                "provider": str(result["provider"]),
-                "source_url": str(result.get("source_url") or ""),
-                "license": str(result.get("license") or ""),
-                **({"license_url": str(result.get("license_url"))} if result.get("license_url") else {}),
-                **({"attribution": str(result.get("attribution"))} if result.get("attribution") else {}),
-            }
-            card_validation["image"] = result["validation"]
-            counts["images_downloaded"] += 1
-            counts["media_validated"] += 1
+            provider = str(request.get("provider", "auto"))
+            try:
+                output = media_root / f"{safe_id(str(card['id']))}-image.webp"
+                result = fetch_image(
+                    str(request["query"]),
+                    provider,
+                    licenses,
+                    output,
+                )
+                card["image"] = relative_to_plan(output, plan_dir)
+                card["image_provenance"] = {
+                    "kind": "licensed",
+                    "provider": str(result["provider"]),
+                    "source_url": str(result.get("source_url") or ""),
+                    "license": str(result.get("license") or ""),
+                    **({"license_url": str(result.get("license_url"))} if result.get("license_url") else {}),
+                    **({"attribution": str(result.get("attribution"))} if result.get("attribution") else {}),
+                }
+                card_validation["image"] = result["validation"]
+                counts["images_downloaded"] += 1
+                counts["media_validated"] += 1
+            except Exception as exc:
+                if bool(request.get("required")):
+                    raise RuntimeError(f"Required image could not be resolved for card {card['id']}: {exc}") from exc
+                media_issues.append({"kind": "image", "provider": provider, "error": str(exc)})
+                counts["media_skipped"] += 1
 
         if card_validation:
             card["media_validation"] = card_validation
+        if media_issues:
+            card["media_issues"] = media_issues
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(plan, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
