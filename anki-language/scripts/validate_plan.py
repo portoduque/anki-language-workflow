@@ -169,7 +169,7 @@ def validate_plan(
         elif card.get("writing_answer") is not None:
             errors.append(f"{prefix}.writing_answer is only supported for Writing cards.")
         request = card.get("audio_request")
-        if request and mode == "standard" or (request and skill == "pronunciation" and mode == "spelling-sound"):
+        if request and (mode == "standard" or (skill == "pronunciation" and mode == "spelling-sound")):
             requested_text = normalized_utterance(str(request["text"]))
             target_text = normalized_utterance(str(card["target_text"]))
             if requested_text != target_text:
@@ -178,10 +178,13 @@ def validate_plan(
                     "TTS must not teach different spoken words than the card answer."
                 )
         clip = card.get("audio_clip")
-        if clip and (card.get("audio") or card.get("audio_request")):
+        audio_sources = [key for key in ("audio", "audio_clip", "audio_request") if card.get(key)]
+        if len(audio_sources) > 1:
             errors.append(
                 f"{prefix}: choose only one audio source: audio, audio_clip, or audio_request."
             )
+        if card.get("image") and card.get("image_request"):
+            errors.append(f"{prefix}: choose only one image source: image or image_request.")
         if clip and check_media:
             errors.append(f"{prefix}.audio_clip must be resolved before delivery.")
         if skill == "listening" and not str(card.get("audio", "")).strip():
