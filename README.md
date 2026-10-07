@@ -63,6 +63,7 @@ These are product rules, not suggestions. The complete normative specification l
 13. **Production is constrained:** front uses a precise base-language meaning/situation/context; answer and normally audio stay on the back.
 14. **Pronunciation/Sounds is targeted:** use pronunciation, minimal pairs, sound discrimination, or spelling-sound cards only when sound is worth training; never reveal the written answer on a discrimination front.
 15. **Prefer useful chunks/collocations/patterns:** do not reduce a useful expression to isolated words when the combination is the knowledge that matters.
+    **Chunk-first from long input:** even if the material consists entirely of long sentences, find shorter, meaningful and reusable chunks first. A long source may generate several separate, quick cards only for distinct useful targets; no mandatory full-sentence card or card-per-fragment quota.
 16. **Sentence mining is selective:** do not turn every source sentence into a card; prefer natural, useful, comprehensible context with one main focus.
 17. **Images are functional, not decorative:** prioritize concrete/visual concepts; skip ambiguous images that do not improve retrieval.
 18. **Audio is functional, not mandatory:** prefer user-supplied original audio, then permitted native-speaker audio, then permitted high-quality TTS.
@@ -100,7 +101,24 @@ These are product rules, not suggestions. The complete normative specification l
 
 A source reused across multiple decks is valid only when each card covers a real additional skill gap. If the extra card mostly repeats the same retrieval, discard it.
 
-Final acceptance test for every card: **useful, distinct, clear, atomic, fast**. If one fails, revise or discard the card.
+Final acceptance test for every card: **useful, distinct, clear, atomic, fast**. If one fails, revise or discard the card. **Review speed is a core requirement:** the learner should understand the Front, retrieve one meaningful unit, and verify the Back quickly. Creation itself should remain simple; avoid long prompts, multi-clause recall and unnecessary formatting.
+
+## Long sentences → useful short chunks
+
+The skill **actively mines useful chunks even when every supplied screenshot, transcript, or sentence is long**. It reads the full source for meaning, finds natural phrases/collocations/grammatical frames, ranks their independent learning value, and creates short cards with one retrieval target apiece. It never assumes that one long source sentence must become one long card.
+
+For instance, from:
+
+> Vous pouvez me suivre, c'est à deux minutes d'ici.
+
+it may select:
+
+- **vous pouvez me suivre** — a practical invitation to follow someone;
+- **à deux minutes d'ici** — a useful way to say something is two minutes away.
+
+These are **candidates, not a requirement to create two cards**: the workflow might select both, only one, or none depending on what needs learning. It must not generate each clause mechanically, split an idiom unnaturally, or add a redundant full-sentence sibling. A full sentence remains valid if the complete utterance is the actual useful skill being tested and can be reviewed quickly.
+
+Reading and Production prompts stay concise; source locators are preserved. When the source includes long audio, `audio_clip` must refer to the **selected spoken chunk**, not the original full conversation. The existing audio alignment and fail-closed validation apply. No new schemas, note types, provider, dependency, or deck changes are needed for this selection policy.
 
 ## Research-derived refinements
 
