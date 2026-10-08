@@ -277,6 +277,7 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
                     start_seconds=request.get("start_seconds"),
                     end_seconds=request.get("end_seconds"),
                     word_cache=word_cache,
+                    strict_boundaries=plan.get("version") == "2.2",
                 )
             except Exception as exc:
                 raise RuntimeError(

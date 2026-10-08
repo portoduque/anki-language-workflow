@@ -11,7 +11,7 @@ from typing import Any
 
 import genanki
 
-from card_contract import AUDIO_FRONT_MODES, SKILL_META, normalize_mode, pronunciation_front_cue, workflow_system_tags, writing_parts
+from card_contract import AUDIO_FRONT_MODES, SKILL_META, normalize_mode, pronunciation_front_cue, workflow_system_tags, writing_parts, card_source_footer
 from validate_plan import load_plan, validate_plan
 
 MODEL_VERSION = 5
@@ -889,7 +889,7 @@ def build(plan_path: Path, output_path: Path) -> dict[str, Any]:
             sound_ref(audio) if audio_on_front else "",
             sound_ref(audio) if audio and not audio_on_front else "",
             image_ref(image),
-            clean(card.get("source", "")),
+            clean(card_source_footer(plan, card)),
             *([clean(pronunciation_front_cue(card))] if skill == "pronunciation" else []),
             *([clean(part) for part in writing_parts(card)[::2]] +
               [clean(writing_parts(card)[1])] if skill == "writing" else []),

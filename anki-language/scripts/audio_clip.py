@@ -7,6 +7,8 @@ from __future__ import annotations
 
 import math
 import re
+import array
+import wave
 import shutil
 import subprocess
 import unicodedata
@@ -16,8 +18,8 @@ from typing import Any
 
 from media_validate import MediaValidationError, validate_media_file
 
-LEAD_SECONDS = 0.12
-TAIL_SECONDS = 0.22
+LEAD_SECONDS = 0.22
+TAIL_SECONDS = 0.35
 MAX_CLIP_SECONDS = 30.0
 
 
@@ -107,6 +109,35 @@ def locate_exact_phrase(
     return flat[index][1], flat[index + len(wanted) - 1][2]
 
 
+
+def inspect_clip_edges(path: Path) -> list[str]:
+    """Flag very loud non-quiet PCM edges; does not certify spoken phonemes."""
+    try:
+        with wave.open(str(path), "rb") as audio:
+            if audio.getnchannels() != 1 or audio.getsampwidth() != 2:
+                raise ValueError("Audio clip quality check requires 16-bit mono WAV.")
+            frames = audio.getnframes()
+            rate = audio.getframerate()
+            samples = array.array("h", audio.readframes(frames))
+    except (wave.Error, OSError, EOFError) as exc:
+        raise ValueError(f"Cannot inspect clip boundary audio: {exc}") from exc
+    if not frames or not samples or rate <= 0:
+        raise ValueError("Clip boundary signal is empty.")
+    edge_len = min(int(rate * 0.04), len(samples) // 5)
+    if edge_len < 1:
+        return ["Clip is too short for reliable audio-edge inspection."]
+    def rms(seq: array.array) -> float:
+        return (sum(v * v for v in seq) / len(seq)) ** 0.5 / 32768.0
+    beginning = rms(samples[:edge_len])
+    end = rms(samples[-edge_len:])
+    interior = rms(samples[edge_len:-edge_len]) if len(samples) > edge_len * 2 else 0.0
+    # Conservative: strong audio at cut edges can indicate a truncated sound.
+    # Do not flag low-level continuous background noise as missing speech.
+    return [
+        label for label, value in (("start", beginning), ("end", end))
+        if value > 0.075 and value >= interior * 0.60
+    ]
+
 def clip_audio(
     source: Path,
     destination: Path,
@@ -116,6 +147,7 @@ def clip_audio(
     start_seconds: float | None,
     end_seconds: float | None,
     word_cache: dict[tuple[Path, str], list[tuple[str, float, float]]],
+    strict_boundaries: bool = False,
 ) -> dict[str, Any]:
     """Cut a focused WAV, return verified original times and match method."""
     original = validate_media_file(source, "audio")
@@ -166,6 +198,10 @@ def clip_audio(
         output = validate_media_file(destination, "audio")
         if abs(float(output["duration_seconds"]) - (end - start)) > 0.3:
             raise ValueError("FFmpeg produced a clip with an unexpected duration.")
+        if strict_boundaries:
+            risky = inspect_clip_edges(destination)
+            if risky:
+                raise ValueError("Potentially abrupt/truncated clip at " + ", ".join(risky) + " edge(s). Verify source timestamps and allow more speech padding before delivery.")
     except (RuntimeError, ValueError, OSError, subprocess.TimeoutExpired, MediaValidationError):
         destination.unlink(missing_ok=True)
         raise

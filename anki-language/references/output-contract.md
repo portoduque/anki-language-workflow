@@ -1,6 +1,6 @@
 # Output Contract
 
-**Current version: `2.1`, four authorable skills.** Only `reading`, `listening`, `pronunciation`, and `writing` may be created. `production` is retired and explicitly rejected by the v2.1 validator. Version 2.0 is supported only to read/build historical plans; do not author v2.0 as a workaround.
+**Current version: `2.2`, four authorable skills, mandatory phrase/word coverage.** Only `reading`, `listening`, `pronunciation`, and `writing` may be created. `production` is retired and explicitly rejected by the v2.1/v2.2 validator. Versions 2.0 and 2.1 are supported only to read/build historical plans; do not author v2.0 as a workaround.
 
 
 The AI produces an intermediate `card-plan.json`; deterministic scripts enrich media, validate it, and deliver the result.
@@ -16,7 +16,8 @@ These choices are stored in `anki-language.config.json` and must be copied into 
 
 ## Required plan-level fields
 
-- `version` = `2.1` for every new plan
+- `version` = `2.2` for every new plan
+- `source_units`: each supplied target-language phrase/individual word, with `id`, verbatim `text`, and at least one valid `card_ids` link
 - `target_language.name`
 - `target_language.code`
 - `base_language.name`
@@ -24,27 +25,44 @@ These choices are stored in `anki-language.config.json` and must be copied into 
 - `deck_name`
 - `cards`
 
-Optional plan-level field:
+Optional plan-level fields:
+
+- `source_text_file`: for .txt (one phrase/word per line) or .json (array of strings/objects) sources, let the validator cross-check all original entries against `source_units`;
 
 - `delivery.mode`: `apkg`, `live`, or `both`.
 
 ## Auditable source coverage for multiple recordings
 
-For a folder or ZIP of supplied source audio, scan and inspect **every original file** before selecting cards. Include a `source_inventory` object in the current v2.1 plan:
+For a folder or ZIP of supplied source audio, scan and inspect **every original file** before selecting cards. Include a `source_inventory` object in the current v2.2 plan; for each audio also provide `source_unit_ids` referencing the entire transcribed phrase(s):
 
 ```json
 {
   "source_inventory": {
     "audio_root": "materials/audios",
     "items": [
-      {"id": "01", "file": "audio_1.mp3", "status": "selected", "card_ids": ["listen-01"]},
-      {"id": "02", "file": "audio_2.mp3", "status": "skipped", "reason": "Only trivial or fully duplicated material."}
+      {"id": "01", "file": "audio_1.mp3", "status": "selected", "card_ids": ["listen-01"], "source_unit_ids": ["utterance-01"]},
+      {"id": "02", "file": "audio_2.mp3", "status": "skipped", "reason": "Exact duplicate of audio_1; text already shown.", "source_unit_ids": ["utterance-01"]}
     ]
   }
 }
 ```
 
 Every selected card includes `"source_item_id": "01"` (matching the inventory item's ID); `card_ids` list every selected card from that source. All audio files in the declared directory or ZIP must be listed once. The deterministic validator checks the source files, selected/skipped status, reasons, and bidirectional card links **before** generating any media. It refuses incomplete inventories, but cannot itself recognize unselected meaningful chunks. The AI must inspect every entire sentence and justify omissions; no one-card-per-audio quota. Text-only or unrelated material without a source-audio collection may omit this section.
+
+## Mandatory full-text visibility without slow reviews
+
+v2.2 `source_units` is a **complete inventory of every user-supplied target-language phrase and individual word** (one unit per submitted item). For example:
+
+```json
+{
+  "source_units": [
+    {"id": "utterance-01", "text": "Ah merci. C'est gentil ! Bon, le cours commence. Au revoir !", "card_ids": ["read-cest-gentil", "listen-cours"]},
+    {"id": "word-02", "text": "étudiante", "card_ids": ["read-etudiante"]}
+  ]
+}
+```
+
+The APKG builder and AnkiConnect both render each linked item's **entire literal text** in the answer-side Source footer, without adding new Anki model fields or lengthening the Front. This ensures even a long original sentence appears verbatim at least once, while the card itself can test one compact reusable chunk. A source unit that is absent, unlinked, or points at a nonexistent card fails validation; if an actual `source_text_file` is supplied, missing/excess entries fail, too. If the input is a screenshot or audio recording, literal extraction needs human/agent verification; the validator cannot prove a transcription is truthful. Do not skip explicit input words/phrases or fabricate missing ones.
 
 ## Card fields
 

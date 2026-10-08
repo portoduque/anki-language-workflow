@@ -1,5 +1,5 @@
 {
-  "version": "2.1",
+  "version": "2.2",
   "target_language": {
     "name": "French",
     "code": "fr"
@@ -50,10 +50,21 @@
       ]
     }
   ],
-  "skipped": [
+  "source_units": [
     {
-      "source": "Bonjour.",
-      "reason": "Trivial for the intended learner; no additional retrieval value."
+      "id": "phrase-01",
+      "text": "J'ai fini par rester chez moi.",
+      "card_ids": [
+        "fr-reading-001",
+        "fr-writing-001"
+      ]
+    },
+    {
+      "id": "phrase-02",
+      "text": "Nous sommes allés au cinéma hier.",
+      "card_ids": [
+        "fr-reading-grammar-001"
+      ]
     }
   ]
 }

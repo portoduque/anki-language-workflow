@@ -15,9 +15,10 @@
     "version": {
       "enum": [
         "2.0",
-        "2.1"
+        "2.1",
+        "2.2"
       ],
-      "description": "v2.1 is the current four-skill authoring contract; v2.0 is retained solely for compatibility with prior decks."
+      "description": "v2.2 requires each user-supplied phrase/word represented visibly in a card answer; 2.0/2.1 retained for legacy plans."
     },
     "target_language": {
       "type": "object",
@@ -415,11 +416,61 @@
               "reason": {
                 "type": "string",
                 "minLength": 1
+              },
+              "source_unit_ids": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                }
               }
             }
           }
         }
       }
+    },
+    "source_units": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Exhaustive list of every user-supplied phrase/word. Each unit must be displayed verbatim on at least one card back.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "text",
+          "card_ids"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "card_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            }
+          }
+        }
+      }
+    },
+    "source_text_file": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Optional .txt/.json list of all provided phrases/words; validator independently compares lines/entries to source_units."
     }
   },
   "$defs": {
