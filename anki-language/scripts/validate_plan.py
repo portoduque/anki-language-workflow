@@ -208,6 +208,17 @@ def validate_plan(
     if errors:
         return errors
 
+    if plan["version"] == "2.1" and "source_inventory" not in plan:
+        source_audio = any(
+            card.get("audio_clip")
+            or (card.get("audio_provenance") or {}).get("kind") in {"user-supplied", "native-source"}
+            for card in plan["cards"]
+        )
+        if source_audio:
+            errors.append(
+                "v2.1 source_inventory is required whenever original source audio "
+                "is clipped or attached. Enumerate all original recordings and justify skips."
+            )
     errors.extend(validate_source_inventory(plan, plan_path))
     resolved_config = discover_config(plan_path, config_path)
     if resolved_config is not None:

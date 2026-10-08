@@ -134,3 +134,11 @@ def test_duplicate_file_rows_fail_without_forcing_extra_cards(tmp_path: Path) ->
 def test_no_inventory_permitted_for_text_only_material(tmp_path: Path) -> None:
     assert check(tmp_path, [{"id": "text1", "skill": "reading",
                              "target_text": "Bonsoir.", "base_text": "Good evening."}]) == []
+
+def test_source_audio_requires_inventory_even_when_author_omits_manifest(tmp_path: Path) -> None:
+    card = {"id": "clip", "skill": "listening", "target_text": "Bonjour.",
+            "audio_clip": {"source": "a.mp3"}}
+    assert any("source_inventory is required" in e for e in check(tmp_path, [card]))
+    tts = {"id": "tts", "skill": "listening", "target_text": "Bonjour.",
+           "audio_request": {"mode": "tts", "text": "Bonjour."}}
+    assert check(tmp_path, [tts]) == []
