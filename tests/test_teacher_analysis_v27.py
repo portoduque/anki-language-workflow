@@ -110,6 +110,9 @@ def test_nothing_forces_authored_card_when_original_chunk_is_better(tmp_path: Pa
     distance["candidates"][1]["decision"] = "card"
     distance["teacher_option"] = "unnecessary"
     distance["teacher_reason"] = "Source sentence already conveys the frame naturally; an adapted card is redundant."
+    # Reprioritize the original lesson objective to distance only; the word
+    # université remains preserved as context, not falsely marked active.
+    distance["focus_vocabulary"] = ["à deux minutes d'ici"]
     plan["cards"][1]["origin"] = "source"
     plan["cards"][1]["target_text"] = "c'est à deux minutes d'ici."
     plan["cards"][1]["candidate_id"] = "distance-original"
