@@ -33,7 +33,7 @@ def main() -> int:
         "resolved_plan": str(resolved.resolve()),
         "enrichment": enrichment,
         "delivery": delivery,
-        "vocabulary_coverage": vocabulary_coverage(load_plan(resolved)) if load_plan(resolved).get("version") == "2.5" else None,
+        "vocabulary_coverage": vocabulary_coverage(load_plan(resolved)) if load_plan(resolved).get("version") in {"2.5", "2.6"} else None,
     }, ensure_ascii=False, indent=2))
     return 0
 

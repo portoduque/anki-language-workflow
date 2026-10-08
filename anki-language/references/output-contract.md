@@ -1,6 +1,6 @@
 # Output Contract
 
-**Current version: `2.5`, four authorable skills, mandatory phrase/word visibility and focused spoken-audio coverage.** Only `reading`, `listening`, `pronunciation`, and `writing` may be created. `production` is retired and explicitly rejected by the v2.1/v2.2/v2.3 validator. Versions 2.0–2.2 are supported only to read/build historical plans; do not author v2.0 as a workaround.
+**Current version: `2.6`, four authorable skills, mandatory phrase/word visibility and focused spoken-audio coverage.** Only `reading`, `listening`, `pronunciation`, and `writing` may be created. `production` is retired and explicitly rejected by the v2.1/v2.2/v2.3 validator. Versions 2.0–2.2 are supported only to read/build historical plans; do not author v2.0 as a workaround.
 
 
 The AI produces an intermediate `card-plan.json`; deterministic scripts enrich media, validate it, and deliver the result.
@@ -16,7 +16,7 @@ These choices are stored in `anki-language.config.json` and must be copied into 
 
 ## Required plan-level fields
 
-- `version` = `2.5` for every new plan
+- `version` = `2.6` for every new plan
 - `audio_settings` optional: `voice` exact Piper model; `length_scale` 0.75–1.25 (default 0.93); `include_source_audio` boolean, default false
 - `source_units`: each supplied target-language phrase/individual word, with `id`, verbatim `text`, and at least one valid `card_ids` link
 - `target_language.name`
@@ -73,7 +73,22 @@ v2.2 `source_units` is a **complete inventory of every user-supplied target-lang
 
 The APKG builder and AnkiConnect both render each linked item's **entire literal text** in the answer-side Source footer, without adding new Anki model fields or lengthening the Front. This ensures even a long original sentence appears verbatim at least once, while the card itself can test one compact reusable chunk. A source unit that is absent, unlinked, or points at a nonexistent card fails validation; if an actual `source_text_file` is supplied, missing/excess entries fail, too. If the input is a screenshot or audio recording, literal extraction needs human/agent verification; the validator cannot prove a transcription is truthful. Do not skip explicit input words/phrases or fabricate missing ones.
 
-## Teacher-authored chunks and lexical coverage (v2.5)
+## v2.6 Professor IA — learning-first selection
+
+**Use a teacher's judgment, not a transcript-copy shortcut.** The agent first identifies useful communicative skills, patterns, natural collocations and contrasts, then selects a sustainable number of short, independently useful card targets. Generated teacher chunks are allowed, marked `origin="teacher"`, and checked for meaning/naturalness. The complete original source is preserved and displayed via linked `source_units[].text` on card Backs, **without requiring a card that recites every full utterance**.
+
+New required `teacher_analysis` object:
+- `summary`: what is being taught, and why the chosen patterns transfer;
+- `priority_vocabulary`: a curated nonempty subset of **original** words/phrases worth active practice (must occur in targets or short teacher examples);
+- `discarded_candidates`: candidate text + short rejection reason (at least one in multi-input lessons), demonstrating the selection wasn't copy/paste.
+
+Each card declares `learning_goal` (the one linguistic concept tested) and `selection_reason` (its incremental learning value). These are **authoring-only** and do not lengthen the Front or generate more cards. The validator rejects repeated long original-turn copying, Reading targets longer than 17 words, duplicate exact goals, and missing or ungrounded priority vocabulary. This is a conservative check; it does not prove a generated French sentence is idiomatic. The agent must verify the naturalness and meaning of newly authored expressions.
+
+`vocabulary_coverage` in v2.6 reports original source word forms that are **actively used** and those preserved only as **context**. This honestly distinguishes exposure from retrieval practice. Full original text remains available on the Back; it is not lost just because a word was not selected for drilling. v2.5 retains its historical strict whole-vocabulary target/example rule when reprocessing older plans.
+
+**Media:** Use the unchanged Piper voice/speed. New generated audio names use the **hash of actual WAV bytes**, not just text/voice request, so two synthesized versions cannot silently reuse a filename with different audio. In AnkiConnect, if any same-name media already exists with other bytes, retain the old media and upload the new one with a deterministic hash suffix. Verify the final name/hash before inserting notes.
+
+## Historical teacher-authored chunks and lexical coverage (v2.5)
 
 The teacher analyzes complete original sentences and may create a **new, natural short chunk** or combine vocabulary from several original sentences. The new card's `origin` is required:
 - `"source"`: literal source wording; the validator checks `target_text` against a linked `source_units[].text`.

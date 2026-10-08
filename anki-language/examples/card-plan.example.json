@@ -1,5 +1,5 @@
 {
-  "version": "2.5",
+  "version": "2.6",
   "target_language": {
     "name": "French",
     "code": "fr"
@@ -42,7 +42,9 @@
       "tags": [
         "campus",
         "chunk"
-      ]
+      ],
+      "learning_goal": "Asking someone to follow you politely",
+      "selection_reason": "Reusable modal + infinitive, quicker than the full dialogue turn."
     },
     {
       "id": "campus-near",
@@ -60,7 +62,24 @@
       "tags": [
         "campus",
         "location"
-      ]
+      ],
+      "learning_goal": "Locating a place nearby using distance",
+      "selection_reason": "A natural teacher example combining two useful elements from different original lines."
     }
-  ]
+  ],
+  "teacher_analysis": {
+    "summary": "Teach a polite campus direction request and the location/distance frame using short reusable phrases rather than entire turns.",
+    "priority_vocabulary": [
+      "suivre",
+      "minutes",
+      "université",
+      "travaille"
+    ],
+    "discarded_candidates": [
+      {
+        "text": "Vous pouvez me suivre, c'est à deux minutes d'ici.",
+        "reason": "Two independent language functions in one long retrieval; split the skills into shorter chunks."
+      }
+    ]
+  }
 }

@@ -20,7 +20,15 @@ Examples of valid configurations:
 - target German / base Spanish;
 - target English / base French.
 
-## Teacher-guided chunks and complete vocabulary coverage (v2.5)
+## Professor IA v2.6 — better learning than literal transcription
+
+The teacher analyzes **what the lesson actually teaches** before creating Anki notes. `teacher_analysis` records compact objectives, original priority vocabulary, and intentionally rejected candidates. Each card has one `learning_goal` and a brief `selection_reason`; snippets can be faithful quotations or explicitly marked natural teacher-created phrases.
+
+**Total material coverage no longer means every original word must be drilled.** Every original word/phrase is preserved verbatim in linked `source_units` and visible on the Back, whereas only high-value vocabulary/patterns selected for active learning must appear in target chunks or natural examples. A report distinguishes actively used word forms from context-only words. This fixes v2.5's failure mode of copying every original sentence into one long Reading card. Batch-wide long-turn copying, overlong Reading fronts and exact duplicate learning goals now fail validation, **without a fixed number of cards or compulsory teacher-created cards**.
+
+The same short Piper chunk audio, voice `fr_FR-siwis-medium`, speed `0.93`, and Flatpak support remain. Synthesized WAVs use their actual SHA-256 content in the filename, and AnkiConnect handles existing-name collisions with deterministic alternate names **without overwriting media or breaking final note links**. Older v2.0–v2.5 plans keep their historical authoring rules.
+
+## Historical teacher-guided chunks and complete vocabulary coverage (v2.5)
 
 The agent now acts as a language teacher rather than a quotation extractor. It can build **new, natural, concise chunks and examples** using the original vocabulary and useful grammatical patterns. Each card declares whether its target was `source` wording or `teacher` adaptation; teacher examples are explicitly labelled on the Back. The validator checks **all original distinct word forms** appear in an actual card target or teacher example, not just a copied original Source footer. This prevents silent vocabulary omission without mandating a card per word or adding card quotas. Grammar, meaning and authenticity of generated examples still require intelligent review; a lexical audit alone cannot prove pedagogical quality.
 
@@ -28,7 +36,7 @@ The existing v2.4 audio system (short per-card Piper speech, optional source aud
 
 ## Current authoring contract: four skills and 100% visible phrase/word coverage
 
-**Production is retired for new cards.** The current `card-plan.json` version is **2.5**, restricted to Reading, Listening, Pronunciation & Sounds, and selective short-gap Writing. The validator rejects Production in v2.1–v2.5. Version 2.0 and older Production cards remain supported only to keep existing decks usable; no older cards are automatically removed.
+**Production is retired for new cards.** The current `card-plan.json` version is **2.6**, restricted to Reading, Listening, Pronunciation & Sounds, and selective short-gap Writing. The validator rejects Production in v2.1–v2.6. Version 2.0 and older Production cards remain supported only to keep existing decks usable; no older cards are automatically removed.
 
 **New v2.4 coverage contract:** every supplied phrase/word becomes a `source_units` entry linked to at least one card. The complete original text is rendered automatically on that card's answer-side Source footer. This is a **display guarantee**, not an unnecessary one-card-per-word requirement. Review Fronts stay short, and the back may include long source context. For machine-readable original lists, `source_text_file` provides independent file-to-inventory checking. When material exists only as screenshots or speech, the AI must verify transcription with the user on ambiguity; code cannot prove an unverified transcription matches real audio/images. New v2.2 source clips get stronger boundary checks. Live AnkiConnect preflights already-owned notes to block duplicated skill/target cards across generations under different IDs, rather than silently creating them. Old v2.0/v2.1 decks remain compatible.
 
