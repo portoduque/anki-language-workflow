@@ -1,6 +1,10 @@
 # Card Creation Rules
 
-## Active authoring contract (v2.6)
+## Active authoring contract (v2.7)
+
+**For new material, first read [teacher-authoring.md](teacher-authoring.md) and write/validate the standalone `lesson-analysis.json`.** Rank teachable knowledge before drafting any card, compare natural original and authored candidate phrases, and approve each candidate explicitly. Only selected candidates become cards; each card must reference an approved knowledge/candidate ID. A second card for the same important pattern is justified only by a **different learning gain**, never volume. See the two-phase validation contract in `references/output-contract.md`. Old v2.6 plans remain compatible.
+
+## Legacy active authoring contract (v2.6)
 
 **Teacher-guided creation is mandatory for new v2.6 plans.** See [teacher-authoring.md](teacher-authoring.md). Analyze and *teach* every source phrase, not just lift quotations. Propose natural standalone patterns and new short examples using original vocabulary; select only independently useful retrieval tasks. For each card record `origin: "source"` for a literal excerpt or `origin: "teacher"` for a checked adaptation. Use 0–2 explicit `teaching_examples` per card, on the answer side only. Source quotations remain unchanged in `source_units`. The v2.6 validator preserves every original form as visible Back context and requires **teacher-selected priority vocabulary** to appear in useful targets/examples. Other source words are listed as context-only instead of forcing 1:1 copied long-turn cards. Each selected card must explain its goal and marginal value. An overlong Reading front or a batch of copied long source turns fails validation. Do not game the coverage check with meaningless lists, duplicate cards or unnatural sentences.
 

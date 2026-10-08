@@ -159,7 +159,7 @@ def note_fields(plan: dict[str, Any], card: dict[str, Any]) -> dict[str, str]:
         "Image": "",
         "Source": clean(card_source_footer(plan, card)),
     }
-    if plan.get("version") in {"2.3", "2.4", "2.5", "2.6"}:
+    if plan.get("version") in {"2.3", "2.4", "2.5", "2.6", "2.7"}:
         fields["SourceAudio"] = ""
     if skill == "pronunciation":
         fields["FrontCue"] = clean(pronunciation_front_cue(card))
@@ -202,7 +202,7 @@ def build_note(plan: dict[str, Any], card: dict[str, Any], plan_dir: Path) -> tu
         field = "FrontAudio" if audio_on_front else "BackAudio"
         note["audio"] = [{"path": str(audio), "filename": audio.name, "fields": [field]}]
         media[f"audio:{field}"] = audio
-    if plan.get("version") in {"2.3", "2.4", "2.5", "2.6"}:
+    if plan.get("version") in {"2.3", "2.4", "2.5", "2.6", "2.7"}:
         source_clips = [
             media_path(plan_dir, path)
             for path in card_source_audio_paths(plan, card)
@@ -356,7 +356,7 @@ def verify_uploaded_media(
 
 def reject_cross_generation_duplicates(client: AnkiConnectClient, plan: dict[str, Any]) -> None:
     """Read-only: block redundant new note identities before any live writes."""
-    if plan.get("version") not in {"2.2", "2.3", "2.4", "2.5", "2.6"}:
+    if plan.get("version") not in {"2.2", "2.3", "2.4", "2.5", "2.6", "2.7"}:
         return
     existing = client.invoke("findNotes", {"query": "tag:anki-language"}) or []
     if not existing:
@@ -493,7 +493,7 @@ def deliver_live(
         }
 
     uploaded_before_add: dict[str, dict[str, Any]] = {}
-    if plan.get("version") in {"2.4", "2.5", "2.6"}:
+    if plan.get("version") in {"2.4", "2.5", "2.6", "2.7"}:
         # Host-side paths are invisible to sandboxed Anki/Flatpak installations.
         uploaded_before_add = upload_media_base64(client, pending_notes)
     preflight = client.invoke("canAddNotesWithErrorDetail", {"notes": pending_notes})
