@@ -182,3 +182,49 @@ def test_reading_two_forms_requires_clear_comparison_cue(tmp_path: Path) -> None
                for e in problems(p, tmp_path))
     p["cards"][0]["prompt"] = "Which form is used by a female speaker?"
     assert problems(p, tmp_path) == []
+
+def test_all_four_current_skills_build_without_production(tmp_path: Path) -> None:
+    original = tmp_path / "input_audio"
+    original.mkdir()
+    audio = original / "bonjour.wav"
+    with wave.open(str(audio), "wb") as wav:
+        wav.setnchannels(1)
+        wav.setsampwidth(2)
+        wav.setframerate(16000)
+        wav.writeframes(b"\\x00\\x00" * 16000)
+    cards = [
+        dict(r("reading", "Bonjour !"), source_item_id="speech"),
+        {"id": "listening", "skill": "listening", "target_text": "Bonjour !",
+         "audio": "input_audio/bonjour.wav", "audio_transcript": "Bonjour !",
+         "audio_provenance": {"kind": "user-supplied"}, "source_item_id": "speech"},
+        {"id": "pronunciation", "skill": "pronunciation", "target_text": "Bonjour !",
+         "mode": "standard", "prompt": "Pronounce the word.", "source_item_id": "speech"},
+        {"id": "writing", "skill": "writing", "target_text": "Je suis étudiant.",
+         "writing_answer": "étudiant", "prompt": "Type the form for a male student.",
+         "source_item_id": "speech"},
+    ]
+    p = make_plan(cards, [
+        {"id": "phrase", "text": "Bonjour ! Je suis étudiant.",
+         "card_ids": [x["id"] for x in cards]},
+    ])
+    p["source_inventory"] = {
+        "audio_root": "input_audio",
+        "items": [{"id": "speech", "file": "bonjour.wav",
+                   "status": "selected", "card_ids": [x["id"] for x in cards],
+                   "source_unit_ids": ["phrase"]}],
+    }
+    path = tmp_path / "current-plan.json"
+    path.write_text(json.dumps(p, ensure_ascii=False), encoding="utf-8")
+    assert validate_plan(p, path, check_media=True) == []
+    result = build(path, tmp_path / "Current.apkg")
+    assert result["cards_total"] == 4
+    with __import__("zipfile").ZipFile(tmp_path / "Current.apkg") as archive:
+        database = tmp_path / "built.anki2"
+        database.write_bytes(archive.read("collection.anki2"))
+    with __import__("sqlite3").connect(database) as con:
+        assert con.execute("SELECT COUNT(*) FROM notes").fetchone()[0] == 4
+        models = __import__("json").loads(con.execute("SELECT models FROM col").fetchone()[0])
+        names = [x["name"] for x in models.values()]
+        assert not any("Production" in x for x in names)
+        assert sum(any(skill in x for x in names)
+                   for skill in ("Reading", "Listening", "Pronunciation", "Writing")) == 4
