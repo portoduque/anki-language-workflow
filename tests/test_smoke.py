@@ -40,7 +40,7 @@ def test_one_command_pipeline_builds_and_deep_validates(tmp_path: Path) -> None:
     assert summary["card_count"] == 3
     assert summary["note_count"] == 3
     assert "French::01 Reading" in summary["deck_names"]
-    assert "French::03 Production" in summary["deck_names"]
+    assert "French::05 Writing" in summary["deck_names"]
     assert WORKFLOW_TAG in summary["all_tags"]
     assert workflow_tag("French", "fr", "reading", "fr-reading-001") in summary["all_tags"]
 

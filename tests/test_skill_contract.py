@@ -133,7 +133,7 @@ def test_fluent_forever_refinements_are_explicit_and_selective() -> None:
 
     assert "same speaker/voice" in card_rules
     assert "fade out spelling/sound scaffolding" in card_rules
-    assert "semantic success over exact example reproduction" in card_rules
+    assert "exhaustive examination does not mean exhaustive flashcards" in card_rules
     assert "target-language definition" in card_rules
     assert "same speaker/voice" in skill
     assert "spelling/spelling-sound cards are scaffolding" in skill
@@ -239,10 +239,10 @@ def test_evildea_tutorial_refinements_are_explicit_and_selective() -> None:
 
     assert "prefer near-i+1 sentence mining" in rules
     assert "inspect polysemy before deciding the card" in rules
-    assert "production targets need a higher naturalness bar" in rules
+    assert "source fidelity" in rules
     assert "one primary unknown/focus item" in skill
     assert "polysemous words/expressions" in skill
-    assert "unverified ai-generated sentence" in skill
+    assert "prioritize verified natural wording" in skill
     assert "near-i+1 mined sentences" in pedagogy
 
 
@@ -384,7 +384,7 @@ def test_redchamber_refinements_are_explicit_and_selective() -> None:
     assert "`reading`" in rules
     assert "`variant`" in rules
     assert "`grammar`" in rules
-    assert "handwriting/written recall" in rules
+    assert "typed orthographic recall" in rules
     assert "reveal non-target information" in skill
     assert "structured optional fields" in skill
     assert "information that is not being tested may be revealed" in pedagogy
@@ -720,7 +720,7 @@ def test_writing_is_a_selective_fifth_skill_and_stays_fast() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     cases = json.loads((ROOT / "evals" / "cases.json").read_text(encoding="utf-8"))
 
-    assert "Writing is a fifth optional skill" in skill
+    assert "Writing is an optional fourth skill" in skill
     assert "No automatic Writing sibling" in skill
     assert "05 Writing" in skill
     assert "references/writing.md" in skill

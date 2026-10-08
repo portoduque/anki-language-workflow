@@ -5,7 +5,8 @@ import argparse
 import json
 import re
 import unicodedata
-from pathlib import Path
+import zipfile
+from pathlib import Path, PurePosixPath
 from typing import Any
 
 from jsonschema import Draft202012Validator
@@ -110,6 +111,93 @@ def retrieval_signature(card: dict[str, Any]) -> tuple[str, ...]:
     return tuple(signature)
 
 
+
+AUDIO_SOURCE_SUFFIXES = {".mp3", ".wav", ".m4a", ".ogg", ".flac", ".opus", ".aac"}
+
+
+def validate_source_inventory(plan: dict[str, Any], plan_path: Path) -> list[str]:
+    """Make every supplied source audio auditable without forcing cards per file."""
+    inventory = plan.get("source_inventory")
+    if inventory is None:
+        if any(card.get("source_item_id") for card in plan["cards"]):
+            return ["Cards reference source_item_id but no source_inventory is declared."]
+        return []
+
+    errors: list[str] = []
+    root = Path(str(inventory["audio_root"]))
+    source_root = root if root.is_absolute() else plan_path.resolve().parent / root
+    source_root = source_root.resolve()
+    try:
+        if source_root.is_dir():
+            actual = {
+                file.relative_to(source_root).as_posix()
+                for file in source_root.rglob("*")
+                if file.is_file() and file.suffix.lower() in AUDIO_SOURCE_SUFFIXES
+            }
+        elif source_root.is_file() and source_root.suffix.lower() == ".zip":
+            with zipfile.ZipFile(source_root) as archive:
+                actual = {
+                    name for name in archive.namelist()
+                    if not name.endswith("/") and
+                    PurePosixPath(name).suffix.lower() in AUDIO_SOURCE_SUFFIXES
+                }
+        else:
+            return [f"source_inventory.audio_root must be a directory or ZIP: {source_root}"]
+    except (OSError, zipfile.BadZipFile) as exc:
+        return [f"Cannot read source_inventory.audio_root: {exc}"]
+
+    if not actual:
+        errors.append("source_inventory.audio_root contains no recognized audio files.")
+    declared: set[str] = set()
+    item_ids: set[str] = set()
+    card_by_id = {str(card["id"]): card for card in plan["cards"]}
+    linked: set[str] = set()
+    for index, item in enumerate(inventory["items"]):
+        path = str(item["file"]).replace("\\", "/")
+        prefix = f"source_inventory.items[{index}]"
+        normalized = PurePosixPath(path)
+        if normalized.is_absolute() or ".." in normalized.parts or path != normalized.as_posix():
+            errors.append(f"{prefix}.file must be a normalized relative path in audio_root.")
+            continue
+        if path in declared:
+            errors.append(f"{prefix}.file is listed more than once: {path}")
+        declared.add(path)
+        item_id = str(item["id"])
+        if item_id in item_ids:
+            errors.append(f"{prefix}.id is duplicated: {item_id}")
+        item_ids.add(item_id)
+        status = item["status"]
+        ids = item.get("card_ids") or []
+        if status == "skipped":
+            if ids or not str(item.get("reason", "")).strip():
+                errors.append(f"{prefix}: skipped audio needs a reason and no card_ids.")
+        elif status == "selected" and not ids:
+            errors.append(f"{prefix}: selected audio needs at least one linked card_id.")
+        for cid in ids:
+            if cid in linked:
+                errors.append(f"{prefix}: card_id {cid} appears under multiple source audios.")
+            linked.add(cid)
+            card = card_by_id.get(cid)
+            if card is None:
+                errors.append(f"{prefix}: card_id {cid} does not exist.")
+            elif card.get("source_item_id") != item_id:
+                errors.append(f"{prefix}: card {cid} must set source_item_id={item_id!r}.")
+
+    for card in plan["cards"]:
+        source_id = card.get("source_item_id")
+        if not source_id or source_id not in item_ids:
+            errors.append(f"Card {card['id']} must reference a declared source_item_id.")
+        elif str(card["id"]) not in linked:
+            errors.append(f"Card {card['id']} is absent from the inventory card_ids.")
+
+    missing = sorted(actual - declared)
+    extra = sorted(declared - actual)
+    if missing:
+        errors.append("Source audio files omitted from inventory: " + ", ".join(missing))
+    if extra:
+        errors.append("Inventory references missing source audio: " + ", ".join(extra))
+    return errors
+
 def validate_plan(
     plan: dict[str, Any],
     plan_path: Path,
@@ -120,6 +208,18 @@ def validate_plan(
     if errors:
         return errors
 
+    if plan["version"] == "2.1" and "source_inventory" not in plan:
+        source_audio = any(
+            card.get("audio_clip")
+            or (card.get("audio_provenance") or {}).get("kind") in {"user-supplied", "native-source"}
+            for card in plan["cards"]
+        )
+        if source_audio:
+            errors.append(
+                "v2.1 source_inventory is required whenever original source audio "
+                "is clipped or attached. Enumerate all original recordings and justify skips."
+            )
+    errors.extend(validate_source_inventory(plan, plan_path))
     resolved_config = discover_config(plan_path, config_path)
     if resolved_config is not None:
         errors.extend(validate_language_config(plan, resolved_config))
@@ -152,6 +252,11 @@ def validate_plan(
             seen_retrievals[signature] = (index, card_id)
 
         skill = card["skill"]
+        if plan["version"] == "2.1" and skill == "production":
+            errors.append(
+                f"{prefix}.skill: Production is retired for new plans (v2.1). "
+                "Use Reading/Listening/Pronunciation/Writing only; v2.0 stays readable for legacy archives."
+            )
         mode = normalize_mode(card)
         allowed_modes = SUPPORTED_MODES_BY_SKILL[skill]
         if mode not in allowed_modes:

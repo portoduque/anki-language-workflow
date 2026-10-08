@@ -1,5 +1,12 @@
 # Card Creation Rules
 
+## Active authoring contract (v2.1)
+
+Production is **retired**: never create it, including via a renamed Writing exercise. The only four eligible skills are Reading, Listening, Pronunciation & Sounds and selective short-gap Writing. v2.0 Production cards remain supported strictly for legacy import.
+
+**Exhaustive examination does not mean exhaustive flashcards.** For a supplied audio folder or ZIP, first list all original files, pair every file with its corresponding text/screenshot and inspect **every full utterance** for all independently valuable short chunks. From a long dialogue line, consider several chunks and keep as many distinct, high-value targets as justify the review time; skip familiar/generic/repeated phrases only after consideration. **Do not prematurely cap total card count.** Record each audio as selected (linked card IDs) or skipped (specific reason) under `source_inventory`. Every generated card declares `source_item_id`. The validator compares this list against real audio files so silent input omissions fail; it cannot judge semantic completeness on its own.
+
+
 These rules are normative. They define what the workflow is allowed to turn into an Anki card.
 
 ## 1. Optimize for useful retrieval, not card count
@@ -14,7 +21,7 @@ For every source unit, the valid outcome is:
 
 There is no quota and no requirement to fill every deck type.
 
-Never create Reading + Listening + Production + Pronunciation + Writing versions automatically.
+Never create all available skill versions automatically; new Production cards are forbidden.
 
 ### Selective multi-card reuse of the same source
 
@@ -23,7 +30,7 @@ The **same source unit** — a sentence, word, expression, audio clip, image, or
 Examples:
 
 - one audio sentence may justify a **Listening** card because the learner needs to understand it by ear;
-- the same sentence may also justify a **Production** card because a useful chunk should become actively retrievable;
+- a genuinely separate **Writing** gap may train important spelling or a grammatical form, but never force a full-sentence translation;
 - the same word may additionally justify a **Pronunciation & Sounds** card when its sound is genuinely difficult;
 - the same written sentence may justify a **Reading** card when written recognition is independently useful.
 
@@ -52,19 +59,19 @@ Do not maximize the number of cards extracted from a source. Maximize **memory e
 
 | Actual learner gap | Primary skill | Add a second skill only for an independent gap |
 | --- | --- | --- |
-| Written comprehension | Reading | An additional listening, production, spelling, or sound problem |
+| Written comprehension | Reading | An independent listening, spelling, or sound difficulty |
 | Understanding real spoken language | Listening (focused clip) | Recognition/output also independently weak |
-| Active phrase or construction recall | Production | Hearing or written form also needs retrieval |
+| Auditory phrase/chunk recognition | Listening | Written recognition also independently difficult |
 | Sound, stress, rhythm or phonemic contrast | Pronunciation & Sounds | A different skill addresses another evidenced bottleneck |
 | Correct written inflection, accents or spelling | Writing (one short gap) | Spoken production/listening is separately difficult |
 
 For each additional card from the same chunk, name the **different cue, retrieval action, and observable benefit**. A new subdeck label alone does not justify a sibling. Never create all five types merely because they exist. Different chunks from one source may receive *different* skill cards, but no fixed per-sentence quota exists.
 
-**Example (not a fixed output):** Given *« Je voulais sortir, mais j'ai fini par rester chez moi. »*, suppose *« finir par + infinitif »* is the only new useful target. A short Production card about *« J'ai fini par rester. »* may suffice. Do not add Reading if written comprehension is already reliable. Listening from a clipped *fini par* recording is justified only if recognizing it by ear is separately difficult. Do not clone the whole sentence across Reading, Listening, Production, Pronunciation and Writing.
+**Example (not a fixed output):** Given *« Je voulais sortir, mais j'ai fini par rester chez moi. »*, suppose *« finir par + infinitif »* is the only new useful target. A focused Reading or Listening card for *« fini par »* may suffice. Do not add Reading if written comprehension is already reliable. Listening from a clipped *fini par* recording is justified only if recognizing it by ear is separately difficult. Do not clone the whole sentence across Reading, Listening, Production, Pronunciation and Writing.
 
 **Batch review:** compare selected chunks against one another and, where accessible, existing user cards. Remove overlapping phrases, same-skill questions and near-paraphrases that test the same retrieval. Automated validation can catch identical tasks **inside the plan**, but cannot determine semantic similarity, actual mastery, or duplicate cards already in Anki. Never silently mutate the user's collection.
 
-**Five-skill suitability audit (not a quota):** before finalizing, explicitly consider Reading, Listening, Production, Pronunciation & Sounds, and Writing for the *batch*, even if all initial suggestions were Listening/Production. For each selected target, keep the one fastest **useful** retrieval format; an additional format must fix an independent comprehension, output, sound, or spelling/grammar gap. Do not infer a difficulty merely because a language has accents, gender or liaisons. A perfect batch can contain only one skill. If most source sentences mechanically receive an identical Listening+Production pair, re-check each extra card and discard it if independent benefit cannot be stated.
+**Four-skill suitability audit (not a quota):** before finalizing, explicitly consider Reading, Listening, Pronunciation & Sounds, and Writing for the batch, but never Production. For each selected target, keep the one fastest **useful** retrieval format; an additional format must fix an independent comprehension, output, sound, or spelling/grammar gap. Do not infer a difficulty merely because a language has accents, gender or liaisons. A perfect batch can contain only one skill. If some source recordings have no linked card, verify they were fully reviewed and have an explicit skip reason; check that useful independent chunks were not overlooked.
 
 **Source fidelity:** when the supplied source is text/screenshots/subtitles, verify the *actual* original phrase before adding it as a direct quotation. Preserve exact verified wording in `source_excerpt` when practical, especially for screenshots and audio-backed cards. The plan validator checks that `target_text` appears as a whole phrase inside a populated excerpt. Deliberately adapted/generated targets are not original quotations and must not be disguised as such. Where an audio recording and a caption disagree, determine the actual spoken version before creating audio-backed retrieval; if unresolved, skip the disputed part or ask. Do not turn an OCR guess into a certified transcript.
 
@@ -87,7 +94,7 @@ If a piece of information is **not** the retrieval target, it may be shown as su
 Examples:
 - a meaning/recognition task may show a reading/pronunciation aid when decoding is not being tested;
 - a script-decoding/pronunciation task may show the meaning/context while hiding the reading aid;
-- a Production task may show the semantic situation while hiding the target-language wording.
+- a short Writing task may show a precise grammatical/meaning cue while hiding only the missing written piece.
 
 The same field can therefore be support in one card and the answer in another. Keep the front minimal and never reveal the actual target.
 
@@ -109,7 +116,7 @@ The learner may review cards from many languages, topics, and skills in one sess
 Every front must therefore provide short context that identifies at least:
 
 - the configured **target language**; and
-- the trained skill: **Reading**, **Listening**, **Production**, or **Pronunciation & Sounds**.
+- the trained skill: **Reading**, **Listening**, **Pronunciation & Sounds**, or **Writing**.
 
 The context must orient the learner without revealing the answer.
 
@@ -148,7 +155,7 @@ Use a gap only when:
 - the sentence provides useful context; and
 - the card is faster or clearer than a direct production prompt.
 
-Prefer guided production over blind cloze.
+Prefer clearly cued Writing gaps over blind cloze; never create retired Production.
 
 For grammar, a provided lemma or explicit function is often appropriate:
 
@@ -156,7 +163,7 @@ For grammar, a provided lemma or explicit function is often appropriate:
 
 ### Choose grammar card format from retrieval intent
 
-Before choosing cloze, direct Q/A, Reading, or Production for a grammar item, decide what the learner actually needs to retrieve:
+Before choosing Reading, Listening, or a short Writing gap for a grammar item, decide what the learner actually needs to retrieve:
 
 - **rule recall** — state/identify a concise declarative rule itself;
 - **recognition/discrimination** — recognize which structure/form/function is present or which competing form fits a context;
@@ -164,17 +171,17 @@ Before choosing cloze, direct Q/A, Reading, or Production for a grammar item, de
 
 Create a direct declarative grammar-rule card only when recalling the rule itself is independently useful. Do not memorize a rule merely because a textbook stated it.
 
-Prefer contextual Reading/contrast cards when recognition or discrimination is the real target. Prefer constrained Production or a clear cloze when application is the real target.
+Prefer contextual Reading/contrast cards for recognition and selective short Writing gaps when exact written form is truly the target.
 
 Keep each card to one primary grammatical decision/form. Do not dump a full paradigm/table onto one card merely because the source presents the grammar that way.
 
-## 6. Recognition and production are different skills
+## 6. Recognition and written-form recall are different skills
 
 Do not create automatic reverse cards.
 
 A recognition card is justified when the learner needs to understand the target form.
 
-A production card is justified when the learner needs to actively retrieve/use the target form.
+A Writing card is justified only for a short written form, spelling or agreement gap; ordinary comprehension remains Reading or Listening.
 
 Create both only when both abilities are useful enough to justify separate future reviews.
 
@@ -235,50 +242,9 @@ If a long recording contains several useful utterances, segment it into meaningf
 
 Audio priority is defined in `media.md`.
 
-## 9. Production cards
+## 9. Historical Production format — retired
 
-Use Production when the learner should be able to actively say/write the target item.
-
-Front:
-
-- a precise situation, meaning, semantic cue, or constrained sentence in the configured base language;
-- enough context to make the intended answer clear;
-- never the target-language answer itself.
-
-Back:
-
-- target-language answer;
-- natural full sentence when useful;
-- audio normally on the back so it does not reveal the answer before retrieval;
-- concise explanation only when needed.
-
-### Production targets need a higher naturalness bar
-
-When the learner is expected to actively reproduce a full sentence or chunk, prefer language that is **attested in user/native material** or independently verified as natural for the intended variety/register.
-
-An AI-generated sentence may be used as a production target only when its naturalness and intended meaning have been validated sufficiently. If that confidence is missing, prefer an attested source sentence or a direct semantic production prompt instead of training a potentially unnatural phrase.
-
-Reading/listening examples may tolerate generated support material more readily, but they still must be correct and natural enough not to teach bad language.
-
-Choose between full-sentence production and guided expression production based on what the learner actually needs to retrieve.
-
-### Keep Production focused and independently gradable
-
-Before creating a Production card from a longer dialogue line, identify the **smallest useful phrase, collocation, or grammatical construction** the learner actually needs to retrieve. Prefer a short contextual prompt testing that expression rather than requiring a verbatim long sentence just because the source contains one.
-
-When a full sentence itself is the real goal (e.g., a high-value practical utterance), keep it, but constrain the situation/register sufficiently and accept other natural correct formulations unless **exact wording** is explicitly the target. Do not silently grade a valid paraphrase as wrong. A card whose front could elicit many unrelated answers needs a better cue or should be omitted.
-
-Do not require an exact full sentence when many natural translations would be equally correct unless the prompt explicitly constrains the wording.
-
-### Semantic success over exact example reproduction
-
-When a card's goal is to demonstrate **meaning or valid usage**, score the underlying retrieval, not whether the learner reproduced the stored example verbatim.
-
-For example, if the task is to recall a valid context for a target word/form, another natural sentence that demonstrates the same meaning/form can count as correct.
-
-Only require the exact stored wording when exact wording, collocation, spelling, morphology, or word order is itself the learning target.
-
-This does **not** permit vague prompts. The front must still make clear what knowledge is being tested.
+Never generate Production in v2.1, or disguise it as a full-sentence Writing gap. This section is intentionally retired; old v2.0 packages remain technically supported.
 
 ## 10. Pronunciation & Sounds cards
 
@@ -321,7 +287,7 @@ Writing is a separate skill when **correct written retrieval** (spelling, accent
 - Prefer a short missing verb form, collocation, preposition+article, or orthographically difficult word. Do not require typing a full passage, copying a whole long sentence, or solving multiple gaps in one card.
 - Do not split inside words, damage idioms, or remove the entire sentence. The answer is a written *piece* of a meaningful utterance, not a blind blank.
 - Keep accents and spelling meaningful: use exact native typing comparison rather than silently ignoring diacritics. Anki's comparison assists feedback; the learner still grades their own recall.
-- If Reading/Production already provides the same knowledge and typing adds no important orthographic/grammatical skill, **skip Writing**. One source chunk can justify multiple skill cards only for genuinely different retrieval gaps.
+- If Reading/Listening already provides the same knowledge and typing adds no important orthographic/grammatical skill, **skip Writing**. One source chunk can justify multiple skill cards only for genuinely different retrieval gaps.
 - Optional audio belongs on the **Back** as reinforcement; trim original audio to the short utterance with `audio_clip` when needed.
 - The writing input is not shown in AnkiWeb or the preview; test in the actual Anki reviewer. Refer to [writing.md](writing.md) for official documentation and implementation tradeoffs.
 
@@ -352,7 +318,7 @@ For each long source passage:
 1. **Understand the complete source first.** Preserve the intended meaning and speaker context; do not mechanically cut by punctuation, word count, or line length.
 2. **Mine natural, meaningful candidates:** useful phrases, collocations, verb+preposition combinations, pragmatic expressions, and small grammatical frames with enough context to stand alone. A candidate may be a short phrase rather than a complete sentence.
 3. **Prioritize the most useful candidates, not every fragment.** Choose zero, one, or several **distinct** chunks from the same long source only when each tests a separate worthwhile target. Skip obvious, already-known, incidental, ambiguous, and overlapping fragments; do not generate a card for every clause or word.
-4. **Give each selected chunk its own short retrieval task.** Use a precise base-language meaning/situation for Production, an intelligible focused target for Reading, or an independently justified Listening/Pronunciation operation. Avoid asking for the entire original sentence when only the chunk is being learned.
+4. **Give each selected chunk its own short retrieval task.** Use a focused target for Reading, or an independently justified Listening/Pronunciation operation. Avoid asking for the entire original sentence when only the chunk is being learned.
 5. **Retain just enough context.** Add a minimal contextual cue if the chunk alone has multiple meanings, and preserve the full source locator/verified example as optional back-side support. Do not paste the complete long sentence onto the front by default.
 6. **Match media to the chosen chunk.** For long native recordings, use `audio_clip` with verified timestamps or conservative alignment so the audio on a short card does not play an unrelated full dialogue. Never guess cut boundaries.
 
@@ -573,7 +539,7 @@ Examples:
 - test one problematic verb form instead of dumping the entire paradigm onto one card;
 - skip predictable/automatic morphology that adds little learning value.
 
-Keep these cards inside the existing skill architecture (usually Reading or Production) and classify linguistic content with fields/tags rather than language-specific microdecks.
+Keep these cards inside the existing skill architecture (usually Reading, Listening or selective Writing) and classify linguistic content with fields/tags rather than language-specific microdecks.
 
 ## 18. Store distinct linguistic data in distinct fields when useful
 
@@ -586,7 +552,7 @@ Useful optional fields include:
 
 Populate them only when they help the selected card. A populated field is **not** a reason to generate another card.
 
-For writing-heavy languages, handwriting/written recall may be represented as a Production card when active written output is independently worth training. Do not create handwriting cards by default.
+For writing-heavy languages, typed orthographic recall may be represented by short Writing gaps when independently valuable. Do not create handwriting or full-sentence translation cards.
 
 ## 19. Keep answers concise and reviews fast
 
@@ -623,7 +589,7 @@ Prefer source candidates according to the learner's actual evidence and goals:
 - when there is too little comprehensible personal material, vetted frequency/shared material may bootstrap candidates;
 - once useful natural input becomes comprehensible, personally encountered/context-rich items should usually outrank generic lists;
 - when listening is the evidenced bottleneck, audio-first source evidence may justify Listening cards;
-- when real speaking/writing/domain activity exposes a recurring useful gap, that gap may become a candidate for targeted verification and Production.
+- when real speaking/writing/domain activity exposes a recurring useful gap, that gap may become a candidate for targeted verification and the supported four skills.
 
 Do not hard-code external roadmap phases or vocabulary-count milestones as mandatory switching thresholds.
 
@@ -634,10 +600,10 @@ If the learner repeatedly cannot express a useful idea during speaking/writing o
 1. capture the intended meaning/situation/domain as a candidate;
 2. verify a natural target-language expression for the intended variety/register from trustworthy/attested material when possible;
 3. clarify the useful sense/form;
-4. create a Production card only when the gap is useful enough to justify future review;
+4. consider Reading, Listening or a short Writing gap only when the target is useful enough to justify future review;
 5. preserve the verified context/source when practical.
 
-Do not turn a base-language thought directly into an unverified target-language Production answer.
+Do not turn a base-language thought into a forbidden Production card; verify a meaningful supported retrieval target instead.
 
 Do not replace the user's material with generic material merely because generic examples are easier to generate.
 
@@ -676,7 +642,7 @@ Use the five optional skill subdecks:
 
 - `01 Reading`
 - `02 Listening`
-- `03 Production`
+- `03 Production` (legacy only, never newly generated)
 - `04 Pronunciation & Sounds`
 - `05 Writing`
 

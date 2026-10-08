@@ -20,15 +20,23 @@ Examples of valid configurations:
 - target German / base Spanish;
 - target English / base French.
 
+## Current authoring contract: four skills and complete audio coverage
+
+**Production is retired for new cards.** The current `card-plan.json` version is **2.1**, restricted to Reading, Listening, Pronunciation & Sounds, and selective short-gap Writing. The validator rejects Production in v2.1. Version 2.0 and older Production cards remain supported only to keep existing decks usable; no older cards are automatically removed.
+
+For multiple original recordings, the AI must enumerate and examine **every source audio** and every sentence, extracting all independently useful natural chunks *before* ranking and pruning. It produces a `source_inventory` referencing the real folder or ZIP, with one entry per supplied audio, selected card IDs or a specific skip reason, plus corresponding `source_item_id` on each card. The validator scans the supplied files and rejects silently omitted recordings or inconsistent links. This does **not** enforce a card per audio: a long sentence may yield several different worthwhile short chunks, while simple/repeated audio may yield none. Source inventory verifies completeness of input coverage, not perfect semantic selection.
+
+After updating your local Git checkout, rerun `python install.py codex` to install the changed skill before retesting.
+
 ## What the workflow creates
 
-The AI first decides whether each source item deserves a card at all. A source item may create zero, one, or several cards, but multiple cards are allowed only when they train genuinely different skills. Writing is a selective fifth skill, not an automatic duplicate of Production/Reading.
+The AI first decides whether each source item deserves a card at all. A source item may create zero, one, or several cards, but multiple cards are allowed only when they train genuinely different skills. Writing is an optional fourth skill for fast, short typed spelling/form retrieval, not a renamed Production card.
 
 Deck hierarchy:
 
 - `<TargetLanguage>::01 Reading`
 - `<TargetLanguage>::02 Listening`
-- `<TargetLanguage>::03 Production`
+- `<TargetLanguage>::03 Production` (retired, legacy only)
 - `<TargetLanguage>::04 Pronunciation & Sounds`
 - `<TargetLanguage>::05 Writing`
 
@@ -37,13 +45,13 @@ Vocabulary, grammar, chunks, collocations, word forms, minimal pairs, source nam
 Core rules:
 
 - no card is created just because a template exists;
-- **all five skill types are considered for each batch**, but no target gets an extra skill just to diversify the deck; review why Listening/Production siblings are independently useful;
+- **all four permitted skills are considered per batch**, with no card added merely to diversify the deck; every supplied audio is inspected and inventoried;
 - **source quotations can carry verified `source_excerpt`**, checked against each selected `target_text`; screenshot/audio disagreements require review rather than an invented transcription;
 - **exact-answer audio must match the short answer** (not merely contain its words within a longer dialogue); original source audio requires verified transcript metadata, and clipped/TTS audio records its resolved target;
 - **byte-identical audio files** cannot silently serve different exact-answer targets under different filenames;
 - no blind or ambiguous cloze;
 - listening normally places audio on the front;
-- production normally places audio on the back;
+- Writing/pronunciation feedback may place optional audio on the back; new Production is forbidden;
 - images are added only when they improve retrieval;
 - original/native permitted audio is preferred over TTS;
 - explanations and cues use the configured base language;
@@ -56,7 +64,7 @@ These are product rules, not suggestions. The complete normative specification l
 1. **Minimum useful set:** each source unit may generate 0, 1, or several cards.
 2. **Selective multi-card reuse:** the same sentence, word, expression, audio, image, or passage may appear in multiple skill decks when each card trains a genuinely different and worthwhile retrieval operation.
 3. **Marginal-benefit rule:** every extra sibling card must add enough learning value to justify its future review cost. Optimize **memory efficiency per review minute**, not card volume.
-4. **No quotas:** never create Reading + Listening + Production + Pronunciation + Writing automatically.
+4. **No quotas:** never create a card just to fill a skill category or to match the audio file count; Production is retired for new plans.
 5. **One retrieval target:** each card tests one primary piece of knowledge or skill.
 6. **Self-orienting front:** every front identifies `<TargetLanguage> — <Skill>` so mixed reviews never show a contextless question.
 7. **No guessing the author's intention:** prompts must make the intended retrieval clear without revealing the answer.
@@ -65,7 +73,7 @@ These are product rules, not suggestions. The complete normative specification l
 10. **Translation is allowed:** the configured base language may be used when it is the clearest/fastest cue; translation is not banned on principle.
 11. **Reading is selective:** use natural written context for useful recognition; skip material already understood reliably.
 12. **Listening is audio-first:** do not reveal the transcript on the front; put transcript/base-language meaning on the back.
-13. **Production is constrained:** front uses a precise base-language meaning/situation/context; answer and normally audio stay on the back.
+13. **Production retired:** new plans may not contain Production; short Writing gaps are optional and must be independently justified.
 14. **Pronunciation/Sounds is targeted:** use pronunciation, minimal pairs, sound discrimination, or spelling-sound cards only when sound is worth training; never reveal the written answer on a discrimination front.
 15. **Writing is separate and selective:** type one missing word or short useful expression in a short natural sentence with a clear cue; do not type full sentences or create automatic Writing siblings.
 16. **Prefer useful chunks/collocations/patterns:** do not reduce a useful expression to isolated words when the combination is the knowledge that matters.
