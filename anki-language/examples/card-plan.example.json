@@ -1,5 +1,5 @@
 {
-  "version": "2.0",
+  "version": "2.1",
   "target_language": {
     "name": "French",
     "code": "fr"
@@ -23,36 +23,37 @@
       ]
     },
     {
-      "id": "fr-production-001",
-      "skill": "production",
-      "prompt": "Complete with the expression meaning \"to end up doing something\": J'ai ___ rester chez moi.",
+      "id": "fr-writing-001",
+      "skill": "writing",
+      "prompt": "Type the missing expression meaning 'ended up' in this sentence.",
       "target_text": "J'ai fini par rester chez moi.",
+      "writing_answer": "fini par",
       "base_text": "I ended up staying home.",
-      "focus": "fini par",
+      "focus": "finir par",
       "tags": [
         "chunk",
-        "production"
+        "writing"
       ]
     },
     {
-      "id": "fr-grammar-001",
-      "skill": "production",
-      "prompt": "Complete with the correct form of aller: Nous ___ au cinéma hier.",
+      "id": "fr-reading-grammar-001",
+      "skill": "reading",
+      "prompt": "Understand the past-tense expression.",
       "target_text": "Nous sommes allés au cinéma hier.",
       "base_text": "We went to the cinema yesterday.",
       "focus": "sommes allés",
-      "notes": "aller uses être in the passé composé.",
+      "notes": "aller uses être in passé composé.",
+      "grammar": "passé composé · aller · auxiliary être",
       "tags": [
         "grammar",
         "word-form"
-      ],
-      "grammar": "passé composé · aller · auxiliary être"
+      ]
     }
   ],
   "skipped": [
     {
       "source": "Bonjour.",
-      "reason": "Already trivial for the intended learner; no additional retrieval value."
+      "reason": "Trivial for the intended learner; no additional retrieval value."
     }
   ]
 }

@@ -1,5 +1,8 @@
 # Output Contract
 
+**Current version: `2.1`, four authorable skills.** Only `reading`, `listening`, `pronunciation`, and `writing` may be created. `production` is retired and explicitly rejected by the v2.1 validator. Version 2.0 is supported only to read/build historical plans; do not author v2.0 as a workaround.
+
+
 The AI produces an intermediate `card-plan.json`; deterministic scripts enrich media, validate it, and deliver the result.
 
 ## Language contract
@@ -13,7 +16,7 @@ These choices are stored in `anki-language.config.json` and must be copied into 
 
 ## Required plan-level fields
 
-- `version` = `2.0`
+- `version` = `2.1` for every new plan
 - `target_language.name`
 - `target_language.code`
 - `base_language.name`
@@ -25,12 +28,30 @@ Optional plan-level field:
 
 - `delivery.mode`: `apkg`, `live`, or `both`.
 
+## Auditable source coverage for multiple recordings
+
+For a folder or ZIP of supplied source audio, scan and inspect **every original file** before selecting cards. Include a `source_inventory` object in the current v2.1 plan:
+
+```json
+{
+  "source_inventory": {
+    "audio_root": "materials/audios",
+    "items": [
+      {"id": "01", "file": "audio_1.mp3", "status": "selected", "card_ids": ["listen-01"]},
+      {"id": "02", "file": "audio_2.mp3", "status": "skipped", "reason": "Only trivial or fully duplicated material."}
+    ]
+  }
+}
+```
+
+Every selected card includes `"source_item_id": "01"` (matching the inventory item's ID); `card_ids` list every selected card from that source. All audio files in the declared directory or ZIP must be listed once. The deterministic validator checks the source files, selected/skipped status, reasons, and bidirectional card links **before** generating any media. It refuses incomplete inventories, but cannot itself recognize unselected meaningful chunks. The AI must inspect every entire sentence and justify omissions; no one-card-per-audio quota. Text-only or unrelated material without a source-audio collection may omit this section.
+
 ## Card fields
 
 Each card includes:
 
 - `id`: stable unique string;
-- `skill`: `reading`, `listening`, `production`, `pronunciation`, or `writing`;
+- `skill`: `reading`, `listening`, `pronunciation`, or `writing` (v2.1);
 - `target_text`: target-language answer/context.
 
 Optional fields:
@@ -55,6 +76,7 @@ Optional fields:
 - `audio_provenance` / `image_provenance`;
 - `media_validation`: deterministic validation record including SHA-256;
 - `media_issues`: non-fatal failures for optional media that was skipped;
+- `source_item_id`: mandatory for cards in a declared multi-audio inventory; must link to exactly one inventory item;
 - `source`: source/provenance text; when the material exposes a stable locator, preserve the most useful precise locator available (for example a video timestamp, page, chapter/section, or transcript anchor);
 - `source_excerpt`: optional **verbatim verified original-language excerpt** from the user's written/screenshot/transcript source, useful for grounding cards; when present, `target_text` must occur as a whole phrase within it. Do not insert generated/adapted language as if it were quoted from the source;
 - `tags`.
@@ -66,7 +88,7 @@ These structured fields are **metadata/support**, not card-generation quotas. Po
 An original sentence/turn may be long, but `target_text` should **normally contain the selected useful chunk or short utterance**, not automatically the whole source line. One long sentence may supply zero, one, or multiple **distinct** short `cards[]` entries; selection is based on independent retrieval value and fast review, not a required quantity.
 
 - **Reading:** use a natural, readable target phrase with just enough context to understand what is being tested; do not force the learner to process an irrelevant long paragraph.
-- **Production:** make `prompt` a concise meaning/situation in the configured base language and `target_text` a short, useful expression or grammatical frame when that is the real target.
+- **Production:** retired; never create for a v2.1 plan. Choose a useful comprehension or short written-form task only when independently justified.
 - **Writing:** use a short natural `target_text`, one meaningful `writing_answer` occurring exactly once, and a clear non-leaking `prompt`. The learner types only the missing part; compare with Anki's native type-answer mechanism, not JavaScript. Writing audio (when useful) stays on the back.
 - **Listening / Pronunciation:** when the chosen unit is a chunk from a longer recording, set `audio_clip` for the **same exact spoken portion**. Source text and audio must align; never replay an entire dialogue for a short target.
 - **Source:** preserve the original material's valid locator in `source` (and only minimal helpful explanation on the back). Do not insert the full original sentence into every Front as mandatory context.
@@ -75,7 +97,7 @@ An original sentence/turn may be long, but `target_text` should **normally conta
 - Select distinct learning **chunks first**; assign one primary skill to each, then add other skill cards only for independently useful retrieval operations. Scan the final batch for near-paraphrases.
 - Exact duplicate retrieval tasks **within one plan** are rejected even if IDs, tags, source or notes differ; this is not a semantic similarity or existing-Anki-collection audit.
 - For standard modes and Pronunciation `spelling-sound`, `audio_request.text` must match the card's spoken `target_text` (ignoring case/punctuation/spacing), to prevent unrelated TTS.
-- Verified `audio_transcript` must equal `target_text` for Listening, Production, Writing, and standard/spelling-sound Pronunciation; a target **contained inside** a longer audio recording is insufficient for these skills. When `audio_provenance.kind` indicates original user/native audio, exact-audio skills require a verified transcript. The media enricher replaces long-source transcripts with the resolved exact target after successful clipping and records TTS text as the transcript. Audio bytes with identical hashes cannot serve different exact-audio target texts, even under different file names.
+- Verified `audio_transcript` must equal `target_text` for Listening, Writing and standard/spelling-sound Pronunciation (plus legacy v2.0 Production); a target **contained inside** a longer audio recording is insufficient for these skills. When `audio_provenance.kind` indicates original user/native audio, exact-audio skills require a verified transcript. The media enricher replaces long-source transcripts with the resolved exact target after successful clipping and records TTS text as the transcript. Audio bytes with identical hashes cannot serve different exact-audio target texts, even under different file names.
 - The deterministic checks are not ASR and cannot establish the truthfulness of a submitted transcript or a transcript extracted from screenshots. Resolve disagreements by listening/checking source evidence, not by guessing.
 
 For each candidate, mentally simulate one review: can the learner tell what to retrieve immediately, recover one target, and check the answer quickly? Otherwise simplify, split useful targets, or skip.
@@ -84,7 +106,7 @@ For each candidate, mentally simulate one review: can the learner tell what to r
 
 `mode` is not an open-ended label. The deterministic pipeline validates it against the selected skill:
 
-- Reading, Listening, Production, and Writing currently support only `standard`;
+- Reading, Listening, and Writing currently support only `standard`;
 - Pronunciation & Sounds supports `standard`, `minimal-pair`, `sound-discrimination`, `spelling-sound`, and `audio-to-spelling`;
 - Pronunciation `standard` and `spelling-sound` deterministically show the written target on the front (internal `FrontCue` field); audio-identification modes keep the answer hidden and use front audio;
 - generic "say this" pronunciation fronts without a target/recognition cue are invalid study tasks; only create an extra Pronunciation card when it trains an independent relevant difficulty;
@@ -94,7 +116,7 @@ Unknown modes and cross-skill mode combinations are rejected instead of silently
 
 ### Writing contract
 
-**Writing is distinct from Production:** it practices the **correct spelling/form** of one written chunk in an already-short sentence. The card must specify `writing_answer` and `prompt`; validation rejects missing/non-unique answers, full-sentence blanks, unaligned word fragments, newlines, and use of `writing_answer` on other skills.
+**Writing is selective short-gap typed recall:** it practices the **correct spelling/form** of one written chunk in an already-short sentence. The card must specify `writing_answer` and `prompt`; validation rejects missing/non-unique answers, full-sentence blanks, unaligned word fragments, newlines, and use of `writing_answer` on other skills.
 
 ```json
 {
