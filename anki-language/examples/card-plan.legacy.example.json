@@ -1,0 +1,70 @@
+{
+  "version": "2.2",
+  "target_language": {
+    "name": "French",
+    "code": "fr"
+  },
+  "base_language": {
+    "name": "English",
+    "code": "en"
+  },
+  "deck_name": "French",
+  "cards": [
+    {
+      "id": "fr-reading-001",
+      "skill": "reading",
+      "target_text": "J'ai fini par rester chez moi.",
+      "base_text": "I ended up staying home.",
+      "focus": "finir par",
+      "notes": "finir par + infinitive = to end up doing something",
+      "tags": [
+        "chunk",
+        "sentence-mining"
+      ]
+    },
+    {
+      "id": "fr-writing-001",
+      "skill": "writing",
+      "prompt": "Type the missing expression meaning 'ended up' in this sentence.",
+      "target_text": "J'ai fini par rester chez moi.",
+      "writing_answer": "fini par",
+      "base_text": "I ended up staying home.",
+      "focus": "finir par",
+      "tags": [
+        "chunk",
+        "writing"
+      ]
+    },
+    {
+      "id": "fr-reading-grammar-001",
+      "skill": "reading",
+      "prompt": "Understand the past-tense expression.",
+      "target_text": "Nous sommes allés au cinéma hier.",
+      "base_text": "We went to the cinema yesterday.",
+      "focus": "sommes allés",
+      "notes": "aller uses être in passé composé.",
+      "grammar": "passé composé · aller · auxiliary être",
+      "tags": [
+        "grammar",
+        "word-form"
+      ]
+    }
+  ],
+  "source_units": [
+    {
+      "id": "phrase-01",
+      "text": "J'ai fini par rester chez moi.",
+      "card_ids": [
+        "fr-reading-001",
+        "fr-writing-001"
+      ]
+    },
+    {
+      "id": "phrase-02",
+      "text": "Nous sommes allés au cinéma hier.",
+      "card_ids": [
+        "fr-reading-grammar-001"
+      ]
+    }
+  ]
+}

@@ -50,7 +50,8 @@ def fake_piper(calls: list[str]):
         calls.append(text)
         assert language == "fr"
         output.parent.mkdir(parents=True, exist_ok=True)
-        samples = [int(4000 * math.sin(2 * math.pi * 180 * i / 16000))
+        frequency = 180 + (sum(ord(c) for c in text) % 700)
+        samples = [int(4000 * math.sin(2 * math.pi * frequency * i / 16000))
                    for i in range(16000)]
         with wave.open(str(output), "wb") as handle:
             handle.setnchannels(1)

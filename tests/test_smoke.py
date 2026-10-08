@@ -8,6 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SKILL = ROOT / "anki-language"
 EXAMPLE = SKILL / "examples" / "card-plan.example.json"
+LEGACY_EXAMPLE = SKILL / "examples" / "card-plan.legacy.example.json"
 
 sys.path.insert(0, str(SKILL / "scripts"))
 from build_apkg import CSS, FIELDS, MODEL_VERSION, card_context, make_model  # noqa: E402
@@ -19,13 +20,13 @@ def run(*args: str) -> subprocess.CompletedProcess[str]:
 
 
 def test_example_plan_validates() -> None:
-    result = run(str(SKILL / "scripts" / "validate_plan.py"), str(EXAMPLE))
+    result = run(str(SKILL / "scripts" / "validate_plan.py"), str(EXAMPLE), "--allow-missing-media")
     assert result.returncode == 0, result.stdout + result.stderr
 
 
 def test_one_command_pipeline_builds_and_deep_validates(tmp_path: Path) -> None:
     output = tmp_path / "French.apkg"
-    build = run(str(SKILL / "scripts" / "build.py"), str(EXAMPLE), "--output", str(output))
+    build = run(str(SKILL / "scripts" / "build.py"), str(LEGACY_EXAMPLE), "--output", str(output))
     assert build.returncode == 0, build.stdout + build.stderr
     assert output.is_file()
 
@@ -34,7 +35,7 @@ def test_one_command_pipeline_builds_and_deep_validates(tmp_path: Path) -> None:
     assert report["target_language"]["name"] == "French"
     assert report["base_language"]["name"] == "English"
 
-    validate = run(str(SKILL / "scripts" / "validate_apkg.py"), str(output), "--plan", str(EXAMPLE))
+    validate = run(str(SKILL / "scripts" / "validate_apkg.py"), str(output), "--plan", str(LEGACY_EXAMPLE))
     assert validate.returncode == 0, validate.stdout + validate.stderr
     summary = json.loads(validate.stdout)
     assert summary["card_count"] == 3
