@@ -161,7 +161,7 @@ def test_audio_transcript_mismatch_and_conflicting_declarations_fail(tmp_path: P
         },
     ]
     errors = validate_plan(base_plan(cards), tmp_path / "plan.json", check_media=False)
-    assert any("does not contain the target wording" in error for error in errors)
+    assert any("audio_transcript must match target_text exactly" in error for error in errors)
     assert any("inconsistent transcripts" in error for error in errors)
 
 

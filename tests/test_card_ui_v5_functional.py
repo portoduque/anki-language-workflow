@@ -157,6 +157,7 @@ def test_full_four_skill_v5_plan_builds_and_deep_validates_with_media(tmp_path: 
                 "base_text": "Estou pronto.",
                 "prompt": "Ouça antes de revelar a resposta.",
                 "audio": listening_audio.name,
+                "audio_transcript": "Je suis prêt.",
                 "audio_provenance": {"kind": "user-supplied"},
                 "source": "functional-test",
                 "tags": ["ui-test"],
