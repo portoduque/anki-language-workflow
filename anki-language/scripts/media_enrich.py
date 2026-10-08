@@ -109,6 +109,46 @@ def synthesize_piper(text: str, target_code: str, output: Path, voice: str | Non
     return selected, metadata
 
 
+
+def tts_spoken_target(target: str) -> str:
+    """Speak written contrasts as distinct forms, never synthesize 'slash'."""
+    return re.sub(r"\s+[/×]\s+", ". ", target.strip())
+
+
+def cached_piper_tts(
+    text: str,
+    language: str,
+    requested_voice: str | None,
+    media_root: Path,
+    voice_dir: Path,
+    cache: dict[tuple[str, str, str], tuple[Path, str, dict[str, Any], dict[str, Any]]],
+) -> tuple[Path, str, dict[str, Any], dict[str, Any], bool]:
+    key = (language, requested_voice or "", text)
+    if key in cache:
+        return (*cache[key], False)
+    fingerprint = hashlib.sha256(
+        json.dumps(key, ensure_ascii=False).encode("utf-8")
+    ).hexdigest()[:20]
+    output = media_root / f"anki-tts-{fingerprint}.wav"
+    selected, metadata = synthesize_piper(text, language, output, requested_voice, voice_dir)
+    validation = validate_media_file(output, "audio")
+    cache[key] = (output, selected, metadata, validation)
+    return output, selected, metadata, validation, True
+
+
+def piper_source_metadata(selected: str, metadata: dict[str, Any]) -> dict[str, Any]:
+    license_meta = metadata.get("license") if isinstance(metadata, dict) else None
+    if isinstance(license_meta, dict):
+        license_text = str(license_meta.get("name") or license_meta.get("url") or "")
+    else:
+        license_text = str(license_meta or "")
+    return {
+        "kind": "tts", "provider": f"piper:{selected}",
+        "source_url": "https://github.com/OHF-Voice/piper1-gpl",
+        **({"license": license_text} if license_text else {}),
+    }
+
+
 def normalize_image(raw_path: Path, output_path: Path) -> None:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with Image.open(raw_path) as image:
@@ -245,6 +285,31 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
     media_root.mkdir(parents=True, exist_ok=True)
     counts = {"audio_generated": 0, "audio_clipped": 0, "audio_aligned": 0, "images_downloaded": 0, "media_validated": 0, "media_skipped": 0}
     word_cache: dict[tuple[Path, str], list[tuple[str, float, float]]] = {}
+    tts_cache: dict[tuple[str, str, str], tuple[Path, str, dict[str, Any], dict[str, Any]]] = {}
+    is_auto_audio = plan.get("version") == "2.3"
+
+    if is_auto_audio:
+        # Every full source utterance gets optional-on-reveal contextual speech.
+        for unit in plan.get("source_units", []):
+            if unit.get("audio"):
+                original = resolve_path(plan_dir, str(unit["audio"]))
+                unit.setdefault("media_validation", {})["audio"] = validate_media_file(original, "audio")
+                counts["media_validated"] += 1
+                continue
+            try:
+                output, selected, metadata, validation, created = cached_piper_tts(
+                    str(unit["text"]), str(plan["target_language"]["code"]), None,
+                    media_root, voice_dir, tts_cache,
+                )
+            except Exception as exc:
+                raise RuntimeError(
+                    f"Could not generate mandatory source audio for {unit['id']}: {exc}"
+                ) from exc
+            unit["audio"] = relative_to_plan(output, plan_dir)
+            unit["audio_provenance"] = piper_source_metadata(selected, metadata)
+            unit["media_validation"] = {"audio": validation}
+            counts["audio_generated"] += int(created)
+            counts["media_validated"] += 1
 
     for card in plan.get("cards", []):
         card_validation = dict(card.get("media_validation") or {})
@@ -256,6 +321,12 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
                 f"Card {card['id']} has conflicting audio sources: {selected_audio}. "
                 "Choose audio, audio_clip, or audio_request."
             )
+        if is_auto_audio and not selected_audio:
+            card["audio_request"] = {
+                "mode": "auto", "provider": "piper",
+                "text": tts_spoken_target(str(card["target_text"])),
+                "required": True,
+            }
 
         if card.get("audio_clip"):
             request = card["audio_clip"]
@@ -277,7 +348,7 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
                     start_seconds=request.get("start_seconds"),
                     end_seconds=request.get("end_seconds"),
                     word_cache=word_cache,
-                    strict_boundaries=plan.get("version") == "2.2",
+                    strict_boundaries=plan.get("version") in {"2.2", "2.3"},
                 )
             except Exception as exc:
                 raise RuntimeError(
@@ -316,35 +387,30 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
             try:
                 if provider not in {"auto", "piper"}:
                     raise RuntimeError(f"Unsupported audio provider: {provider}")
-                identity = json.dumps(
-                    {"id": card["id"], "request": request}, sort_keys=True, ensure_ascii=False
-                )
-                digest = hashlib.sha256(identity.encode("utf-8")).hexdigest()[:12]
-                output = media_root / f"{safe_id(str(card['id']))[:55]}-{digest}-audio.wav"
-                selected, metadata = synthesize_piper(
-                    str(request["text"]),
-                    str(plan["target_language"]["code"]),
-                    output,
-                    request.get("voice"),
-                    voice_dir,
-                )
-                validation = validate_media_file(output, "audio")
+                if is_auto_audio:
+                    output, selected, metadata, validation, created = cached_piper_tts(
+                        str(request["text"]), str(plan["target_language"]["code"]),
+                        request.get("voice"), media_root, voice_dir, tts_cache,
+                    )
+                else:
+                    identity = json.dumps(
+                        {"id": card["id"], "request": request}, sort_keys=True, ensure_ascii=False
+                    )
+                    digest = hashlib.sha256(identity.encode("utf-8")).hexdigest()[:12]
+                    output = media_root / f"{safe_id(str(card['id']))[:55]}-{digest}-audio.wav"
+                    selected, metadata = synthesize_piper(
+                        str(request["text"]),
+                        str(plan["target_language"]["code"]), output,
+                        request.get("voice"), voice_dir,
+                    )
+                    validation = validate_media_file(output, "audio")
+                    created = True
                 card["audio"] = relative_to_plan(output, plan_dir)
                 card["audio_transcript"] = str(request["text"])
                 card.pop("audio_request", None)  # resolved plan has one audio source
-                license_meta = metadata.get("license") if isinstance(metadata, dict) else None
-                if isinstance(license_meta, dict):
-                    license_text = str(license_meta.get("name") or license_meta.get("url") or "")
-                else:
-                    license_text = str(license_meta or "")
-                card["audio_provenance"] = {
-                    "kind": "tts",
-                    "provider": f"piper:{selected}",
-                    "source_url": "https://github.com/OHF-Voice/piper1-gpl",
-                    **({"license": license_text} if license_text else {}),
-                }
+                card["audio_provenance"] = piper_source_metadata(selected, metadata)
                 card_validation["audio"] = validation
-                counts["audio_generated"] += 1
+                counts["audio_generated"] += int(created)
                 counts["media_validated"] += 1
             except Exception as exc:
                 if audio_required:

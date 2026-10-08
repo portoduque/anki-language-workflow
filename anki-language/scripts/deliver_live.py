@@ -22,6 +22,7 @@ from card_contract import (
     workflow_tag,
     writing_parts,
     card_source_footer,
+    card_source_audio_paths,
 )
 from media_validate import MediaValidationError, sha256_file, validate_media_file
 from validate_plan import load_plan, validate_plan, normalized_utterance
@@ -42,12 +43,12 @@ def media_path(plan_dir: Path, raw: str | None) -> Path | None:
     return path.resolve() if path.is_absolute() else (plan_dir / path).resolve()
 
 
-def model_payload(skill: str) -> dict[str, Any]:
-    model = make_model(skill)
+def model_payload(skill: str, plan_version: str | None = None) -> dict[str, Any]:
+    model = make_model(skill, plan_version)
     template = model.templates[0]
     return {
         "modelName": model.name,
-        "inOrderFields": [field["name"] for field in fields_for_skill(skill)],
+        "inOrderFields": [field["name"] for field in fields_for_skill(skill, plan_version)],
         "css": model.css,
         "isCloze": False,
         "cardTemplates": [{
@@ -76,8 +77,8 @@ def normalize_template_map(raw: Any) -> dict[str, dict[str, str]]:
     return result
 
 
-def expected_template_map(skill: str) -> dict[str, dict[str, str]]:
-    template = make_model(skill).templates[0]
+def expected_template_map(skill: str, plan_version: str | None = None) -> dict[str, dict[str, str]]:
+    template = make_model(skill, plan_version).templates[0]
     return {
         str(template["name"]): {
             "Front": normalize_markup(template["qfmt"]),
@@ -86,13 +87,13 @@ def expected_template_map(skill: str) -> dict[str, dict[str, str]]:
     }
 
 
-def ensure_models(client: AnkiConnectClient, skills: set[str]) -> None:
+def ensure_models(client: AnkiConnectClient, skills: set[str], plan_version: str | None = None) -> None:
     existing = set(client.invoke("modelNames") or [])
     for skill in sorted(skills):
-        expected_fields = [field["name"] for field in fields_for_skill(skill)]
-        model = make_model(skill)
+        expected_fields = [field["name"] for field in fields_for_skill(skill, plan_version)]
+        model = make_model(skill, plan_version)
         if model.name not in existing:
-            client.invoke("createModel", model_payload(skill))
+            client.invoke("createModel", model_payload(skill, plan_version))
             existing.add(model.name)
 
         actual_fields = client.invoke("modelFieldNames", {"modelName": model.name})
@@ -105,7 +106,7 @@ def ensure_models(client: AnkiConnectClient, skills: set[str]) -> None:
         actual_templates = normalize_template_map(
             client.invoke("modelTemplates", {"modelName": model.name})
         )
-        expected_templates = expected_template_map(skill)
+        expected_templates = expected_template_map(skill, plan_version)
         if actual_templates != expected_templates:
             raise AnkiConnectError(
                 f"Existing model '{model.name}' has template drift. "
@@ -157,6 +158,8 @@ def note_fields(plan: dict[str, Any], card: dict[str, Any]) -> dict[str, str]:
         "Image": "",
         "Source": clean(card_source_footer(plan, card)),
     }
+    if plan.get("version") == "2.3":
+        fields["SourceAudio"] = ""
     if skill == "pronunciation":
         fields["FrontCue"] = clean(pronunciation_front_cue(card))
     if skill == "writing":
@@ -169,7 +172,7 @@ def note_fields(plan: dict[str, Any], card: dict[str, Any]) -> dict[str, str]:
 
 def build_note(plan: dict[str, Any], card: dict[str, Any], plan_dir: Path) -> tuple[dict[str, Any], dict[str, Path]]:
     skill = card["skill"]
-    model = make_model(skill)
+    model = make_model(skill, plan.get("version"))
     fields = note_fields(plan, card)
     note: dict[str, Any] = {
         "deckName": full_deck_name(str(plan["deck_name"]), skill),
@@ -198,6 +201,19 @@ def build_note(plan: dict[str, Any], card: dict[str, Any], plan_dir: Path) -> tu
         field = "FrontAudio" if audio_on_front else "BackAudio"
         note["audio"] = [{"path": str(audio), "filename": audio.name, "fields": [field]}]
         media[f"audio:{field}"] = audio
+    if plan.get("version") == "2.3":
+        source_clips = [
+            media_path(plan_dir, path)
+            for path in card_source_audio_paths(plan, card)
+        ]
+        for clip in source_clips:
+            if clip is None:
+                continue
+            validate_media_file(clip, "audio")
+            note.setdefault("audio", []).append({
+                "path": str(clip), "filename": clip.name, "fields": ["SourceAudio"]
+            })
+            media[f"audio:SourceAudio@{clip.name}"] = clip
     if image is not None:
         validate_media_file(image, "image")
         note["picture"] = [{"path": str(image), "filename": image.name, "fields": ["Image"]}]
@@ -336,7 +352,7 @@ def verify_uploaded_media(client: AnkiConnectClient, path: Path) -> dict[str, An
 
 def reject_cross_generation_duplicates(client: AnkiConnectClient, plan: dict[str, Any]) -> None:
     """Read-only: block redundant new note identities before any live writes."""
-    if plan.get("version") != "2.2":
+    if plan.get("version") not in {"2.2", "2.3"}:
         return
     existing = client.invoke("findNotes", {"query": "tag:anki-language"}) or []
     if not existing:
@@ -387,7 +403,7 @@ def deliver_live(
     capabilities = client.verify_actions(REQUIRED_ACTIONS)
     reject_cross_generation_duplicates(client, plan)
     ensure_decks(client, plan)
-    ensure_models(client, {card["skill"] for card in plan["cards"]})
+    ensure_models(client, {card["skill"] for card in plan["cards"]}, plan.get("version"))
 
     plan_dir = plan_path.resolve().parent
     pending_notes: list[dict[str, Any]] = []
@@ -442,6 +458,7 @@ def deliver_live(
             raise AnkiConnectError(f"Created note {note_id} was not returned by notesInfo.")
         for descriptor, path in media.items():
             _, field = descriptor.split(":", 1)
+            field = field.split("@", 1)[0]
             if path.name not in field_value(note_info, field):
                 raise AnkiConnectError(
                     f"Created note {note_id} field {field} does not reference uploaded media {path.name}."
