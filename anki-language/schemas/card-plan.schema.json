@@ -20,9 +20,10 @@
         "2.3",
         "2.4",
         "2.5",
-        "2.6"
+        "2.6",
+        "2.7"
       ],
-      "description": "v2.6: professor-led chunk selection, contextual vocabulary inventory, content-addressed speech; prior versions compatible."
+      "description": "v2.7: autonomous pre-card teacher analysis, prioritization, candidate review and selected-card provenance; prior plans compatible."
     },
     "target_language": {
       "type": "object",
@@ -373,6 +374,16 @@
             "minLength": 8,
             "maxLength": 250,
             "description": "Why this distinct retrieval task earns review time vs longer/more redundant alternatives."
+          },
+          "learning_point_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "v2.7 required: knowledge ID from pre-card lesson analysis."
+          },
+          "candidate_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "v2.7 required: chosen candidate ID inside that learning point."
           }
         }
       }
@@ -611,6 +622,11 @@
           "description": "Compact evidence that at least one tempting but redundant/overlong/trivial candidate was evaluated and rejected."
         }
       }
+    },
+    "lesson_analysis_file": {
+      "type": "string",
+      "minLength": 5,
+      "description": "v2.7 mandatory relative path to independently validated lesson-analysis.json created BEFORE the card plan."
     }
   },
   "$defs": {

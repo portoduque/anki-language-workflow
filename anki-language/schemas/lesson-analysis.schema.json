@@ -1,0 +1,222 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Teacher's pre-card lesson analysis v1.0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "target_language",
+    "base_language",
+    "source_assessments",
+    "learning_points",
+    "skill_review"
+  ],
+  "properties": {
+    "version": {
+      "const": "1.0"
+    },
+    "target_language": {
+      "type": "string",
+      "minLength": 2
+    },
+    "base_language": {
+      "type": "string",
+      "minLength": 2
+    },
+    "source_assessments": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "source_unit_id",
+          "text",
+          "observations",
+          "disposition",
+          "reason"
+        ],
+        "properties": {
+          "source_unit_id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "observations": {
+            "type": "array",
+            "minItems": 1,
+            "maxItems": 5,
+            "items": {
+              "type": "string",
+              "minLength": 5,
+              "maxLength": 220
+            }
+          },
+          "disposition": {
+            "enum": [
+              "teach",
+              "context"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 250
+          }
+        }
+      }
+    },
+    "learning_points": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "concept",
+          "priority",
+          "source_unit_ids",
+          "focus_vocabulary",
+          "value_reason",
+          "teacher_option",
+          "teacher_reason",
+          "candidates"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "concept": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 160
+          },
+          "priority": {
+            "enum": [
+              "high",
+              "medium",
+              "context"
+            ]
+          },
+          "source_unit_ids": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "value_reason": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 280
+          },
+          "teacher_option": {
+            "enum": [
+              "explored",
+              "unnecessary"
+            ]
+          },
+          "teacher_reason": {
+            "type": "string",
+            "minLength": 12,
+            "maxLength": 280
+          },
+          "candidates": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "text",
+                "origin",
+                "decision",
+                "reason"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "text": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 200
+                },
+                "origin": {
+                  "enum": [
+                    "source",
+                    "teacher"
+                  ]
+                },
+                "decision": {
+                  "enum": [
+                    "card",
+                    "example",
+                    "reject"
+                  ]
+                },
+                "reason": {
+                  "type": "string",
+                  "minLength": 8,
+                  "maxLength": 240
+                }
+              }
+            }
+          },
+          "focus_vocabulary": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120
+            },
+            "description": "Specific vocabulary or reusable expressions from linked original sources. High-priority terms must be present in selected card targets or useful teacher examples."
+          }
+        }
+      }
+    },
+    "skill_review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reading",
+        "listening",
+        "pronunciation",
+        "writing"
+      ],
+      "properties": {
+        "reading": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 240
+        },
+        "listening": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 240
+        },
+        "pronunciation": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 240
+        },
+        "writing": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 240
+        }
+      }
+    }
+  }
+}

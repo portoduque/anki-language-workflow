@@ -1,0 +1,96 @@
+{
+  "version": "1.0",
+  "target_language": "fr",
+  "base_language": "en",
+  "source_assessments": [
+    {
+      "source_unit_id": "phrase-01",
+      "text": "Vous pouvez me suivre, c'est à deux minutes d'ici.",
+      "observations": [
+        "Polite modal + infinitive to ask someone to follow.",
+        "Distance frame with deux minutes d'ici."
+      ],
+      "disposition": "teach",
+      "reason": "Two highly reusable communicative patterns should be trained separately, not as a whole sentence."
+    },
+    {
+      "source_unit_id": "phrase-02",
+      "text": "Je travaille ici à l'université.",
+      "observations": [
+        "Working at a university; useful context and reusable word université."
+      ],
+      "disposition": "context",
+      "reason": "Do not create a separate repetitive card solely to expose travaille; recycle it in a natural example."
+    }
+  ],
+  "learning_points": [
+    {
+      "id": "follow",
+      "concept": "Ask someone to follow with pouvoir + infinitive.",
+      "priority": "high",
+      "source_unit_ids": [
+        "phrase-01"
+      ],
+      "value_reason": "Frequent real-world polite request with a compact self-contained chunk.",
+      "teacher_option": "explored",
+      "teacher_reason": "A new context is understandable but adds no independent skill beyond this source wording.",
+      "candidates": [
+        {
+          "id": "follow-original",
+          "text": "Vous pouvez me suivre",
+          "origin": "source",
+          "decision": "card",
+          "reason": "Most concise independently useful phrase from the original."
+        },
+        {
+          "id": "follow-teacher",
+          "text": "Vous pouvez me suivre à l'université.",
+          "origin": "teacher",
+          "decision": "reject",
+          "reason": "Same request and skill; adds review time without changing the retrieval."
+        }
+      ],
+      "focus_vocabulary": [
+        "suivre"
+      ]
+    },
+    {
+      "id": "distance",
+      "concept": "State short walking distance to a place.",
+      "priority": "high",
+      "source_unit_ids": [
+        "phrase-01",
+        "phrase-02"
+      ],
+      "value_reason": "Reusable distance frame; a natural new location context demonstrates transfer.",
+      "teacher_option": "explored",
+      "teacher_reason": "Combining université and the distance construction avoids reliance on the original dialogue.",
+      "candidates": [
+        {
+          "id": "distance-teacher",
+          "text": "L'université est à deux minutes d'ici.",
+          "origin": "teacher",
+          "decision": "card",
+          "reason": "Short standalone transfer to a new place using source vocabulary."
+        },
+        {
+          "id": "distance-original",
+          "text": "c'est à deux minutes d'ici.",
+          "origin": "source",
+          "decision": "reject",
+          "reason": "Less informative than the chosen natural transfer without an extra retrieval task."
+        }
+      ],
+      "focus_vocabulary": [
+        "université",
+        "à deux minutes d'ici"
+      ]
+    }
+  ],
+  "skill_review": {
+    "reading": "Written understanding is the immediate goal for this screenshot-only beginner lesson.",
+    "listening": "No separately observed spoken-recognition bottleneck; TTS is feedback, not justification for duplicate Listening.",
+    "pronunciation": "No demonstrated sound or liaison problem requiring a separate pronunciation task.",
+    "writing": "No observed spelling or agreement target that independently warrants a typed gap."
+  }
+}

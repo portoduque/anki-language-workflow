@@ -1,4 +1,39 @@
-# Teacher-authored chunks — normative v2.6 policy
+## v2.7 autonomous Professor IA — complete analysis before cards
+
+This section is **normative** for every *new* lesson. It replaces the v2.6 pattern of annotating card choices after they already exist. **Do not begin the card plan until a separate lesson analysis is written and validated.** The AI must make instructional decisions itself; do not ask the student to choose chunks, grammar, or card types unless the source is ambiguous or essential preferences are unknown.
+
+### Pass A — Analyze each original utterance or word
+
+Capture every exact source unit (ID + text) and produce one `source_assessments` entry each. Explain the teachable vocabulary, collocations, grammar, communicative function, confusing sounds/forms and whether the full utterance merits practice or merely reference. Consider the whole lesson, not just isolated sentences: important frames recur and combine across lines.
+
+### Pass B — Rank the **knowledge**, then create alternatives
+
+Identify `learning_points` independently of cards and mark priority `high`, `medium`, or `context`. Justify each from communicative utility, transfer, novelty/learner evidence, difficulty and review cost. Do not promote trivial expressions solely to force every original word into a Front. For each point consider short, grammatical candidates:
+- `origin=source`: attested original phrase (must be in linked source);
+- `origin=teacher`: new natural chunk or transfer example combining material, verified with a precise base-language meaning;
+- mark each candidate `card`, `example`, or `reject`, with short justification.
+
+High-priority knowledge must have at least one candidate selected for a card. **Consider an authored alternative** for important points, recording `teacher_option=explored` with the authored candidate, or `unnecessary` with a concrete explanation. This ensures a teacher-style decision without forcing an artificial invented card or a fixed teacher/original ratio. One high-priority item *may* yield multiple selected card candidates only when a separate learning goal/retrieval bottleneck justifies the added review burden. The default is one independently useful task.
+
+### Pass C — Select skills and validate the analysis
+
+Fill `skill_review` with compact rationales for Reading, Listening, Pronunciation and Writing, even when a skill is legitimately unused. Never turn optional TTS availability into unnecessary Listening cards; never reintroduce Production. Run:
+
+```bash
+python anki-language/scripts/validate_lesson.py materials/lesson-analysis.json
+```
+
+Do not proceed if this fails. This stage is a **separate file**, not just the v2.6 post-hoc `teacher_analysis` text field.
+
+### Pass D — Convert approved candidates into cards, review twice
+
+Only now create `card-plan.json` version `2.7`. Point its `lesson_analysis_file` to the existing analysis file and set each card's `learning_point_id` and `candidate_id`. The validator checks exact candidate wording, source provenance, selected status, high-priority coverage and distinct card references. Review the batch for unnatural teaching examples, misleading meanings, duplicated retrieval, long fronts and low-benefit cards. Modify/revalidate the analysis if a better candidate replaces a selection, rather than silently editing the card in isolation.
+
+Original source text remains visibly linked on the Back. Do **not** require an active card for each original word; keep low-value words in the original context. Preserve the existing v2.4/v2.6 short-audio process, Flatpak and safe content-addressed uploads unchanged.
+
+**Important limitation:** JSON validation cannot prove the AI actually analyzed alternatives chronologically, nor can it prove native-language naturalness. The two-stage deliverable and comparison review make its choices inspectable; the actual quality must still be tested with lesson examples.
+
+# Legacy v2.6 teacher-authoring guidance
 
 ## Objective
 
