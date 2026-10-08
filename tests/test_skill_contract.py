@@ -133,7 +133,7 @@ def test_fluent_forever_refinements_are_explicit_and_selective() -> None:
 
     assert "same speaker/voice" in card_rules
     assert "fade out spelling/sound scaffolding" in card_rules
-    assert "exhaustive examination does not mean exhaustive flashcards" in card_rules
+    assert "complete visible material coverage does not mean one flashcard per word" in card_rules
     assert "target-language definition" in card_rules
     assert "same speaker/voice" in skill
     assert "spelling/spelling-sound cards are scaffolding" in skill
