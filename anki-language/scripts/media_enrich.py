@@ -331,8 +331,8 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
     counts = {"audio_generated": 0, "audio_clipped": 0, "audio_aligned": 0, "images_downloaded": 0, "media_validated": 0, "media_skipped": 0}
     word_cache: dict[tuple[Path, str], list[tuple[str, float, float]]] = {}
     tts_cache: dict[tuple[str, str, str, str], tuple[Path, str, dict[str, Any], dict[str, Any]]] = {}
-    is_auto_audio = plan.get("version") in {"2.3", "2.4"}
-    chunk_first = plan.get("version") == "2.4"
+    is_auto_audio = plan.get("version") in {"2.3", "2.4", "2.5"}
+    chunk_first = plan.get("version") in {"2.4", "2.5"}
     options = plan.get("audio_settings") or {}
     voice = options.get("voice") if chunk_first else None
     length_scale = float(options.get("length_scale", 0.93)) if chunk_first else None
@@ -401,7 +401,7 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
                     start_seconds=request.get("start_seconds"),
                     end_seconds=request.get("end_seconds"),
                     word_cache=word_cache,
-                    strict_boundaries=plan.get("version") in {"2.2", "2.3", "2.4"},
+                    strict_boundaries=plan.get("version") in {"2.2", "2.3", "2.4", "2.5"},
                 )
             except Exception as exc:
                 raise RuntimeError(

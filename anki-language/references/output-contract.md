@@ -1,6 +1,6 @@
 # Output Contract
 
-**Current version: `2.4`, four authorable skills, mandatory phrase/word visibility and focused spoken-audio coverage.** Only `reading`, `listening`, `pronunciation`, and `writing` may be created. `production` is retired and explicitly rejected by the v2.1/v2.2/v2.3 validator. Versions 2.0–2.2 are supported only to read/build historical plans; do not author v2.0 as a workaround.
+**Current version: `2.5`, four authorable skills, mandatory phrase/word visibility and focused spoken-audio coverage.** Only `reading`, `listening`, `pronunciation`, and `writing` may be created. `production` is retired and explicitly rejected by the v2.1/v2.2/v2.3 validator. Versions 2.0–2.2 are supported only to read/build historical plans; do not author v2.0 as a workaround.
 
 
 The AI produces an intermediate `card-plan.json`; deterministic scripts enrich media, validate it, and deliver the result.
@@ -16,7 +16,7 @@ These choices are stored in `anki-language.config.json` and must be copied into 
 
 ## Required plan-level fields
 
-- `version` = `2.4` for every new plan
+- `version` = `2.5` for every new plan
 - `audio_settings` optional: `voice` exact Piper model; `length_scale` 0.75–1.25 (default 0.93); `include_source_audio` boolean, default false
 - `source_units`: each supplied target-language phrase/individual word, with `id`, verbatim `text`, and at least one valid `card_ids` link
 - `target_language.name`
@@ -73,13 +73,38 @@ v2.2 `source_units` is a **complete inventory of every user-supplied target-lang
 
 The APKG builder and AnkiConnect both render each linked item's **entire literal text** in the answer-side Source footer, without adding new Anki model fields or lengthening the Front. This ensures even a long original sentence appears verbatim at least once, while the card itself can test one compact reusable chunk. A source unit that is absent, unlinked, or points at a nonexistent card fails validation; if an actual `source_text_file` is supplied, missing/excess entries fail, too. If the input is a screenshot or audio recording, literal extraction needs human/agent verification; the validator cannot prove a transcription is truthful. Do not skip explicit input words/phrases or fabricate missing ones.
 
+## Teacher-authored chunks and lexical coverage (v2.5)
+
+The teacher analyzes complete original sentences and may create a **new, natural short chunk** or combine vocabulary from several original sentences. The new card's `origin` is required:
+- `"source"`: literal source wording; the validator checks `target_text` against a linked `source_units[].text`.
+- `"teacher"`: generated/adapted target; requires a clear `base_text`, must not set `source_excerpt`, and is transparently marked in the Back's Notes section.
+
+Optional `teaching_examples`: 0–2 short objects with `"text"` (target language, mandatory) and `"base_text"` (optional gloss in the configured base language). They are labelled **Professor · exemplo criado** and shown on the Back, with no new Anki fields or deck types.
+
+**Lexical coverage gate:** All unique word forms from the original `source_units[].text` (except purely numeric tokens) must occur in at least one `cards[].target_text` or `cards[].teaching_examples[].text`; quoting original Source metadata alone does not pass. The deterministic validator returns explicit missing forms. This is spelling/token coverage, **not** a guarantee of grammar correctness, semantic understanding or mastered vocabulary. Verify naturalness and relevance manually/with the teacher before delivery; do not add filler or one card per vocabulary word. Existing source-text file checks and full original text on the Back remain in force.
+
+### Example
+```json
+{
+  "id": "french-campus",
+  "skill": "reading",
+  "origin": "teacher",
+  "target_text": "L'université est à deux minutes d'ici.",
+  "base_text": "The university is two minutes from here.",
+  "teaching_examples": [
+    {"text": "Je travaille ici. C'est à deux minutes d'ici.", "base_text": "I work here. It's two minutes from here."}
+  ]
+}
+```
+
 ## Card fields
 
 Each card includes:
 
 - `id`: stable unique string;
 - `skill`: `reading`, `listening`, `pronunciation`, or `writing` (v2.1);
-- `target_text`: target-language answer/context.
+- `target_text`: target-language answer/context;
+- `origin` (required in v2.5): `source` or `teacher`.
 
 Optional fields:
 
@@ -90,6 +115,7 @@ Optional fields:
 - `focus`;
 - `hint`;
 - `notes`;
+- `teaching_examples`: up to 2 short teacher-written examples with optional base-language gloss, Back only;
 - `ipa`;
 - `reading`: optional target-script reading/romanization aid such as pinyin, kana, or another reading representation;
 - `variant`: optional alternate written/script/orthographic form such as simplified/traditional or another spelling variant;

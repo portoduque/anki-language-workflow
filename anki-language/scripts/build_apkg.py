@@ -11,7 +11,7 @@ from typing import Any
 
 import genanki
 
-from card_contract import AUDIO_FRONT_MODES, SKILL_META, normalize_mode, pronunciation_front_cue, workflow_system_tags, writing_parts, card_source_footer, card_source_audio_paths
+from card_contract import AUDIO_FRONT_MODES, SKILL_META, normalize_mode, pronunciation_front_cue, workflow_system_tags, writing_parts, card_source_footer, card_source_audio_paths, card_notes_with_examples
 from validate_plan import load_plan, validate_plan
 
 MODEL_VERSION = 5
@@ -43,7 +43,7 @@ WRITING_FIELDS = [{"name": "WritingBefore"}, {"name": "WritingAfter"}, {"name": 
 
 
 def model_version(skill: str, plan_version: str | None = None) -> int:
-    if plan_version in {"2.3", "2.4"}:
+    if plan_version in {"2.3", "2.4", "2.5"}:
         return AUTO_AUDIO_MODEL_VERSION
     return PRONUNCIATION_MODEL_VERSION if skill == "pronunciation" else MODEL_VERSION
 
@@ -55,7 +55,7 @@ def fields_for_skill(skill: str, plan_version: str | None = None) -> list[dict[s
         fields = [*FIELDS, *WRITING_FIELDS]
     else:
         fields = list(FIELDS)
-    return [*fields, {"name": "SourceAudio"}] if plan_version in {"2.3", "2.4"} else fields
+    return [*fields, {"name": "SourceAudio"}] if plan_version in {"2.3", "2.4", "2.5"} else fields
 
 
 CSS = """
@@ -789,7 +789,7 @@ def make_model(skill: str, plan_version: str | None = None) -> genanki.Model:
     {{/Source}}
 """
 
-    if plan_version in {"2.3", "2.4"}:
+    if plan_version in {"2.3", "2.4", "2.5"}:
         support += """
     {{#SourceAudio}}
     <div class="source-audio"><div class="section-label">Hear original phrase</div>
@@ -902,7 +902,7 @@ def build(plan_path: Path, output_path: Path) -> dict[str, Any]:
             clean(card.get("base_text", "")),
             clean(card.get("focus", "")),
             clean(card.get("hint", "")),
-            clean(card.get("notes", "")),
+            clean(card_notes_with_examples(plan, card)),
             clean(card.get("ipa", "")),
             clean(card.get("reading", "")),
             clean(card.get("variant", "")),
@@ -916,7 +916,7 @@ def build(plan_path: Path, output_path: Path) -> dict[str, Any]:
               [clean(writing_parts(card)[1])] if skill == "writing" else []),
             *(
                 [" ".join(sound_ref(path) for path in context_audio if path)]
-                if plan.get("version") in {"2.3", "2.4"} else []
+                if plan.get("version") in {"2.3", "2.4", "2.5"} else []
             ),
         ]
 

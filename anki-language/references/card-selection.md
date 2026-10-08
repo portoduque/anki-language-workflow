@@ -1,6 +1,8 @@
 # Card Creation Rules
 
-## Active authoring contract (v2.2)
+## Active authoring contract (v2.5)
+
+**Teacher-guided creation is mandatory for new v2.5 plans.** See [teacher-authoring.md](teacher-authoring.md). Analyze and *teach* every source phrase, not just lift quotations. Propose natural standalone patterns and new short examples using original vocabulary; select only independently useful retrieval tasks. For each card record `origin: "source"` for a literal excerpt or `origin: "teacher"` for a checked adaptation. Use 0–2 explicit `teaching_examples` per card, on the answer side only. Source quotations remain unchanged in `source_units`. The v2.5 validator checks that every unique original word form occurs in **at least one card target or teacher example**, not merely in the original Source footer. All words must be used; not all must be individually drilled. Do not game the coverage check with meaningless lists, duplicate cards or unnatural sentences.
 
 Production is **retired**: never create it, including via a renamed Writing exercise. v2.2 requires every supplied sentence/word to be **visible verbatim on the back of at least one card**, using `source_units` with linked `card_ids`. Short focused Fronts remain the default; a long sentence belongs in the Back's source context. No compulsory one-word card, no forced one-card-per-audio quota, no skipping user-provided phrases from the visible deck. If an audio/source caption is uncertain, request clarification instead of inventing a transcript. The only four eligible skills are Reading, Listening, Pronunciation & Sounds and selective short-gap Writing. v2.0 Production cards remain supported strictly for legacy import.
 
