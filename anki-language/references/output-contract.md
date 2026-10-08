@@ -56,6 +56,7 @@ Optional fields:
 - `media_validation`: deterministic validation record including SHA-256;
 - `media_issues`: non-fatal failures for optional media that was skipped;
 - `source`: source/provenance text; when the material exposes a stable locator, preserve the most useful precise locator available (for example a video timestamp, page, chapter/section, or transcript anchor);
+- `source_excerpt`: optional **verbatim verified original-language excerpt** from the user's written/screenshot/transcript source, useful for grounding cards; when present, `target_text` must occur as a whole phrase within it. Do not insert generated/adapted language as if it were quoted from the source;
 - `tags`.
 
 These structured fields are **metadata/support**, not card-generation quotas. Populate them only when they help the selected retrieval target. An empty field creates no extra card by itself in this workflow.
@@ -74,6 +75,8 @@ An original sentence/turn may be long, but `target_text` should **normally conta
 - Select distinct learning **chunks first**; assign one primary skill to each, then add other skill cards only for independently useful retrieval operations. Scan the final batch for near-paraphrases.
 - Exact duplicate retrieval tasks **within one plan** are rejected even if IDs, tags, source or notes differ; this is not a semantic similarity or existing-Anki-collection audit.
 - For standard modes and Pronunciation `spelling-sound`, `audio_request.text` must match the card's spoken `target_text` (ignoring case/punctuation/spacing), to prevent unrelated TTS.
+- Verified `audio_transcript` must equal `target_text` for Listening, Production, Writing, and standard/spelling-sound Pronunciation; a target **contained inside** a longer audio recording is insufficient for these skills. When `audio_provenance.kind` indicates original user/native audio, exact-audio skills require a verified transcript. The media enricher replaces long-source transcripts with the resolved exact target after successful clipping and records TTS text as the transcript. Audio bytes with identical hashes cannot serve different exact-audio target texts, even under different file names.
+- The deterministic checks are not ASR and cannot establish the truthfulness of a submitted transcript or a transcript extracted from screenshots. Resolve disagreements by listening/checking source evidence, not by guessing.
 
 For each candidate, mentally simulate one review: can the learner tell what to retrieve immediately, recover one target, and check the answer quickly? Otherwise simplify, split useful targets, or skip.
 

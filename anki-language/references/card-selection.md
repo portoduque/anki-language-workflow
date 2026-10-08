@@ -64,6 +64,10 @@ For each additional card from the same chunk, name the **different cue, retrieva
 
 **Batch review:** compare selected chunks against one another and, where accessible, existing user cards. Remove overlapping phrases, same-skill questions and near-paraphrases that test the same retrieval. Automated validation can catch identical tasks **inside the plan**, but cannot determine semantic similarity, actual mastery, or duplicate cards already in Anki. Never silently mutate the user's collection.
 
+**Five-skill suitability audit (not a quota):** before finalizing, explicitly consider Reading, Listening, Production, Pronunciation & Sounds, and Writing for the *batch*, even if all initial suggestions were Listening/Production. For each selected target, keep the one fastest **useful** retrieval format; an additional format must fix an independent comprehension, output, sound, or spelling/grammar gap. Do not infer a difficulty merely because a language has accents, gender or liaisons. A perfect batch can contain only one skill. If most source sentences mechanically receive an identical Listening+Production pair, re-check each extra card and discard it if independent benefit cannot be stated.
+
+**Source fidelity:** when the supplied source is text/screenshots/subtitles, verify the *actual* original phrase before adding it as a direct quotation. Preserve exact verified wording in `source_excerpt` when practical, especially for screenshots and audio-backed cards. The plan validator checks that `target_text` appears as a whole phrase inside a populated excerpt. Deliberately adapted/generated targets are not original quotations and must not be disguised as such. Where an audio recording and a caption disagree, determine the actual spoken version before creating audio-backed retrieval; if unresolved, skip the disputed part or ask. Do not turn an OCR guess into a certified transcript.
+
 ## 2. One primary retrieval target per card
 
 Each card should answer one clear question:

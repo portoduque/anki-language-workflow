@@ -137,7 +137,10 @@ def test_audio_reused_for_two_different_targets_needs_verified_transcript(tmp_pa
     transcript = "Je suis Suisse, mais j'habite en France."
     for card in cards:
         card["audio_transcript"] = transcript
-    assert validate_plan(base_plan(cards), tmp_path / "plan.json", check_media=False) == []
+    # The entire original clip is not appropriate for a shorter Listening /
+    # read-aloud target merely because the words appear inside the transcript.
+    issues = validate_plan(base_plan(cards), tmp_path / "plan.json", check_media=False)
+    assert sum("audio_transcript must match target_text exactly" in issue for issue in issues) == 2
 
 
 def test_audio_transcript_mismatch_and_conflicting_declarations_fail(tmp_path: Path) -> None:

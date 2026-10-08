@@ -37,6 +37,10 @@ Vocabulary, grammar, chunks, collocations, word forms, minimal pairs, source nam
 Core rules:
 
 - no card is created just because a template exists;
+- **all five skill types are considered for each batch**, but no target gets an extra skill just to diversify the deck; review why Listening/Production siblings are independently useful;
+- **source quotations can carry verified `source_excerpt`**, checked against each selected `target_text`; screenshot/audio disagreements require review rather than an invented transcription;
+- **exact-answer audio must match the short answer** (not merely contain its words within a longer dialogue); original source audio requires verified transcript metadata, and clipped/TTS audio records its resolved target;
+- **byte-identical audio files** cannot silently serve different exact-answer targets under different filenames;
 - no blind or ambiguous cloze;
 - listening normally places audio on the front;
 - production normally places audio on the back;

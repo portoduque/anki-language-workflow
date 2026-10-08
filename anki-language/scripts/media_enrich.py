@@ -283,6 +283,10 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
                     f"Could not align/clip original audio for card {card['id']}: {exc}"
                 ) from exc
             card["audio"] = relative_to_plan(output, plan_dir)
+            # The resolved recording is the clipped target, not the original
+            # long source. Do not retain the pre-clip transcript as if it were
+            # the transcript of this new audio file.
+            card["audio_transcript"] = str(card["target_text"])
             card["audio_provenance"] = {
                 "kind": "user-supplied",
                 "provider": "ffmpeg-clip",
@@ -325,6 +329,7 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
                 )
                 validation = validate_media_file(output, "audio")
                 card["audio"] = relative_to_plan(output, plan_dir)
+                card["audio_transcript"] = str(request["text"])
                 card.pop("audio_request", None)  # resolved plan has one audio source
                 license_meta = metadata.get("license") if isinstance(metadata, dict) else None
                 if isinstance(license_meta, dict):

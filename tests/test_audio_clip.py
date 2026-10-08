@@ -127,6 +127,7 @@ def test_verified_timestamp_clip_is_short_and_validated_before_apkg(tmp_path: Pa
         assert card["media_validation"]["audio"]["sha256"] == validate_media_file(clip_path, "audio")["sha256"]
         assert card["audio_provenance"]["alignment"] == "verified-timestamps"
         assert card["audio_provenance"]["source_path"] == source.name
+        assert card["audio_transcript"] == card["target_text"]  # transcript describes the resolved clip
 
     assert validate_plan(resolved, resolved_path, check_media=True) == []
     assert validate_media_file(source, "audio")["sha256"] == initial_hash

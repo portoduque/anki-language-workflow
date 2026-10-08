@@ -172,6 +172,12 @@
           "source": {
             "type": "string"
           },
+          "source_excerpt": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S",
+            "description": "Optional exact original-language wording transcribed from the supplied source. The card target must occur as a whole phrase within this verified excerpt; do not use for generated paraphrases."
+          },
           "tags": {
             "type": "array",
             "items": {
