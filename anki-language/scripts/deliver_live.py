@@ -32,7 +32,7 @@ REQUIRED_ACTIONS = {
     "version", "apiReflect", "deckNames", "createDeck", "modelNames",
     "modelFieldNames", "modelTemplates", "modelStyling", "createModel",
     "findNotes", "canAddNotesWithErrorDetail", "addNotes", "notesInfo",
-    "retrieveMediaFile",
+    "retrieveMediaFile", "storeMediaFile",
 }
 
 
@@ -158,7 +158,7 @@ def note_fields(plan: dict[str, Any], card: dict[str, Any]) -> dict[str, str]:
         "Image": "",
         "Source": clean(card_source_footer(plan, card)),
     }
-    if plan.get("version") == "2.3":
+    if plan.get("version") in {"2.3", "2.4"}:
         fields["SourceAudio"] = ""
     if skill == "pronunciation":
         fields["FrontCue"] = clean(pronunciation_front_cue(card))
@@ -201,7 +201,7 @@ def build_note(plan: dict[str, Any], card: dict[str, Any], plan_dir: Path) -> tu
         field = "FrontAudio" if audio_on_front else "BackAudio"
         note["audio"] = [{"path": str(audio), "filename": audio.name, "fields": [field]}]
         media[f"audio:{field}"] = audio
-    if plan.get("version") == "2.3":
+    if plan.get("version") in {"2.3", "2.4"}:
         source_clips = [
             media_path(plan_dir, path)
             for path in card_source_audio_paths(plan, card)
@@ -352,7 +352,7 @@ def verify_uploaded_media(client: AnkiConnectClient, path: Path) -> dict[str, An
 
 def reject_cross_generation_duplicates(client: AnkiConnectClient, plan: dict[str, Any]) -> None:
     """Read-only: block redundant new note identities before any live writes."""
-    if plan.get("version") not in {"2.2", "2.3"}:
+    if plan.get("version") not in {"2.2", "2.3", "2.4"}:
         return
     existing = client.invoke("findNotes", {"query": "tag:anki-language"}) or []
     if not existing:
@@ -388,6 +388,50 @@ def reject_cross_generation_duplicates(client: AnkiConnectClient, plan: dict[str
                 "No new cards were created. Review the old/new notes and choose "
                 "which to keep; never auto-delete or silently duplicate them."
             )
+
+def upload_media_base64(
+    client: AnkiConnectClient, notes: list[dict[str, Any]],
+) -> dict[str, dict[str, Any]]:
+    """Upload media bytes before addNotes; Flatpak cannot read host paths.
+
+    This method is versioned to the newer v2.4 pipeline. Insertion is postponed
+    until every asset is both transferred and checked against its original hash.
+    """
+    verified: dict[str, dict[str, Any]] = {}
+    for note in notes:
+        for kind, field_tag in (("audio", "sound"), ("picture", "img")):
+            entries = note.pop(kind, []) or []
+            for item in entries:
+                source = Path(str(item["path"]))
+                filename = str(item["filename"])
+                data = source.read_bytes()
+                digest = hashlib.sha256(data).hexdigest()
+                if filename not in verified:
+                    old = client.invoke("retrieveMediaFile", {"filename": filename})
+                    if old:
+                        if hashlib.sha256(base64.b64decode(old)).hexdigest() != digest:
+                            raise AnkiConnectError(
+                                f"Anki media filename collision for {filename}; refusing overwrite."
+                            )
+                    else:
+                        uploaded = client.invoke(
+                            "storeMediaFile", {
+                                "filename": filename,
+                                "data": base64.b64encode(data).decode("ascii"),
+                                "deleteExisting": False,
+                            },
+                        )
+                        if uploaded != filename:
+                            raise AnkiConnectError(f"Anki rejected media upload {filename}: {uploaded!r}")
+                    verified[filename] = verify_uploaded_media(client, source)
+                for field in item.get("fields", []):
+                    if field_tag == "sound":
+                        reference = f"[sound:{filename}]"
+                    else:
+                        reference = f'<img src="{filename}">'
+                    note["fields"][field] = note["fields"].get(field, "") + reference
+    return verified
+
 
 def deliver_live(
     plan_path: Path,
@@ -436,6 +480,10 @@ def deliver_live(
             "media_verified": [],
         }
 
+    uploaded_before_add: dict[str, dict[str, Any]] = {}
+    if plan.get("version") == "2.4":
+        # Host-side paths are invisible to sandboxed Anki/Flatpak installations.
+        uploaded_before_add = upload_media_base64(client, pending_notes)
     preflight = client.invoke("canAddNotesWithErrorDetail", {"notes": pending_notes})
     problems = []
     for index, result in enumerate(preflight or []):
@@ -450,7 +498,7 @@ def deliver_live(
 
     info = client.invoke("notesInfo", {"notes": note_ids})
     by_id = {int(item["noteId"]): item for item in (info or []) if item.get("noteId") is not None}
-    media_verified: dict[str, dict[str, Any]] = {}
+    media_verified: dict[str, dict[str, Any]] = dict(uploaded_before_add)
 
     for note_id, card, media in zip(note_ids, pending_cards, pending_media):
         note_info = by_id.get(int(note_id))

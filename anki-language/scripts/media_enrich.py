@@ -52,63 +52,102 @@ def download_bytes(url: str, max_bytes: int = 25 * 1024 * 1024) -> bytes:
         return b"".join(chunks)
 
 
-def piper_voice(target_code: str, requested: str | None = None) -> tuple[str, dict[str, Any]]:
+def piper_voice(
+    target_code: str, requested: str | None = None, voice_dir: Path | None = None
+) -> tuple[str, dict[str, Any]]:
+    """Resolve modern/legacy Piper voices, including offline downloaded voices."""
+    normalized = target_code.replace("-", "_")
+    installed = {
+        f.stem: {} for f in (voice_dir.glob("*.onnx") if voice_dir and voice_dir.is_dir() else [])
+        if f.with_suffix(".onnx.json").is_file()
+    }
+    if requested and requested in installed:
+        if not (requested.startswith(normalized + "-") or (
+            len(normalized) == 2 and requested.startswith(normalized + "_")
+        )):
+            raise RuntimeError(f"Piper voice {requested!r} is not for target language {target_code}.")
+        return requested, installed[requested]
+    voices: dict[str, dict[str, Any]] = {}
     try:
         from piper.download_voices import get_voices
-    except ImportError as exc:
-        raise RuntimeError(
-            "Automatic TTS requires Piper. Install: python -m pip install -r requirements-media.txt"
-        ) from exc
-
-    voices = get_voices()
+        try:
+            voices = get_voices()
+        except TypeError:
+            voices = get_voices(voice_dir or Path.cwd())
+    except (ImportError, OSError, ValueError, RuntimeError):
+        # Some distributions do not export get_voices. The supported CLI
+        # prints one voice ID per line (avoid unstable private Python APIs).
+        result = subprocess.run(
+            [sys.executable, "-m", "piper.download_voices"],
+            capture_output=True, text=True, check=False, timeout=30,
+        )
+        if result.returncode == 0:
+            voices = {name.strip(): {} for name in result.stdout.splitlines()
+                      if re.match(r"^[a-z]{2,3}_[A-Z]{2}-[\\w-]+$", name.strip())}
+    voices = {**voices, **installed}
     if requested:
-        if requested not in voices:
-            raise RuntimeError(f"Requested Piper voice is unavailable: {requested}")
-        return requested, voices[requested]
+        if not (requested.startswith(normalized + "-") or (
+            len(normalized) == 2 and requested.startswith(normalized + "_")
+        )):
+            raise RuntimeError(f"Piper voice {requested!r} is not for target language {target_code}.")
+        # The download tool validates available remote voices; permit a
+        # custom explicitly selected model even with an offline catalog.
+        return requested, voices.get(requested, {})
 
-    normalized = target_code.replace("-", "_")
     prefixes = [normalized + "-"]
-    if "_" in normalized:
-        prefixes.append(normalized.split("_", 1)[0] + "_")
-    else:
+    if "_" not in normalized:
         prefixes.append(normalized + "_")
-
-    candidates = [name for name in voices if any(name.startswith(prefix) for prefix in prefixes)]
+    candidates = [name for name in voices if any(name.startswith(p) for p in prefixes)]
     if not candidates:
-        raise RuntimeError(f"No Piper voice found for target language code: {target_code}")
-
-    quality_rank = {"medium": 0, "high": 1, "low": 2, "x_low": 3}
-    candidates.sort(key=lambda name: (quality_rank.get(name.rsplit("-", 1)[-1], 9), name))
-    selected = candidates[0]
-    return selected, voices[selected]
-
-
-def synthesize_piper(text: str, target_code: str, output: Path, voice: str | None, voice_dir: Path) -> tuple[str, dict[str, Any]]:
-    try:
-        from piper.download_voices import download_voice
-    except ImportError as exc:
         raise RuntimeError(
-            "Automatic TTS requires Piper. Install: python -m pip install -r requirements-media.txt"
-        ) from exc
+            f"No Piper voice found for {target_code}. Install a voice or set audio_settings.voice."
+        )
+    preferred = {"fr": "fr_FR-siwis-medium", "fr_FR": "fr_FR-siwis-medium"}
+    favorite = preferred.get(normalized)
+    if favorite in candidates:
+        return favorite, voices[favorite]
+    rank = {"medium": 0, "high": 1, "low": 2, "x_low": 3}
+    candidates.sort(key=lambda n: (rank.get(n.rsplit("-", 1)[-1], 9), n))
+    return candidates[0], voices[candidates[0]]
 
-    selected, metadata = piper_voice(target_code, voice)
+
+def synthesize_piper(
+    text: str, target_code: str, output: Path, voice: str | None,
+    voice_dir: Path, length_scale: float | None = None,
+) -> tuple[str, dict[str, Any]]:
+    selected, metadata = piper_voice(target_code, voice, voice_dir)
     voice_dir.mkdir(parents=True, exist_ok=True)
-    download_voice(selected, voice_dir)
+    model = voice_dir / f"{selected}.onnx"
+    config = voice_dir / f"{selected}.onnx.json"
+    if not (model.is_file() and config.is_file()):
+        # Keep compatibility with Piper 1.8+ and its supported CLI downloader.
+        command = [
+            sys.executable, "-m", "piper.download_voices",
+            "--data-dir", str(voice_dir), selected,
+        ]
+        downloaded = subprocess.run(command, capture_output=True, text=True,
+                                    check=False, timeout=240)
+        if downloaded.returncode != 0 or not (model.is_file() and config.is_file()):
+            raise RuntimeError(
+                f"Could not download Piper voice {selected}: "
+                f"{downloaded.stderr.strip() or downloaded.stdout.strip()}"
+            )
     output.parent.mkdir(parents=True, exist_ok=True)
-
     cmd = [
         sys.executable, "-m", "piper",
-        "--data-dir", str(voice_dir),
-        "-m", selected,
-        "-f", str(output),
-        "--", text,
+        "--data-dir", str(voice_dir), "-m", selected,
+        "-f", str(output), "--sentence-silence", "0",
     ]
-    completed = subprocess.run(cmd, check=False, text=True, capture_output=True)
+    if length_scale is not None:
+        cmd += ["--length-scale", str(length_scale)]
+    cmd += ["--", text]
+    completed = subprocess.run(cmd, check=False, text=True, capture_output=True,
+                               timeout=240)
     if completed.returncode != 0:
-        raise RuntimeError(f"Piper failed for {selected}: {completed.stderr.strip() or completed.stdout.strip()}")
+        raise RuntimeError(
+            f"Piper failed for {selected}: {completed.stderr.strip() or completed.stdout.strip()}"
+        )
     return selected, metadata
-
-
 
 def tts_spoken_target(target: str) -> str:
     """Speak written contrasts as distinct forms, never synthesize 'slash'."""
@@ -121,16 +160,22 @@ def cached_piper_tts(
     requested_voice: str | None,
     media_root: Path,
     voice_dir: Path,
-    cache: dict[tuple[str, str, str], tuple[Path, str, dict[str, Any], dict[str, Any]]],
+    cache: dict[tuple[str, str, str, str], tuple[Path, str, dict[str, Any], dict[str, Any]]],
+    length_scale: float | None = None,
 ) -> tuple[Path, str, dict[str, Any], dict[str, Any], bool]:
-    key = (language, requested_voice or "", text)
+    key = (language, requested_voice or "", text, str(length_scale))
     if key in cache:
         return (*cache[key], False)
     fingerprint = hashlib.sha256(
         json.dumps(key, ensure_ascii=False).encode("utf-8")
     ).hexdigest()[:20]
     output = media_root / f"anki-tts-{fingerprint}.wav"
-    selected, metadata = synthesize_piper(text, language, output, requested_voice, voice_dir)
+    if length_scale is None:
+        selected, metadata = synthesize_piper(text, language, output, requested_voice, voice_dir)
+    else:
+        selected, metadata = synthesize_piper(
+            text, language, output, requested_voice, voice_dir, length_scale=length_scale
+        )
     validation = validate_media_file(output, "audio")
     cache[key] = (output, selected, metadata, validation)
     return output, selected, metadata, validation, True
@@ -285,11 +330,18 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
     media_root.mkdir(parents=True, exist_ok=True)
     counts = {"audio_generated": 0, "audio_clipped": 0, "audio_aligned": 0, "images_downloaded": 0, "media_validated": 0, "media_skipped": 0}
     word_cache: dict[tuple[Path, str], list[tuple[str, float, float]]] = {}
-    tts_cache: dict[tuple[str, str, str], tuple[Path, str, dict[str, Any], dict[str, Any]]] = {}
-    is_auto_audio = plan.get("version") == "2.3"
+    tts_cache: dict[tuple[str, str, str, str], tuple[Path, str, dict[str, Any], dict[str, Any]]] = {}
+    is_auto_audio = plan.get("version") in {"2.3", "2.4"}
+    chunk_first = plan.get("version") == "2.4"
+    options = plan.get("audio_settings") or {}
+    voice = options.get("voice") if chunk_first else None
+    length_scale = float(options.get("length_scale", 0.93)) if chunk_first else None
+    include_source = not chunk_first or bool(options.get("include_source_audio", False))
+    counts["audio_warnings"] = []
+    counts["source_audio_generated"] = 0
 
-    if is_auto_audio:
-        # Every full source utterance gets optional-on-reveal contextual speech.
+    if is_auto_audio and not chunk_first:
+        # Legacy v2.3 synthesizes original context first, unchanged.
         for unit in plan.get("source_units", []):
             if unit.get("audio"):
                 original = resolve_path(plan_dir, str(unit["audio"]))
@@ -325,6 +377,7 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
             card["audio_request"] = {
                 "mode": "auto", "provider": "piper",
                 "text": tts_spoken_target(str(card["target_text"])),
+                **({"voice": voice} if voice else {}),
                 "required": True,
             }
 
@@ -348,7 +401,7 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
                     start_seconds=request.get("start_seconds"),
                     end_seconds=request.get("end_seconds"),
                     word_cache=word_cache,
-                    strict_boundaries=plan.get("version") in {"2.2", "2.3"},
+                    strict_boundaries=plan.get("version") in {"2.2", "2.3", "2.4"},
                 )
             except Exception as exc:
                 raise RuntimeError(
@@ -390,7 +443,8 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
                 if is_auto_audio:
                     output, selected, metadata, validation, created = cached_piper_tts(
                         str(request["text"]), str(plan["target_language"]["code"]),
-                        request.get("voice"), media_root, voice_dir, tts_cache,
+                        request.get("voice") or voice, media_root, voice_dir, tts_cache,
+                        length_scale=length_scale,
                     )
                 else:
                     identity = json.dumps(
@@ -412,6 +466,14 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
                 card_validation["audio"] = validation
                 counts["audio_generated"] += int(created)
                 counts["media_validated"] += 1
+                if chunk_first:
+                    seconds = float(validation.get("duration_seconds") or 0)
+                    words = max(1, len(str(request["text"]).split()))
+                    if seconds > 0.85 * words + 1.15:
+                        counts["audio_warnings"].append({
+                            "card": str(card["id"]), "seconds": seconds,
+                            "words": words, "reason": "Lengthy for a focused chunk; listen and consider another Piper voice."
+                        })
             except Exception as exc:
                 if audio_required:
                     raise RuntimeError(f"Required audio could not be generated for card {card['id']}: {exc}") from exc
@@ -461,6 +523,29 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
             card["media_validation"] = card_validation
         if media_issues:
             card["media_issues"] = media_issues
+
+    if chunk_first and include_source:
+        # Context is opt-in. Target clips have already been chosen/synthesized.
+        for unit in plan.get("source_units", []):
+            if unit.get("audio"):
+                existing = resolve_path(plan_dir, str(unit["audio"]))
+                unit.setdefault("media_validation", {})["audio"] = validate_media_file(existing, "audio")
+                continue
+            try:
+                output, selected, metadata, validation, created = cached_piper_tts(
+                    str(unit["text"]), str(plan["target_language"]["code"]),
+                    voice, media_root, voice_dir, tts_cache, length_scale=length_scale,
+                )
+            except Exception as exc:
+                raise RuntimeError(
+                    f"Could not generate optional requested source audio for {unit['id']}: {exc}"
+                ) from exc
+            unit["audio"] = relative_to_plan(output, plan_dir)
+            unit["audio_provenance"] = piper_source_metadata(selected, metadata)
+            unit["media_validation"] = {"audio": validation}
+            counts["audio_generated"] += int(created)
+            counts["source_audio_generated"] += int(created)
+            counts["media_validated"] += 1
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     output_path.write_text(json.dumps(plan, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

@@ -115,7 +115,7 @@ def workflow_system_tags(deck_name: str, target_code: str, skill: str, card_id: 
 def card_source_footer(plan: dict[str, Any], card: dict[str, Any]) -> str:
     """Back-only verbatim coverage: do not make front reviews longer."""
     locator = str(card.get("source", "")).strip()
-    if plan.get("version") not in {"2.2", "2.3"}:
+    if plan.get("version") not in {"2.2", "2.3", "2.4"}:
         return locator
     phrases = []
     for unit in plan.get("source_units", []):
@@ -128,7 +128,9 @@ def card_source_footer(plan: dict[str, Any], card: dict[str, Any]) -> str:
 
 def card_source_audio_paths(plan: dict[str, Any], card: dict[str, Any]) -> list[str]:
     """Return source utterance audio linked to this card, without duplicates."""
-    if plan.get("version") != "2.3":
+    if plan.get("version") == "2.4" and not plan.get("audio_settings", {}).get("include_source_audio", False):
+        return []
+    if plan.get("version") not in {"2.3", "2.4"}:
         return []
     used: set[str] = set()
     paths: list[str] = []

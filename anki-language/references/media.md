@@ -1,6 +1,10 @@
 # Media
 
-## Mandatory automatic audio for new v2.3 plans
+## New v2.4 chunk-first TTS policy
+
+For new v2.4 plans, **mine/select all chunks and cards before synthesizing audio**. Generate one focused target sound per unique text+voice+speed combination, and keep the complete original phrase text on the Back. **Do not generate complete-source audio by default**. Only `audio_settings.include_source_audio: true` enables additional contextual speech in the existing optional `SourceAudio` hint. No extra Anki cards are generated for audio. Voice is configurable by `audio_settings.voice` (French recommendation: `fr_FR-siwis-medium` when available), speaking speed by `audio_settings.length_scale` (default 0.93; lower means faster). Cache keys include text, language, voice, and speed. Piper's supported CLI voice download works across versions and uses locally installed model files without a network download. Flag long short-chunk WAVs for manual listening; validation of file format and duration does not certify correct pronunciation. v2.4 live AnkiConnect uploads media via Base64 `storeMediaFile`, verifies hashes, and only then inserts notes — compatible with Flatpak. Earlier versions keep their prior behavior.
+
+## Mandatory automatic audio for legacy v2.3 plans
 
 The deterministic `media_enrich.py` stage automatically synthesizes a focused pronunciation for **every** card lacking valid supplied audio, plus the **complete literal text** of each `source_units[]` entry. It uses Piper `target_language.code`, caches identical language/voice/text requests, and embeds validated WAVs in APKG or AnkiConnect. Do not create extra cards merely to make audio. Generated voices require Piper installation and a compatible voice model (downloaded on first run); the pipeline stops with an explicit error if unavailable. As always, user-supplied recordings/verified clips take priority for the tested target.
 

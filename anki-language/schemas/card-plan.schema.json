@@ -17,9 +17,10 @@
         "2.0",
         "2.1",
         "2.2",
-        "2.3"
+        "2.3",
+        "2.4"
       ],
-      "description": "v2.3: automatic neural target and source audio; v2.0–2.2 retained for historic plans."
+      "description": "v2.4: chunk-first TTS; contextual source speech optional. Earlier versions remain supported."
     },
     "target_language": {
       "type": "object",
@@ -489,6 +490,30 @@
       "type": "string",
       "minLength": 1,
       "description": "Optional .txt/.json list of all provided phrases/words; validator independently compares lines/entries to source_units."
+    },
+    "audio_settings": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "v2.4 TTS settings; context speech disabled by default.",
+      "properties": {
+        "voice": {
+          "type": "string",
+          "minLength": 3,
+          "pattern": "^[a-z]{2,3}_[A-Z]{2}-[a-zA-Z0-9_]+-(x_low|low|medium|high)$",
+          "description": "Optional exact Piper voice, e.g. fr_FR-siwis-medium; must match target language."
+        },
+        "length_scale": {
+          "type": "number",
+          "minimum": 0.75,
+          "maximum": 1.25,
+          "description": "Piper phoneme duration scaling: less than 1.0 is faster. Default 0.93 for new plans."
+        },
+        "include_source_audio": {
+          "type": "boolean",
+          "default": false,
+          "description": "Opt-in full original phrase audio in addition to the short card target."
+        }
+      }
     }
   },
   "$defs": {
