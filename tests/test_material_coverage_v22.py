@@ -173,3 +173,12 @@ def test_legacy_source_footer_is_unchanged() -> None:
     p = {"version": "2.1", "source_units": [{"id": "a", "text": "EXTRA",
                                               "card_ids": ["old"]}]}
     assert card_source_footer(p, {"id": "old", "source": "page 12"}) == "page 12"
+
+def test_reading_two_forms_requires_clear_comparison_cue(tmp_path: Path) -> None:
+    p = make_plan([r(target="Enchanté / Enchantée")],
+                  [{"id": "two-forms", "text": "Enchanté / Enchantée",
+                    "card_ids": ["read1"]}])
+    assert any("Reading comparison/contrast fronts require" in e
+               for e in problems(p, tmp_path))
+    p["cards"][0]["prompt"] = "Which form is used by a female speaker?"
+    assert problems(p, tmp_path) == []
