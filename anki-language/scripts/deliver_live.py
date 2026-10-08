@@ -22,6 +22,7 @@ from card_contract import (
     workflow_tag,
     writing_parts,
     card_source_footer,
+    card_notes_with_examples,
     card_source_audio_paths,
 )
 from media_validate import MediaValidationError, sha256_file, validate_media_file
@@ -148,7 +149,7 @@ def note_fields(plan: dict[str, Any], card: dict[str, Any]) -> dict[str, str]:
         "Base": clean(card.get("base_text", "")),
         "Focus": clean(card.get("focus", "")),
         "Hint": clean(card.get("hint", "")),
-        "Notes": clean(card.get("notes", "")),
+        "Notes": clean(card_notes_with_examples(plan, card)),
         "IPA": clean(card.get("ipa", "")),
         "Reading": clean(card.get("reading", "")),
         "Variant": clean(card.get("variant", "")),
@@ -158,7 +159,7 @@ def note_fields(plan: dict[str, Any], card: dict[str, Any]) -> dict[str, str]:
         "Image": "",
         "Source": clean(card_source_footer(plan, card)),
     }
-    if plan.get("version") in {"2.3", "2.4"}:
+    if plan.get("version") in {"2.3", "2.4", "2.5"}:
         fields["SourceAudio"] = ""
     if skill == "pronunciation":
         fields["FrontCue"] = clean(pronunciation_front_cue(card))
@@ -201,7 +202,7 @@ def build_note(plan: dict[str, Any], card: dict[str, Any], plan_dir: Path) -> tu
         field = "FrontAudio" if audio_on_front else "BackAudio"
         note["audio"] = [{"path": str(audio), "filename": audio.name, "fields": [field]}]
         media[f"audio:{field}"] = audio
-    if plan.get("version") in {"2.3", "2.4"}:
+    if plan.get("version") in {"2.3", "2.4", "2.5"}:
         source_clips = [
             media_path(plan_dir, path)
             for path in card_source_audio_paths(plan, card)
@@ -352,7 +353,7 @@ def verify_uploaded_media(client: AnkiConnectClient, path: Path) -> dict[str, An
 
 def reject_cross_generation_duplicates(client: AnkiConnectClient, plan: dict[str, Any]) -> None:
     """Read-only: block redundant new note identities before any live writes."""
-    if plan.get("version") not in {"2.2", "2.3", "2.4"}:
+    if plan.get("version") not in {"2.2", "2.3", "2.4", "2.5"}:
         return
     existing = client.invoke("findNotes", {"query": "tag:anki-language"}) or []
     if not existing:
@@ -481,7 +482,7 @@ def deliver_live(
         }
 
     uploaded_before_add: dict[str, dict[str, Any]] = {}
-    if plan.get("version") == "2.4":
+    if plan.get("version") in {"2.4", "2.5"}:
         # Host-side paths are invisible to sandboxed Anki/Flatpak installations.
         uploaded_before_add = upload_media_base64(client, pending_notes)
     preflight = client.invoke("canAddNotesWithErrorDetail", {"notes": pending_notes})

@@ -115,7 +115,7 @@ def workflow_system_tags(deck_name: str, target_code: str, skill: str, card_id: 
 def card_source_footer(plan: dict[str, Any], card: dict[str, Any]) -> str:
     """Back-only verbatim coverage: do not make front reviews longer."""
     locator = str(card.get("source", "")).strip()
-    if plan.get("version") not in {"2.2", "2.3", "2.4"}:
+    if plan.get("version") not in {"2.2", "2.3", "2.4", "2.5"}:
         return locator
     phrases = []
     for unit in plan.get("source_units", []):
@@ -128,9 +128,9 @@ def card_source_footer(plan: dict[str, Any], card: dict[str, Any]) -> str:
 
 def card_source_audio_paths(plan: dict[str, Any], card: dict[str, Any]) -> list[str]:
     """Return source utterance audio linked to this card, without duplicates."""
-    if plan.get("version") == "2.4" and not plan.get("audio_settings", {}).get("include_source_audio", False):
+    if plan.get("version") in {"2.4", "2.5"} and not plan.get("audio_settings", {}).get("include_source_audio", False):
         return []
-    if plan.get("version") not in {"2.3", "2.4"}:
+    if plan.get("version") not in {"2.3", "2.4", "2.5"}:
         return []
     used: set[str] = set()
     paths: list[str] = []
@@ -142,3 +142,21 @@ def card_source_audio_paths(plan: dict[str, Any], card: dict[str, Any]) -> list[
             used.add(path)
             paths.append(path)
     return paths
+
+
+def card_notes_with_examples(plan: dict[str, Any], card: dict[str, Any]) -> str:
+    """Show original notes and optional teacher examples on the back only."""
+    notes = str(card.get("notes", "")).strip()
+    if plan.get("version") != "2.5":
+        return notes
+    examples = card.get("teaching_examples") or []
+    rendered = (["Professor · chunk criado para treino (não é citação da fonte)."]
+                if card.get("origin") == "teacher" else [])
+    if not examples and not rendered:
+        return notes
+    for example in examples:
+        text = str(example["text"]).strip()
+        meaning = str(example.get("base_text", "")).strip()
+        rendered.append("Professor · exemplo criado: " + text +
+                        (" — " + meaning if meaning else ""))
+    return "\n".join(([notes] if notes else []) + rendered)

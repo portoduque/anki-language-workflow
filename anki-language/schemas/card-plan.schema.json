@@ -18,9 +18,10 @@
         "2.1",
         "2.2",
         "2.3",
-        "2.4"
+        "2.4",
+        "2.5"
       ],
-      "description": "v2.4: chunk-first TTS; contextual source speech optional. Earlier versions remain supported."
+      "description": "v2.5: teacher-created examples and lexical coverage; older versions supported."
     },
     "target_language": {
       "type": "object",
@@ -328,6 +329,37 @@
             "minLength": 1,
             "pattern": "\\S",
             "description": "Required on cards when source_inventory is supplied; links card to one fully audited input audio."
+          },
+          "origin": {
+            "enum": [
+              "source",
+              "teacher"
+            ],
+            "description": "v2.5 required: source-exact chunk or teacher-created natural adaptation."
+          },
+          "teaching_examples": {
+            "type": "array",
+            "maxItems": 2,
+            "description": "Short teacher-created examples on the Back, not verbatim source quotations.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "text"
+              ],
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 170,
+                  "pattern": "\\S"
+                },
+                "base_text": {
+                  "type": "string",
+                  "maxLength": 250
+                }
+              }
+            }
           }
         }
       }

@@ -1,5 +1,5 @@
 {
-  "version": "2.4",
+  "version": "2.5",
   "target_language": {
     "name": "French",
     "code": "fr"
@@ -9,67 +9,58 @@
     "code": "en"
   },
   "deck_name": "French",
-  "cards": [
-    {
-      "id": "fr-reading-001",
-      "skill": "reading",
-      "target_text": "J'ai fini par rester chez moi.",
-      "base_text": "I ended up staying home.",
-      "focus": "finir par",
-      "notes": "finir par + infinitive = to end up doing something",
-      "tags": [
-        "chunk",
-        "sentence-mining"
-      ]
-    },
-    {
-      "id": "fr-writing-001",
-      "skill": "writing",
-      "prompt": "Type the missing expression meaning 'ended up' in this sentence.",
-      "target_text": "J'ai fini par rester chez moi.",
-      "writing_answer": "fini par",
-      "base_text": "I ended up staying home.",
-      "focus": "finir par",
-      "tags": [
-        "chunk",
-        "writing"
-      ]
-    },
-    {
-      "id": "fr-reading-grammar-001",
-      "skill": "reading",
-      "prompt": "Understand the past-tense expression.",
-      "target_text": "Nous sommes allés au cinéma hier.",
-      "base_text": "We went to the cinema yesterday.",
-      "focus": "sommes allés",
-      "notes": "aller uses être in passé composé.",
-      "grammar": "passé composé · aller · auxiliary être",
-      "tags": [
-        "grammar",
-        "word-form"
-      ]
-    }
-  ],
-  "source_units": [
-    {
-      "id": "phrase-01",
-      "text": "J'ai fini par rester chez moi.",
-      "card_ids": [
-        "fr-reading-001",
-        "fr-writing-001"
-      ]
-    },
-    {
-      "id": "phrase-02",
-      "text": "Nous sommes allés au cinéma hier.",
-      "card_ids": [
-        "fr-reading-grammar-001"
-      ]
-    }
-  ],
   "audio_settings": {
     "include_source_audio": false,
     "length_scale": 0.93,
     "voice": "fr_FR-siwis-medium"
-  }
+  },
+  "source_units": [
+    {
+      "id": "phrase-01",
+      "text": "Vous pouvez me suivre, c'est à deux minutes d'ici.",
+      "card_ids": [
+        "campus-follow",
+        "campus-near"
+      ]
+    },
+    {
+      "id": "phrase-02",
+      "text": "Je travaille ici à l'université.",
+      "card_ids": [
+        "campus-near"
+      ]
+    }
+  ],
+  "cards": [
+    {
+      "id": "campus-follow",
+      "skill": "reading",
+      "origin": "source",
+      "target_text": "Vous pouvez me suivre",
+      "base_text": "You can follow me.",
+      "focus": "pouvoir + infinitive",
+      "tags": [
+        "campus",
+        "chunk"
+      ]
+    },
+    {
+      "id": "campus-near",
+      "skill": "reading",
+      "origin": "teacher",
+      "target_text": "L'université est à deux minutes d'ici.",
+      "base_text": "The university is two minutes from here.",
+      "focus": "à deux minutes d'ici",
+      "teaching_examples": [
+        {
+          "text": "Je travaille ici. C'est à deux minutes d'ici.",
+          "base_text": "I work here. It's two minutes from here."
+        }
+      ],
+      "tags": [
+        "campus",
+        "location"
+      ]
+    }
+  ]
 }
