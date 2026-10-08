@@ -11,11 +11,12 @@ from typing import Any
 
 import genanki
 
-from card_contract import AUDIO_FRONT_MODES, SKILL_META, normalize_mode, pronunciation_front_cue, workflow_system_tags, writing_parts, card_source_footer
+from card_contract import AUDIO_FRONT_MODES, SKILL_META, normalize_mode, pronunciation_front_cue, workflow_system_tags, writing_parts, card_source_footer, card_source_audio_paths
 from validate_plan import load_plan, validate_plan
 
 MODEL_VERSION = 5
 PRONUNCIATION_MODEL_VERSION = 6
+AUTO_AUDIO_MODEL_VERSION = 7
 
 FIELDS = [
     {"name": "Context"},
@@ -41,16 +42,20 @@ FRONT_CUE_FIELD = {"name": "FrontCue"}
 WRITING_FIELDS = [{"name": "WritingBefore"}, {"name": "WritingAfter"}, {"name": "WritingAnswer"}]
 
 
-def model_version(skill: str) -> int:
+def model_version(skill: str, plan_version: str | None = None) -> int:
+    if plan_version == "2.3":
+        return AUTO_AUDIO_MODEL_VERSION
     return PRONUNCIATION_MODEL_VERSION if skill == "pronunciation" else MODEL_VERSION
 
 
-def fields_for_skill(skill: str) -> list[dict[str, str]]:
+def fields_for_skill(skill: str, plan_version: str | None = None) -> list[dict[str, str]]:
     if skill == "pronunciation":
-        return [*FIELDS, FRONT_CUE_FIELD]
-    if skill == "writing":
-        return [*FIELDS, *WRITING_FIELDS]
-    return list(FIELDS)
+        fields = [*FIELDS, FRONT_CUE_FIELD]
+    elif skill == "writing":
+        fields = [*FIELDS, *WRITING_FIELDS]
+    else:
+        fields = list(FIELDS)
+    return [*fields, {"name": "SourceAudio"}] if plan_version == "2.3" else fields
 
 
 CSS = """
@@ -584,8 +589,8 @@ def image_ref(path: Path | None) -> str:
     return f'<img src="{html.escape(path.name, quote=True)}">' if path else ""
 
 
-def make_model(skill: str) -> genanki.Model:
-    model_id = stable_id(f"anki-language:model:v{model_version(skill)}:{skill}")
+def make_model(skill: str, plan_version: str | None = None) -> genanki.Model:
+    model_id = stable_id(f"anki-language:model:v{model_version(skill, plan_version)}:{skill}")
     skill_label = SKILL_META[skill][1]
     skill_class = f"skill-{skill}"
 
@@ -784,6 +789,14 @@ def make_model(skill: str) -> genanki.Model:
     {{/Source}}
 """
 
+    if plan_version == "2.3":
+        support += """
+    {{#SourceAudio}}
+    <div class="source-audio"><div class="section-label">Hear original phrase</div>
+      {{hint:SourceAudio}}
+    </div>
+    {{/SourceAudio}}
+"""
     if skill == "production":
         support = support.replace('{{#Image}}<div class="media-panel image">{{Image}}</div>{{/Image}}', "")
 
@@ -808,8 +821,8 @@ def make_model(skill: str) -> genanki.Model:
 
     return genanki.Model(
         model_id,
-        f"Anki Language v{model_version(skill)} — {skill_label}",
-        fields=fields_for_skill(skill),
+        f"Anki Language v{model_version(skill, plan_version)} — {skill_label}",
+        fields=fields_for_skill(skill, plan_version),
         templates=[{"name": "Card 1", "qfmt": front, "afmt": back}],
         css=WRITING_CSS if skill == "writing" else CSS,
     )
@@ -842,7 +855,7 @@ def build(plan_path: Path, output_path: Path) -> dict[str, Any]:
 
     plan_dir = plan_path.resolve().parent
     deck_name = str(plan["deck_name"]).strip()
-    models = {skill: make_model(skill) for skill in SKILL_META}
+    models = {skill: make_model(skill, plan.get("version")) for skill in SKILL_META}
     decks: dict[str, genanki.Deck] = {}
     media_files: dict[str, Path] = {}
     counts: Counter[str] = Counter()
@@ -864,6 +877,14 @@ def build(plan_path: Path, output_path: Path) -> dict[str, Any]:
             media_files[audio.name] = audio
         if image:
             media_files[image.name] = image
+
+        context_audio = [
+            media_path(plan_dir, raw)
+            for raw in card_source_audio_paths(plan, card)
+        ]
+        for context_file in context_audio:
+            if context_file:
+                media_files[context_file.name] = context_file
 
         mode = normalize_mode(card)
         audio_on_front = skill == "listening" or (
@@ -893,6 +914,10 @@ def build(plan_path: Path, output_path: Path) -> dict[str, Any]:
             *([clean(pronunciation_front_cue(card))] if skill == "pronunciation" else []),
             *([clean(part) for part in writing_parts(card)[::2]] +
               [clean(writing_parts(card)[1])] if skill == "writing" else []),
+            *(
+                [" ".join(sound_ref(path) for path in context_audio if path)]
+                if plan.get("version") == "2.3" else []
+            ),
         ]
 
         guid = genanki.guid_for(

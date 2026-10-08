@@ -1,5 +1,14 @@
 # Media
 
+## Mandatory automatic audio for new v2.3 plans
+
+The deterministic `media_enrich.py` stage automatically synthesizes a focused pronunciation for **every** card lacking valid supplied audio, plus the **complete literal text** of each `source_units[]` entry. It uses Piper `target_language.code`, caches identical language/voice/text requests, and embeds validated WAVs in APKG or AnkiConnect. Do not create extra cards merely to make audio. Generated voices require Piper installation and a compatible voice model (downloaded on first run); the pipeline stops with an explicit error if unavailable. As always, user-supplied recordings/verified clips take priority for the tested target.
+
+APKG/AnkiConnect use the new isolated **v7** Anki note models for v2.3, with the extra `SourceAudio` field. Target audio uses the existing FrontAudio/BackAudio placement. Full-sentence contextual speech is on the **back under `{{hint:SourceAudio}}`**, so hearing a long original sentence is optional during quick reviews. If the full sentence and target audio are the same file, only the target replay is shown. Past v2.0–v2.2 plans retain their existing models and optional-media behavior; old cards are not overwritten.
+
+Use the full pipeline (`run_pipeline.py` or `media_enrich.py` followed by delivery). Direct v2.3 export rejects unresolved audio; no silent `.apkg` without speech. Contrast targets like `Enchanté / Enchantée` are synthesized as sequential forms instead of saying the slash. Synthetic audio integrity/hash checks cannot independently certify accent, names, prosody, or naturalness. Inspect a sample of outputs for pronunciation fidelity.
+
+
 Media is optional. Add it only when it improves retrieval, comprehension, listening, or pronunciation.
 
 ## Mandatory media gate

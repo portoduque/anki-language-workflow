@@ -16,9 +16,10 @@
       "enum": [
         "2.0",
         "2.1",
-        "2.2"
+        "2.2",
+        "2.3"
       ],
-      "description": "v2.2 requires each user-supplied phrase/word represented visibly in a card answer; 2.0/2.1 retained for legacy plans."
+      "description": "v2.3: automatic neural target and source audio; v2.0–2.2 retained for historic plans."
     },
     "target_language": {
       "type": "object",
@@ -463,6 +464,23 @@
               "minLength": 1,
               "pattern": "\\S"
             }
+          },
+          "audio": {
+            "type": "string",
+            "minLength": 1,
+            "description": "v2.3 resolved full-source TTS/original audio; required before delivery."
+          },
+          "media_validation": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "audio": {
+                "$ref": "#/$defs/mediaValidation"
+              }
+            }
+          },
+          "audio_provenance": {
+            "$ref": "#/$defs/mediaProvenance"
           }
         }
       }

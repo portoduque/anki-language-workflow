@@ -200,9 +200,9 @@ def validate_source_inventory(plan: dict[str, Any], plan_path: Path) -> list[str
     return errors
 
 
-def validate_source_units(plan: dict[str, Any], plan_path: Path) -> list[str]:
+def validate_source_units(plan: dict[str, Any], plan_path: Path, check_media: bool = True) -> list[str]:
     """Require all author-supplied learning units to be visibly represented."""
-    if plan["version"] != "2.2":
+    if plan["version"] not in {"2.2", "2.3"}:
         return []
     units = plan.get("source_units")
     if not units:
@@ -220,6 +220,22 @@ def validate_source_units(plan: dict[str, Any], plan_path: Path) -> list[str]:
             if card_id not in cards:
                 errors.append(f"source_units[{n}]: card_id {card_id!r} does not exist.")
             card_links.add(card_id)
+    if plan["version"] == "2.3" and check_media:
+        for n, unit in enumerate(units):
+            raw = unit.get("audio")
+            if not raw:
+                errors.append(f"source_units[{n}].audio must be resolved for v2.3; run media enrichment.")
+                continue
+            path = Path(str(raw))
+            resolved = path if path.is_absolute() else plan_path.resolve().parent / path
+            try:
+                current = validate_media_file(resolved.resolve(), "audio")
+            except (MediaValidationError, OSError) as exc:
+                errors.append(f"Invalid source_units[{n}].audio: {exc}")
+                continue
+            recorded = (unit.get("media_validation") or {}).get("audio") or {}
+            if recorded.get("sha256") and recorded["sha256"] != current["sha256"]:
+                errors.append(f"source_units[{n}].audio changed after validation.")
     for card_id in cards:
         if card_id not in card_links:
             errors.append(f"Card {card_id!r} is not linked to any supplied phrase/word.")
@@ -270,21 +286,21 @@ def validate_plan(
     if errors:
         return errors
 
-    if plan["version"] in {"2.1", "2.2"} and "source_inventory" not in plan:
+    if plan["version"] in {"2.1", "2.2", "2.3"} and "source_inventory" not in plan:
         source_audio = any(
             card.get("audio_clip")
             or (card.get("audio_provenance") or {}).get("kind") in {"user-supplied", "native-source"}
-            or (plan["version"] == "2.2" and card.get("audio")
+            or (plan["version"] in {"2.2", "2.3"} and card.get("audio")
                 and (card.get("audio_provenance") or {}).get("kind") != "tts")
             for card in plan["cards"]
         )
         if source_audio:
             errors.append(
-                "v2.1 source_inventory is required whenever original source audio "
+                "source_inventory is required whenever original source audio "
                 "is clipped or attached. Enumerate all original recordings and justify skips."
             )
     errors.extend(validate_source_inventory(plan, plan_path))
-    errors.extend(validate_source_units(plan, plan_path))
+    errors.extend(validate_source_units(plan, plan_path, check_media=check_media))
     resolved_config = discover_config(plan_path, config_path)
     if resolved_config is not None:
         errors.extend(validate_language_config(plan, resolved_config))
@@ -298,6 +314,8 @@ def validate_plan(
 
     for index, card in enumerate(plan["cards"]):
         prefix = f"cards[{index}]"
+        if plan["version"] == "2.3" and check_media and not card.get("audio"):
+            errors.append(f"{prefix}.audio must be resolved for v2.3; run media enrichment.")
         card_id = str(card["id"]).strip()
         if card_id in seen_ids:
             errors.append(f"Duplicate card id: {card_id}")
@@ -317,7 +335,7 @@ def validate_plan(
             seen_retrievals[signature] = (index, card_id)
 
         skill = card["skill"]
-        if plan["version"] in {"2.1", "2.2"} and skill == "production":
+        if plan["version"] in {"2.1", "2.2", "2.3"} and skill == "production":
             errors.append(
                 f"{prefix}.skill: Production is retired for new plans (v2.1/v2.2). "
                 "Use Reading/Listening/Pronunciation/Writing only; v2.0 stays readable for legacy archives."
@@ -329,7 +347,7 @@ def validate_plan(
                 f"{prefix}.mode '{mode}' is not supported for skill '{skill}'. "
                 f"Allowed: {sorted(allowed_modes)}"
             )
-        if plan["version"] == "2.2" and skill == "reading":
+        if plan["version"] in {"2.2", "2.3"} and skill == "reading":
             target = str(card["target_text"])
             if any(separator in target.casefold() for separator in (" / ", " × ", " vs ", " versus ")) and not str(card.get("prompt", "")).strip():
                 errors.append(
@@ -367,12 +385,16 @@ def validate_plan(
         if clip and check_media:
             errors.append(f"{prefix}.audio_clip must be resolved before delivery.")
         if skill == "listening" and not str(card.get("audio", "")).strip():
-            if check_media or not (card.get("audio_request") or clip):
+            if check_media or (
+                plan["version"] != "2.3" and not (card.get("audio_request") or clip)
+            ):
                 errors.append(f"{prefix}.audio is required for listening cards after media enrichment.")
         if skill == "pronunciation" and not str(card.get("prompt", "")).strip():
             errors.append(f"{prefix}.prompt is required for pronunciation cards so the builder never invents a base-language instruction.")
         if skill == "pronunciation" and mode in AUDIO_REQUIRED_PRONUNCIATION_MODES and not str(card.get("audio", "")).strip():
-            if check_media or not (card.get("audio_request") or clip):
+            if check_media or (
+                plan["version"] != "2.3" and not (card.get("audio_request") or clip)
+            ):
                 errors.append(f"{prefix}.audio is required for pronunciation mode '{mode}' after media enrichment.")
 
         # A source excerpt is a verbatim quotation, not a generated paraphrase.
