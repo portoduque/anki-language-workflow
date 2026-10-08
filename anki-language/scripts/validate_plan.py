@@ -128,6 +128,7 @@ def validate_plan(
     seen_retrievals: dict[tuple[str, ...], tuple[int, str]] = {}
     media_by_basename: dict[str, Path] = {}
     audio_uses: dict[Path, list[tuple[int, str, str]]] = {}
+    audio_hash_uses: dict[str, list[tuple[int, str, str, str]]] = {}
     plan_dir = plan_path.resolve().parent
 
     for index, card in enumerate(plan["cards"]):
@@ -197,6 +198,16 @@ def validate_plan(
             if check_media or not (card.get("audio_request") or clip):
                 errors.append(f"{prefix}.audio is required for pronunciation mode '{mode}' after media enrichment.")
 
+        # A source excerpt is a verbatim quotation, not a generated paraphrase.
+        # Verify even small chunks against the supplied source wording.
+        source_excerpt = normalized_utterance(str(card.get("source_excerpt", "")))
+        target_text = normalized_utterance(str(card["target_text"]))
+        if source_excerpt and f" {target_text} " not in f" {source_excerpt} ":
+            errors.append(
+                f"{prefix}.source_excerpt does not contain the target wording; "
+                "check the original material and do not silently rewrite quotations."
+            )
+
         raw_audio = card.get("audio")
         if raw_audio:
             path = Path(str(raw_audio))
@@ -204,10 +215,30 @@ def validate_plan(
             target = normalized_utterance(str(card.get("target_text", "")))
             transcript = normalized_utterance(str(card.get("audio_transcript", "")))
             audio_uses.setdefault(resolved_audio, []).append((index, target, transcript))
-            if transcript and target and f" {target} " not in f" {transcript} ":
+            # Full-sentence listening and answer-feedback audio must say exactly
+            # the card's target, not a longer dialogue that happens to contain it.
+            # Recognition-only Reading may intentionally retain broader context.
+            exact_audio = skill in {"listening", "production", "writing"} or (
+                skill == "pronunciation" and mode in {"standard", "spelling-sound"}
+            )
+            if transcript and target:
+                if exact_audio and transcript != target:
+                    errors.append(
+                        f"{prefix}.audio_transcript must match target_text exactly "
+                        "for this skill; clip the original recording, use matching "
+                        "TTS, or omit optional answer audio."
+                    )
+                elif not exact_audio and f" {target} " not in f" {transcript} ":
+                    errors.append(
+                        f"{prefix}.audio_transcript does not contain the target wording; "
+                        "use a matching clip, adjust the target, or omit the audio."
+                    )
+            provenance = card.get("audio_provenance") or {}
+            if exact_audio and provenance.get("kind") in {"user-supplied", "native-source"} and not transcript:
                 errors.append(
-                    f"{prefix}.audio_transcript does not contain the target wording; "
-                    "use a matching clip, adjust the target, or omit the audio."
+                    f"{prefix}.audio_transcript is required for original source audio "
+                    "used as this skill's retrieval/answer audio. Verify the actual "
+                    "spoken words; file decoding alone does not establish alignment."
                 )
 
         for media_key in ("audio", "image"):
@@ -232,6 +263,12 @@ def validate_plan(
                 except MediaValidationError as exc:
                     errors.append(f"Invalid {media_key} for {prefix}: {exc}")
                     continue
+                if media_key == "audio":
+                    fingerprint = str(current.get("sha256", ""))
+                    audio_hash_uses.setdefault(fingerprint, []).append((
+                        index, normalized_utterance(str(card["target_text"])),
+                        skill, mode,
+                    ))
                 recorded = (card.get("media_validation") or {}).get(media_key)
                 if recorded and recorded.get("sha256") and recorded["sha256"] != current["sha256"]:
                     errors.append(
@@ -253,6 +290,24 @@ def validate_plan(
         if len(transcripts) > 1:
             errors.append(
                 f"Audio '{path.name}' has inconsistent transcripts across reused cards."
+            )
+
+    # Distinct filenames may hide byte-identical recordings assigned to
+    # different spoken targets. Reading and sound-identification can use a
+    # broader context, so only compare exact-audio skills here.
+    for fingerprint, uses in audio_hash_uses.items():
+        exact_uses = [
+            (index, target) for index, target, used_skill, used_mode in uses
+            if used_skill in {"listening", "production", "writing"} or (
+                used_skill == "pronunciation" and used_mode in {"standard", "spelling-sound"}
+            )
+        ]
+        if len({target for _, target in exact_uses}) > 1:
+            errors.append(
+                "Identical audio bytes are assigned to different exact-audio "
+                "targets in cards "
+                + ", ".join(f"{index} ({target})" for index, target in exact_uses)
+                + "; verify the source and clip per target."
             )
 
     return errors

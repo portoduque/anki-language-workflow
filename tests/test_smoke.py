@@ -94,6 +94,7 @@ def test_listening_media_is_packaged(tmp_path: Path) -> None:
                 "target_text": "Je suis ici.",
                 "base_text": "Estoy aquí.",
                 "audio": "phrase.wav",
+                "audio_transcript": "Je suis ici.",
                 "audio_provenance": {"kind": "user-supplied"},
                 "tags": ["listening"],
             }
