@@ -319,7 +319,7 @@ def validate_plan(
         skill = card["skill"]
         if plan["version"] in {"2.1", "2.2"} and skill == "production":
             errors.append(
-                f"{prefix}.skill: Production is retired for new plans (v2.1). "
+                f"{prefix}.skill: Production is retired for new plans (v2.1/v2.2). "
                 "Use Reading/Listening/Pronunciation/Writing only; v2.0 stays readable for legacy archives."
             )
         mode = normalize_mode(card)
@@ -331,7 +331,7 @@ def validate_plan(
             )
         if plan["version"] == "2.2" and skill == "reading":
             target = str(card["target_text"])
-            if re.search(r"\\s(?:/|×|vs\\.?|versus)\\s", target, re.IGNORECASE) and not str(card.get("prompt", "")).strip():
+            if any(separator in target.casefold() for separator in (" / ", " × ", " vs ", " versus ")) and not str(card.get("prompt", "")).strip():
                 errors.append(
                     f"{prefix}.prompt: Reading comparison/contrast fronts require a "
                     "specific instruction (e.g. which grammatical distinction to notice)."
