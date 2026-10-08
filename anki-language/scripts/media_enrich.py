@@ -160,10 +160,11 @@ def cached_piper_tts(
     requested_voice: str | None,
     media_root: Path,
     voice_dir: Path,
-    cache: dict[tuple[str, str, str, str], tuple[Path, str, dict[str, Any], dict[str, Any]]],
+    cache: dict[tuple[str, str, str, str, str], tuple[Path, str, dict[str, Any], dict[str, Any]]],
     length_scale: float | None = None,
+    content_addressed: bool = False,
 ) -> tuple[Path, str, dict[str, Any], dict[str, Any], bool]:
-    key = (language, requested_voice or "", text, str(length_scale))
+    key = (language, requested_voice or "", text, str(length_scale), str(content_addressed))
     if key in cache:
         return (*cache[key], False)
     fingerprint = hashlib.sha256(
@@ -177,6 +178,18 @@ def cached_piper_tts(
             text, language, output, requested_voice, voice_dir, length_scale=length_scale
         )
     validation = validate_media_file(output, "audio")
+    if content_addressed:
+        # Request-identical TTS may yield different audio after voice/model changes.
+        # Use decoded file content as identity to prevent older Anki media collisions.
+        exact_hash = validation["sha256"]
+        safe = media_root / f"anki-audio-{exact_hash[:32]}.wav"
+        if safe.exists():
+            if validate_media_file(safe, "audio")["sha256"] != exact_hash:
+                raise RuntimeError(f"Content-addressed media filename collision: {safe.name}")
+            output.unlink()
+        else:
+            output.replace(safe)
+        output = safe
     cache[key] = (output, selected, metadata, validation)
     return output, selected, metadata, validation, True
 
@@ -331,8 +344,8 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
     counts = {"audio_generated": 0, "audio_clipped": 0, "audio_aligned": 0, "images_downloaded": 0, "media_validated": 0, "media_skipped": 0}
     word_cache: dict[tuple[Path, str], list[tuple[str, float, float]]] = {}
     tts_cache: dict[tuple[str, str, str, str], tuple[Path, str, dict[str, Any], dict[str, Any]]] = {}
-    is_auto_audio = plan.get("version") in {"2.3", "2.4", "2.5"}
-    chunk_first = plan.get("version") in {"2.4", "2.5"}
+    is_auto_audio = plan.get("version") in {"2.3", "2.4", "2.5", "2.6"}
+    chunk_first = plan.get("version") in {"2.4", "2.5", "2.6"}
     options = plan.get("audio_settings") or {}
     voice = options.get("voice") if chunk_first else None
     length_scale = float(options.get("length_scale", 0.93)) if chunk_first else None
@@ -445,6 +458,7 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
                         str(request["text"]), str(plan["target_language"]["code"]),
                         request.get("voice") or voice, media_root, voice_dir, tts_cache,
                         length_scale=length_scale,
+                        content_addressed=plan.get("version") == "2.6",
                     )
                 else:
                     identity = json.dumps(
@@ -535,6 +549,7 @@ def enrich_plan(plan_path: Path, output_path: Path, media_dir: Path | None = Non
                 output, selected, metadata, validation, created = cached_piper_tts(
                     str(unit["text"]), str(plan["target_language"]["code"]),
                     voice, media_root, voice_dir, tts_cache, length_scale=length_scale,
+                    content_addressed=plan.get("version") == "2.6",
                 )
             except Exception as exc:
                 raise RuntimeError(

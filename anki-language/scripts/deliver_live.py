@@ -159,7 +159,7 @@ def note_fields(plan: dict[str, Any], card: dict[str, Any]) -> dict[str, str]:
         "Image": "",
         "Source": clean(card_source_footer(plan, card)),
     }
-    if plan.get("version") in {"2.3", "2.4", "2.5"}:
+    if plan.get("version") in {"2.3", "2.4", "2.5", "2.6"}:
         fields["SourceAudio"] = ""
     if skill == "pronunciation":
         fields["FrontCue"] = clean(pronunciation_front_cue(card))
@@ -202,7 +202,7 @@ def build_note(plan: dict[str, Any], card: dict[str, Any], plan_dir: Path) -> tu
         field = "FrontAudio" if audio_on_front else "BackAudio"
         note["audio"] = [{"path": str(audio), "filename": audio.name, "fields": [field]}]
         media[f"audio:{field}"] = audio
-    if plan.get("version") in {"2.3", "2.4", "2.5"}:
+    if plan.get("version") in {"2.3", "2.4", "2.5", "2.6"}:
         source_clips = [
             media_path(plan_dir, path)
             for path in card_source_audio_paths(plan, card)
@@ -333,27 +333,30 @@ def find_existing_card(
     return note_id, identity_kind
 
 
-def verify_uploaded_media(client: AnkiConnectClient, path: Path) -> dict[str, Any]:
-    encoded = client.invoke("retrieveMediaFile", {"filename": path.name})
+def verify_uploaded_media(
+    client: AnkiConnectClient, path: Path, filename: str | None = None
+) -> dict[str, Any]:
+    remote_name = filename or path.name
+    encoded = client.invoke("retrieveMediaFile", {"filename": remote_name})
     if not encoded:
-        raise AnkiConnectError(f"Uploaded media cannot be retrieved from Anki: {path.name}")
+        raise AnkiConnectError(f"Uploaded media cannot be retrieved from Anki: {remote_name}")
     try:
         remote = base64.b64decode(encoded)
     except Exception as exc:
-        raise AnkiConnectError(f"Anki returned invalid base64 for {path.name}: {exc}") from exc
+        raise AnkiConnectError(f"Anki returned invalid base64 for {remote_name}: {exc}") from exc
     local_hash = sha256_file(path)
     remote_hash = hashlib.sha256(remote).hexdigest()
     if remote_hash != local_hash:
         raise AnkiConnectError(
-            f"Uploaded media hash mismatch for {path.name}: local={local_hash} remote={remote_hash}"
+            f"Uploaded media hash mismatch for {remote_name}: local={local_hash} remote={remote_hash}"
         )
-    return {"filename": path.name, "sha256": local_hash, "bytes": len(remote), "verified": True}
+    return {"filename": remote_name, "sha256": local_hash, "bytes": len(remote), "verified": True}
 
 
 
 def reject_cross_generation_duplicates(client: AnkiConnectClient, plan: dict[str, Any]) -> None:
     """Read-only: block redundant new note identities before any live writes."""
-    if plan.get("version") not in {"2.2", "2.3", "2.4", "2.5"}:
+    if plan.get("version") not in {"2.2", "2.3", "2.4", "2.5", "2.6"}:
         return
     existing = client.invoke("findNotes", {"query": "tag:anki-language"}) or []
     if not existing:
@@ -393,12 +396,14 @@ def reject_cross_generation_duplicates(client: AnkiConnectClient, plan: dict[str
 def upload_media_base64(
     client: AnkiConnectClient, notes: list[dict[str, Any]],
 ) -> dict[str, dict[str, Any]]:
-    """Upload media bytes before addNotes; Flatpak cannot read host paths.
+    """Transfer bytes, never overwrite Anki media, and repair same-name collisions.
 
-    This method is versioned to the newer v2.4 pipeline. Insertion is postponed
-    until every asset is both transferred and checked against its original hash.
+    The filename is content-addressed on conflict; references in pending notes
+    use the *actual* name returned by Anki. Every uploaded/reused file is
+    retrieved and hash checked before the first note is inserted.
     """
     verified: dict[str, dict[str, Any]] = {}
+    cache: dict[tuple[str, str], str] = {}
     for note in notes:
         for kind, field_tag in (("audio", "sound"), ("picture", "img")):
             entries = note.pop(kind, []) or []
@@ -407,32 +412,38 @@ def upload_media_base64(
                 filename = str(item["filename"])
                 data = source.read_bytes()
                 digest = hashlib.sha256(data).hexdigest()
-                if filename not in verified:
-                    old = client.invoke("retrieveMediaFile", {"filename": filename})
-                    if old:
-                        if hashlib.sha256(base64.b64decode(old)).hexdigest() != digest:
+                key = (filename, digest)
+                actual = cache.get(key)
+                if actual is None:
+                    actual = filename
+                    remote = client.invoke("retrieveMediaFile", {"filename": actual})
+                    if remote and hashlib.sha256(base64.b64decode(remote)).hexdigest() != digest:
+                        # Never replace the original: attach a deterministic
+                        # content hash to the new media filename instead.
+                        original = Path(filename)
+                        actual = f"{original.stem[:60]}-{digest[:24]}{original.suffix}"
+                        remote = client.invoke("retrieveMediaFile", {"filename": actual})
+                        if remote and hashlib.sha256(base64.b64decode(remote)).hexdigest() != digest:
                             raise AnkiConnectError(
-                                f"Anki media filename collision for {filename}; refusing overwrite."
+                                f"Even content-addressed Anki media filename collides: {actual}"
                             )
-                    else:
-                        uploaded = client.invoke(
-                            "storeMediaFile", {
-                                "filename": filename,
-                                "data": base64.b64encode(data).decode("ascii"),
-                                "deleteExisting": False,
-                            },
-                        )
-                        if uploaded != filename:
-                            raise AnkiConnectError(f"Anki rejected media upload {filename}: {uploaded!r}")
-                    verified[filename] = verify_uploaded_media(client, source)
+                    if not remote:
+                        uploaded = client.invoke("storeMediaFile", {
+                            "filename": actual,
+                            "data": base64.b64encode(data).decode("ascii"),
+                            "deleteExisting": False,
+                        })
+                        if uploaded != actual:
+                            raise AnkiConnectError(
+                                f"Anki rejected media upload {actual}: {uploaded!r}"
+                            )
+                    verified[actual] = verify_uploaded_media(client, source, actual)
+                    cache[key] = actual
                 for field in item.get("fields", []):
-                    if field_tag == "sound":
-                        reference = f"[sound:{filename}]"
-                    else:
-                        reference = f'<img src="{filename}">'
+                    reference = (f"[sound:{actual}]" if field_tag == "sound"
+                                 else f'<img src="{actual}">')
                     note["fields"][field] = note["fields"].get(field, "") + reference
     return verified
-
 
 def deliver_live(
     plan_path: Path,
@@ -482,7 +493,7 @@ def deliver_live(
         }
 
     uploaded_before_add: dict[str, dict[str, Any]] = {}
-    if plan.get("version") in {"2.4", "2.5"}:
+    if plan.get("version") in {"2.4", "2.5", "2.6"}:
         # Host-side paths are invisible to sandboxed Anki/Flatpak installations.
         uploaded_before_add = upload_media_base64(client, pending_notes)
     preflight = client.invoke("canAddNotesWithErrorDetail", {"notes": pending_notes})
@@ -508,12 +519,24 @@ def deliver_live(
         for descriptor, path in media.items():
             _, field = descriptor.split(":", 1)
             field = field.split("@", 1)[0]
-            if path.name not in field_value(note_info, field):
-                raise AnkiConnectError(
-                    f"Created note {note_id} field {field} does not reference uploaded media {path.name}."
-                )
-            if path.name not in media_verified:
-                media_verified[path.name] = verify_uploaded_media(client, path)
+            if uploaded_before_add:
+                # Renamed collision-safe files may not have the original
+                # filename: verify the expected bytes and the *actual* link.
+                file_hash = sha256_file(path)
+                names = [name for name, record in media_verified.items()
+                         if record["sha256"] == file_hash]
+                if not any(name in field_value(note_info, field) for name in names):
+                    raise AnkiConnectError(
+                        f"Created note {note_id} field {field} does not reference "
+                        f"verified media (original={path.name}, sha256={file_hash})."
+                    )
+            else:
+                if path.name not in field_value(note_info, field):
+                    raise AnkiConnectError(
+                        f"Created note {note_id} field {field} does not reference uploaded media {path.name}."
+                    )
+                if path.name not in media_verified:
+                    media_verified[path.name] = verify_uploaded_media(client, path)
 
     report = {
         "status": "ok",

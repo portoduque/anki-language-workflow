@@ -202,7 +202,7 @@ def validate_source_inventory(plan: dict[str, Any], plan_path: Path) -> list[str
 
 def validate_source_units(plan: dict[str, Any], plan_path: Path, check_media: bool = True) -> list[str]:
     """Require all author-supplied learning units to be visibly represented."""
-    if plan["version"] not in {"2.2", "2.3", "2.4", "2.5"}:
+    if plan["version"] not in {"2.2", "2.3", "2.4", "2.5", "2.6"}:
         return []
     units = plan.get("source_units")
     if not units:
@@ -220,7 +220,7 @@ def validate_source_units(plan: dict[str, Any], plan_path: Path, check_media: bo
             if card_id not in cards:
                 errors.append(f"source_units[{n}]: card_id {card_id!r} does not exist.")
             card_links.add(card_id)
-    if (plan["version"] == "2.3" or (plan["version"] in {"2.4", "2.5"} and plan.get("audio_settings", {}).get("include_source_audio", False))) and check_media:
+    if (plan["version"] == "2.3" or (plan["version"] in {"2.4", "2.5", "2.6"} and plan.get("audio_settings", {}).get("include_source_audio", False))) and check_media:
         for n, unit in enumerate(units):
             raw = unit.get("audio")
             if not raw:
@@ -291,14 +291,27 @@ def vocabulary_coverage(plan: dict[str, Any]) -> dict[str, Any]:
         for word in normalized_utterance(raw).split()
     }
     missing = sorted(source_words - used_words)
-    return {"source_words": len(source_words),
-            "covered_words": len(source_words) - len(missing),
-            "missing_words": missing}
+    result = {"source_words": len(source_words),
+              "covered_words": len(source_words) - len(missing),
+              "missing_words": missing}
+    if plan.get("version") == "2.6":
+        priority = [normalized_utterance(str(item))
+                    for item in plan.get("teacher_analysis", {}).get("priority_vocabulary", [])]
+        active = [normalized_utterance(str(card["target_text"])) for card in plan["cards"]]
+        active += [normalized_utterance(str(ex["text"]))
+                   for card in plan["cards"] for ex in card.get("teaching_examples", [])]
+        result.update({
+            "context_only_words": missing,
+            "priority_vocabulary": len(priority),
+            "priority_covered": sum(any(f" {term} " in f" {content} "
+                                        for content in active) for term in priority),
+        })
+    return result
 
 
 def validate_teacher_cards(plan: dict[str, Any]) -> list[str]:
     """Ensure provenance and that all source words are used in learning content."""
-    if plan["version"] != "2.5":
+    if plan["version"] not in {"2.5", "2.6"}:
         return []
     errors: list[str] = []
     source_units = plan.get("source_units", [])
@@ -336,13 +349,67 @@ def validate_teacher_cards(plan: dict[str, Any]) -> list[str]:
                     f"{prefix}.teaching_examples[{j}] must differ from the target."
                 )
     missing = vocabulary_coverage(plan)["missing_words"]
-    if missing:
+    if missing and plan["version"] == "2.5":
         errors.append(
             "v2.5 vocabulary coverage incomplete: source words missing from "
             "card targets and teacher_examples (Source footers do not count): "
             + ", ".join(missing[:35])
             + (" ..." if len(missing) > 35 else "")
         )
+    return errors
+
+
+
+def validate_professor_selection(plan: dict[str, Any]) -> list[str]:
+    """Enforce deliberate chunk selection, not one copied turn per card."""
+    if plan["version"] != "2.6":
+        return []
+    errors: list[str] = []
+    analysis = plan.get("teacher_analysis")
+    if not analysis:
+        return ["v2.6 requires teacher_analysis with goals, priority vocabulary, and rejected candidates."]
+    if len(plan.get("source_units", [])) >= 3 and not analysis["discarded_candidates"]:
+        errors.append("teacher_analysis.discarded_candidates must justify at least one rejected candidate for multi-unit material.")
+    original = [normalized_utterance(str(unit["text"]))
+                for unit in plan.get("source_units", [])]
+    used = [normalized_utterance(str(card["target_text"])) for card in plan["cards"]]
+    used += [normalized_utterance(str(e["text"]))
+             for card in plan["cards"] for e in card.get("teaching_examples", [])]
+    goals: set[str] = set()
+    entire_long_turns = 0
+    for index, card in enumerate(plan["cards"]):
+        prefix = f"cards[{index}]"
+        goal = str(card.get("learning_goal", "")).strip()
+        reason = str(card.get("selection_reason", "")).strip()
+        if not goal or not reason:
+            errors.append(f"{prefix} requires learning_goal and selection_reason (one distinct teachable objective and its review value).")
+        normalized_goal = normalized_utterance(goal)
+        if normalized_goal and normalized_goal in goals:
+            errors.append(f"{prefix}.learning_goal duplicates another card's goal; check semantic redundancy.")
+        goals.add(normalized_goal)
+        target = normalized_utterance(str(card["target_text"]))
+        words = target.split()
+        if card["skill"] == "reading" and len(words) > 17:
+            errors.append(f"{prefix}.target_text is too long for a fast Reading task ({len(words)} words); mine a shorter natural chunk.")
+        if len(words) >= 9 and target in original:
+            entire_long_turns += 1
+    if len(original) >= 3 and len(plan["cards"]) >= 3:
+        if entire_long_turns >= max(3, (len(plan["cards"]) + 2) // 3):
+            errors.append(
+                "v2.6 source-copy shortcut detected: many cards repeat whole original "
+                "turns. Mine useful short chunks and teacher examples instead; preserve "
+                "the original complete sentence on the Back."
+            )
+    original_joined = " ".join(original)
+    for term in analysis["priority_vocabulary"]:
+        normalized = normalized_utterance(str(term))
+        if not normalized or f" {normalized} " not in f" {original_joined} ":
+            errors.append(f"Priority vocabulary {term!r} is not present in source units.")
+        elif not any(f" {normalized} " in f" {txt} " for txt in used):
+            errors.append(f"Priority vocabulary {term!r} is missing from targets and examples; Source footers are not active use.")
+    for i, candidate in enumerate(analysis["discarded_candidates"]):
+        if normalized_utterance(str(candidate["text"])) in used:
+            errors.append(f"teacher_analysis.discarded_candidates[{i}] must not equal an accepted card or example.")
     return errors
 
 
@@ -356,11 +423,11 @@ def validate_plan(
     if errors:
         return errors
 
-    if plan["version"] in {"2.1", "2.2", "2.3", "2.4", "2.5"} and "source_inventory" not in plan:
+    if plan["version"] in {"2.1", "2.2", "2.3", "2.4", "2.5", "2.6"} and "source_inventory" not in plan:
         source_audio = any(
             card.get("audio_clip")
             or (card.get("audio_provenance") or {}).get("kind") in {"user-supplied", "native-source"}
-            or (plan["version"] in {"2.2", "2.3", "2.4", "2.5"} and card.get("audio")
+            or (plan["version"] in {"2.2", "2.3", "2.4", "2.5", "2.6"} and card.get("audio")
                 and (card.get("audio_provenance") or {}).get("kind") != "tts")
             for card in plan["cards"]
         )
@@ -369,7 +436,7 @@ def validate_plan(
                 "source_inventory is required whenever original source audio "
                 "is clipped or attached. Enumerate all original recordings and justify skips."
             )
-    if plan["version"] in {"2.4", "2.5"}:
+    if plan["version"] in {"2.4", "2.5", "2.6"}:
         voice = (plan.get("audio_settings") or {}).get("voice")
         if voice:
             code = str(plan["target_language"]["code"]).replace("-", "_")
@@ -380,6 +447,7 @@ def validate_plan(
     errors.extend(validate_source_inventory(plan, plan_path))
     errors.extend(validate_source_units(plan, plan_path, check_media=check_media))
     errors.extend(validate_teacher_cards(plan))
+    errors.extend(validate_professor_selection(plan))
     resolved_config = discover_config(plan_path, config_path)
     if resolved_config is not None:
         errors.extend(validate_language_config(plan, resolved_config))
@@ -393,7 +461,7 @@ def validate_plan(
 
     for index, card in enumerate(plan["cards"]):
         prefix = f"cards[{index}]"
-        if plan["version"] in {"2.3", "2.4", "2.5"} and check_media and not card.get("audio"):
+        if plan["version"] in {"2.3", "2.4", "2.5", "2.6"} and check_media and not card.get("audio"):
             errors.append(f"{prefix}.audio must be resolved for v2.3; run media enrichment.")
         card_id = str(card["id"]).strip()
         if card_id in seen_ids:
@@ -414,9 +482,9 @@ def validate_plan(
             seen_retrievals[signature] = (index, card_id)
 
         skill = card["skill"]
-        if plan["version"] in {"2.1", "2.2", "2.3", "2.4", "2.5"} and skill == "production":
+        if plan["version"] in {"2.1", "2.2", "2.3", "2.4", "2.5", "2.6"} and skill == "production":
             errors.append(
-                f"{prefix}.skill: Production is retired for new plans (v2.1–v2.5). "
+                f"{prefix}.skill: Production is retired for new plans (v2.1–v2.6). "
                 "Use Reading/Listening/Pronunciation/Writing only; v2.0 stays readable for legacy archives."
             )
         mode = normalize_mode(card)
@@ -426,7 +494,7 @@ def validate_plan(
                 f"{prefix}.mode '{mode}' is not supported for skill '{skill}'. "
                 f"Allowed: {sorted(allowed_modes)}"
             )
-        if plan["version"] in {"2.2", "2.3", "2.4", "2.5"} and skill == "reading":
+        if plan["version"] in {"2.2", "2.3", "2.4", "2.5", "2.6"} and skill == "reading":
             target = str(card["target_text"])
             if any(separator in target.casefold() for separator in (" / ", " × ", " vs ", " versus ")) and not str(card.get("prompt", "")).strip():
                 errors.append(
@@ -465,7 +533,7 @@ def validate_plan(
             errors.append(f"{prefix}.audio_clip must be resolved before delivery.")
         if skill == "listening" and not str(card.get("audio", "")).strip():
             if check_media or (
-                plan["version"] not in {"2.3", "2.4", "2.5"} and not (card.get("audio_request") or clip)
+                plan["version"] not in {"2.3", "2.4", "2.5", "2.6"} and not (card.get("audio_request") or clip)
             ):
                 errors.append(f"{prefix}.audio is required for listening cards after media enrichment.")
         if skill == "pronunciation" and not str(card.get("prompt", "")).strip():
