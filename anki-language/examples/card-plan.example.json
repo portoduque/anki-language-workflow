@@ -1,5 +1,5 @@
 {
-  "version": "2.3",
+  "version": "2.4",
   "target_language": {
     "name": "French",
     "code": "fr"
@@ -66,5 +66,10 @@
         "fr-reading-grammar-001"
       ]
     }
-  ]
+  ],
+  "audio_settings": {
+    "include_source_audio": false,
+    "length_scale": 0.93,
+    "voice": "fr_FR-siwis-medium"
+  }
 }

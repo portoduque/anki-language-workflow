@@ -1,6 +1,6 @@
 # Output Contract
 
-**Current version: `2.3`, four authorable skills, mandatory phrase/word and spoken-audio coverage.** Only `reading`, `listening`, `pronunciation`, and `writing` may be created. `production` is retired and explicitly rejected by the v2.1/v2.2/v2.3 validator. Versions 2.0–2.2 are supported only to read/build historical plans; do not author v2.0 as a workaround.
+**Current version: `2.4`, four authorable skills, mandatory phrase/word visibility and focused spoken-audio coverage.** Only `reading`, `listening`, `pronunciation`, and `writing` may be created. `production` is retired and explicitly rejected by the v2.1/v2.2/v2.3 validator. Versions 2.0–2.2 are supported only to read/build historical plans; do not author v2.0 as a workaround.
 
 
 The AI produces an intermediate `card-plan.json`; deterministic scripts enrich media, validate it, and deliver the result.
@@ -16,7 +16,8 @@ These choices are stored in `anki-language.config.json` and must be copied into 
 
 ## Required plan-level fields
 
-- `version` = `2.3` for every new plan
+- `version` = `2.4` for every new plan
+- `audio_settings` optional: `voice` exact Piper model; `length_scale` 0.75–1.25 (default 0.93); `include_source_audio` boolean, default false
 - `source_units`: each supplied target-language phrase/individual word, with `id`, verbatim `text`, and at least one valid `card_ids` link
 - `target_language.name`
 - `target_language.code`
@@ -49,7 +50,11 @@ For a folder or ZIP of supplied source audio, scan and inspect **every original 
 
 Every selected card includes `"source_item_id": "01"` (matching the inventory item's ID); `card_ids` list every selected card from that source. All audio files in the declared directory or ZIP must be listed once. The deterministic validator checks the source files, selected/skipped status, reasons, and bidirectional card links **before** generating any media. It refuses incomplete inventories, but cannot itself recognize unselected meaningful chunks. The AI must inspect every entire sentence and justify omissions; no one-card-per-audio quota. Text-only or unrelated material without a source-audio collection may omit this section.
 
-## Automatic spoken audio in version 2.3
+## Current chunk-first speech in v2.4
+
+Decide chunks and create/validate cards **before** running TTS. Piper produces focused `cards[].target_text` speech, not the whole `source_units[].text`, by default. The original full phrase is still shown in the Back's Source field. Full context speech requires explicit `audio_settings.include_source_audio = true`, using the v7 optional SourceAudio model field. Configurable voice and length_scale allow language-appropriate speed, and duration outliers become warnings for listening review. Cache includes text/voice/speed. Anki Flatpak receives verified Base64 media before note creation. There is no one-card-per-source-phrase or one-card-per-sound quota; legacy versions v2.0–v2.3 remain supported.
+
+## Historical automatic spoken audio in version 2.3
 
 Do not require manual `audio_request` for every item. The v2.3 media pipeline automatically produces local Piper WAV for each card target missing audio and for every full `source_units[].text`, even when input is only screenshots. On resolution the plan contains `cards[].audio` plus `source_units[].audio`, verified by the media gate before export. Existing `audio` or `audio_clip` on a card wins over synthetic target voice. Context audio is on the Back as an optional `SourceAudio` hint in isolated v7 note models; old v2.0–v2.2 exports use their prior models/behavior. Identical text + voice + language generates one cached sound asset. Synthesis stops clearly when Piper/voice is missing. No quota or separate card is required just because a sentence has an audio file.
 
