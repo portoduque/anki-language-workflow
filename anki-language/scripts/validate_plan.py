@@ -277,6 +277,19 @@ def validate_source_units(plan: dict[str, Any], plan_path: Path, check_media: bo
 
 
 
+def vocabulary_match(text: str, term: str) -> bool:
+    """Match word/phrase boundaries while allowing French clitics.
+
+    'université' matches "l'université"; 'can' must not match "can't".
+    Only orthographic boundaries are checked, not word meanings.
+    """
+    haystack = normalized_utterance(text)
+    needle = normalized_utterance(term)
+    if not needle:
+        return False
+    return re.search(r"(?<!\w)" + re.escape(needle) + r"(?![\w'])", haystack) is not None
+
+
 def vocabulary_coverage(plan: dict[str, Any]) -> dict[str, Any]:
     """Lexical form coverage: excludes verbatim original-source footers."""
     source_words = {
@@ -303,8 +316,7 @@ def vocabulary_coverage(plan: dict[str, Any]) -> dict[str, Any]:
         result.update({
             "context_only_words": missing,
             "priority_vocabulary": len(priority),
-            "priority_covered": sum(any(f" {term} " in f" {content} "
-                                        for content in active) for term in priority),
+            "priority_covered": sum(any(vocabulary_match(content, term) for content in active) for term in priority),
         })
     return result
 
@@ -403,9 +415,9 @@ def validate_professor_selection(plan: dict[str, Any]) -> list[str]:
     original_joined = " ".join(original)
     for term in analysis["priority_vocabulary"]:
         normalized = normalized_utterance(str(term))
-        if not normalized or f" {normalized} " not in f" {original_joined} ":
+        if not normalized or not vocabulary_match(original_joined, normalized):
             errors.append(f"Priority vocabulary {term!r} is not present in source units.")
-        elif not any(f" {normalized} " in f" {txt} " for txt in used):
+        elif not any(vocabulary_match(txt, normalized) for txt in used):
             errors.append(f"Priority vocabulary {term!r} is missing from targets and examples; Source footers are not active use.")
     for i, candidate in enumerate(analysis["discarded_candidates"]):
         if normalized_utterance(str(candidate["text"])) in used:

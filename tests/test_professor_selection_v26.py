@@ -23,7 +23,7 @@ from build_apkg import build, make_model  # noqa: E402
 from card_contract import card_source_footer  # noqa: E402
 from deliver_live import build_note, upload_media_base64  # noqa: E402
 from media_enrich import enrich_plan  # noqa: E402
-from validate_plan import validate_plan, vocabulary_coverage, load_plan  # noqa: E402
+from validate_plan import validate_plan, vocabulary_coverage, load_plan, vocabulary_match  # noqa: E402
 
 
 def lesson() -> dict:
@@ -71,6 +71,14 @@ def lesson() -> dict:
 
 def validate(plan: dict, tmp_path: Path, check_media: bool = False) -> list[str]:
     return validate_plan(plan, tmp_path / "plan.json", check_media=check_media)
+
+
+def test_vocab_boundary_understands_french_apostrophes_without_partial_words() -> None:
+    assert vocabulary_match("Je travaille à l'université.", "université")
+    assert vocabulary_match("Je travaille à l’université.", "université")
+    assert vocabulary_match("C'est à deux minutes d'ici.", "d'ici")
+    assert not vocabulary_match("I can't", "can")
+    assert not vocabulary_match("sociales", "social")
 
 
 def test_teacher_first_short_retrieval_and_context_only_words(tmp_path: Path) -> None:
