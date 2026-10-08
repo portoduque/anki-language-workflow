@@ -84,7 +84,7 @@ def test_analysis_covers_every_original_exactly(tmp_path: Path) -> None:
     assert any("do not match" in error for error in validate_against_plan(analysis, plan))
     analysis["source_assessments"][1]["text"] = plan["source_units"][1]["text"]
     analysis["source_assessments"].pop()
-    assert any("do not match" in error for error in validate_against_plan(analysis, plan))
+    assert any("unknown original source" in error for error in validate_against_plan(analysis, plan))
 
 
 def test_priority_and_decisions_cannot_be_retroactively_changed(tmp_path: Path) -> None:
@@ -96,7 +96,7 @@ def test_priority_and_decisions_cannot_be_retroactively_changed(tmp_path: Path) 
     assert any("not approved as a card" in e for e in validate_against_plan(analysis, plan))
     plan, analysis, path = examples(tmp_path)
     analysis["learning_points"][1]["candidates"][0]["decision"] = "reject"
-    assert any("not approved as a card" in e for e in validate_against_plan(analysis, plan))
+    assert any("High-priority knowledge" in e for e in validate_against_plan(analysis, plan))
     plan, analysis, path = examples(tmp_path)
     analysis["learning_points"][1]["candidates"][0]["decision"] = "reject"
     analysis["learning_points"][1]["candidates"][1]["decision"] = "reject"
