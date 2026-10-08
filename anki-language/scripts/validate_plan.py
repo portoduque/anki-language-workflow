@@ -76,9 +76,38 @@ def validate_language_config(plan: dict[str, Any], config_path: Path) -> list[st
 
 
 def normalized_utterance(value: str) -> str:
-    """Compare transcript/target wording without punctuation or whitespace noise."""
-    folded = unicodedata.normalize("NFKC", value).casefold()
-    return " ".join(re.findall(r"[^\W_]+", folded, flags=re.UNICODE))
+    """Compare target/transcript tokens, retaining meaningful contractions."""
+    folded = unicodedata.normalize("NFKC", value).casefold().replace("’", "'")
+    # "can" and "can't" must never be matched as the same spoken word.
+    return " ".join(re.findall(r"[^\W_]+(?:'[^\W_]+)*", folded, flags=re.UNICODE))
+
+
+def retrieval_signature(card: dict[str, Any]) -> tuple[str, ...]:
+    """Catch identical review tasks regardless of ids, tags, notes, or source.
+
+    Intentionally do not compare across skills: recognition, listening, and
+    production can be independent retrieval operations. This is not an AI
+    similarity score and must not discard legitimate semantic variations.
+    """
+    skill = str(card["skill"])
+    mode = normalize_mode(card)
+    def norm(key: str) -> str:
+        return " ".join(unicodedata.normalize("NFKC", str(card.get(key, ""))).casefold().split())
+
+    signature = [skill, mode, norm("target_text"), norm("prompt")]
+    if skill == "writing":
+        signature.append(norm("writing_answer"))
+    elif skill == "production":
+        signature.extend([norm("hint"), norm("image")])
+    elif skill in {"listening", "pronunciation"}:
+        clip = card.get("audio_clip")
+        signature.extend([
+            norm("audio"),
+            json.dumps(clip, sort_keys=True, ensure_ascii=False) if clip else "",
+            json.dumps(card.get("audio_request"), sort_keys=True, ensure_ascii=False)
+            if card.get("audio_request") else "",
+        ])
+    return tuple(signature)
 
 
 def validate_plan(
@@ -96,6 +125,7 @@ def validate_plan(
         errors.extend(validate_language_config(plan, resolved_config))
 
     seen_ids: set[str] = set()
+    seen_retrievals: dict[tuple[str, ...], tuple[int, str]] = {}
     media_by_basename: dict[str, Path] = {}
     audio_uses: dict[Path, list[tuple[int, str, str]]] = {}
     plan_dir = plan_path.resolve().parent
@@ -107,6 +137,18 @@ def validate_plan(
             errors.append(f"Duplicate card id: {card_id}")
         else:
             seen_ids.add(card_id)
+
+        signature = retrieval_signature(card)
+        previous = seen_retrievals.get(signature)
+        if previous is not None:
+            previous_index, previous_id = previous
+            errors.append(
+                f"{prefix}: duplicate retrieval task of cards[{previous_index}] "
+                f"(id={previous_id!r}); differing ids, tags, notes, or sources "
+                "do not make a new learning target."
+            )
+        else:
+            seen_retrievals[signature] = (index, card_id)
 
         skill = card["skill"]
         mode = normalize_mode(card)
@@ -127,11 +169,23 @@ def validate_plan(
                 errors.append(f"{prefix}.writing_answer: {exc}")
         elif card.get("writing_answer") is not None:
             errors.append(f"{prefix}.writing_answer is only supported for Writing cards.")
+        request = card.get("audio_request")
+        if request and (mode == "standard" or (skill == "pronunciation" and mode == "spelling-sound")):
+            requested_text = normalized_utterance(str(request["text"]))
+            target_text = normalized_utterance(str(card["target_text"]))
+            if requested_text != target_text:
+                errors.append(
+                    f"{prefix}.audio_request.text must match target_text for this mode; "
+                    "TTS must not teach different spoken words than the card answer."
+                )
         clip = card.get("audio_clip")
-        if clip and (card.get("audio") or card.get("audio_request")):
+        audio_sources = [key for key in ("audio", "audio_clip", "audio_request") if card.get(key)]
+        if len(audio_sources) > 1:
             errors.append(
                 f"{prefix}: choose only one audio source: audio, audio_clip, or audio_request."
             )
+        if card.get("image") and card.get("image_request"):
+            errors.append(f"{prefix}: choose only one image source: image or image_request.")
         if clip and check_media:
             errors.append(f"{prefix}.audio_clip must be resolved before delivery.")
         if skill == "listening" and not str(card.get("audio", "")).strip():
@@ -150,7 +204,7 @@ def validate_plan(
             target = normalized_utterance(str(card.get("target_text", "")))
             transcript = normalized_utterance(str(card.get("audio_transcript", "")))
             audio_uses.setdefault(resolved_audio, []).append((index, target, transcript))
-            if transcript and target and target not in transcript:
+            if transcript and target and f" {target} " not in f" {transcript} ":
                 errors.append(
                     f"{prefix}.audio_transcript does not contain the target wording; "
                     "use a matching clip, adjust the target, or omit the audio."
