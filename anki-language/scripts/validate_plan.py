@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import collections
 import re
 import unicodedata
 import zipfile
@@ -198,6 +199,67 @@ def validate_source_inventory(plan: dict[str, Any], plan_path: Path) -> list[str
         errors.append("Inventory references missing source audio: " + ", ".join(extra))
     return errors
 
+
+def validate_source_units(plan: dict[str, Any], plan_path: Path) -> list[str]:
+    """Require all author-supplied learning units to be visibly represented."""
+    if plan["version"] != "2.2":
+        return []
+    units = plan.get("source_units")
+    if not units:
+        return ["v2.2 requires nonempty source_units: include every supplied phrase/word."]
+    errors: list[str] = []
+    cards = {str(card["id"]): card for card in plan["cards"]}
+    ids: set[str] = set()
+    card_links: set[str] = set()
+    for n, unit in enumerate(units):
+        uid = unit["id"]
+        if uid in ids:
+            errors.append(f"source_units[{n}].id is duplicated: {uid}")
+        ids.add(uid)
+        for card_id in unit["card_ids"]:
+            if card_id not in cards:
+                errors.append(f"source_units[{n}]: card_id {card_id!r} does not exist.")
+            card_links.add(card_id)
+    for card_id in cards:
+        if card_id not in card_links:
+            errors.append(f"Card {card_id!r} is not linked to any supplied phrase/word.")
+    if plan.get("source_text_file"):
+        path = Path(str(plan["source_text_file"]))
+        file_path = path if path.is_absolute() else plan_path.resolve().parent / path
+        try:
+            if file_path.suffix.lower() == ".txt":
+                originals = [line.strip() for line in file_path.read_text(encoding="utf-8").splitlines() if line.strip()]
+            elif file_path.suffix.lower() == ".json":
+                data = json.loads(file_path.read_text(encoding="utf-8"))
+                originals = [str(x if isinstance(x, str) else x["text"]).strip() for x in data]
+            else:
+                return errors + ["source_text_file must be .txt (one phrase/word per line) or .json (array of strings or {text} objects)."]
+        except (OSError, ValueError, KeyError, TypeError, json.JSONDecodeError) as exc:
+            return errors + [f"Cannot read source_text_file: {exc}"]
+        expected = collections.Counter(normalized_utterance(x) for x in originals)
+        observed = collections.Counter(normalized_utterance(x["text"]) for x in units)
+        if expected != observed:
+            missing = list((expected - observed).elements())
+            surplus = list((observed - expected).elements())
+            errors.append(f"source_units differ from original source_text_file: missing={missing[:12]}, extra={surplus[:12]}")
+    inventory = plan.get("source_inventory")
+    if inventory:
+        for i, item in enumerate(inventory["items"]):
+            linked = item.get("source_unit_ids") or []
+            if not linked:
+                errors.append(f"source_inventory.items[{i}] needs source_unit_ids: every supplied audio's phrase must appear on at least one card.")
+            for uid in linked:
+                if uid not in ids:
+                    errors.append(f"source_inventory.items[{i}] references unknown source_unit_id {uid!r}.")
+            if item["status"] == "selected":
+                unit_cards = {cid for unit in units if unit["id"] in linked for cid in unit["card_ids"]}
+                if not set(item.get("card_ids") or []) & unit_cards:
+                    errors.append(f"source_inventory.items[{i}]: selected audio does not link a card that displays its phrase.")
+            # Duplicate original audio may be omitted as a separate sound card,
+            # but its phrase still needs a source unit displayed on a card.
+    return errors
+
+
 def validate_plan(
     plan: dict[str, Any],
     plan_path: Path,
@@ -208,10 +270,12 @@ def validate_plan(
     if errors:
         return errors
 
-    if plan["version"] == "2.1" and "source_inventory" not in plan:
+    if plan["version"] in {"2.1", "2.2"} and "source_inventory" not in plan:
         source_audio = any(
             card.get("audio_clip")
             or (card.get("audio_provenance") or {}).get("kind") in {"user-supplied", "native-source"}
+            or (plan["version"] == "2.2" and card.get("audio")
+                and (card.get("audio_provenance") or {}).get("kind") != "tts")
             for card in plan["cards"]
         )
         if source_audio:
@@ -220,6 +284,7 @@ def validate_plan(
                 "is clipped or attached. Enumerate all original recordings and justify skips."
             )
     errors.extend(validate_source_inventory(plan, plan_path))
+    errors.extend(validate_source_units(plan, plan_path))
     resolved_config = discover_config(plan_path, config_path)
     if resolved_config is not None:
         errors.extend(validate_language_config(plan, resolved_config))
@@ -252,7 +317,7 @@ def validate_plan(
             seen_retrievals[signature] = (index, card_id)
 
         skill = card["skill"]
-        if plan["version"] == "2.1" and skill == "production":
+        if plan["version"] in {"2.1", "2.2"} and skill == "production":
             errors.append(
                 f"{prefix}.skill: Production is retired for new plans (v2.1). "
                 "Use Reading/Listening/Pronunciation/Writing only; v2.0 stays readable for legacy archives."

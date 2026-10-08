@@ -1,10 +1,10 @@
 # Card Creation Rules
 
-## Active authoring contract (v2.1)
+## Active authoring contract (v2.2)
 
-Production is **retired**: never create it, including via a renamed Writing exercise. The only four eligible skills are Reading, Listening, Pronunciation & Sounds and selective short-gap Writing. v2.0 Production cards remain supported strictly for legacy import.
+Production is **retired**: never create it, including via a renamed Writing exercise. v2.2 requires every supplied sentence/word to be **visible verbatim on the back of at least one card**, using `source_units` with linked `card_ids`. Short focused Fronts remain the default; a long sentence belongs in the Back's source context. No compulsory one-word card, no forced one-card-per-audio quota, no skipping user-provided phrases from the visible deck. If an audio/source caption is uncertain, request clarification instead of inventing a transcript. The only four eligible skills are Reading, Listening, Pronunciation & Sounds and selective short-gap Writing. v2.0 Production cards remain supported strictly for legacy import.
 
-**Exhaustive examination does not mean exhaustive flashcards.** For a supplied audio folder or ZIP, first list all original files, pair every file with its corresponding text/screenshot and inspect **every full utterance** for all independently valuable short chunks. From a long dialogue line, consider several chunks and keep as many distinct, high-value targets as justify the review time; skip familiar/generic/repeated phrases only after consideration. **Do not prematurely cap total card count.** Record each audio as selected (linked card IDs) or skipped (specific reason) under `source_inventory`. Every generated card declares `source_item_id`. The validator compares this list against real audio files so silent input omissions fail; it cannot judge semantic completeness on its own.
+**Complete visible material coverage does not mean one flashcard per word.** For a supplied audio folder or ZIP, first list all original files, pair every file with its corresponding text/screenshot and inspect **every full utterance** for all independently valuable short chunks. From a long dialogue line, consider several chunks and keep as many distinct, high-value targets as justify the review time; for familiar/generic/repeated phrases, reuse a card that displays the original source text rather than omit that phrase entirely. **Do not prematurely cap total card count.** Record each audio as selected (linked card IDs) or skipped (duplicate/non-speech only, with a specific reason) under `source_inventory`; declare `source_unit_ids` covering each spoken phrase. Every generated card declares `source_item_id`. The validator compares this list against real audio files so silent input omissions fail; it cannot judge semantic completeness on its own.
 
 
 These rules are normative. They define what the workflow is allowed to turn into an Anki card.
@@ -15,7 +15,7 @@ The goal is the **smallest sustainable set of cards that produces useful retriev
 
 For every source unit, the valid outcome is:
 
-- **0 cards** when the item is already known, trivial, redundant, low-value, too ambiguous, or not worth future review cost;
+- **0 extra retrieval cards** when an item is already known/trivial/redundant, as long as its source text still appears on the Back of another linked card;
 - **1 card** when one retrieval skill is enough;
 - **2+ cards** only when each card trains a genuinely different skill.
 

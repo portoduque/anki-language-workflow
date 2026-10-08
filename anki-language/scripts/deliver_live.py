@@ -21,9 +21,10 @@ from card_contract import (
     workflow_system_tags,
     workflow_tag,
     writing_parts,
+    card_source_footer,
 )
 from media_validate import MediaValidationError, sha256_file, validate_media_file
-from validate_plan import load_plan, validate_plan
+from validate_plan import load_plan, validate_plan, normalized_utterance
 
 
 REQUIRED_ACTIONS = {
@@ -154,7 +155,7 @@ def note_fields(plan: dict[str, Any], card: dict[str, Any]) -> dict[str, str]:
         "FrontAudio": "",
         "BackAudio": "",
         "Image": "",
-        "Source": clean(card.get("source", "")),
+        "Source": clean(card_source_footer(plan, card)),
     }
     if skill == "pronunciation":
         fields["FrontCue"] = clean(pronunciation_front_cue(card))
@@ -332,6 +333,46 @@ def verify_uploaded_media(client: AnkiConnectClient, path: Path) -> dict[str, An
     return {"filename": path.name, "sha256": local_hash, "bytes": len(remote), "verified": True}
 
 
+
+def reject_cross_generation_duplicates(client: AnkiConnectClient, plan: dict[str, Any]) -> None:
+    """Read-only: block redundant new note identities before any live writes."""
+    if plan.get("version") != "2.2":
+        return
+    existing = client.invoke("findNotes", {"query": "tag:anki-language"}) or []
+    if not existing:
+        return
+    prospective = {
+        (card["skill"], normalized_utterance(str(card["target_text"]))): card
+        for card in plan["cards"]
+    }
+    for start in range(0, len(existing), 100):
+        infos = client.invoke("notesInfo", {"notes": existing[start:start + 100]}) or []
+        for info in infos:
+            fields = info.get("fields") or {}
+            context = field_value(info, "Context")
+            target = normalized_utterance(field_value(info, "Target"))
+            if not target or not context or not context.startswith(str(plan["target_language"]["name"]) + " — "):
+                continue
+            skill_label = context.split(" — ", 1)[-1]
+            matches = [s for s, (_, label) in SKILL_META.items() if label == skill_label]
+            if not matches:
+                continue
+            card = prospective.get((matches[0], target))
+            if card is None:
+                continue
+            same_identity = workflow_tag(
+                str(plan["deck_name"]), str(plan["target_language"]["code"]),
+                card["skill"], str(card["id"])
+            )
+            if same_identity in set(info.get("tags") or []):
+                continue
+            raise AnkiConnectError(
+                f"Existing Anki note {info.get('noteId', '?')} already reviews "
+                f"{card['skill']} target {card['target_text']!r} under a different identity. "
+                "No new cards were created. Review the old/new notes and choose "
+                "which to keep; never auto-delete or silently duplicate them."
+            )
+
 def deliver_live(
     plan_path: Path,
     endpoint: str = "http://127.0.0.1:8765",
@@ -344,6 +385,7 @@ def deliver_live(
 
     client = AnkiConnectClient(endpoint, api_key)
     capabilities = client.verify_actions(REQUIRED_ACTIONS)
+    reject_cross_generation_duplicates(client, plan)
     ensure_decks(client, plan)
     ensure_models(client, {card["skill"] for card in plan["cards"]})
 

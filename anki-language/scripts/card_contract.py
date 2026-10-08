@@ -111,3 +111,16 @@ def workflow_tag(deck_name: str, target_code: str, skill: str, card_id: str) -> 
 
 def workflow_system_tags(deck_name: str, target_code: str, skill: str, card_id: str) -> list[str]:
     return [WORKFLOW_TAG, workflow_tag(deck_name, target_code, skill, card_id)]
+
+def card_source_footer(plan: dict[str, Any], card: dict[str, Any]) -> str:
+    """Back-only verbatim coverage: do not make front reviews longer."""
+    locator = str(card.get("source", "")).strip()
+    if plan.get("version") != "2.2":
+        return locator
+    phrases = []
+    for unit in plan.get("source_units", []):
+        if str(card["id"]) in unit.get("card_ids", []):
+            phrase = str(unit["text"]).strip()
+            if phrase not in phrases:
+                phrases.append(phrase)
+    return "\n".join(([locator] if locator else []) + phrases)

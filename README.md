@@ -20,9 +20,11 @@ Examples of valid configurations:
 - target German / base Spanish;
 - target English / base French.
 
-## Current authoring contract: four skills and complete audio coverage
+## Current authoring contract: four skills and 100% visible phrase/word coverage
 
-**Production is retired for new cards.** The current `card-plan.json` version is **2.1**, restricted to Reading, Listening, Pronunciation & Sounds, and selective short-gap Writing. The validator rejects Production in v2.1. Version 2.0 and older Production cards remain supported only to keep existing decks usable; no older cards are automatically removed.
+**Production is retired for new cards.** The current `card-plan.json` version is **2.2**, restricted to Reading, Listening, Pronunciation & Sounds, and selective short-gap Writing. The validator rejects Production in v2.1 and v2.2. Version 2.0 and older Production cards remain supported only to keep existing decks usable; no older cards are automatically removed.
+
+**New v2.2 coverage contract:** every supplied phrase/word becomes a `source_units` entry linked to at least one card. The complete original text is rendered automatically on that card's answer-side Source footer. This is a **display guarantee**, not an unnecessary one-card-per-word requirement. Review Fronts stay short, and the back may include long source context. For machine-readable original lists, `source_text_file` provides independent file-to-inventory checking. When material exists only as screenshots or speech, the AI must verify transcription with the user on ambiguity; code cannot prove an unverified transcription matches real audio/images. New v2.2 source clips get stronger boundary checks. Live AnkiConnect preflights already-owned notes to block duplicated skill/target cards across generations under different IDs, rather than silently creating them. Old v2.0/v2.1 decks remain compatible.
 
 For multiple original recordings, the AI must enumerate and examine **every source audio** and every sentence, extracting all independently useful natural chunks *before* ranking and pruning. It produces a `source_inventory` referencing the real folder or ZIP, with one entry per supplied audio, selected card IDs or a specific skip reason, plus corresponding `source_item_id` on each card. The validator scans the supplied files and rejects silently omitted recordings or inconsistent links. This does **not** enforce a card per audio: a long sentence may yield several different worthwhile short chunks, while simple/repeated audio may yield none. Source inventory verifies completeness of input coverage, not perfect semantic selection.
 

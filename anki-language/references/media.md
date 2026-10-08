@@ -26,7 +26,7 @@ The AI decides whether media is pedagogically useful. The script does not add me
 
 - Listening normally requires audio.
 - Pronunciation/sound-discrimination normally requires audio.
-- Production often benefits from answer audio, but only when useful.
+- New Production is forbidden. Short Writing and Pronunciation answer audio is optional when useful.
 - Reading may use audio selectively.
 - Images are usually valuable for concrete/visual concepts, not abstract connectors or grammar.
 
@@ -40,6 +40,10 @@ A technically decodable MP3 is not proof that the recording says the target text
 - When **one audio file is reused across cards with different target text**, every use must carry the verified recording `audio_transcript`, and declarations across the shared audio must agree. The strict exact-audio rule above also applies; sharing a whole recording across different short answer targets will fail. Separate source audio files with identical SHA-256 content are checked for incompatible exact-audio targets so a different filename is not a workaround.
 - These checks are **consistency checks only**. They do not listen to raw audio, verify native-speaker pronunciation, or prove a declared transcript is truthful. The author must compare the actual recording and any supplied screenshot/caption. A discrepancy such as `Ah super !` in a screenshot versus `Eh ben !` in a proposed transcript must be resolved, not quietly rewritten.
 - An audio clip that illustrates an alternative phrasing rather than the specific target should not be presented as the exact target's pronunciation. Prefer omitting that optional audio or using a genuinely matching clip.
+
+## v2.2 voice-boundary quality gate
+
+For new v2.2 plans, generated source clips use extra lead/tail padding and a signal-level boundary check. A clip with conspicuous energy at its very start/end is blocked for review rather than being delivered as certainly complete. A quiet boundary is **not proof** that no phoneme was truncated; the operator must listen to representative clips. Older v2.0/v2.1 plans keep their original delivery behavior for compatibility. Do not silently replace uncertain original audio with unrelated TTS.
 
 ## Long recordings: one phrase per card
 
