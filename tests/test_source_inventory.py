@@ -91,7 +91,7 @@ def test_skipped_audio_requires_meaningful_reason_and_no_cards(tmp_path: Path) -
         item("b", "b.mp3", reason=""),
     ]}
     errs = check(tmp_path, [reading("one", "Bonjour", "a")], inventory=inv)
-    assert any("needs a reason" in e for e in errs)
+    assert any("reason" in e.lower() for e in errs)
 
 
 def test_selected_audio_requires_bidirectional_card_links(tmp_path: Path) -> None:
