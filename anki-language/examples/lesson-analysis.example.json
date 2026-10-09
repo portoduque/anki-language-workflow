@@ -1,5 +1,5 @@
 {
-  "version": "1.0",
+  "version": "1.1",
   "target_language": "fr",
   "base_language": "en",
   "source_assessments": [
@@ -11,7 +11,26 @@
         "Distance frame with deux minutes d'ici."
       ],
       "disposition": "teach",
-      "reason": "Two highly reusable communicative patterns should be trained separately, not as a whole sentence."
+      "reason": "Two highly reusable communicative patterns should be trained separately, not as a whole sentence.",
+      "examined_expressions": [
+        {
+          "text": "Vous pouvez me suivre",
+          "decision": "practice",
+          "learning_point_id": "follow",
+          "reason": "Core polite request for a person to accompany you."
+        },
+        {
+          "text": "à deux minutes d'ici",
+          "decision": "practice",
+          "learning_point_id": "distance",
+          "reason": "Reuses a practical distance expression in a new location."
+        },
+        {
+          "text": "c'est",
+          "decision": "context",
+          "reason": "This function word does not justify a standalone beginner review task."
+        }
+      ]
     },
     {
       "source_unit_id": "phrase-02",
@@ -20,7 +39,20 @@
         "Working at a university; useful context and reusable word université."
       ],
       "disposition": "context",
-      "reason": "Do not create a separate repetitive card solely to expose travaille; recycle it in a natural example."
+      "reason": "Do not create a separate repetitive card solely to expose travaille; recycle it in a natural example.",
+      "examined_expressions": [
+        {
+          "text": "l'université",
+          "decision": "practice",
+          "learning_point_id": "distance",
+          "reason": "Provides a different campus context for the distance pattern."
+        },
+        {
+          "text": "Je travaille ici",
+          "decision": "context",
+          "reason": "This nearby lesson uses it as supporting context, not as an independent test."
+        }
+      ]
     }
   ],
   "learning_points": [
@@ -92,5 +124,24 @@
     "listening": "No separately observed spoken-recognition bottleneck; TTS is feedback, not justification for duplicate Listening.",
     "pronunciation": "No demonstrated sound or liaison problem requiring a separate pronunciation task.",
     "writing": "No observed spelling or agreement target that independently warrants a typed gap."
+  },
+  "review": {
+    "omission_scan": "Reviewed every original line for high-value verbs, everyday expressions, reusable frames and contrasts; workplace vocabulary is retained in context while the polite request and distance pattern are practiced.",
+    "redundancy_scan": "Rejected a second modal-request card and a shorter source-distance card because both would largely repeat the existing recall task; short Fronts remain preferable.",
+    "transfer_scan": "Selected the university-distance sentence as a teacher-created application of two distinct source lines, with a clear English gloss and one optional worked example on the Back.",
+    "tradeoffs": [
+      {
+        "learning_point_id": "follow",
+        "selected_candidate_id": "follow-original",
+        "alternative_candidate_id": "follow-teacher",
+        "reason": "The source expression already teaches the polite request directly and is shorter than the invented alternative."
+      },
+      {
+        "learning_point_id": "distance",
+        "selected_candidate_id": "distance-teacher",
+        "alternative_candidate_id": "distance-original",
+        "reason": "The adapted version transfers the distance frame to a concrete different place without requiring an extra card."
+      }
+    ]
   }
 }

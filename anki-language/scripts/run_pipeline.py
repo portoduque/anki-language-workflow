@@ -31,7 +31,7 @@ def main() -> int:
 
     current = load_plan(resolved)
     lesson_summary = None
-    if current.get("version") == "2.7":
+    if current.get("version") in {"2.7", "2.8"}:
         analysis_path = (args.plan.resolve().parent / current["lesson_analysis_file"]).resolve()
         analysis = load_analysis(analysis_path)
         lesson_summary = {
@@ -49,7 +49,7 @@ def main() -> int:
         "enrichment": enrichment,
         "delivery": delivery,
         "teacher_analysis_summary": lesson_summary,
-        "vocabulary_coverage": vocabulary_coverage(load_plan(resolved)) if load_plan(resolved).get("version") in {"2.5", "2.6", "2.7"} else None,
+        "vocabulary_coverage": vocabulary_coverage(load_plan(resolved)) if load_plan(resolved).get("version") in {"2.5", "2.6", "2.7", "2.8"} else None,
     }, ensure_ascii=False, indent=2))
     return 0
 

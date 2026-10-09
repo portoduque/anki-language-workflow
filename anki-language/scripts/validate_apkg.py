@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sqlite3
 import tempfile
@@ -54,6 +55,7 @@ def validate_apkg(
     expected_card_count: int | None = None,
     expected_decks: set[str] | None = None,
     expected_tags: set[str] | None = None,
+    expected_media_hashes: dict[str, str] | None = None,
 ) -> tuple[list[str], dict]:
     errors: list[str] = []
     summary: dict = {"path": str(path.resolve())}
@@ -97,6 +99,21 @@ def validate_apkg(
             missing_expected = sorted(expected_media - set(media_names))
             if missing_expected:
                 errors.append(f"Expected media missing from APKG: {missing_expected}")
+        if expected_media_hashes is not None:
+            if set(expected_media_hashes) != set(media_names):
+                errors.append(
+                    "APKG media manifest differs from resolved plan: "
+                    f"missing={sorted(set(expected_media_hashes) - set(media_names))}, "
+                    f"unexpected={sorted(set(media_names) - set(expected_media_hashes))}."
+                )
+            for index, name in media_map.items():
+                if name not in expected_media_hashes or index not in names:
+                    continue
+                expected = expected_media_hashes[name]
+                actual = hashlib.sha256(archive.read(index)).hexdigest()
+                if actual != expected:
+                    errors.append(f"APKG media content differs from resolved plan: {name}.")
+
 
         if expected_card_count is not None and collection_summary:
             if collection_summary.get("card_count") != expected_card_count:
@@ -130,6 +147,36 @@ def validate_apkg(
         })
 
     return errors, summary
+
+
+
+def media_hashes_from_plan(plan: dict) -> dict[str, str]:
+    """Media identities in the resolved plan, prior to packaging."""
+    output: dict[str, str] = {}
+    for card in plan["cards"]:
+        for key in ("audio", "image"):
+            raw = card.get(key)
+            if not raw:
+                continue
+            fingerprint = ((card.get("media_validation") or {}).get(key) or {}).get("sha256")
+            if not fingerprint:
+                raise ValueError(f"Resolved card {card['id']} lacks {key} sha256.")
+            name = Path(raw).name
+            if name in output and output[name] != fingerprint:
+                raise ValueError(f"Media filename collision in plan: {name}.")
+            output[name] = fingerprint
+    if plan.get("audio_settings", {}).get("include_source_audio", False):
+        for unit in plan.get("source_units", []):
+            if not unit.get("audio") or not unit.get("card_ids"):
+                continue
+            name = Path(unit["audio"]).name
+            fingerprint = ((unit.get("media_validation") or {}).get("audio") or {}).get("sha256")
+            if not fingerprint:
+                raise ValueError(f"Source audio {unit['id']} lacks checksum.")
+            if name in output and output[name] != fingerprint:
+                raise ValueError(f"Source audio filename collision: {name}.")
+            output[name] = fingerprint
+    return output
 
 
 def expectations_from_plan(plan_path: Path) -> tuple[set[str], int, set[str], set[str]]:
@@ -169,6 +216,9 @@ def main() -> int:
             expected_card_count=expected_count,
             expected_decks=expected_decks,
             expected_tags=expected_tags,
+            expected_media_hashes=media_hashes_from_plan(
+                json.loads(args.plan.read_text(encoding="utf-8"))
+            ) if args.plan and json.loads(args.plan.read_text(encoding="utf-8")).get("version") == "2.8" else None,
         )
     except (OSError, json.JSONDecodeError) as exc:
         print(f"ERROR: {exc}")

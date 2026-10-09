@@ -1,6 +1,10 @@
 # Card Creation Rules
 
-## Active authoring contract (v2.7)
+## Active authoring contract (v2.8)
+
+**Independent second pass:** after analysing source content, revisit all words and constructions as potential neglected teaching opportunities. Mark what deserves `practice` vs `context` in `examined_expressions`. Compare genuine alternatives and record at least two distinct tradeoffs in a substantial lesson; show the concrete relative learning value, not arbitrary scores or filler cards. Recombine vocabulary into naturally usable author-created sentences when helpful. Prefer one short useful retrieval task over several similar cards. A better uncovered construction may replace a trivial selected card. See `teacher-authoring.md`. Old v2.7 plans remain valid.
+
+## Historical active authoring contract (v2.7)
 
 **For new material, first read [teacher-authoring.md](teacher-authoring.md) and write/validate the standalone `lesson-analysis.json`.** Rank teachable knowledge before drafting any card, compare natural original and authored candidate phrases, and approve each candidate explicitly. Only selected candidates become cards; each card must reference an approved knowledge/candidate ID. A second card for the same important pattern is justified only by a **different learning gain**, never volume. See the two-phase validation contract in `references/output-contract.md`. Old v2.6 plans remain compatible.
 

@@ -115,7 +115,7 @@ def workflow_system_tags(deck_name: str, target_code: str, skill: str, card_id: 
 def card_source_footer(plan: dict[str, Any], card: dict[str, Any]) -> str:
     """Back-only verbatim coverage: do not make front reviews longer."""
     locator = str(card.get("source", "")).strip()
-    if plan.get("version") not in {"2.2", "2.3", "2.4", "2.5", "2.6", "2.7"}:
+    if plan.get("version") not in {"2.2", "2.3", "2.4", "2.5", "2.6", "2.7", "2.8"}:
         return locator
     phrases = []
     for unit in plan.get("source_units", []):
@@ -128,9 +128,9 @@ def card_source_footer(plan: dict[str, Any], card: dict[str, Any]) -> str:
 
 def card_source_audio_paths(plan: dict[str, Any], card: dict[str, Any]) -> list[str]:
     """Return source utterance audio linked to this card, without duplicates."""
-    if plan.get("version") in {"2.4", "2.5", "2.6", "2.7"} and not plan.get("audio_settings", {}).get("include_source_audio", False):
+    if plan.get("version") in {"2.4", "2.5", "2.6", "2.7", "2.8"} and not plan.get("audio_settings", {}).get("include_source_audio", False):
         return []
-    if plan.get("version") not in {"2.3", "2.4", "2.5", "2.6", "2.7"}:
+    if plan.get("version") not in {"2.3", "2.4", "2.5", "2.6", "2.7", "2.8"}:
         return []
     used: set[str] = set()
     paths: list[str] = []
@@ -147,7 +147,7 @@ def card_source_audio_paths(plan: dict[str, Any], card: dict[str, Any]) -> list[
 def card_notes_with_examples(plan: dict[str, Any], card: dict[str, Any]) -> str:
     """Show original notes and optional teacher examples on the back only."""
     notes = str(card.get("notes", "")).strip()
-    if plan.get("version") not in {"2.5", "2.6", "2.7"}:
+    if plan.get("version") not in {"2.5", "2.6", "2.7", "2.8"}:
         return notes
     examples = card.get("teaching_examples") or []
     rendered = (["Professor · chunk criado para treino (não é citação da fonte)."]
