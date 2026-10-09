@@ -20,7 +20,11 @@ Examples of valid configurations:
 - target German / base Spanish;
 - target English / base French.
 
-## Professor IA v2.7 — autonomous lesson analysis before cards
+## Professor IA v2.8 — opportunities, tradeoffs and paired APKG media
+
+Analyze **each source sentence and useful word** in a separate `lesson-analysis.json` v1.1 file. Before creating cards, re-scan for unselected but valuable construction opportunities; compare accepted/rejected source and teacher-created candidates, and justify the best teaching-to-review-time choice. Validate the analysis, then create v2.8 cards and generate audio. There is no mandatory quantity of cards, target/source ratio, or forced skill distribution. v2.8 exports `French.apkg` together with a **matching** `French.resolved.json` snapshot and hash report, and verifies actual WAV/image bytes inside the APKG against the resolved plan to prevent stale-file mismatches. Older plans still work.
+
+## Historical Professor IA v2.7 — autonomous lesson analysis before cards
 
 The agent must first write and validate a separate `lesson-analysis.json` (**before** producing any `card-plan.json`). It inspects every original sentence/word, prioritizes transferable concepts, compares original and independently authored candidate chunks, records decisions, and evaluates Reading, Listening, Pronunciation and Writing. Only then may it create cards based on the **approved candidate IDs**. This two-file contract prevents simply decorating already-selected Reading cards with plausible-looking pedagogical reasons.
 
@@ -48,7 +52,7 @@ The existing v2.4 audio system (short per-card Piper speech, optional source aud
 
 ## Current authoring contract: four skills and 100% visible phrase/word coverage
 
-**Production is retired for new cards.** The current `card-plan.json` version is **2.7**, restricted to Reading, Listening, Pronunciation & Sounds, and selective short-gap Writing. The validator rejects Production in v2.1–v2.6. Version 2.0 and older Production cards remain supported only to keep existing decks usable; no older cards are automatically removed.
+**Production is retired for new cards.** The current `card-plan.json` version is **2.8**, restricted to Reading, Listening, Pronunciation & Sounds, and selective short-gap Writing. The validator rejects Production in v2.1–v2.6. Version 2.0 and older Production cards remain supported only to keep existing decks usable; no older cards are automatically removed.
 
 **New v2.4 coverage contract:** every supplied phrase/word becomes a `source_units` entry linked to at least one card. The complete original text is rendered automatically on that card's answer-side Source footer. This is a **display guarantee**, not an unnecessary one-card-per-word requirement. Review Fronts stay short, and the back may include long source context. For machine-readable original lists, `source_text_file` provides independent file-to-inventory checking. When material exists only as screenshots or speech, the AI must verify transcription with the user on ambiguity; code cannot prove an unverified transcription matches real audio/images. New v2.2 source clips get stronger boundary checks. Live AnkiConnect preflights already-owned notes to block duplicated skill/target cards across generations under different IDs, rather than silently creating them. Old v2.0/v2.1 decks remain compatible.
 

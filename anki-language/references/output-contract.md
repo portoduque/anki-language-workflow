@@ -1,6 +1,6 @@
 # Output Contract
 
-**Current version: `2.7`, four authorable skills, mandatory phrase/word visibility and focused spoken-audio coverage.** Only `reading`, `listening`, `pronunciation`, and `writing` may be created. `production` is retired and explicitly rejected by the v2.1/v2.2/v2.3 validator. Versions 2.0–2.2 are supported only to read/build historical plans; do not author v2.0 as a workaround.
+**Current version: `2.8`, four authorable skills, mandatory phrase/word visibility and focused spoken-audio coverage.** Only `reading`, `listening`, `pronunciation`, and `writing` may be created. `production` is retired and explicitly rejected by the v2.1/v2.2/v2.3 validator. Versions 2.0–2.2 are supported only to read/build historical plans; do not author v2.0 as a workaround.
 
 
 The AI produces an intermediate `card-plan.json`; deterministic scripts enrich media, validate it, and deliver the result.
@@ -16,7 +16,7 @@ These choices are stored in `anki-language.config.json` and must be copied into 
 
 ## Required plan-level fields
 
-- `version` = `2.7` for every new plan
+- `version` = `2.8` for every new plan, with lesson-analysis version `1.1`
 - `lesson_analysis_file` (mandatory v2.7): relative path to prevalidated lesson analysis
 - `cards[].learning_point_id` and `cards[].candidate_id` (mandatory v2.7): exact approved teaching candidates
 - `audio_settings` optional: `voice` exact Piper model; `length_scale` 0.75–1.25 (default 0.93); `include_source_audio` boolean, default false
@@ -75,7 +75,11 @@ v2.2 `source_units` is a **complete inventory of every user-supplied target-lang
 
 The APKG builder and AnkiConnect both render each linked item's **entire literal text** in the answer-side Source footer, without adding new Anki model fields or lengthening the Front. This ensures even a long original sentence appears verbatim at least once, while the card itself can test one compact reusable chunk. A source unit that is absent, unlinked, or points at a nonexistent card fails validation; if an actual `source_text_file` is supplied, missing/excess entries fail, too. If the input is a screenshot or audio recording, literal extraction needs human/agent verification; the validator cannot prove a transcription is truthful. Do not skip explicit input words/phrases or fabricate missing ones.
 
-## v2.7 two-stage Professor IA output contract
+## v2.8 competitive teacher review and verified APKG pair
+
+New lessons require a **second teacher selection pass** (`source_assessments[].examined_expressions`, `review.omission_scan`, `review.redundancy_scan`, `review.transfer_scan`, `review.tradeoffs`) before final cards; these fields must contain real source-grounded opportunities and comparisons among actual chosen/rejected candidates. High-value vocabulary omitted in first passes must be reconsidered, without forcing a card per word or a minimum count of authored cards. The v2.8 exporter verifies the bytes of the ZIP media against its resolved-plan SHA-256 and emits an adjacent paired `<apkg-stem>.resolved.json` + `<apkg>.report.json`; these exact matched artifacts should be shared together. Legacy plans preserve their semantics.
+
+## Historical v2.7 two-stage Professor IA output contract
 
 **Stage 1, mandatory before writing cards:** `lesson-analysis.json`, validated by `python scripts/validate_lesson.py lesson-analysis.json`. See `schemas/lesson-analysis.schema.json` and `examples/lesson-analysis.example.json`.
 

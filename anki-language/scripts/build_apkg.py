@@ -43,7 +43,7 @@ WRITING_FIELDS = [{"name": "WritingBefore"}, {"name": "WritingAfter"}, {"name": 
 
 
 def model_version(skill: str, plan_version: str | None = None) -> int:
-    if plan_version in {"2.3", "2.4", "2.5", "2.6", "2.7"}:
+    if plan_version in {"2.3", "2.4", "2.5", "2.6", "2.7", "2.8"}:
         return AUTO_AUDIO_MODEL_VERSION
     return PRONUNCIATION_MODEL_VERSION if skill == "pronunciation" else MODEL_VERSION
 
@@ -55,7 +55,7 @@ def fields_for_skill(skill: str, plan_version: str | None = None) -> list[dict[s
         fields = [*FIELDS, *WRITING_FIELDS]
     else:
         fields = list(FIELDS)
-    return [*fields, {"name": "SourceAudio"}] if plan_version in {"2.3", "2.4", "2.5", "2.6", "2.7"} else fields
+    return [*fields, {"name": "SourceAudio"}] if plan_version in {"2.3", "2.4", "2.5", "2.6", "2.7", "2.8"} else fields
 
 
 CSS = """
@@ -789,7 +789,7 @@ def make_model(skill: str, plan_version: str | None = None) -> genanki.Model:
     {{/Source}}
 """
 
-    if plan_version in {"2.3", "2.4", "2.5", "2.6", "2.7"}:
+    if plan_version in {"2.3", "2.4", "2.5", "2.6", "2.7", "2.8"}:
         support += """
     {{#SourceAudio}}
     <div class="source-audio"><div class="section-label">Hear original phrase</div>
@@ -916,7 +916,7 @@ def build(plan_path: Path, output_path: Path) -> dict[str, Any]:
               [clean(writing_parts(card)[1])] if skill == "writing" else []),
             *(
                 [" ".join(sound_ref(path) for path in context_audio if path)]
-                if plan.get("version") in {"2.3", "2.4", "2.5", "2.6", "2.7"} else []
+                if plan.get("version") in {"2.3", "2.4", "2.5", "2.6", "2.7", "2.8"} else []
             ),
         ]
 
@@ -943,8 +943,39 @@ def build(plan_path: Path, output_path: Path) -> dict[str, Any]:
 
     package = genanki.Package(list(decks.values()))
     package.media_files = [str(path) for path in sorted(media_files.values(), key=lambda p: p.name)]
+    expected_hashes: dict[str, str] | None = None
+    if plan.get("version") == "2.8":
+        from validate_apkg import media_hashes_from_plan
+        expected_hashes = media_hashes_from_plan(plan)
+        actual_hashes = {
+            name: hashlib.sha256(path.read_bytes()).hexdigest()
+            for name, path in media_files.items()
+        }
+        if actual_hashes != expected_hashes:
+            raise ValueError(
+                "Resolved plan and local media bytes disagree before APKG export: "
+                f"expected={expected_hashes}, actual={actual_hashes}."
+            )
+
     output_path.parent.mkdir(parents=True, exist_ok=True)
     package.write_to_file(str(output_path))
+
+    snapshot = None
+    if expected_hashes is not None:
+        from validate_apkg import validate_apkg
+        package_errors, _ = validate_apkg(
+            output_path,
+            expected_media_hashes=expected_hashes,
+            expected_card_count=len(cards),
+        )
+        if package_errors:
+            output_path.unlink(missing_ok=True)
+            raise ValueError("APKG/plan media verification failed: " + "; ".join(package_errors))
+        # Always supply an exact, adjacent resolved-plan snapshot for THIS
+        # package, even if the workspace plan is later regenerated.
+        snapshot = output_path.with_suffix(".resolved.json")
+        if snapshot.resolve() != plan_path.resolve():
+            snapshot.write_bytes(plan_path.read_bytes())
 
     report = {
         "version": plan.get("version"),
@@ -957,6 +988,14 @@ def build(plan_path: Path, output_path: Path) -> dict[str, Any]:
         "skipped_total": len(plan.get("skipped", [])),
         "output": str(output_path.resolve()),
     }
+    if expected_hashes is not None:
+        report.update({
+            "paired_resolved_plan": str((snapshot or plan_path).resolve()),
+            "resolved_plan_sha256": hashlib.sha256(plan_path.read_bytes()).hexdigest(),
+            "apkg_sha256": hashlib.sha256(output_path.read_bytes()).hexdigest(),
+            "media_sha256": expected_hashes,
+            "media_hash_verified": True,
+        })
     report_path = Path(str(output_path) + ".report.json")
     report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return report

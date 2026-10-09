@@ -36,6 +36,65 @@ def matches(text: str, term: str) -> bool:
     ))
 
 
+
+def validate_competitive_review(data: dict[str, Any]) -> list[str]:
+    """Require grounded opportunity screening and genuinely rejected alternatives.
+
+    A quality gate for candidate *consideration*, never a quota of extra cards.
+    """
+    if data["version"] != "1.1":
+        return []
+    errors: list[str] = []
+    points = {point["id"]: point for point in data["learning_points"]}
+    contexts = 0
+    for index, source in enumerate(data["source_assessments"]):
+        items = source.get("examined_expressions") or []
+        if not items:
+            errors.append(f"source_assessments[{index}] needs examined_expressions: check useful words, collocations and neglected constructions.")
+        if len(source["text"].split()) >= 14 and len(items) < 2:
+            errors.append(f"source_assessments[{index}]: review at least two meaningful expressions in a long source, not only its easiest chunk.")
+        for j, item in enumerate(items):
+            if not matches(source["text"], item["text"]):
+                errors.append(f"source_assessments[{index}].examined_expressions[{j}]: wording is absent from the original.")
+            if item["decision"] == "context":
+                contexts += 1
+                if item.get("learning_point_id"):
+                    errors.append(f"source_assessments[{index}].examined_expressions[{j}]: context should not link an active point.")
+            else:
+                point = points.get(item.get("learning_point_id"))
+                if not point:
+                    errors.append(f"source_assessments[{index}].examined_expressions[{j}]: practice must name an existing learning_point_id.")
+                elif source["source_unit_id"] not in point["source_unit_ids"]:
+                    errors.append(f"source_assessments[{index}].examined_expressions[{j}]: point is not linked to its original source.")
+                elif point["priority"] == "context":
+                    errors.append(f"source_assessments[{index}].examined_expressions[{j}]: context-only point cannot be actively practiced.")
+    seen: set[str] = set()
+    for index, choice in enumerate(data["review"]["tradeoffs"]):
+        point = points.get(choice["learning_point_id"])
+        if not point:
+            errors.append(f"review.tradeoffs[{index}]: unknown learning point.")
+            continue
+        candidates = {c["id"]: c for c in point["candidates"]}
+        selected = candidates.get(choice["selected_candidate_id"])
+        alternative = candidates.get(choice["alternative_candidate_id"])
+        if not selected or selected["decision"] != "card":
+            errors.append(f"review.tradeoffs[{index}]: chosen candidate must be approved as a card.")
+        if not alternative or alternative["decision"] not in {"reject", "example"}:
+            errors.append(f"review.tradeoffs[{index}]: the compared alternative must be rejected or example-only.")
+        if selected and alternative and selected["text"].casefold() == alternative["text"].casefold():
+            errors.append(f"review.tradeoffs[{index}]: options are identical.")
+        if choice["learning_point_id"] in seen:
+            errors.append(f"review.tradeoffs[{index}]: repeated point is not a separate comparison.")
+        seen.add(choice["learning_point_id"])
+    high_count = sum(p["priority"] == "high" for p in data["learning_points"])
+    if len(data["source_assessments"]) >= 8 and high_count >= 2:
+        if len(seen) < 2:
+            errors.append("Substantial lessons must compare alternatives for at least two distinct learning points.")
+        if contexts == 0:
+            errors.append("Substantial lessons must explicitly assess context-only expressions rather than making every phrase a card.")
+    return errors
+
+
 def validate_analysis(data: dict[str, Any]) -> list[str]:
     schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
     failures = sorted(Draft202012Validator(schema).iter_errors(data),
@@ -109,6 +168,7 @@ def validate_analysis(data: dict[str, Any]) -> list[str]:
                 f"Original source {item['source_unit_id']!r} was marked teach but has "
                 "no high/medium learning point; analyze it before selecting cards."
             )
+    errors.extend(validate_competitive_review(data))
     if not selected:
         errors.append("Lesson analysis must select at least one meaningful card candidate.")
     return errors
