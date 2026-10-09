@@ -26,6 +26,13 @@ def examples(tmp_path: Path) -> tuple[dict, dict, Path]:
     source = SKILL / "examples"
     plan = json.loads((source / "card-plan.example.json").read_text(encoding="utf-8"))
     analysis = json.loads((source / "lesson-analysis.example.json").read_text(encoding="utf-8"))
+    # Exercise the historical v2.7 contract independently of the current
+    # v2.8 example's mandatory opportunity/tradeoff review.
+    plan["version"] = "2.7"
+    analysis["version"] = "1.0"
+    analysis.pop("review", None)
+    for item in analysis["source_assessments"]:
+        item.pop("examined_expressions", None)
     analysis_path = tmp_path / "lesson-analysis.example.json"
     analysis_path.write_text(json.dumps(analysis, ensure_ascii=False), encoding="utf-8")
     return plan, analysis, tmp_path / "card-plan.json"

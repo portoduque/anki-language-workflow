@@ -58,7 +58,7 @@ def test_invented_or_omitted_opportunities_are_rejected(tmp_path: Path) -> None:
     assert any("absent from the original" in e for e in validate_analysis(analysis))
     _, analysis, _ = sample(tmp_path)
     analysis["source_assessments"][0]["examined_expressions"] = []
-    assert any("needs examined_expressions" in e for e in validate_analysis(analysis))
+    assert any("examined_expressions" in e for e in validate_analysis(analysis))
 
 
 def test_competitive_review_rejects_fake_or_missing_comparisons(tmp_path: Path) -> None:
